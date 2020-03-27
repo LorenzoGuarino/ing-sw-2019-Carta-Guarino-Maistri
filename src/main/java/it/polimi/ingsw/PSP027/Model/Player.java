@@ -3,9 +3,6 @@ package it.polimi.ingsw.PSP027.Model;
 import java.util.ArrayList;
 import java.util.List;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * @author Lorenzo Guarino
  * */

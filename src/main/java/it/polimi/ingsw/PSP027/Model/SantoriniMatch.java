@@ -21,7 +21,7 @@ public class SantoriniMatch {
     private List<Player> players;
     private List<Turn> playedTurns;
     private List<GodCard> godsList;
-    private  List<GodCard> godsInUse;
+    private List<GodCard> godsInUse;
 
     public static final String APOLLO      = "Apollo";
     public static final String ARTEMIS     = "Artemis";

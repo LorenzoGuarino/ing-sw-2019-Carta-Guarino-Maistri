@@ -14,7 +14,7 @@ public class ConcreteTurn extends Turn {
      */
     public ConcreteTurn(Player playerPlaying) {
         this.phaseList = new ArrayList<>();
-        StartPhase phase1=new StartPhase(playerPlaying.getWorkers());
+        StartPhase phase1=new StartPhase(playerPlaying.getPlayerWorkers());
         this.phaseList.add(phase1);
         MovePhase phase2= new MovePhase(phase1.getChosenWorker().getWorkerPosition());
         this.phaseList.add(phase2);
