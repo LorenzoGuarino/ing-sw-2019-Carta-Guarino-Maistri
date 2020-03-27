@@ -2,7 +2,6 @@ package it.polimi.ingsw.PSP027.Model;
 
 import java.util.ArrayList;
 import java.util.List;
-package it.polimi.ingsw.PSP027.Model;
 
 import java.util.ArrayList;
 import java.util.List;
