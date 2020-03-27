@@ -8,7 +8,8 @@ public class ArtemideDecorator extends GodPowerDecorator {
 
     @Override
     public void applyPower() {
-        int index=1; //l indice a cui voglio metere la fase
-        this.getDecoratedTurn().getPhaseList().add(index,new MovePhase());
+        int index=0;
+        //MovePhase = new MovePhase();
+        //this.getDecoratedTurn().phaseList.add(index,);
     }
 }

@@ -30,6 +30,13 @@ public class Cell {
     }
 
     /**
+     * Method to get the index of a cell
+     * @return the index
+     */
+
+    public int getCellIndex() { return index; }
+
+    /**
      * Method that checks if the cell is occupied by a worker
      * @return true if the cell has a worker on it, otherwise false
      */
@@ -136,78 +143,6 @@ public class Cell {
         {
             return false;
         }
-    }
-
-    /**
-     * Method that finds the neighbouring cells of a cell
-     * @return a list containing the indexes of the neighbouring cells of the given cell
-     */
-
-    public List<Integer> getNeighbouringCells()
-    {
-
-        List<Integer> NeighbouringCells = new ArrayList<>();
-
-        int[] Neighbours = {-6, -5, -4, -1, 1, 4, 5, 6};
-
-        /* i = index of current cell
-         *  j = index of neighbouring cell
-         *  Ri = row of current cell
-         *  Rj = row of neighbouring cell
-         *  Ci = column of current cell
-         *  Cj = column of neighbouring cell
-         */
-
-        int j;
-        boolean IsNeighbour;
-        int Ri = index/5;
-        int Rj;
-        int Ci = index%5;
-        int Cj;
-
-        for (int k = 0; k < 8; k++)
-        {
-            j = index + Neighbours[k];
-            IsNeighbour = false;
-
-            if (j >= 0 && j < 25)
-            {
-                Rj = j/5;
-                Cj = j%5;
-
-                if((Ci == 0) || (Ci == 4))
-                {
-                    if (Ri != Rj)
-                    {
-                        IsNeighbour = ((Cj >= Ci-1) && (Cj <= (Ci+1)));
-                    }
-                    else
-                    {
-                        if(Ci == 0 && (Cj <= (Ci+1)))
-                        {
-                            IsNeighbour = true;
-                        }
-                        else if (Ci == 4 && (Cj >= (Ci-1)))
-                        {
-                            IsNeighbour = true;
-                        }
-                    }
-                }
-                else
-                {
-                    IsNeighbour = true;
-                }
-            }
-
-            if (IsNeighbour)
-            {
-                NeighbouringCells.add(index);
-            }
-
-            j = 0;
-        }
-
-        return NeighbouringCells;
     }
 
     /**

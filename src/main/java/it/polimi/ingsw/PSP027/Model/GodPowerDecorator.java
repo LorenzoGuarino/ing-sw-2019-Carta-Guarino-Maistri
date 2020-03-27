@@ -8,10 +8,15 @@ import it.polimi.ingsw.PSP027.Model.Turn;
  */
 
 public abstract class GodPowerDecorator extends Turn {
+
     private ConcreteTurn decoratedTurn;
 
     public ConcreteTurn getDecoratedTurn() {
         return decoratedTurn;
+    }
+
+    public void changeMoveConditions(){
+
     }
 
     public void setDecoratedTurn(ConcreteTurn decoratedTurn) {

@@ -7,17 +7,7 @@ import java.util.ArrayList;
  */
 
 public abstract class Turn {
-    private ArrayList<Phase> phaseList;
-
-    public Turn() {
-        this.phaseList = new ArrayList<>();
-        phaseList.add(new StartPhase());
-        phaseList.add(new MovePhase());
-        phaseList.add(new BuildPhase());
-        phaseList.add(new EndPhase());
-    }
-
-    public abstract void applyPower();
+    public ArrayList<Phase> phaseList;
 
     public ArrayList<Phase> getPhaseList() {
         return phaseList;
@@ -26,4 +16,6 @@ public abstract class Turn {
     public void setPhaseList(ArrayList<Phase> phaseList) {
         this.phaseList = phaseList;
     }
+
+    public abstract void applyPower();
 }

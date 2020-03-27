@@ -1,4 +1,4 @@
-package it.polimi.ingsw.PSP027;
+package it.polimi.ingsw.PSP027.Model;
 
 import it.polimi.ingsw.PSP027.Model.ArtemideDecorator;
 import it.polimi.ingsw.PSP027.Model.ConcreteTurn;
@@ -11,6 +11,7 @@ public class App
 {
     public static void main( String[] args )
     {
+
     }
 
 }
