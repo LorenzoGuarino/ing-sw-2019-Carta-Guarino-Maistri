@@ -18,6 +18,6 @@ public class ConcreteTurn extends Turn {
     
     @Override
     public void applyPower() {
-
+        int i=0;
     }
 }
