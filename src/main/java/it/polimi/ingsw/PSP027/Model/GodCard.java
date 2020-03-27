@@ -11,20 +11,25 @@ public class GodCard {
     private int godId;
 
     /**
+     * Constructor: create a god with its name, description and id
+     * @param godName name of the god of the card
+     * @param description description of this god ability
+     * @param godId id identifying the god
+     */
+
+    public GodCard(String godName, String description, int godId) {
+        this.godName = godName;
+        this.description = description;
+        this.godId = godId;
+    }
+
+    /**
      * Method to get the god's name
      * @return the name of the GodCard
      * */
 
     public String getGodName() {
         return godName;
-    }
-
-    /**
-     * @param godName God Name to set
-     * */
-
-    public void setGodName(String godName) {
-        this.godName = godName;
     }
 
     /**
@@ -37,28 +42,12 @@ public class GodCard {
     }
 
     /**
-     * @param description God Description to set
-     * */
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    /**
      * Method to get the god's id number
      * @return the Id of the GodCard
      * */
 
     public int getGodId() {
         return godId;
-    }
-
-    /**
-     * @param godId God Id to set
-     */
-
-    public void setGodId(int godId) {
-        this.godId = godId;
     }
 
 }
