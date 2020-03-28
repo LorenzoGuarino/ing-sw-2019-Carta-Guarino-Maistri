@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * @author Elisa Maistri
  * @author Lorenzo Guarino
  * */
 
@@ -114,6 +115,18 @@ public class SantoriniMatch {
 
     }
 
+    /**
+     * Method that do the setup of the game
+     * */
+
+    public void startGame(){
+
+
+    }
+
+    /**
+     * Method that end the game if the win conditions are verified
+     * */
 
     public void endGame() {
 
