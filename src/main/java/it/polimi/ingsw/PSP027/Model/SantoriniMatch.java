@@ -33,16 +33,15 @@ public class SantoriniMatch {
     public static final String PAN         = "Pan";
     public static final String PROMETHEUS  = "Prometheus";
 
-
-    public static final String APOLLO_D        = "Your Move: Your Worker may move one additional time, but not back to its initial space.";
-    public static final String ARTEMIS_D       = "Opponent's Turn: If one of your Workers moved up on your last turn, opponent Workers cannot move up this turn.";
-    public static final String ATHENA_D        = "Your Build: Your Worker may build a dome at any level.";
-    public static final String ATLAS_D         = "Your Build: Your Worker may build one additional time, but not on the same space.";
-    public static final String DEMETER_D       = "Your Build: Your Worker may build one additional block (not dome) on top of your first block.";
-    public static final String HEPHAESTUS_D    = "Your Turn: If your Workers do not move up or down, they may each move any number of times (even zero), and then either builds.";
-    public static final String MINOTAUR_D      = "Win Condition: You also win if your Worker moves down two or more levels";
-    public static final String PAN_D           = "Your Turn: If your Worker does not move up, it may build both before and after moving.";
-    public static final String PROMETHEUS_D    = "Titan Benefactor of Mankind Your Turn: If your Worker does not move up, it may build both before and after moving.";
+    public static final String APOLLO_D     = "Your Move: Your Worker may move into an opponent Worker's space by forcing their Worker to the space yours just vacated.";
+    public static final String ARTEMIS_D    = "Your Move: Your Worker may move one additional time, but not back to its initial space.";
+    public static final String ATHENA_D     = "Opponent's Turn: If one of your Workers moved up on your last turn, opponent Workers cannot move up this turn.";
+    public static final String ATLAS_D      = "Your Build: Your Worker may build a dome at any level.";
+    public static final String DEMETER_D    = "Your Build: Your Worker may build one additional time, but not on the same space.";
+    public static final String HEPHAESTUS_D = "Your Build: Your Worker may build one additional block (not dome) on top of your first block.";
+    public static final String MINOTAUR_D   = "Your Move: Your Worker may move into an opponent Worker's space, if their Worker can be forced one space straight backwards to an unoccupied space at any level.";
+    public static final String PAN_D        = "Win Condition: You also win if your Worker moves down two or more levels.";
+    public static final String PROMETHEUS_D = "Your Turn: If your Worker does not move up, it may build both before and after moving.";
 
     public static final int APOLLO_id      = 1;
     public static final int ARTEMIS_id     = 2;
