@@ -47,6 +47,29 @@ public class Cell {
     }
 
     /**
+     * Method used the cell is occupied by an opponent player's worker. It checks if this cell's worker has a different owner
+     * from the one given to the function which would be the opponent Player.
+     * @param opponentPlayer the player that needs to be compared to this cell's owner
+     * @return true if the player occupying this cell is different from the player given to the function
+     */
+
+    public boolean isOccupiedByOpponentWorker(Player opponentPlayer) {
+        if (WorkerOccupying.getWorkerOwner() != opponentPlayer) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    /**
+     * Method to get the worker occupying this cell
+     * @return the worker occupying the cell
+     */
+
+    public Worker getOccupyingWorker() { return WorkerOccupying; }
+
+    /**
      * Method that checks if this cell has a complete tower on it
      * @return true if in this cell there is a complete tower, otherwise false
      */
