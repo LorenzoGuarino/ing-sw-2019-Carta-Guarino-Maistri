@@ -6,10 +6,13 @@ public class ArtemideDecorator extends GodPowerDecorator {
         super(decoratedTurn);
     }
 
+    /**
+     * That creates another MovePhase copying the already existing and eventually decorated one
+     */
     @Override
     public void applyPower() {
-        int index=0;
-        //MovePhase = new MovePhase();
-        //this.getDecoratedTurn().phaseList.add(index,);
+        int index=2;
+        MovePhase  a = new MovePhase((MovePhase)this.getPhaseList().get(1));
+        this.getDecoratedTurn().getPhaseList().add(index,a);
     }
 }

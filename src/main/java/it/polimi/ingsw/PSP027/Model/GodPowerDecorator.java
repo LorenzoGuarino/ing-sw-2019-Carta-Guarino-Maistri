@@ -30,10 +30,10 @@ public abstract class GodPowerDecorator extends Turn {
 
     /**
      * Standard changeMoveCondition method
-     * @param staringCell
+     * @param chosenWorker
      * @return null
      */
-    public List<Cell> changeMoveConditions(Cell staringCell){
+    public List<Cell> changeMoveConditions(Worker chosenWorker,Board gameBoard){
         return null;
     }
 

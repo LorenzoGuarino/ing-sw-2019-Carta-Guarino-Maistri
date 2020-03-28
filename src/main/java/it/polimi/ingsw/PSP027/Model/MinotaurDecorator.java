@@ -10,32 +10,44 @@ import java.util.List;
 public class MinotaurDecorator extends GodPowerDecorator {
     /**
      * super Constructor
+     *
      * @param decoratedTurn
      */
     public MinotaurDecorator(ConcreteTurn decoratedTurn) {
         super(decoratedTurn);
     }
 
+    /**
+     * When called by a turn it runs through that turns' movePhases and change their moveConditions according to the changeMoveConditions method below
+     */
     @Override
     public void applyPower() {
-        //useless for this decorator
+        System.out.println("applyPowerMinotaur called");
+        MovePhase modifiedPhase = (MovePhase) this.getDecoratedTurn().getPhaseList().get(1);//@TODO indice della fase che voglio modificare
+        modifiedPhase.changeCandidateMovesAccordingToDecorator();
     }
 
     /**
      * Method called by a decorated turn's movePhase, it makes it possible to move in an enemy occupied cell
-     * @param startingCell
+     *
+     * @param chosenWorker
      * @return a list of cells which you can move onto
      */
     @Override
-    public List<Cell> changeMoveConditions(Cell startingCell) {
+    public List<Cell> changeMoveConditions(Worker chosenWorker, Board board) {
+        Cell startingCell = chosenWorker.getWorkerPosition();
         List<Cell> candidateMoves = new ArrayList<>();
-        for (Cell candidateCell : startingCell.getNeighbouringCells()) {    //for each candidate cell in neighbouringCells if
-            if ((candidateCell.getLevel() <= startingCell.getLevel() + 1) &&//the lv i want to get to is higher less than one
-                    (!candidateCell.isOccupiedByEnemyWorker()) &&           //it is occupied by ENEMY worker
-                    (!candidateCell.checkDome())) {                         //it is not occupied by a dome
-                candidateMoves.add(candidateCell);                          //then add the cell to candidateMoves
+        for (Cell candidateCell : board.getNeighbouringCells(startingCell)) {    //for each candidate cell in neighbouringCells if
+            if (((candidateCell.getLevel() <= startingCell.getLevel() + 1) &&    //the lv i want to get to is higher less than one
+                    (!candidateCell.checkDome()))                                //it is not occupied by a dome
+                //||
+                //((!candidateCell.isOccupiedByEnemyWorker()))//&&
+                //@TODO la cella next to enemyworker esiste e non è occupata
+            ) {
+                candidateMoves.add(candidateCell);                              //then add the cell to candidateMoves
             }
         }
+        return candidateMoves;
     }
 }
 

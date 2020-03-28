@@ -11,6 +11,11 @@ public class App
 {
     public static void main( String[] args )
     {
+        Player player = new Player();
+        ConcreteTurn triaLturn = new ConcreteTurn(player);
+        GodPowerDecorator dec = new ArtemideDecorator(triaLturn);
+
+        dec.applyPower();
 
     }
 
