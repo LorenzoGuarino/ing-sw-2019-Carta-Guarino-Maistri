@@ -55,8 +55,7 @@ public class Board {
      * @return a list containing the indexes of the neighbouring cells of the given cell
      */
 
-    public List<Cell> getNeighbouringCells(Cell cell)
-    {
+    public List<Cell> getNeighbouringCells(Cell cell) {
 
         List<Cell> NeighbouringCells = new ArrayList<>();
 
@@ -79,42 +78,33 @@ public class Board {
         int Ci = index%5;
         int Cj;
 
-        for (int k = 0; k < 8; k++)
-        {
+        for (int k = 0; k < 8; k++) {
             j = index + Neighbours[k];
             IsNeighbour = false;
 
-            if (j >= 0 && j < 25)
-            {
+            if (j >= 0 && j < 25) {
                 Rj = j/5;
                 Cj = j%5;
 
-                if((Ci == 0) || (Ci == 4))
-                {
-                    if (Ri != Rj)
-                    {
+                if((Ci == 0) || (Ci == 4)) {
+                    if (Ri != Rj) {
                         IsNeighbour = ((Cj >= Ci-1) && (Cj <= (Ci+1)));
                     }
-                    else
-                    {
-                        if(Ci == 0 && (Cj <= (Ci+1)))
-                        {
+                    else {
+                        if(Ci == 0 && (Cj <= (Ci+1))) {
                             IsNeighbour = true;
                         }
-                        else if (Ci == 4 && (Cj >= (Ci-1)))
-                        {
+                        else if (Ci == 4 && (Cj >= (Ci-1))) {
                             IsNeighbour = true;
                         }
                     }
                 }
-                else
-                {
+                else {
                     IsNeighbour = true;
                 }
             }
 
-            if (IsNeighbour)
-            {
+            if (IsNeighbour) {
                 NeighbouringCells.add(getCell(index));
             }
 

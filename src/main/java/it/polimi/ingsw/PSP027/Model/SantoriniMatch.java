@@ -23,36 +23,36 @@ public class SantoriniMatch {
     private List<GodCard> godsList;
     private List<GodCard> godsInUse;
 
-    public static final String APOLLO      = "Apollo";
-    public static final String ARTEMIS     = "Artemis";
-    public static final String ATHENA      = "Athena";
-    public static final String ATLAS       = "Atlas";
-    public static final String DEMETER     = "Demeter";
-    public static final String HEPHAESTUS  = "Hephaestus";
-    public static final String MINOTAUR    = "Minotaur";
-    public static final String PAN         = "Pan";
-    public static final String PROMETHEUS  = "Prometheus";
+    private static final String APOLLO      = "Apollo";
+    private static final String ARTEMIS     = "Artemis";
+    private static final String ATHENA      = "Athena";
+    private static final String ATLAS       = "Atlas";
+    private static final String DEMETER     = "Demeter";
+    private static final String HEPHAESTUS  = "Hephaestus";
+    private static final String MINOTAUR    = "Minotaur";
+    private static final String PAN         = "Pan";
+    private static final String PROMETHEUS  = "Prometheus";
 
 
-    public static final String APOLLO_D        = "Your Move: Your Worker may move one additional time, but not back to its initial space.";
-    public static final String ARTEMIS_D       = "Opponent's Turn: If one of your Workers moved up on your last turn, opponent Workers cannot move up this turn.";
-    public static final String ATHENA_D        = "Your Build: Your Worker may build a dome at any level.";
-    public static final String ATLAS_D         = "Your Build: Your Worker may build one additional time, but not on the same space.";
-    public static final String DEMETER_D       = "Your Build: Your Worker may build one additional block (not dome) on top of your first block.";
-    public static final String HEPHAESTUS_D    = "Your Turn: If your Workers do not move up or down, they may each move any number of times (even zero), and then either builds.";
-    public static final String MINOTAUR_D      = "Win Condition: You also win if your Worker moves down two or more levels";
-    public static final String PAN_D           = "Your Turn: If your Worker does not move up, it may build both before and after moving.";
-    public static final String PROMETHEUS_D    = "Titan Benefactor of Mankind Your Turn: If your Worker does not move up, it may build both before and after moving.";
+    private static final String APOLLO_D        = "Your Move: Your Worker may move one additional time, but not back to its initial space.";
+    private static final String ARTEMIS_D       = "Opponent's Turn: If one of your Workers moved up on your last turn, opponent Workers cannot move up this turn.";
+    private static final String ATHENA_D        = "Your Build: Your Worker may build a dome at any level.";
+    private static final String ATLAS_D         = "Your Build: Your Worker may build one additional time, but not on the same space.";
+    private static final String DEMETER_D       = "Your Build: Your Worker may build one additional block (not dome) on top of your first block.";
+    private static final String HEPHAESTUS_D    = "Your Turn: If your Workers do not move up or down, they may each move any number of times (even zero), and then either builds.";
+    private static final String MINOTAUR_D      = "Your Move: Your Worker may move into an opponent Worker’s space, if their Worker can be forced one space straight backwards to an unoccupied space at any level.";
+    private static final String PAN_D           = "Win Condition: You also win if your Worker moves down two or more levels";
+    private static final String PROMETHEUS_D    = "Your Turn: If your Worker does not move up, it may build both before and after moving.";
 
-    public static final int APOLLO_id      = 1;
-    public static final int ARTEMIS_id     = 2;
-    public static final int ATHENA_id      = 3;
-    public static final int ATLAS_id       = 4;
-    public static final int DEMETER_id     = 5;
-    public static final int HEPHAESTUS_id  = 6;
-    public static final int MINOTAUR_id    = 8;
-    public static final int PAN_id         = 9;
-    public static final int PROMETHEUS_id  = 10;
+    private static final int APOLLO_id      = 1;
+    private static final int ARTEMIS_id     = 2;
+    private static final int ATHENA_id      = 3;
+    private static final int ATLAS_id       = 4;
+    private static final int DEMETER_id     = 5;
+    private static final int HEPHAESTUS_id  = 6;
+    private static final int MINOTAUR_id    = 8;
+    private static final int PAN_id         = 9;
+    private static final int PROMETHEUS_id  = 10;
 
 
 
