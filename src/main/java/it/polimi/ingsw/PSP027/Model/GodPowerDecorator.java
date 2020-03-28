@@ -1,30 +1,40 @@
 package it.polimi.ingsw.PSP027.Model;
 
-import it.polimi.ingsw.PSP027.Model.ConcreteTurn;
-import it.polimi.ingsw.PSP027.Model.Turn;
+import java.util.List;
 
 /**
  * @author danielecarta
  */
 
 public abstract class GodPowerDecorator extends Turn {
-
+    /**
+     * The concrete turn the decorator goes to decorate
+     */
     private ConcreteTurn decoratedTurn;
 
+    /**
+     * Constructor
+     * @param decoratedTurn
+     */
+    public GodPowerDecorator(ConcreteTurn decoratedTurn) {
+        this.decoratedTurn = decoratedTurn;
+    }
+
+    /**
+     * Getter
+     * @return decoratedTurn
+     */
     public ConcreteTurn getDecoratedTurn() {
         return decoratedTurn;
     }
 
-    public void changeMoveConditions(){
-
-    }
-
-    public void setDecoratedTurn(ConcreteTurn decoratedTurn) {
-        this.decoratedTurn = decoratedTurn;
-    }
-
-    public GodPowerDecorator(ConcreteTurn decoratedTurn) {
-        this.decoratedTurn = decoratedTurn;
+    /**
+     * Standard changeMoveCondition method
+     * @param staringCell
+     * @return null
+     */
+    public List<Cell> changeMoveConditions(Cell staringCell){
+        return null;
     }
 
     public abstract void applyPower();

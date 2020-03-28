@@ -1,6 +1,5 @@
 package it.polimi.ingsw.PSP027.Model;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
