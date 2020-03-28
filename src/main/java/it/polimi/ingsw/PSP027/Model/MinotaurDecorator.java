@@ -41,27 +41,21 @@ public class MinotaurDecorator extends GodPowerDecorator {
 
         for (Cell candidateCell : board.getNeighbouringCells(startingCell)) {    //for each candidate cell in neighbouringCells if
             if ((candidateCell.getLevel() <= startingCell.getLevel() + 1) &&    //the lv i want to get to is higher less than one
-                    (!candidateCell.checkDome()))                                //it is not occupied by a dome
-            {
+                (!candidateCell.checkDome())) {
                 if (!candidateCell.isOccupiedByWorker())
                     candidateMoves.add(candidateCell);
                 else {
 
                     if (candidateCell.isOccupiedByOpponentWorker(chosenWorker.getWorkerOwner())) {
-                        int start = startingCell.getCellIndex();
-                        int end = candidateCell.getCellIndex();
-                        int delta = end - start;
-                        int newOpponentWorkerIndex = end + delta;
 
-                        Cell potentialTargetCell = board.getCell(newOpponentWorkerIndex);
+                        Cell potentialTargetCellForOpponentWorker = board.getNextCellAlongThePath(startingCell, candidateCell);
 
-                        for (Cell opponentCandidateCell : board.getNeighbouringCells(candidateCell)) {
-
-                            if(opponentCandidateCell.getCellIndex() == newOpponentWorkerIndex) {
-                                if(potentialTargetCell.canAWorkerBeMovedHere(candidateCell.getOccupyingWorker()))
-                                    candidateMoves.add(candidateCell);
-                            }
+                        if(potentialTargetCellForOpponentWorker != null)
+                        {
+                            if(potentialTargetCellForOpponentWorker.canAWorkerBeMovedHere(candidateCell.getOccupyingWorker()))
+                                candidateMoves.add(candidateCell);
                         }
+
                     }
                 }
             }

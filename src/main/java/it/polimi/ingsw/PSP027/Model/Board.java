@@ -51,13 +51,71 @@ public class Board {
     }
 
     /**
+     * Method that, given two neighbouring cells calculates the next cell along the path made by the first two
+     * @param firstPathCell the first cell from which the path is calculated
+     * @param secondPathCell the second cell defining the path
+     * @return the cell along the path, otherwise null if the cells given to the method were not neighbours
+     */
+
+    public Cell getNextCellAlongThePath(Cell firstPathCell, Cell secondPathCell)
+    {
+        Cell NextCell = null;
+
+        int start = firstPathCell.getCellIndex();
+        int end = secondPathCell.getCellIndex();
+        int delta = end - start;
+        int nextCellIndex = end + delta;
+
+        if((nextCellIndex>=0) && (nextCellIndex<25))
+        {
+            int rn = nextCellIndex/5;
+            int cn = nextCellIndex%5;
+            int re = end/5;
+            int ce = end%5;
+
+            switch(delta)
+            {
+                case -1:
+                case 1:
+                    // same row
+                    if(re == rn)
+                        NextCell = getCell(nextCellIndex);
+                    break;
+                case -5:
+                case 5:
+                    // same column
+                    if(ce == cn)
+                        NextCell = getCell(nextCellIndex);
+                    break;
+                case -6:
+                    if((cn == (ce-1)) && (rn == (re-1)))
+                        NextCell = getCell(nextCellIndex);
+                    break;
+                case 6:
+                    if((cn == (ce+1)) && (rn == (re+1)))
+                        NextCell = getCell(nextCellIndex);
+                    break;
+                case -4:
+                    if((cn == (ce+1)) && (rn == (re-1)))
+                        NextCell = getCell(nextCellIndex);
+                    break;
+                case 4:
+                    if((cn == (ce-1)) && (rn == (re+1)))
+                        NextCell = getCell(nextCellIndex);
+                    break;
+            }
+        }
+
+        return NextCell;
+    }
+
+    /**
      * Method that finds the neighbouring cells of a cell
      * @return a list containing the indexes of the neighbouring cells of the given cell
      */
 
     public List<Cell> getNeighbouringCells(Cell cell)
     {
-
         List<Cell> NeighbouringCells = new ArrayList<>();
 
         int[] Neighbours = {-6, -5, -4, -1, 1, 4, 5, 6};
