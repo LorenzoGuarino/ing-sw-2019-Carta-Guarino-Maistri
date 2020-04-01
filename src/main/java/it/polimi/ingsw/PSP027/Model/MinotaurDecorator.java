@@ -15,7 +15,7 @@ public class MinotaurDecorator extends GodPowerDecorator {
     /**
      * super Constructor
      *
-     * @param decoratedTurn
+     * @param decoratedTurn the turn it is going to decorate
      */
 
     public MinotaurDecorator(ConcreteTurn decoratedTurn) {
@@ -28,15 +28,35 @@ public class MinotaurDecorator extends GodPowerDecorator {
 
     @Override
     public void applyPower() {
-        System.out.println("applyPowerMinotaur called");
+        //@TODO rendere eseguibile solo se si è istanziata la MovePhase
         MovePhase modifiedPhase = (MovePhase) this.getDecoratedTurn().getPhaseList().get(1);//@TODO indice della fase che voglio modificare
+        modifiedPhase.setActualDecorator(this); //allows the phase to know which kind of decorator is applied onto it
         modifiedPhase.changeCandidateMovesAccordingToDecorator();
     }
 
     /**
+     * This method is called in a movePhase in order to update the board according to the decorator,in case it modifies the board itself
+     * @param chosenWorker the worker that's moved
+     * @param gameBoard the board it is moving on
+     * @param chosenCell the cell it is stepping onto
+     */
+    @Override
+    public void updateBoard(Worker chosenWorker, Board gameBoard, Cell chosenCell) {
+        if (chosenCell.isOccupiedByOpponentWorker(chosenWorker.getWorkerOwner())) {
+            Worker opponentWorker=chosenWorker.getWorkerPosition().getOccupyingWorker();
+            opponentWorker.setPosition(gameBoard.getNextCellAlongThePath(chosenWorker.getWorkerPosition(),chosenCell));
+            opponentWorker.getWorkerPosition().setOccupiedByWorker(true);
+        }
+        chosenWorker.getWorkerPosition().setOccupiedByWorker(false);
+        chosenWorker.setPosition(chosenCell);
+        chosenCell.setOccupiedByWorker(true);
+    }
+
+    /**
      * Method called by a decorated turn's movePhase, it makes it possible to move in an enemy occupied cell
-     *
-     * @param chosenWorker
+     * if the next space is not occupied
+     * @param chosenWorker the worker that's moving
+     * @param board the board it is moving on
      * @return a list of cells which you can move onto
      */
 
