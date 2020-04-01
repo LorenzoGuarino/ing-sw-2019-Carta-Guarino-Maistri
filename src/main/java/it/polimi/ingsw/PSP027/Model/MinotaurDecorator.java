@@ -9,11 +9,13 @@ import java.util.List;
  */
 
 public class MinotaurDecorator extends GodPowerDecorator {
+
     /**
      * super Constructor
      *
      * @param decoratedTurn
      */
+
     public MinotaurDecorator(ConcreteTurn decoratedTurn) {
         super(decoratedTurn);
     }
@@ -21,6 +23,7 @@ public class MinotaurDecorator extends GodPowerDecorator {
     /**
      * When called by a turn it runs through that turns' movePhases and change their moveConditions according to the changeMoveConditions method below
      */
+
     @Override
     public void applyPower() {
         System.out.println("applyPowerMinotaur called");
@@ -34,6 +37,7 @@ public class MinotaurDecorator extends GodPowerDecorator {
      * @param chosenWorker
      * @return a list of cells which you can move onto
      */
+
     @Override
     public List<Cell> changeMoveConditions(Worker chosenWorker, Board board) {
         Cell startingCell = chosenWorker.getWorkerPosition();
@@ -52,7 +56,7 @@ public class MinotaurDecorator extends GodPowerDecorator {
 
                         if(potentialTargetCellForOpponentWorker != null)
                         {
-                            if(potentialTargetCellForOpponentWorker.canAWorkerBeMovedHere(candidateCell.getOccupyingWorker()))
+                            if(!potentialTargetCellForOpponentWorker.checkDome() && !potentialTargetCellForOpponentWorker.isOccupiedByWorker())
                                 candidateMoves.add(candidateCell);
                         }
 
