@@ -6,6 +6,7 @@ import java.util.List;
 /**
  * @author Elisa Maistri
  * @author Lorenzo Guarino
+ * @author danielecarta
  * */
 
 public class SantoriniMatch {
@@ -80,6 +81,53 @@ public class SantoriniMatch {
     }
 
     /**
+     * create a new turn for the first player in the list and then rotates the list of players
+     * @return
+     */
+    public ConcreteTurn newTurn(){
+        ConcreteTurn newTurn = new ConcreteTurn(this.getFirstPlayer());
+        rotatePlayers();
+        return newTurn;
+    }
+
+    /**
+     * decorates the players turn according to its GodCard
+     * @return
+     */
+    public GodPowerDecorator decorateTurn(ConcreteTurn turn) {
+        switch (turn.getPlayingPlayer().getPlayerGod().getGodId()){
+            //case 1: break;
+            //case 2: break;
+            //case 3: break;
+            //case 4: break;
+            //case 5: break;
+            //case 6: break;
+            //case 7: break;
+            case 8:
+                return new MinotaurDecorator(turn);
+            //case 9: break;
+        }
+        return null;
+    }
+
+    /**
+     * Method to make the old players list a new one that has as last player the old first player,as first player the old second player
+     * and as (eventually) player in the middle the old last player
+     */
+    public void rotatePlayers(){
+        ArrayList<Player> tempPlayers= new ArrayList<>();
+        for(int i=0;i<this.getPlayers().size()-1;i++){
+            tempPlayers.add(this.getPlayers().get(i+1));
+        }
+        tempPlayers.add(this.getPlayers().get(0));
+        this.setPlayers(tempPlayers);
+    }
+
+    public void setPlayers(List<Player> players) {
+        this.players = players;
+    }
+
+    /**
      * Method to get the list of players
      * @return the list of players
      */
@@ -146,4 +194,7 @@ public class SantoriniMatch {
 
     public Player getFirstPlayer() { return players.get(0); }
 
+    public Board getGameBoard() {
+        return gameBoard;
+    }
 }

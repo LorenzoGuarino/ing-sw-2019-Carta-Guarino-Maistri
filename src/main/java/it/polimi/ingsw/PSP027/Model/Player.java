@@ -12,6 +12,7 @@ public class Player {
     private String nickname;
     private List<Worker> playerWorkers;
     private GodCard playerGod;
+    private List<GodCard> opponentsGodCards;
 
     /**
      * Constructor: creates a player, creating its workers
@@ -21,6 +22,14 @@ public class Player {
         playerWorkers = new ArrayList<Worker>();
 
         for (int i = 0; i < 2; i++) playerWorkers.add(new Worker(this, i));
+    }
+
+    public void resetOpponentsGodCards(){
+        this.getOpponentsGodCards().clear();
+    }
+
+    public GodCard getPlayerGod() {
+        return playerGod;
     }
 
     /**
@@ -59,5 +68,7 @@ public class Player {
 
     }
 
-
+    public List<GodCard> getOpponentsGodCards() {
+        return opponentsGodCards;
+    }
 }

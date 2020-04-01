@@ -1,5 +1,8 @@
 package it.polimi.ingsw.PSP027.Model;
 
+/**
+ * @author danielecarta
+ */
 public class ArtemideDecorator extends GodPowerDecorator {
 
     public ArtemideDecorator(ConcreteTurn decoratedTurn) {
