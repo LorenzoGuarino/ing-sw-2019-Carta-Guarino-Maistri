@@ -37,5 +37,14 @@ public abstract class GodPowerDecorator extends Turn {
         return null;
     }
 
+    /**
+     * Standard changeBuildCondition method
+     * @param chosenWorker
+     * @return null
+     */
+    public List<Cell> changeBuildConditions(Worker chosenWorker,Board gameBoard){
+        return null;
+    }
+
     public abstract void applyPower();
 }
