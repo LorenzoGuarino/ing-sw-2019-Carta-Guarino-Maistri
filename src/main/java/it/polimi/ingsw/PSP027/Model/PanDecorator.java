@@ -16,7 +16,7 @@ public class PanDecorator extends GodPowerDecorator {
     public void applyPower() {
 
 
-        public boolean checkMoveWinConditions(Worker worker, int startLevel){
+       /* public boolean checkMoveWinConditions(Worker worker, int startLevel){
             if(startLevel==2 && worker.getWorkerPosition().getLevel()==3){
                 return true;
             }else{
@@ -25,7 +25,7 @@ public class PanDecorator extends GodPowerDecorator {
         }
 
 
-
+        */
     }
 
 
