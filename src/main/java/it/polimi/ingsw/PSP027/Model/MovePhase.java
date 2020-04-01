@@ -12,7 +12,7 @@ public class MovePhase extends Phase {
     private GodPowerDecorator actualDecorator;
     private Worker chosenWorker;
     private Board gameBoard;
-
+    //private int startChosenWorkerLvl;
     /**
      * emptyConstructor
      */
@@ -28,6 +28,7 @@ public class MovePhase extends Phase {
         this.gameBoard=gameBoard;
         this.chosenWorker=chosenWorker;
         Cell startingCell = chosenWorker.getWorkerPosition();
+        //this.startChosenWorkerLvl = chosenWorker.getWorkerPosition().getLevel(); // save the lvl of the worker for tracking win conditions
 
 
         this.candidateMoves = new ArrayList<>();
