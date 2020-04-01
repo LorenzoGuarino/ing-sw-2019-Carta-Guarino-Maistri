@@ -61,8 +61,40 @@ public class MovePhase extends Phase {
      */
 
     public void changeCandidateMovesAccordingToDecorator(){
-        List<Cell> candidateDecoratedMoves = this.actualDecorator.changeMoveConditions(chosenWorker,gameBoard);
+        List<Cell> candidateDecoratedMoves = this.getActualDecorator().changeCandidateMoves(chosenWorker,gameBoard);//player's good decorator
         if(candidateDecoratedMoves==null)return;
-        else this.candidateMoves=candidateDecoratedMoves;
+        else this.setCandidateMoves(candidateDecoratedMoves);
+    }
+
+    public List<Cell> getCandidateMoves() {
+        return candidateMoves;
+    }
+
+    public void setCandidateMoves(List<Cell> candidateMoves) {
+        this.candidateMoves = candidateMoves;
+    }
+
+    public GodPowerDecorator getActualDecorator() {
+        return actualDecorator;
+    }
+
+    public void setActualDecorator(GodPowerDecorator actualDecorator) {
+        this.actualDecorator = actualDecorator;
+    }
+
+    public Worker getChosenWorker() {
+        return chosenWorker;
+    }
+
+    public void setChosenWorker(Worker chosenWorker) {
+        this.chosenWorker = chosenWorker;
+    }
+
+    public Board getGameBoard() {
+        return gameBoard;
+    }
+
+    public void setGameBoard(Board gameBoard) {
+        this.gameBoard = gameBoard;
     }
 }

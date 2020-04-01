@@ -8,9 +8,9 @@ import java.util.ArrayList;
 
 public class ConcreteTurn extends Turn {
 
-    private Board gameBoard;
     private Worker chosenWorker;
     private Player playingPlayer;
+    private SantoriniMatch santoriniMatch;
 
     /**
      * Constructor, given the player instantiates a standard phaseList
@@ -18,14 +18,30 @@ public class ConcreteTurn extends Turn {
      */
     public ConcreteTurn(Player playingPlayer) {
         this.playingPlayer=playingPlayer;
-
         this.phaseList = new ArrayList<>();
         StartPhase phase1=new StartPhase(playingPlayer.getPlayerWorkers());
-        this.phaseList.add(phase1);
-        MovePhase phase2= new MovePhase();
-        this.phaseList.add(phase2);
-        phaseList.add(new BuildPhase());
-        phaseList.add(new EndPhase());
+    }
+
+    public void addMovePhase(){
+        //only if start has been done
+        if(this.getPhaseList().get(0).isDone()) {//@TODO index della startPhase
+            MovePhase movePhase = new MovePhase(this.getChosenWorker(), this.getSantoriniMatch().getGameBoard());
+            this.getPhaseList().add(movePhase);
+        }
+    }
+
+    /**
+     * given a turn it applies the mandatory opponents' gods decorators
+     * @param turn
+     * @return
+     */
+    public GodPowerDecorator secondaryDecoration(ConcreteTurn turn){
+        for(GodCard opponentGod:turn.getPlayingPlayer().getOpponentsGodCards()){
+            switch (opponentGod.getGodId()){
+                case 3: return new AthenaOppDecorator(turn);
+            }
+        }
+        return null;
     }
 
     @Override
@@ -33,4 +49,15 @@ public class ConcreteTurn extends Turn {
 
     }
 
+    public Player getPlayingPlayer() {
+        return playingPlayer;
+    }
+
+    public Worker getChosenWorker() {
+        return chosenWorker;
+    }
+
+    public SantoriniMatch getSantoriniMatch() {
+        return santoriniMatch;
+    }
 }

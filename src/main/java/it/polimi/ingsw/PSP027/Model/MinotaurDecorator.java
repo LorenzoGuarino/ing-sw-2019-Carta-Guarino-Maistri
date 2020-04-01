@@ -9,11 +9,15 @@ import java.util.List;
  */
 
 public class MinotaurDecorator extends GodPowerDecorator {
+
+    boolean powerToggled;
+
     /**
      * super Constructor
      *
      * @param decoratedTurn
      */
+
     public MinotaurDecorator(ConcreteTurn decoratedTurn) {
         super(decoratedTurn);
     }
@@ -21,6 +25,7 @@ public class MinotaurDecorator extends GodPowerDecorator {
     /**
      * When called by a turn it runs through that turns' movePhases and change their moveConditions according to the changeMoveConditions method below
      */
+
     @Override
     public void applyPower() {
         System.out.println("applyPowerMinotaur called");
@@ -34,13 +39,14 @@ public class MinotaurDecorator extends GodPowerDecorator {
      * @param chosenWorker
      * @return a list of cells which you can move onto
      */
+
     @Override
-    public List<Cell> changeMoveConditions(Worker chosenWorker, Board board) {
+    public List<Cell> changeCandidateMoves(Worker chosenWorker, Board board) {
         Cell startingCell = chosenWorker.getWorkerPosition();
         List<Cell> candidateMoves = new ArrayList<>();
 
-        for (Cell candidateCell : board.getNeighbouringCells(startingCell)) {    //for each candidate cell in neighbouringCells if
-            if ((candidateCell.getLevel() <= startingCell.getLevel() + 1) &&    //the lv i want to get to is higher less than one
+        for (Cell candidateCell : board.getNeighbouringCells(startingCell)) {
+            if ((candidateCell.getLevel() <= startingCell.getLevel() + 1) &&
                 (!candidateCell.checkDome())) {
                 if (!candidateCell.isOccupiedByWorker())
                     candidateMoves.add(candidateCell);
@@ -52,7 +58,7 @@ public class MinotaurDecorator extends GodPowerDecorator {
 
                         if(potentialTargetCellForOpponentWorker != null)
                         {
-                            if(potentialTargetCellForOpponentWorker.canAWorkerBeMovedHere(candidateCell.getOccupyingWorker()))
+                            if(!potentialTargetCellForOpponentWorker.checkDome() && !potentialTargetCellForOpponentWorker.isOccupiedByWorker())
                                 candidateMoves.add(candidateCell);
                         }
 
