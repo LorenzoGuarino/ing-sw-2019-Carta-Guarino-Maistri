@@ -21,8 +21,6 @@ public class SantoriniMatch {
     private Board gameBoard;
     private List<Player> players;
     private List<Turn> playedTurns;
-    private List<GodCard> godsList;
-    private List<GodCard> godsInUse;
     private int matchID;
     private List<GodCard> godCardsList;
     private List<GodCard> godCardsInUse;
