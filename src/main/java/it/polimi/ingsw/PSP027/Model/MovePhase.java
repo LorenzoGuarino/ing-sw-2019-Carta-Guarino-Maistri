@@ -101,5 +101,4 @@ public class MovePhase extends Phase {
     public int getStartChosenWorkerLvl() {
         return startChosenWorkerLvl;
     }
-
 }

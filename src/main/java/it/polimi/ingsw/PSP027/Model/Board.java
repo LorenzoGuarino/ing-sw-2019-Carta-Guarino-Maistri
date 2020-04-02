@@ -43,11 +43,16 @@ public class Board {
     /**
      * Method that return the cell of the board of a given index
      * @param index of the cell that need to be returned
-     * @return the cell
+     * @return the cell, or null if the index doesn't exists
      */
 
     public Cell getCell(int index) {
-        return Board.get(index);
+        if (index >= 0 && index <= 24) {
+            return Board.get(index);
+        }
+        else {
+            return null;
+        }
     }
 
     /**

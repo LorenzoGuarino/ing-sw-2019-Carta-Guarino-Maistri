@@ -29,6 +29,4 @@ public class PanDecorator extends GodPowerDecorator {
     }
 
 
-
-
 }
