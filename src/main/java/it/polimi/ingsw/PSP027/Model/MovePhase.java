@@ -27,27 +27,20 @@ public class MovePhase extends Phase {
     public MovePhase(Worker chosenWorker,Board gameBoard) {
         this.gameBoard=gameBoard;
         this.chosenWorker=chosenWorker;
-        Cell startingCell = chosenWorker.getWorkerPosition();
-        this.startChosenWorkerLvl = chosenWorker.getWorkerPosition().getLevel(); // save the lvl of the worker for tracking win conditions
+        this.startChosenWorkerLvl=chosenWorker.getWorkerPosition().getLevel();
         this.candidateMoves = new ArrayList<>();
-        for(Cell candidateCell : gameBoard.getNeighbouringCells(startingCell)){     //for each candidate cell in neighbouringCells if
-            if(     (candidateCell.getLevel()<=startingCell.getLevel()+1)&&         //the lv i want to get to is higher less than one
-                    (!candidateCell.isOccupiedByWorker())&&                         //it is not occupied by a worker
-                    (!candidateCell.checkDome())){                                  //it is not occupied by a dome
-                candidateMoves.add(candidateCell);                                  //then add the cell to candidateMoves
-            }
-        }
+        changeCandidateMoves();
     }
 
-    /**
-     * Copy Constructor
-     * @param movePhase
-     */
-    public MovePhase(MovePhase movePhase){
-        this.chosenWorker=movePhase.chosenWorker;
-        this.actualDecorator=movePhase.actualDecorator;
-        this.chosenWorker=movePhase.chosenWorker;
-        this.gameBoard=movePhase.gameBoard;
+    public void changeCandidateMoves(){
+        Cell startingCell = chosenWorker.getWorkerPosition();
+        for(Cell candidateCell : gameBoard.getNeighbouringCells(startingCell)){ //for each candidate cell in neighbouringCells if
+        if(     (candidateCell.getLevel()<=startingCell.getLevel()+1)&&         //the lv i want to get to is higher less than one
+                (!candidateCell.isOccupiedByWorker())&&                         //it is not occupied by a worker
+                (!candidateCell.checkDome())){                                  //it is not occupied by a dome
+            candidateMoves.add(candidateCell);                                  //then add the cell to candidateMoves
+            }
+        }
     }
 
     /**
@@ -100,5 +93,9 @@ public class MovePhase extends Phase {
 
     public int getStartChosenWorkerLvl() {
         return startChosenWorkerLvl;
+    }
+
+    public List<Cell> getCandidateMoves() {
+        return candidateMoves;
     }
 }
