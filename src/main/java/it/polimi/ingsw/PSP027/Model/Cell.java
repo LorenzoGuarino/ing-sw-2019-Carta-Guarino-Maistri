@@ -180,4 +180,15 @@ public class Cell {
         OccupiedByWorker = false;
     }
 
+    public void setOccupiedByWorker(boolean occupiedByWorker) {
+        OccupiedByWorker = occupiedByWorker;
+    }
+
+    /**
+     * given a worker it sets this worker as occupyingWorker of the cell
+     * @param workerOccupying
+     */
+    public void setWorkerOccupying(Worker workerOccupying) {
+        WorkerOccupying = workerOccupying;
+    }
 }

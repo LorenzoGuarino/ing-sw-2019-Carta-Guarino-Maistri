@@ -53,4 +53,7 @@ public class Worker {
         return owner;
     }
 
+    public void setPosition(Cell position) {
+        this.position = position;
+    }
 }

@@ -12,7 +12,7 @@ public class MovePhase extends Phase {
     private GodPowerDecorator actualDecorator;
     private Worker chosenWorker;
     private Board gameBoard;
-    //private int startChosenWorkerLvl;
+    private int startChosenWorkerLvl;
     /**
      * emptyConstructor
      */
@@ -28,9 +28,7 @@ public class MovePhase extends Phase {
         this.gameBoard=gameBoard;
         this.chosenWorker=chosenWorker;
         Cell startingCell = chosenWorker.getWorkerPosition();
-        //this.startChosenWorkerLvl = chosenWorker.getWorkerPosition().getLevel(); // save the lvl of the worker for tracking win conditions
-
-
+        this.startChosenWorkerLvl = chosenWorker.getWorkerPosition().getLevel(); // save the lvl of the worker for tracking win conditions
         this.candidateMoves = new ArrayList<>();
         for(Cell candidateCell : gameBoard.getNeighbouringCells(startingCell)){     //for each candidate cell in neighbouringCells if
             if(     (candidateCell.getLevel()<=startingCell.getLevel()+1)&&         //the lv i want to get to is higher less than one
@@ -39,9 +37,6 @@ public class MovePhase extends Phase {
                 candidateMoves.add(candidateCell);                                  //then add the cell to candidateMoves
             }
         }
-        //applyPower now works like an arbitrary choice of power apply
-        //if(this.actualDecorator!=null) {                //if i have a decorator on this turn's movePhase
-        //    changeCandidateMovesAccordingToDecorator(); //then change moveConditions according to this decorator
     }
 
     /**
@@ -61,13 +56,26 @@ public class MovePhase extends Phase {
      */
 
     public void changeCandidateMovesAccordingToDecorator(){
-        List<Cell> candidateDecoratedMoves = this.getActualDecorator().changeCandidateMoves(chosenWorker,gameBoard);//player's good decorator
+        List<Cell> candidateDecoratedMoves = this.getActualDecorator().changeCandidateMoves(this.getChosenWorker(),this.getGameBoard());//player's good decorator
         if(candidateDecoratedMoves==null)return;
         else this.setCandidateMoves(candidateDecoratedMoves);
     }
 
-    public List<Cell> getCandidateMoves() {
-        return candidateMoves;
+    /**
+     * given the parameters it updates the gameBoard according to the move choice
+     * @param chosenWorker the worker i choose to move
+     * @param board the board that's going to be modified
+     * @param chosenCell the cell the worker is going to step onto
+     */
+    public void updateBoardAfterMove(Worker chosenWorker,Board board,Cell chosenCell){
+        Board gameBoard = this.getGameBoard();
+        if(this.getActualDecorator()==null) {                                           //if i haven't a decorator that changed my moveConditions
+            this.getChosenWorker().getWorkerPosition().setOccupiedByWorker(false);      //old cell is no longer occupied
+            this.getChosenWorker().setPosition(chosenCell);                             //worker's position update, cell is now occupiedByWorker
+        }
+        else{                                                                           //if i have a decorator that changed my moveConditions
+            this.getActualDecorator().updateBoard(chosenWorker,board,chosenCell);       //then i update the Board according to this dec
+        }
     }
 
     public void setCandidateMoves(List<Cell> candidateMoves) {
@@ -86,15 +94,8 @@ public class MovePhase extends Phase {
         return chosenWorker;
     }
 
-    public void setChosenWorker(Worker chosenWorker) {
-        this.chosenWorker = chosenWorker;
-    }
-
     public Board getGameBoard() {
         return gameBoard;
     }
 
-    public void setGameBoard(Board gameBoard) {
-        this.gameBoard = gameBoard;
-    }
 }

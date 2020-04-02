@@ -9,7 +9,6 @@ public class GodCard {
     private String godName;
     private String description;
     private int godId;
-    private GodPowerDecorator decorator;
 
     /**
      * Constructor: create a god with its name, description and id
