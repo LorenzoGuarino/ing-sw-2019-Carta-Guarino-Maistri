@@ -176,8 +176,8 @@ public class SantoriniMatch {
      * Method that end the game if the win conditions are verified
      * */
 
-    public void endGame() {
-
+    public void endGame(Player playerWinner) {
+        System.out.println("Player" + playerWinner.getNickname() + "has Won!");
     }
 
     /**
@@ -197,5 +197,14 @@ public class SantoriniMatch {
     public Board getGameBoard() {
         return gameBoard;
     }
-
+    /**
+     * Method that check is the Win condition are verified, in this case end the game
+     * @param currentTurn the last ConcreteTurn, currently playing
+     * @param lastMovePhase the last MovePhase, currently playing
+     * */
+    public void checkWinCondition(ConcreteTurn currentTurn, MovePhase lastMovePhase){
+        if(lastMovePhase.getStartChosenWorkerLvl()==2 && currentTurn.getChosenWorker().getWorkerPosition().getLevel()==3){
+            endGame(currentTurn.getPlayingPlayer());
+        }
+    }
 }
