@@ -98,4 +98,7 @@ public class MovePhase extends Phase {
         return gameBoard;
     }
 
+    public int getStartChosenWorkerLvl() {
+        return startChosenWorkerLvl;
+    }
 }
