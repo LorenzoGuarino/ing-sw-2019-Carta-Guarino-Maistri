@@ -55,5 +55,6 @@ public class Worker {
 
     public void setPosition(Cell position) {
         this.position = position;
+        position.setWorkerOccupying(this);
     }
 }
