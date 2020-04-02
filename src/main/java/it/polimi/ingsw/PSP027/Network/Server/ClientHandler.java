@@ -1,16 +1,13 @@
-package it.polimi.ingsw.PSP027.Network;
+package it.polimi.ingsw.PSP027.Network.Server;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.io.StringReader;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
+import it.polimi.ingsw.PSP027.Utils.Utils;
 
 /**
  * @author Elisa Maistri
@@ -32,9 +29,17 @@ public class ClientHandler implements Runnable
     @Override
     public void run() {
         try {
+            output = new ObjectOutputStream(client.getOutputStream());
+            input = new ObjectInputStream(client.getInputStream());
             handleClientConnection();
         } catch (IOException e) {
             System.out.println("client " + client.getInetAddress().getHostAddress() + " connection dropped");
+        }
+
+        try {
+            client.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -50,9 +55,6 @@ public class ClientHandler implements Runnable
     private void handleClientConnection() throws IOException {
         System.out.println("Connected to " + client.getInetAddress().getHostAddress());
 
-        output = new ObjectOutputStream(client.getOutputStream());
-        input = new ObjectInputStream(client.getInputStream());
-
         try {
             while (true) {
                 /* read a String from the stream  */
@@ -62,7 +64,7 @@ public class ClientHandler implements Runnable
 
                 // convert strCmd into an XML object and evaluate received command
 
-                Document doc = ParseStringToXMLDocument( strCmd );
+                Document doc = Utils.ParseStringToXMLDocument( strCmd );
 
                 if(doc.hasChildNodes()) {
                     Node root = doc.getFirstChild();
@@ -81,7 +83,7 @@ public class ClientHandler implements Runnable
 
                                 if(node.getNodeName().equals("id"))
                                 {
-                                    cmdID = node.getNodeValue();
+                                    cmdID = node.getTextContent();
                                 }
                                 else if(node.getNodeName().equals("data"))
                                 {
@@ -91,26 +93,33 @@ public class ClientHandler implements Runnable
 
                             if(!cmdID.isEmpty()) {
                                 if(cmdID.equals("clt_hello")) {
+                                    System.out.println("Got clt hello");
+
                                     strResponseCmd = "<cmd><id>srv_hello</id></cmd>";
                                 }
-                                else if(cmdID.equals("clt_xxxx"))  {
-                                    //...
+                                else if(cmdID.equals("bye")) {
+                                    System.out.println("Got clt bye");
+
+                                    return;
                                 }
-                                else if(cmdID.equals("clt_xxxx"))  {
-                                    //...
-                                }
-                                else if(cmdID.equals("clt_xxxx")) {
-                                    //...
-                                }
-                                else if(cmdID.equals("clt_xxxx")) {
-                                    //...
-                                }
-                                else if(cmdID.equals("clt_xxxx")) {
-                                    //...
-                                }
-                                else if(cmdID.equals("clt_xxxx")) {
-                                    //...
-                                }
+//                                else if(cmdID.equals("clt_xxxx"))  {
+//                                    //...
+//                                }
+//                                else if(cmdID.equals("clt_xxxx"))  {
+//                                    //...
+//                                }
+//                                else if(cmdID.equals("clt_xxxx")) {
+//                                    //...
+//                                }
+//                                else if(cmdID.equals("clt_xxxx")) {
+//                                    //...
+//                                }
+//                                else if(cmdID.equals("clt_xxxx")) {
+//                                    //...
+//                                }
+//                                else if(cmdID.equals("clt_xxxx")) {
+//                                    //...
+//                                }
                             }
                         }
                     }
@@ -124,27 +133,8 @@ public class ClientHandler implements Runnable
         } catch (ClassNotFoundException | ClassCastException e) {
             System.out.println("invalid stream from client");
         }
-
-        client.close();
     }
 
-    private static Document ParseStringToXMLDocument(String xmlString)
-    {
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 
-        DocumentBuilder builder = null;
-        try {
-            //Create DocumentBuilder with default configuration
-            builder = factory.newDocumentBuilder();
-
-            //Parse the content to Document object
-            Document doc = builder.parse(new InputSource(new StringReader(xmlString)));
-            return doc;
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 
 }

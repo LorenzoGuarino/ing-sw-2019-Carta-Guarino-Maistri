@@ -1,4 +1,4 @@
-package it.polimi.ingsw.PSP027.Network;
+package it.polimi.ingsw.PSP027.Network.Server;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -7,7 +7,7 @@ import java.net.Socket;
 
 public class Server
 {
-    public final static int SOCKET_PORT = 7777;
+    public final static int SOCKET_PORT = 2705;
 
 
     public static void main(String[] args)

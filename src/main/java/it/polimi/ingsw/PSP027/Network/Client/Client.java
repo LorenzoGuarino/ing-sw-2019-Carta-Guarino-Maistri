@@ -1,4 +1,6 @@
-package it.polimi.ingsw.PSP027.Network;
+package it.polimi.ingsw.PSP027.Network.Client;
+
+import it.polimi.ingsw.PSP027.Network.Server.Server;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -57,7 +59,7 @@ public class Client implements Runnable, ServerObserver
                  * from the server */
                 response = null;
 
-                serverAdapter.requestConversion(str);
+                serverAdapter.SendHello();
 
                 /* While we wait for the server to respond, we can do whatever we want.
                  * In this case we print a count-up of the number of seconds since we
@@ -83,7 +85,7 @@ public class Client implements Runnable, ServerObserver
 
 
     @Override
-    public synchronized void didReceiveConvertedString(String oldStr, String newStr)
+    public synchronized void onHello()
     {
         /*
          * WARNING: this method executes IN THE CONTEXT OF `serverAdapterThread`
@@ -91,7 +93,7 @@ public class Client implements Runnable, ServerObserver
          */
 
         /* Save the string and notify the main thread */
-        response = newStr;
+        System.out.println("Got srv hello");
         notifyAll();
     }
 }
