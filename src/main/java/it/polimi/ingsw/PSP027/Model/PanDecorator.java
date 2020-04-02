@@ -2,7 +2,6 @@ package it.polimi.ingsw.PSP027.Model;
 
 public class PanDecorator extends GodPowerDecorator {
 
-
     /**
      * Constructor
      *
@@ -16,14 +15,15 @@ public class PanDecorator extends GodPowerDecorator {
     public void applyPower() {
 
 
-       /* public boolean checkMoveWinConditions(Worker worker, int startLevel){
-            if(startLevel==2 && worker.getWorkerPosition().getLevel()==3){
-                return true;
+       /*
+        Da mettere nel PanDecorator
+        public void checkPanWinConditions(Worker worker, int startLevel){    //this are the win conditions that Pan require
+            if((startLevel-worker.getWorkerPosition().getLevel())>=2){
+                worker.setOwnerHasWin = 1;
             }else{
-                return false;
+                    //non fare nulla
             }
         }
-
 
         */
     }
