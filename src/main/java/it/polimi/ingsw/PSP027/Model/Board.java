@@ -178,7 +178,7 @@ public class Board {
 
             if (IsNeighbour)
             {
-                NeighbouringCells.add(getCell(index));
+                NeighbouringCells.add(getCell(j));
             }
 
             j = 0;

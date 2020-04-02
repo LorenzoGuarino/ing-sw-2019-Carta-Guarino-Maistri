@@ -19,12 +19,21 @@ public class ClientHandler implements Runnable
     private ObjectOutputStream output = null;
     private ObjectInputStream input = null;
 
+    /**
+     * Constructor of the client handler that will communicate with the client
+     * @param client socket of the client that wants to connect with this server
+     */
 
     ClientHandler(Socket client)
     {
         this.client = client;
     }
 
+    /**
+     * Method that defines an input and output stream for the server
+     * the input is used to listen to any command that the client will send to server
+     * the output is used by the server to send commands to the client
+     */
 
     @Override
     public void run() {
@@ -43,6 +52,11 @@ public class ClientHandler implements Runnable
         }
     }
 
+    /**
+     * Method used by the server to send commands to its clients, the command is sent is the stream output is not null
+     * @param cmd command that the server wants to send to the client
+     */
+
     public void SendConmand(String cmd) {
         try {
             if(output != null)
@@ -51,6 +65,12 @@ public class ClientHandler implements Runnable
         catch (IOException e) {
         }
     }
+
+    /**
+     * Method that handles the connection to the client parsing the commands received by the client in XML format
+     * with this method the server keeps listening to what the client might send to it
+     * @throws IOException
+     */
 
     private void handleClientConnection() throws IOException {
         System.out.println("Connected to " + client.getInetAddress().getHostAddress());
