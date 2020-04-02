@@ -155,7 +155,7 @@ public class Cell {
      * @return true if it was possible to add the dome, and was therefore added, otherwise false
      */
 
-    public boolean AddDome()
+    public boolean addDome()
     {
         if (canALevelBeAdded())
         {

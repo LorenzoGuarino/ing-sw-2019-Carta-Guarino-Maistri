@@ -3,14 +3,24 @@ package it.polimi.ingsw.PSP027.Model;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
+import java.util.List;
+import java.util.ArrayList;
 import static org.junit.Assert.*;
 
-public class BoardTest {
+/**
+ * @author danielecarta
+ */
 
+public class BoardTest {
+    Board gameBoard;
+
+    /**
+     * setUps a Board to be tested
+     * @throws Exception
+     */
     @Before
     public void setUp() throws Exception {
-
+        gameBoard = new Board();
     }
 
     @After
@@ -18,50 +28,57 @@ public class BoardTest {
     }
 
     @Test
-    public void resettingBoardShouldResetTheBoard() {
-
-        Board actualboard = new Board();
-        actualboard.getCell(0).AddDome();
-        actualboard.getCell(1).addLevel();
-        actualboard.getCell(2).addLevel();
-        actualboard.getCell(3).AddDome();
-        actualboard.getCell(4).AddDome();
-        actualboard.getCell(5).AddDome();
-        actualboard.getCell(6).addLevel();
-        actualboard.getCell(7).AddDome();
-        actualboard.getCell(8).AddDome();
-        actualboard.getCell(9).addLevel();
-        actualboard.getCell(10).AddDome();
-        actualboard.getCell(11).AddDome();
-        actualboard.getCell(12).AddDome();
-        actualboard.getCell(13).addLevel();
-        actualboard.getCell(14).AddDome();
-        actualboard.getCell(15).AddDome();
-        actualboard.getCell(16).addLevel();
-        actualboard.getCell(17).addLevel();
-        actualboard.getCell(18).AddDome();
-        actualboard.getCell(19).addLevel();
-        actualboard.getCell(20).addLevel();
-        actualboard.getCell(21).addLevel();
-        actualboard.getCell(22).AddDome();
-        actualboard.getCell(23).addLevel();
-        actualboard.getCell(24).AddDome();
-        actualboard.resetBoard();
-
-        Board expectedboard = new Board();
-
-        assertSame(expectedboard, actualboard);
+    public void resetBoard_shouldResetTheBoard() {
+        Board expectedBoard = gameBoard;//@TODO non va bene ,confronto lo stesso oggetto
+        gameBoard.getCell(0).addLevel();
+        gameBoard.getCell(0).addLevel();
+        gameBoard.getCell(0).addLevel();
+        gameBoard.getCell(0).addDome();
+        gameBoard.getCell(3).addLevel();
+        gameBoard.getCell(6).addLevel();
+        gameBoard.getCell(14).addLevel();
+        gameBoard.resetBoard();
+        assertEquals(expectedBoard,gameBoard);
     }
 
     @Test
-    public void getCell() {
+    public void getNextCellAlongThePath_itExists() {
+        Cell x23FirstArgumentCell = gameBoard.getCell(11);
+        Cell x34SecondArgument = gameBoard.getCell(17);
+        Cell x45ExpectedCell = gameBoard.getCell(23);
+        Cell actualCell = gameBoard.getNextCellAlongThePath(x23FirstArgumentCell,x34SecondArgument);
+        assertEquals(x45ExpectedCell,actualCell);
     }
 
     @Test
-    public void getNextCellAlongThePath() {
+    public void getNextCellAlongThePath_itDoesntExists() {
+        Cell x42FirstArgumentCell = gameBoard.getCell(8);
+        Cell x51SecondArgument = gameBoard.getCell(4);
+        Cell actualCell = gameBoard.getNextCellAlongThePath(x42FirstArgumentCell,x51SecondArgument);
+        assertEquals(null,actualCell);
     }
 
     @Test
     public void getNeighbouringCells() {
+        Cell x23ArgumentCell = gameBoard.getCell(11);
+        Cell x12 = gameBoard.getCell(5);
+        Cell x21 = gameBoard.getCell(6);
+        Cell x32 = gameBoard.getCell(7);
+        Cell x13 = gameBoard.getCell(10);
+        Cell x33 = gameBoard.getCell(12);
+        Cell x14 = gameBoard.getCell(15);
+        Cell x24 = gameBoard.getCell(16);
+        Cell x34 = gameBoard.getCell(17);
+        List<Cell> expectedCells= new ArrayList<Cell>();
+        expectedCells.add(x12);
+        expectedCells.add(x21);
+        expectedCells.add(x32);
+        expectedCells.add(x13);
+        expectedCells.add(x33);
+        expectedCells.add(x14);
+        expectedCells.add(x24);
+        expectedCells.add(x34);
+        List<Cell> actualCells = gameBoard.getNeighbouringCells(x23ArgumentCell);
+        assertTrue(actualCells.containsAll(expectedCells) && expectedCells.containsAll(actualCells));
     }
 }

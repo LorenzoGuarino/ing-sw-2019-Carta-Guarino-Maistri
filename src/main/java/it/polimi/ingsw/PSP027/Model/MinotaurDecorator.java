@@ -29,6 +29,7 @@ public class MinotaurDecorator extends GodPowerDecorator {
     @Override
     public void applyPower() {
         //@TODO rendere eseguibile solo se si è istanziata la MovePhase
+        powerToggled=true;
         MovePhase modifiedPhase = (MovePhase) this.getDecoratedTurn().getPhaseList().get(1);//@TODO indice della fase che voglio modificare
         modifiedPhase.setActualDecorator(this); //allows the phase to know which kind of decorator is applied onto it
         modifiedPhase.changeCandidateMovesAccordingToDecorator();
