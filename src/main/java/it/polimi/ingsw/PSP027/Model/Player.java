@@ -98,6 +98,10 @@ public class Player {
         return opponentsGodCards;
     }
 
+    public void setPlayerGodCard(GodCard playerGodCard) {
+        this.playerGodCard = playerGodCard;
+    }
+
     /*
     /**
      * PROBABILMENTE NON ANDRÁ QUI

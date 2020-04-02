@@ -24,6 +24,8 @@ public class SantoriniMatch {
     private List<GodCard> godsList;
     private List<GodCard> godsInUse;
     private int matchID;
+    private List<GodCard> godCardsList;
+    private List<GodCard> godCardsInUse;
 
     public static final String APOLLO      = "Apollo";
     public static final String ARTEMIS     = "Artemis";
@@ -45,17 +47,15 @@ public class SantoriniMatch {
     public static final String PAN_D        = "Win Condition: You also win if your Worker moves down two or more levels.";
     public static final String PROMETHEUS_D = "Your Turn: If your Worker does not move up, it may build both before and after moving.";
 
-    /*public static final int APOLLO_id      = 1;
-    public static final int ARTEMIS_id     = 2;
-    public static final int ATHENA_id      = 3;
-    public static final int ATLAS_id       = 4;
-    public static final int DEMETER_id     = 5;
-    public static final int HEPHAESTUS_id  = 6;
-    public static final int MINOTAUR_id    = 8;
-    public static final int PAN_id         = 9;
-    public static final int PROMETHEUS_id  = 10;
-
-     */
+    public static final int APOLLO_id      = 0;
+    public static final int ARTEMIS_id     = 1;
+    public static final int ATHENA_id      = 2;
+    public static final int ATLAS_id       = 3;
+    public static final int DEMETER_id     = 4;
+    public static final int HEPHAESTUS_id  = 5;
+    public static final int MINOTAUR_id    = 6;
+    public static final int PAN_id         = 7;
+    public static final int PROMETHEUS_id  = 8;
 
 
 
@@ -67,30 +67,28 @@ public class SantoriniMatch {
     public SantoriniMatch() {
         players = new ArrayList<Player>();
         playedTurns = new ArrayList<Turn>();
-        godsList = new ArrayList<GodCard>();
+        godCardsList = new ArrayList<GodCard>();
 
-        godsList.add(new GodCard(APOLLO, APOLLO_D, APOLLO_id));
-        godsList.add(new GodCard(ARTEMIS, ARTEMIS_D, ARTEMIS_id));
-        godsList.add(new GodCard(ATHENA, ATHENA_D, ATHENA_id));
-        godsList.add(new GodCard(ATLAS, ATLAS_D, ATLAS_id));
-        godsList.add(new GodCard(DEMETER, DEMETER_D, DEMETER_id));
-        godsList.add(new GodCard(HEPHAESTUS, HEPHAESTUS_D, HEPHAESTUS_id));
-        godsList.add(new GodCard(MINOTAUR, MINOTAUR_D, MINOTAUR_id));
-        godsList.add(new GodCard(PAN, PAN_D, PAN_id));
-        godsList.add(new GodCard(PROMETHEUS, PROMETHEUS_D, PROMETHEUS_id));
+        godCardsList.add(new GodCard(APOLLO, APOLLO_D, APOLLO_id));
+        godCardsList.add(new GodCard(ARTEMIS, ARTEMIS_D, ARTEMIS_id));
+        godCardsList.add(new GodCard(ATHENA, ATHENA_D, ATHENA_id));
+        godCardsList.add(new GodCard(ATLAS, ATLAS_D, ATLAS_id));
+        godCardsList.add(new GodCard(DEMETER, DEMETER_D, DEMETER_id));
+        godCardsList.add(new GodCard(HEPHAESTUS, HEPHAESTUS_D, HEPHAESTUS_id));
+        godCardsList.add(new GodCard(MINOTAUR, MINOTAUR_D, MINOTAUR_id));
+        godCardsList.add(new GodCard(PAN, PAN_D, PAN_id));
+        godCardsList.add(new GodCard(PROMETHEUS, PROMETHEUS_D, PROMETHEUS_id));
 
-        godsInUse = new ArrayList<GodCard>();
+        godCardsInUse = new ArrayList<GodCard>();
         gameBoard = new Board();
     }
 
     /**
-     * create a new turn for the first player in the list and then rotates the list of players
+     * create a new turn for the first player in the list
      * @return
      */
     public ConcreteTurn newTurn(){
-        ConcreteTurn newTurn = new ConcreteTurn(this.getFirstPlayer());
-        rotatePlayers();
-        return newTurn;
+        return new ConcreteTurn(this.getFirstPlayer(),this);
     }
 
     /**
@@ -99,6 +97,7 @@ public class SantoriniMatch {
      */
     public GodPowerDecorator decorateTurn(ConcreteTurn turn) {
         switch (turn.getPlayingPlayer().getPlayerGod().getGodId()){
+            //case 0: break;
             //case 1: break;
             //case 2: break;
             //case 3: break;
@@ -108,7 +107,6 @@ public class SantoriniMatch {
             //case 7: break;
             case 8:
                 return new MinotaurDecorator(turn);
-            //case 9: break;
         }
         return null;
     }
@@ -179,8 +177,8 @@ public class SantoriniMatch {
      * Method that end the game if the win conditions are verified
      * */
 
-    public void endGame() {
-
+    public void endGame(Player playerWinner) {
+        System.out.println("Player" + playerWinner.getNickname() + "has Won!");
     }
 
     /**
@@ -200,5 +198,18 @@ public class SantoriniMatch {
     public Board getGameBoard() {
         return gameBoard;
     }
+    /**
+     * Method that check is the Win condition are verified, in this case end the game
+     * @param currentTurn the last ConcreteTurn, currently playing
+     * @param lastMovePhase the last MovePhase, currently playing
+     * */
+    public void checkWinCondition(ConcreteTurn currentTurn, MovePhase lastMovePhase){
+        if(lastMovePhase.getStartChosenWorkerLvl()==2 && currentTurn.getChosenWorker().getWorkerPosition().getLevel()==3){
+            endGame(currentTurn.getPlayingPlayer());
+        }
+    }
 
+    public List<GodCard> getGodCardsList() {
+        return godCardsList;
+    }
 }

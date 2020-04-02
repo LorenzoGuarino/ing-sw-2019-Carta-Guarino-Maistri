@@ -16,7 +16,8 @@ public class ConcreteTurn extends Turn {
      * Constructor, given the player instantiates a standard phaseList
      *@param playingPlayer
      */
-    public ConcreteTurn(Player playingPlayer) {
+    public ConcreteTurn(Player playingPlayer,SantoriniMatch santoriniMatch) {
+        this.santoriniMatch=santoriniMatch;
         this.playingPlayer=playingPlayer;
         this.phaseList = new ArrayList<>();
         StartPhase phase1=new StartPhase(playingPlayer.getPlayerWorkers());

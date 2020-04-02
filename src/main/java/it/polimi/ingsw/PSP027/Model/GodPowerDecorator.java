@@ -46,5 +46,7 @@ public abstract class GodPowerDecorator extends Turn {
         return null;
     }
 
+    public void updateBoard(Worker chosenWorker,Board gameBoard,Cell chosenCell){}
+
     public abstract void applyPower();
 }

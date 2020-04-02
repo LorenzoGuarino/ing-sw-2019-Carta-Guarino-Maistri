@@ -17,5 +17,7 @@ public class AthenaDecorator extends GodPowerDecorator {
     @Override
     public void applyPower() {
 
+        MovePhase movePhase= (MovePhase)this.getDecoratedTurn().getPhaseList().get(0);//movephase nella quale sono salito?
+        //movePhase.getStartChosenWorkerLvl()<movePhase.getChosenWorker().getWorkerPosition().getLevel()
     }
 }
