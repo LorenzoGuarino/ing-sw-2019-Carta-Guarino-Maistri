@@ -23,6 +23,7 @@ public class SantoriniMatch {
     private List<Turn> playedTurns;
     private List<GodCard> godsList;
     private List<GodCard> godsInUse;
+    private int matchID;
 
     public static final String APOLLO      = "Apollo";
     public static final String ARTEMIS     = "Artemis";
@@ -44,7 +45,7 @@ public class SantoriniMatch {
     public static final String PAN_D        = "Win Condition: You also win if your Worker moves down two or more levels.";
     public static final String PROMETHEUS_D = "Your Turn: If your Worker does not move up, it may build both before and after moving.";
 
-    public static final int APOLLO_id      = 1;
+    /*public static final int APOLLO_id      = 1;
     public static final int ARTEMIS_id     = 2;
     public static final int ATHENA_id      = 3;
     public static final int ATLAS_id       = 4;
@@ -53,6 +54,8 @@ public class SantoriniMatch {
     public static final int MINOTAUR_id    = 8;
     public static final int PAN_id         = 9;
     public static final int PROMETHEUS_id  = 10;
+
+     */
 
 
 
