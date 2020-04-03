@@ -58,7 +58,7 @@ public class Worker {
      * @param position
      */
     public void setPosition(Cell position) {
-        if(this.position!=null){
+        if(this.position!=null&&this.position.getOccupyingWorker().equals(this)){
             this.position.setWorkerOccupying(null);
         }
         this.position = position;

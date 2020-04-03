@@ -23,9 +23,25 @@ public class ConcreteTurn extends Turn {
         StartPhase phase1=new StartPhase(playingPlayer.getPlayerWorkers());
         this.getPhaseList().add(phase1);
     }
+    //???
+    public void updateTurnAfterPhase(){
+        Phase lastPhase= this.getPhaseList().get(this.getPhaseList().size()-1);
+        MovePhase m = new MovePhase();
+        if (lastPhase.getClass().equals(m.getClass())) {
 
+        }
+    }
+
+    public void updateTurnAfterStartPhase(){
+        StartPhase s=(StartPhase)this.getPhaseList().get(0);
+        this.chosenWorker=s.getChosenWorker();
+    }
+    /**
+     * adds a MovePhase according to the turn chosenWorker
+     */
     public void addMovePhase(){
-        if(this.getPhaseList().get(0).isDone()) {
+        int phaseListSize = this.getPhaseList().size();
+        if(this.getPhaseList().get(phaseListSize-1).isDone()) {//if the last phase isDone i can add the movePhase
             MovePhase movePhase = new MovePhase(this.getChosenWorker(), this.getSantoriniMatch().getGameBoard());
             this.getPhaseList().add(movePhase);
         }

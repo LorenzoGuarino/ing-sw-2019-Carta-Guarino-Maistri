@@ -10,7 +10,7 @@ import java.util.List;
 
 public class MinotaurDecorator extends GodPowerDecorator {
 
-    boolean powerToggled;
+    boolean powerToggled=false;
 
     /**
      * super Constructor

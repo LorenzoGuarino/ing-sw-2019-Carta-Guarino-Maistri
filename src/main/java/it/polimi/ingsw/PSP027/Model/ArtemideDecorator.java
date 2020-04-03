@@ -5,7 +5,7 @@ package it.polimi.ingsw.PSP027.Model;
  */
 public class ArtemideDecorator extends GodPowerDecorator {
 
-    boolean powerUsed = false;
+    boolean powerToggled = false;
 
     public ArtemideDecorator(ConcreteTurn decoratedTurn) {
         super(decoratedTurn);
@@ -16,8 +16,8 @@ public class ArtemideDecorator extends GodPowerDecorator {
      */
     @Override
     public void applyPower() {
-        if (!powerUsed) {
-            powerUsed=true;
+        if (!powerToggled) {
+            powerToggled=true;
             MovePhase addedMovePhase = new MovePhase(this.getDecoratedTurn().getChosenWorker(),this.getDecoratedTurn().getSantoriniMatch().getGameBoard());
             this.getDecoratedTurn().getPhaseList().add(addedMovePhase);
         }

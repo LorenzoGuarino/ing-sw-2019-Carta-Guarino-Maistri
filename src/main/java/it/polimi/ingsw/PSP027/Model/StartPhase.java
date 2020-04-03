@@ -30,8 +30,11 @@ public class StartPhase extends Phase {
      * Will be called by controller and will set the worker chosen by the player to be moved in next MovePhase
      * @param chosenWorker
      */
-    public void setChosenWorker(Worker chosenWorker) {
-        this.chosenWorker = chosenWorker;
+    public void setChosenWorker(Worker chosenWorker){
+        if (choosableWorkers.contains(chosenWorker)) {
+            this.chosenWorker = chosenWorker;
+            this.setDone(true);
+        }
     }
 
     /**
