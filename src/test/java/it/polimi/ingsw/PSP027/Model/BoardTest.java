@@ -23,13 +23,9 @@ public class BoardTest {
         gameBoard = new Board();
     }
 
-    @After
-    public void tearDown() throws Exception {
-    }
-
     @Test
     public void resetBoard_shouldResetTheBoard() {
-        Board expectedBoard = gameBoard;//@TODO non va bene ,confronto lo stesso oggetto
+        Board expectedBoard = gameBoard;
         gameBoard.getCell(0).addLevel();
         gameBoard.getCell(0).addLevel();
         gameBoard.getCell(0).addLevel();
@@ -38,7 +34,11 @@ public class BoardTest {
         gameBoard.getCell(6).addLevel();
         gameBoard.getCell(14).addLevel();
         gameBoard.resetBoard();
-        assertEquals(expectedBoard,gameBoard);
+        for(Cell cell:gameBoard.getBoard()){
+            assertFalse(cell.checkDome());
+            assertEquals(0,cell.getLevel());
+            assertFalse(cell.isOccupiedByWorker());
+        }
     }
 
     @Test
@@ -59,7 +59,7 @@ public class BoardTest {
     }
 
     @Test
-    public void getNeighbouringCells() {
+    public void getNeighbouringCells_usingANonPerimetricCell() {
         Cell x23ArgumentCell = gameBoard.getCell(11);
         Cell x12 = gameBoard.getCell(5);
         Cell x21 = gameBoard.getCell(6);
@@ -79,6 +79,24 @@ public class BoardTest {
         expectedCells.add(x24);
         expectedCells.add(x34);
         List<Cell> actualCells = gameBoard.getNeighbouringCells(x23ArgumentCell);
+        assertTrue(actualCells.containsAll(expectedCells) && expectedCells.containsAll(actualCells));
+    }
+
+    @Test
+    public void getNeighbouringCells_usingAPerimetricCell() {
+        Cell x14ArgumentCell = gameBoard.getCell(15);
+        Cell x13 = gameBoard.getCell(10);
+        Cell x23 = gameBoard.getCell(11);
+        Cell x24 = gameBoard.getCell(16);
+        Cell x25 = gameBoard.getCell(21);
+        Cell x15 = gameBoard.getCell(20);
+        List<Cell> expectedCells= new ArrayList<Cell>();
+        expectedCells.add(x13);
+        expectedCells.add(x23);
+        expectedCells.add(x24);
+        expectedCells.add(x25);
+        expectedCells.add(x15);
+        List<Cell> actualCells = gameBoard.getNeighbouringCells(x14ArgumentCell);
         assertTrue(actualCells.containsAll(expectedCells) && expectedCells.containsAll(actualCells));
     }
 }

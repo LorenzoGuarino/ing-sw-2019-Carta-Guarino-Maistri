@@ -53,7 +53,15 @@ public class Worker {
         return owner;
     }
 
+    /**
+     * The setter of position tells to the old position it is no longer occupied by this worker, and the new one that it now is
+     * @param position
+     */
     public void setPosition(Cell position) {
+        if(this.position!=null){
+            position.setWorkerOccupying(null);
+        }
         this.position = position;
+        position.setWorkerOccupying(this);
     }
 }

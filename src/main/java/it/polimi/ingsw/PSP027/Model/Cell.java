@@ -1,8 +1,5 @@
 package it.polimi.ingsw.PSP027.Model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * @author Elisa Maistri
  */
@@ -11,8 +8,7 @@ public class Cell {
 
     private int level;
     private boolean dome;
-    private boolean OccupiedByWorker;
-    private Worker WorkerOccupying;
+    private Worker workerOccupying;
     private int index;
 
     /**
@@ -22,10 +18,9 @@ public class Cell {
 
     public Cell(int index)
     {
-        WorkerOccupying = null;
+        workerOccupying = null;
         level = 0;
         dome = false;
-        OccupiedByWorker = false;
         this.index = index;
     }
 
@@ -41,9 +36,8 @@ public class Cell {
      * @return true if the cell has a worker on it, otherwise false
      */
 
-    public boolean isOccupiedByWorker()
-    {
-        return OccupiedByWorker;
+    public boolean isOccupiedByWorker(){
+        return workerOccupying != null;
     }
 
     /**
@@ -54,7 +48,7 @@ public class Cell {
      */
 
     public boolean isOccupiedByOpponentWorker(Player opponentPlayer) {
-        if (WorkerOccupying.getWorkerOwner() != opponentPlayer) {
+        if (workerOccupying.getWorkerOwner() != opponentPlayer) {
             return true;
         }
         else {
@@ -67,7 +61,7 @@ public class Cell {
      * @return the worker occupying the cell
      */
 
-    public Worker getOccupyingWorker() { return WorkerOccupying; }
+    public Worker getOccupyingWorker() { return workerOccupying; }
 
     /**
      * Method that checks if this cell has a complete tower on it
@@ -86,7 +80,7 @@ public class Cell {
 
     public boolean canALevelBeAdded()
     {
-        return (level != 3) && !OccupiedByWorker;
+        return (level != 3) && !isOccupiedByWorker();
     }
 
     /**
@@ -97,7 +91,7 @@ public class Cell {
 
     public boolean canAWorkerBeMovedHere(Worker WorkerToMove)
     {
-        if (!dome && !OccupiedByWorker)
+        if (!dome && !isOccupiedByWorker())
         {
             if (WorkerToMove.getWorkerPosition().level >= level)
             {
@@ -174,14 +168,9 @@ public class Cell {
 
     public void resetCell()
     {
-        WorkerOccupying = null;
+        workerOccupying = null;
         level = 0;
         dome = false;
-        OccupiedByWorker = false;
-    }
-
-    public void setOccupiedByWorker(boolean occupiedByWorker) {
-        OccupiedByWorker = occupiedByWorker;
     }
 
     /**
@@ -189,6 +178,6 @@ public class Cell {
      * @param workerOccupying
      */
     public void setWorkerOccupying(Worker workerOccupying) {
-        WorkerOccupying = workerOccupying;
+        this.workerOccupying = workerOccupying;
     }
 }

@@ -45,7 +45,37 @@ public class MovePhaseTest {
         expectedList.add(x25);
         expectedList.add(x24);
         movePhase.changeCandidateMoves();
-        assertEquals(expectedList,movePhase.getCandidateMoves());
+        assertTrue(expectedList.containsAll(movePhase.getCandidateMoves())
+                && movePhase.getCandidateMoves().containsAll(expectedList));
+    }
+
+    @Test
+    public void changeCandidateMoves_workerAtTheCentreCorneredByAFewWorkersAndALv2Cell() {
+        Cell x22 = gameBoard.getCell(6);//lv1cell
+        x22.addLevel();
+        Cell x23 = gameBoard.getCell(11);
+        Cell x24 = gameBoard.getCell(16);//CellOccupiedByMyOtherWorker
+        worker21.setPosition(x24);
+        Cell x32 = gameBoard.getCell(7);//lv2Cell
+        x32.addLevel();x32.addLevel();
+        Cell x33 = gameBoard.getCell(12);//workerPosition
+        worker11.setPosition(x33);
+        Cell x34 = gameBoard.getCell(17);
+        Cell x42 = gameBoard.getCell(8);//occupiedByEnemyWorkerCell
+        worker21.setPosition(x42);
+        Cell x43 = gameBoard.getCell(13);//lv1CellWithADomeOnTop
+        x43.addLevel();x43.addDome();
+        Cell x44 = gameBoard.getCell(18);
+
+        MovePhase movePhase = new MovePhase(worker11,gameBoard);
+        ArrayList<Cell> expectedList = new ArrayList<>();
+        expectedList.add(x22);
+        expectedList.add(x23);
+        expectedList.add(x34);
+        expectedList.add(x44);
+        movePhase.changeCandidateMoves();
+        assertTrue(expectedList.containsAll(movePhase.getCandidateMoves())
+                && movePhase.getCandidateMoves().containsAll(expectedList));
     }
 
     @After

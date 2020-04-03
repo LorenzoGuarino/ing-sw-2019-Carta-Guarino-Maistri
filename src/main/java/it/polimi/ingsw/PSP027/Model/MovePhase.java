@@ -63,7 +63,6 @@ public class MovePhase extends Phase {
     public void updateBoardAfterMove(Worker chosenWorker,Board board,Cell chosenCell){
         Board gameBoard = this.getGameBoard();
         if(this.getActualDecorator()==null) {                                           //if i haven't a decorator that changed my moveConditions
-            this.getChosenWorker().getWorkerPosition().setOccupiedByWorker(false);      //old cell is no longer occupied
             this.getChosenWorker().setPosition(chosenCell);                             //worker's position update, cell is now occupiedByWorker
         }
         else{                                                                           //if i have a decorator that changed my moveConditions
