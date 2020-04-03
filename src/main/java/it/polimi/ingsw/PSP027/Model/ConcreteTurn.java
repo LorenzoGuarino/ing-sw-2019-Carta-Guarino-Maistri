@@ -21,11 +21,11 @@ public class ConcreteTurn extends Turn {
         this.playingPlayer=playingPlayer;
         this.phaseList = new ArrayList<>();
         StartPhase phase1=new StartPhase(playingPlayer.getPlayerWorkers());
+        this.getPhaseList().add(phase1);
     }
 
     public void addMovePhase(){
-        //only if start has been done
-        if(this.getPhaseList().get(0).isDone()) {//@TODO index della startPhase
+        if(this.getPhaseList().get(0).isDone()) {
             MovePhase movePhase = new MovePhase(this.getChosenWorker(), this.getSantoriniMatch().getGameBoard());
             this.getPhaseList().add(movePhase);
         }

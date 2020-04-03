@@ -55,7 +55,7 @@ public class MovePhaseTest {
         x22.addLevel();
         Cell x23 = gameBoard.getCell(11);
         Cell x24 = gameBoard.getCell(16);//CellOccupiedByMyOtherWorker
-        worker21.setPosition(x24);
+        worker12.setPosition(x24);
         Cell x32 = gameBoard.getCell(7);//lv2Cell
         x32.addLevel();x32.addLevel();
         Cell x33 = gameBoard.getCell(12);//workerPosition
@@ -76,6 +76,17 @@ public class MovePhaseTest {
         movePhase.changeCandidateMoves();
         assertTrue(expectedList.containsAll(movePhase.getCandidateMoves())
                 && movePhase.getCandidateMoves().containsAll(expectedList));
+    }
+
+    @Test
+    public void updateBoardAfterMove_validInput(){
+        Cell x11 = gameBoard.getCell(0);
+        worker11.setPosition(x11);
+        Cell x12 = gameBoard.getCell(1);
+        x12.addLevel();
+        MovePhase movePhase = new MovePhase(worker11,gameBoard);
+        movePhase.updateBoard(worker11,gameBoard,x12);
+        assertTrue(!x11.isOccupiedByWorker() && worker11.getWorkerPosition().equals(x12));
     }
 
     @After

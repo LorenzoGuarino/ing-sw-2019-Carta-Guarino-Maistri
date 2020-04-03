@@ -28,11 +28,13 @@ public class MinotaurDecorator extends GodPowerDecorator {
 
     @Override
     public void applyPower() {
-        //@TODO rendere eseguibile solo se si è istanziata la MovePhase
-        powerToggled=true;
-        MovePhase modifiedPhase = (MovePhase) this.getDecoratedTurn().getPhaseList().get(1);//@TODO indice della fase che voglio modificare
-        modifiedPhase.setActualDecorator(this); //allows the phase to know which kind of decorator is applied onto it
-        modifiedPhase.changeCandidateMovesAccordingToDecorator();
+        if(this.getDecoratedTurn().getPhaseList().get(1)!=null)//if the MovePhase exists
+        {
+            powerToggled = true;
+            MovePhase modifiedPhase = (MovePhase) this.getDecoratedTurn().getPhaseList().get(1);
+            modifiedPhase.setActualDecorator(this); //allows the phase to know which kind of decorator is applied onto it
+            modifiedPhase.changeCandidateMovesAccordingToDecorator();
+        }
     }
 
     /**
@@ -44,7 +46,7 @@ public class MinotaurDecorator extends GodPowerDecorator {
     @Override
     public void updateBoard(Worker chosenWorker, Board gameBoard, Cell chosenCell) {
         if (chosenCell.isOccupiedByOpponentWorker(chosenWorker.getWorkerOwner())) {
-            Worker opponentWorker=chosenWorker.getWorkerPosition().getOccupyingWorker();
+            Worker opponentWorker=chosenCell.getOccupyingWorker();
             opponentWorker.setPosition(gameBoard.getNextCellAlongThePath(chosenWorker.getWorkerPosition(),chosenCell));
         }
         chosenWorker.setPosition(chosenCell);

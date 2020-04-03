@@ -48,12 +48,14 @@ public class Cell {
      */
 
     public boolean isOccupiedByOpponentWorker(Player opponentPlayer) {
-        if (workerOccupying.getWorkerOwner() != opponentPlayer) {
-            return true;
+        if (isOccupiedByWorker()) {
+            if (workerOccupying.getWorkerOwner() != opponentPlayer) {
+                return true;
+            } else {
+                return false;
+            }
         }
-        else {
-            return false;
-        }
+        return false;
     }
 
     /**

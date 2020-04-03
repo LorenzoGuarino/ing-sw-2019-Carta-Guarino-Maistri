@@ -59,7 +59,7 @@ public class Worker {
      */
     public void setPosition(Cell position) {
         if(this.position!=null){
-            position.setWorkerOccupying(null);
+            this.position.setWorkerOccupying(null);
         }
         this.position = position;
         position.setWorkerOccupying(this);
