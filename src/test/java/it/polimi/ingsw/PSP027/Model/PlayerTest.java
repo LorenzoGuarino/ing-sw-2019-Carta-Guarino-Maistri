@@ -4,6 +4,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 public class PlayerTest {
@@ -19,14 +22,22 @@ public class PlayerTest {
 
     @Test
     public void addOpponentGodCard() {
-        player.addOpponentGodCard(new GodCard("Apollo", "Prova descrizione", 1));
+        GodCard Apollo = new GodCard("Apollo", "Descrizione", 1);
+        player.addOpponentGodCard(Apollo);
+        assertEquals(Apollo, player.getOpponentsGodCards().get(0));
     }
 
     @Test
-    public void removeOpponentGodCards() {
+    public void addGodCardTest(){
+        GodCard Apollo = new GodCard("Apollo", "Descrizione", 1);
+        player.setPlayerGodCard(Apollo);
+        assertEquals(Apollo.getGodName(), player.getPlayerGod().getGodName());
+        assertEquals(Apollo.getDescription(), player.getPlayerGod().getDescription());
+        assertEquals(Apollo.getGodId(), player.getPlayerGod().getGodId());
     }
 
     @Test
-    public void getOpponentsGodCards() {
+    public void removeOpponentGodCards(){
     }
+
 }

@@ -9,6 +9,9 @@ public class WorkerTest {
 
     @Before
     public void setUp() throws Exception {
+        Player player = new Player();
+        Worker worker0 = new Worker(player, 0);
+        Worker worker1 = new Worker(player, 1);
     }
 
     @After
