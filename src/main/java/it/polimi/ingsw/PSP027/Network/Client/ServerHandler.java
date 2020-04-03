@@ -12,7 +12,11 @@ import java.util.ArrayList;
 import java.util.List;
 import it.polimi.ingsw.PSP027.Utils.Utils;
 
-public class ServerAdapter implements Runnable
+/**
+ * @author Elisa Maistri
+ */
+
+public class ServerHandler implements Runnable
 {
     private enum Commands {
         CONVERT_STRING,
@@ -20,6 +24,7 @@ public class ServerAdapter implements Runnable
     }
     private Commands nextCommand;
     private String convertStringParam;
+    private boolean manualdisconnection = false;
 
     private Socket server;
     private ObjectOutputStream output;
@@ -28,7 +33,7 @@ public class ServerAdapter implements Runnable
     private List<ServerObserver> observers = new ArrayList<>();
 
 
-    public ServerAdapter(Socket server)
+    public ServerHandler(Socket server)
     {
         this.server = server;
     }
@@ -54,6 +59,19 @@ public class ServerAdapter implements Runnable
     {
         nextCommand = Commands.STOP;
         notifyAll();
+    }
+
+    public void SendRegisterCommand(String nickname)
+    {
+        String cmd = "<cmd><id>clt_register</id><data><nickname>"+nickname+"</nickname></data></cmd>";
+        SendConmand(cmd);
+    }
+
+    public void SendDeregisterCommand()
+    {
+        manualdisconnection = true;
+        String cmd = "<cmd><id>clt_deregister</id></cmd>";
+        SendConmand(cmd);
     }
 
     public void SendHello() {
@@ -86,7 +104,20 @@ public class ServerAdapter implements Runnable
             input = new ObjectInputStream(server.getInputStream());
             handleServerConnection();
         } catch (IOException e) {
-            System.out.println("server has died");
+
+            if(manualdisconnection)
+                System.out.println("server connection closed");
+            else
+                System.out.println("server has died");
+
+            try {
+                onDeregistered();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            } catch (ClassNotFoundException ex) {
+                ex.printStackTrace();
+            }
+
         } catch (ClassCastException e) {
             System.out.println("protocol violation");
         }
@@ -139,24 +170,12 @@ public class ServerAdapter implements Runnable
                                 if(cmdID.equals("srv_hello")) {
                                     onHello();
                                 }
-//                                else if(cmdID.equals("clt_xxxx"))  {
-//                                    //...
-//                                }
-//                                else if(cmdID.equals("clt_xxxx"))  {
-//                                    //...
-//                                }
-//                                else if(cmdID.equals("clt_xxxx")) {
-//                                    //...
-//                                }
-//                                else if(cmdID.equals("clt_xxxx")) {
-//                                    //...
-//                                }
-//                                else if(cmdID.equals("clt_xxxx")) {
-//                                    //...
-//                                }
-//                                else if(cmdID.equals("clt_xxxx")) {
-//                                    //...
-//                                }
+                                else if(cmdID.equals("srv_registered")) {
+                                    onRegistered(cmdData);
+                                }
+                                else if(cmdID.equals("srv_deregistered")) {
+                                    onDeregistered();
+                                }
                             }
                         }
                     }
@@ -169,6 +188,75 @@ public class ServerAdapter implements Runnable
             }
         } catch (ClassNotFoundException | ClassCastException e) {
             System.out.println("invalid stream from client");
+        }
+    }
+
+    private synchronized void onRegistered(Node data) throws IOException, ClassNotFoundException
+    {
+        /** Possible return data
+        * "<data><retcode>FAIL</retcode><reason>Nickname already present</reason></data>";
+        * "<data><retcode>SUCCESS</retcode></data>";
+        * "<data><retcode>FAIL</retcode><reason>Missing nickname</reason></data>";
+        */
+        Node node;
+        String ret = "";
+        String err = "";
+
+        if(data.hasChildNodes())
+        {
+            NodeList nodes = data.getChildNodes();
+
+            for(int i = 0; i < nodes.getLength(); i++)
+            {
+                node = nodes.item(i);
+
+                if(node.getNodeName().equals("retcode"))
+                {
+                    ret = node.getTextContent();
+                }
+                else if(node.getNodeName().equals("reason"))
+                {
+                    err = node.getTextContent();
+                }
+            }
+
+            /* copy the list of observers in case some observers changes it from inside
+             * the notification method */
+            List<ServerObserver> observersCpy;
+            synchronized (observers) {
+                observersCpy = new ArrayList<>(observers);
+            }
+
+            /* notify the observers that we got the string */
+            for (ServerObserver observer : observersCpy)
+            {
+                if(ret.equalsIgnoreCase("FAIL"))
+                {
+                    observer.onRegistrationError(err);
+                }
+                else
+                {
+                    observer.onRegistered();
+                }
+            }
+
+        }
+
+
+    }
+
+    private synchronized void onDeregistered() throws IOException, ClassNotFoundException
+    {
+        /* copy the list of observers in case some observers changes it from inside
+         * the notification method */
+        List<ServerObserver> observersCpy;
+        synchronized (observers) {
+            observersCpy = new ArrayList<>(observers);
+        }
+
+        /* notify the observers that we got the string */
+        for (ServerObserver observer : observersCpy) {
+            observer.onDeregistered();
         }
     }
 

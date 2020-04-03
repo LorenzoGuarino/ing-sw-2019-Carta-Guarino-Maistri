@@ -10,6 +10,12 @@ import java.io.StringReader;
 
 public class Utils {
 
+    /**
+     * @author Elisa Maistri
+     * Method that parses the XML document
+     * @param xmlString string to convert
+     * @return the xml document
+     */
     public static Document ParseStringToXMLDocument(String xmlString)
     {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();

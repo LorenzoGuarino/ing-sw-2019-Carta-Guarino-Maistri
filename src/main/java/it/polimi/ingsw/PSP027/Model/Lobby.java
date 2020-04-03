@@ -19,6 +19,9 @@ public class Lobby {
      */
     private List<SantoriniMatch> Matches;
 
+    public void deregisterPlayer() {
+    }
+
     public class Gamer {
         private String nickname;
         private String ipAddress;
@@ -28,7 +31,7 @@ public class Lobby {
     /**
      * List of the gamers that are currently in the lobby, wither waiting for a game to play or already playing a match
      */
-    private List<Gamer> lobbyGamers;
+    private List<Gamer> lobbyGamers = new ArrayList<Gamer>();
 
     /**
      * Constructor: where the application start
@@ -120,6 +123,8 @@ public class Lobby {
                         gamer.ipAddress = ipaddress;
                         lobbyGamers.add(gamer);
                     }
+
+                    break;
                 }
                 else {
                     TimeUnit.MILLISECONDS.sleep(200);

@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+
+import it.polimi.ingsw.PSP027.Model.Lobby;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -18,15 +20,20 @@ public class ClientHandler implements Runnable
     private Socket client;
     private ObjectOutputStream output = null;
     private ObjectInputStream input = null;
+    private Lobby lobby = null;
+    private String nickname = "";
+    private Lobby.Gamer gamer = null;
 
     /**
      * Constructor of the client handler that will communicate with the client
      * @param client socket of the client that wants to connect with this server
+     * @param lobby reference to the main lobby
      */
 
-    ClientHandler(Socket client)
+    ClientHandler(Socket client, Lobby lobby)
     {
         this.client = client;
+        this.lobby = lobby;
     }
 
     /**
@@ -52,19 +59,6 @@ public class ClientHandler implements Runnable
         }
     }
 
-    /**
-     * Method used by the server to send commands to its clients, the command is sent is the stream output is not null
-     * @param cmd command that the server wants to send to the client
-     */
-
-    public void SendConmand(String cmd) {
-        try {
-            if(output != null)
-                output.writeObject(cmd);
-        }
-        catch (IOException e) {
-        }
-    }
 
     /**
      * Method that handles the connection to the client parsing the commands received by the client in XML format
@@ -83,6 +77,11 @@ public class ClientHandler implements Runnable
                 String strResponseCmd = "";
 
                 // convert strCmd into an XML object and evaluate received command
+                // the structure is
+                // <cmd>
+                //      <id>COMMAND</id>
+                //      <data>DATA FOR COMMAND</data>
+                // </cmd>
 
                 Document doc = Utils.ParseStringToXMLDocument( strCmd );
 
@@ -97,7 +96,8 @@ public class ClientHandler implements Runnable
                             String cmdID = "";
                             Node cmdData = null;
 
-                            for(int i=0; i<nodes.getLength(); i++)
+                            // determine received command
+                            for(int i = 0; i < nodes.getLength(); i++)
                             {
                                 node = nodes.item(i);
 
@@ -111,32 +111,20 @@ public class ClientHandler implements Runnable
                                 }
                             }
 
+                            // process received command
                             if(!cmdID.isEmpty()) {
                                 if(cmdID.equals("clt_hello")) {
-                                    System.out.println("Got clt hello");
-
-                                    strResponseCmd = "<cmd><id>srv_hello</id></cmd>";
+                                    strResponseCmd = OnHello();
                                 }
-                                else if(cmdID.equals("bye")) {
-                                    System.out.println("Got clt bye");
+                                else if(cmdID.equals("clt_deregister")) {
 
+                                    OnDeregister(cmdData);
                                     return;
                                 }
-//                                else if(cmdID.equals("clt_xxxx"))  {
-//                                    //...
-//                                }
-//                                else if(cmdID.equals("clt_xxxx"))  {
-//                                    //...
-//                                }
-//                                else if(cmdID.equals("clt_xxxx")) {
-//                                    //...
-//                                }
-//                                else if(cmdID.equals("clt_xxxx")) {
-//                                    //...
-//                                }
-//                                else if(cmdID.equals("clt_xxxx")) {
-//                                    //...
-//                                }
+                                else if(cmdID.equals("clt_register")) {
+
+                                    strResponseCmd = OnRegister(cmdData);
+                                }
 //                                else if(cmdID.equals("clt_xxxx")) {
 //                                    //...
 //                                }
@@ -155,6 +143,66 @@ public class ClientHandler implements Runnable
         }
     }
 
+    /**
+     * Method used by the server to send commands to its clients, the command is sent is the stream output is not null
+     * @param cmd command that the server wants to send to the client
+     */
 
+    public void SendConmand(String cmd) {
+        try {
+            if(output != null)
+                output.writeObject(cmd);
+        }
+        catch (IOException e) {
+        }
+    }
+
+    private String OnHello(){
+        System.out.println("Got hello from ");
+        String ret = "<cmd><id>srv_hello</id></cmd>";
+        return ret;
+    }
+
+    private String OnRegister(Node data){
+
+        String strRet = "<cmd><id>srv_registered</id><data><retcode>FAIL</retcode><reason>Invalid request</reason></data></cmd>";
+        nickname = "";
+        Node node;
+
+        if(data.hasChildNodes())
+        {
+            NodeList nodes = data.getChildNodes();
+
+            for(int i = 0; i < nodes.getLength(); i++)
+            {
+                node = nodes.item(i);
+
+                if(node.getNodeName().equals("nickname"))
+                {
+                    nickname = node.getTextContent();
+                }
+            }
+
+            if(!nickname.isEmpty())
+            {
+                gamer = lobby.registerNewPlayer(nickname, client.getInetAddress().getHostAddress());
+
+                if(gamer == null)
+                    strRet = "<cmd><id>srv_registered</id><data><retcode>FAIL</retcode><reason>Nickname already present</reason></data></cmd>";
+                else
+                    strRet = "<cmd><id>srv_registered</id><data><retcode>SUCCESS</retcode></data></cmd>";
+            }
+            else
+                strRet = "<cmd><id>srv_registered</id><data><retcode>FAIL</retcode><reason>Missing nickname</reason></data></cmd>";
+        }
+
+        return strRet;
+    }
+
+    private void OnDeregister(Node data){
+
+        System.out.println("Received bye from " + nickname);
+        lobby.deregisterPlayer();
+    }
 
 }
