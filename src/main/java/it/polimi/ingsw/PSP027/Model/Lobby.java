@@ -19,9 +19,6 @@ public class Lobby {
      */
     private List<SantoriniMatch> Matches;
 
-    public void deregisterPlayer() {
-    }
-
     public class Gamer {
         private String nickname;
         private String ipAddress;
@@ -83,6 +80,40 @@ public class Lobby {
         }
 
         return iRet;
+    }
+
+    public void deregisterPlayer(Gamer gamer) {
+
+        try {
+            while (true) {
+
+                if (GamersLock.tryLock(2L, TimeUnit.SECONDS)) {
+
+                    int iRet = 0; // gamer not found
+
+                    for (Gamer gamerInLobby : lobbyGamers) {
+
+                        if (gamerInLobby.nickname.equals(gamer.nickname)) {
+
+                            lobbyGamers.remove(gamerInLobby);
+                            break;
+                        }
+                    }
+
+                    break;
+                }
+                else {
+                    TimeUnit.MILLISECONDS.sleep(200);
+                }
+            }
+        }
+        catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        finally {
+            GamersLock.unlock();
+        }
+
     }
 
     /**

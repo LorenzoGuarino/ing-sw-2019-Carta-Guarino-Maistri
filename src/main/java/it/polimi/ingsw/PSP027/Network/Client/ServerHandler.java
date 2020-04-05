@@ -11,6 +11,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 import it.polimi.ingsw.PSP027.Utils.Utils;
+import it.polimi.ingsw.PSP027.Network.ProtocolTypes;
 
 /**
  * @author Elisa Maistri
@@ -18,17 +19,13 @@ import it.polimi.ingsw.PSP027.Utils.Utils;
 
 public class ServerHandler implements Runnable
 {
-    private enum Commands {
-        CONVERT_STRING,
-        STOP
-    }
-    private Commands nextCommand;
     private String convertStringParam;
-    private boolean manualdisconnection = false;
+    private boolean bManualDisconnection = false;
 
     private Socket server;
     private ObjectOutputStream output;
     private ObjectInputStream input;
+    private boolean bRun = true;
 
     private List<ServerObserver> observers = new ArrayList<>();
 
@@ -54,33 +51,26 @@ public class ServerHandler implements Runnable
         }
     }
 
-
-    public synchronized void stop()
-    {
-        nextCommand = Commands.STOP;
-        notifyAll();
-    }
-
     public void SendRegisterCommand(String nickname)
     {
-        String cmd = "<cmd><id>clt_register</id><data><nickname>"+nickname+"</nickname></data></cmd>";
-        SendConmand(cmd);
+        String cmd = "<cmd><id>" + ProtocolTypes.protocolCommand.clt_Register.toString() + "</id><data><nickname>" + nickname + "</nickname></data></cmd>";
+        SendCommand(cmd);
     }
 
     public void SendDeregisterCommand()
     {
-        manualdisconnection = true;
-        String cmd = "<cmd><id>clt_deregister</id></cmd>";
-        SendConmand(cmd);
+        bManualDisconnection = true;
+        String cmd = "<cmd><id>" + ProtocolTypes.protocolCommand.clt_Deregister.toString() + "</id></cmd>";
+        SendCommand(cmd);
     }
 
     public void SendHello() {
 
-        String cmd = "<cmd><id>clt_hello</id></cmd>";
-        SendConmand(cmd);
+        String cmd = "<cmd><id>" + ProtocolTypes.protocolCommand.clt_Hello.toString() + "</id></cmd>";
+        SendCommand(cmd);
     }
 
-    public void SendConmand(String cmd) {
+    public synchronized void SendCommand(String cmd) {
         try {
             if(output != null)
                 output.writeObject(cmd);
@@ -89,11 +79,13 @@ public class ServerHandler implements Runnable
         }
     }
 
-    public synchronized void requestConversion(String input)
+    public synchronized void Stop()
     {
-        nextCommand = Commands.CONVERT_STRING;
-        convertStringParam = input;
-        notifyAll();
+        bManualDisconnection = true;
+        bRun = false;
+        try {
+            server.close();
+        } catch (IOException e) { }
     }
 
     @Override
@@ -102,40 +94,36 @@ public class ServerHandler implements Runnable
         try {
             output = new ObjectOutputStream(server.getOutputStream());
             input = new ObjectInputStream(server.getInputStream());
+            bRun = true;
             handleServerConnection();
-        } catch (IOException e) {
+        } catch (IOException | ClassNotFoundException | ClassCastException  e) {
 
-            if(manualdisconnection)
+            if(bManualDisconnection)
                 System.out.println("server connection closed");
             else
                 System.out.println("server has died");
-
-            try {
-                onDeregistered();
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            } catch (ClassNotFoundException ex) {
-                ex.printStackTrace();
-            }
-
-        } catch (ClassCastException e) {
-            System.out.println("protocol violation");
         }
 
         try {
             server.close();
-        } catch (IOException e) { }
-    }
-
-    private void handleServerConnection() throws IOException {
-        System.out.println("Connected to " + server.getInetAddress().getHostAddress());
+        } catch (IOException  e) { }
 
         try {
-            while (true) {
+            onDisconnected();
+        } catch (IOException | ClassNotFoundException e) { }
+
+    }
+
+    private void handleServerConnection() throws IOException, ClassNotFoundException {
+        System.out.println("Connected to " + server.getInetAddress().getHostAddress());
+
+        onConnected();
+
+        try {
+            while (bRun) {
                 /* read a String from the stream  */
                 Object next = input.readObject();
                 String strCmd = (String)next;
-                String strResponseCmd = "";
 
                 // convert strCmd into an XML object and evaluate received command
 
@@ -149,7 +137,7 @@ public class ServerHandler implements Runnable
                             NodeList nodes = root.getChildNodes();
                             Node node;
 
-                            String cmdID = "";
+                            ProtocolTypes.protocolCommand cmdID = ProtocolTypes.protocolCommand.undefined;
                             Node cmdData = null;
 
                             for(int i=0; i<nodes.getLength(); i++)
@@ -158,7 +146,7 @@ public class ServerHandler implements Runnable
 
                                 if(node.getNodeName().equals("id"))
                                 {
-                                    cmdID = node.getTextContent();
+                                    cmdID = ProtocolTypes.protocolCommand.valueOf(node.getTextContent());
                                 }
                                 else if(node.getNodeName().equals("data"))
                                 {
@@ -166,32 +154,30 @@ public class ServerHandler implements Runnable
                                 }
                             }
 
-                            if(!cmdID.isEmpty()) {
-                                if(cmdID.equals("srv_hello")) {
+                            switch(cmdID)
+                            {
+                                case srv_Hello:
                                     onHello();
-                                }
-                                else if(cmdID.equals("srv_registered")) {
-                                    onRegistered(cmdData);
-                                }
-                                else if(cmdID.equals("srv_deregistered")) {
-                                    onDeregistered();
-                                }
+                                    break;
+                                case srv_Registered:
+                                    onRegister(cmdData);
+                                    break;
+                                case srv_Deregistered:
+                                    onDeregister();
+                                    break;
                             }
                         }
                     }
                 }
-
-                // prepare answer for client and return it to client
-
-                if(!strResponseCmd.isEmpty())
-                    SendConmand(strResponseCmd);
             }
         } catch (ClassNotFoundException | ClassCastException e) {
             System.out.println("invalid stream from client");
         }
+
+        System.out.println("Disconnected from " + server.getInetAddress().getHostAddress());
     }
 
-    private synchronized void onRegistered(Node data) throws IOException, ClassNotFoundException
+    private synchronized void onRegister(Node data) throws IOException, ClassNotFoundException
     {
         /** Possible return data
         * "<data><retcode>FAIL</retcode><reason>Nickname already present</reason></data>";
@@ -236,16 +222,13 @@ public class ServerHandler implements Runnable
                 }
                 else
                 {
-                    observer.onRegistered();
+                    observer.onRegister();
                 }
             }
-
         }
-
-
     }
 
-    private synchronized void onDeregistered() throws IOException, ClassNotFoundException
+    private synchronized void onDeregister() throws IOException, ClassNotFoundException
     {
         /* copy the list of observers in case some observers changes it from inside
          * the notification method */
@@ -256,7 +239,7 @@ public class ServerHandler implements Runnable
 
         /* notify the observers that we got the string */
         for (ServerObserver observer : observersCpy) {
-            observer.onDeregistered();
+            observer.onDeregister();
         }
     }
 
@@ -275,4 +258,33 @@ public class ServerHandler implements Runnable
         }
     }
 
+    private synchronized void onConnected() throws IOException, ClassNotFoundException
+    {
+        /* copy the list of observers in case some observers changes it from inside
+         * the notification method */
+        List<ServerObserver> observersCpy;
+        synchronized (observers) {
+            observersCpy = new ArrayList<>(observers);
+        }
+
+        /* notify the observers that we got the string */
+        for (ServerObserver observer: observersCpy) {
+            observer.onConnected();
+        }
+    }
+
+    private synchronized void onDisconnected() throws IOException, ClassNotFoundException
+    {
+        /* copy the list of observers in case some observers changes it from inside
+         * the notification method */
+        List<ServerObserver> observersCpy;
+        synchronized (observers) {
+            observersCpy = new ArrayList<>(observers);
+        }
+
+        /* notify the observers that we got the string */
+        for (ServerObserver observer: observersCpy) {
+            observer.onDisconnected();
+        }
+    }
 }
