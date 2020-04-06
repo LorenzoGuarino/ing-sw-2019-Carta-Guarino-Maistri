@@ -10,6 +10,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import it.polimi.ingsw.PSP027.Utils.Utils;
+import it.polimi.ingsw.PSP027.Network.ProtocolTypes;
 
 /**
  * @author Elisa Maistri
@@ -93,7 +94,7 @@ public class ClientHandler implements Runnable
                             NodeList nodes = root.getChildNodes();
                             Node node;
 
-                            String cmdID = "";
+                            ProtocolTypes.protocolCommand cmdID = ProtocolTypes.protocolCommand.undefined;
                             Node cmdData = null;
 
                             // determine received command
@@ -103,7 +104,7 @@ public class ClientHandler implements Runnable
 
                                 if(node.getNodeName().equals("id"))
                                 {
-                                    cmdID = node.getTextContent();
+                                    cmdID = ProtocolTypes.protocolCommand.valueOf(node.getTextContent());
                                 }
                                 else if(node.getNodeName().equals("data"))
                                 {
@@ -112,22 +113,16 @@ public class ClientHandler implements Runnable
                             }
 
                             // process received command
-                            if(!cmdID.isEmpty()) {
-                                if(cmdID.equals("clt_hello")) {
+                            switch(cmdID){
+                                case clt_Hello:
                                     strResponseCmd = OnHello();
-                                }
-                                else if(cmdID.equals("clt_deregister")) {
-
-                                    OnDeregister(cmdData);
-                                    return;
-                                }
-                                else if(cmdID.equals("clt_register")) {
-
+                                    break;
+                                case clt_Deregister:
+                                    strResponseCmd = OnDeregister(cmdData);
+                                    break;
+                                case clt_Register:
                                     strResponseCmd = OnRegister(cmdData);
-                                }
-//                                else if(cmdID.equals("clt_xxxx")) {
-//                                    //...
-//                                }
+                                    break;
                             }
                         }
                     }
@@ -159,13 +154,13 @@ public class ClientHandler implements Runnable
 
     private String OnHello(){
         System.out.println("Got hello from ");
-        String ret = "<cmd><id>srv_hello</id></cmd>";
+        String ret = "<cmd><id>" + ProtocolTypes.protocolCommand.srv_Hello.toString() + "</id></cmd>";
         return ret;
     }
 
     private String OnRegister(Node data){
 
-        String strRet = "<cmd><id>srv_registered</id><data><retcode>FAIL</retcode><reason>Invalid request</reason></data></cmd>";
+        String strRet = "<cmd><id>" + ProtocolTypes.protocolCommand.srv_Registered.toString() + "</id><data><retcode>FAIL</retcode><reason>Invalid request</reason></data></cmd>";
         nickname = "";
         Node node;
 
@@ -188,21 +183,75 @@ public class ClientHandler implements Runnable
                 gamer = lobby.registerNewPlayer(nickname, client.getInetAddress().getHostAddress());
 
                 if(gamer == null)
-                    strRet = "<cmd><id>srv_registered</id><data><retcode>FAIL</retcode><reason>Nickname already present</reason></data></cmd>";
+                    strRet = "<cmd><id>" + ProtocolTypes.protocolCommand.srv_Registered.toString() + "</id><data><retcode>FAIL</retcode><reason>Nickname already present</reason></data></cmd>";
                 else
-                    strRet = "<cmd><id>srv_registered</id><data><retcode>SUCCESS</retcode></data></cmd>";
+                    strRet = "<cmd><id>" + ProtocolTypes.protocolCommand.srv_Registered.toString() + "</id><data><retcode>SUCCESS</retcode></data></cmd>";
             }
             else
-                strRet = "<cmd><id>srv_registered</id><data><retcode>FAIL</retcode><reason>Missing nickname</reason></data></cmd>";
+                strRet = "<cmd><id>" + ProtocolTypes.protocolCommand.srv_Registered.toString() + "</id><data><retcode>FAIL</retcode><reason>Missing nickname</reason></data></cmd>";
         }
 
         return strRet;
     }
 
-    private void OnDeregister(Node data){
+    private String OnDeregister(Node data){
 
         System.out.println("Received bye from " + nickname);
-        lobby.deregisterPlayer();
+        lobby.deregisterPlayer(gamer);
+        String strRet = "<cmd><id>" + ProtocolTypes.protocolCommand.srv_Deregistered.toString() + "</id><data></data></cmd>";
+        return strRet;
+    }
+
+    private void onRegistered() {
+
+    }
+
+    private void onEnteringMatch() {
+
+    }
+
+    private void onEnteredMatch() {
+
+    }
+
+    private void onLeftMatch() {
+
+    }
+
+    private void onStartTurn() {
+
+    }
+
+    private void onDrawBoard() {
+
+    }
+
+    private void onChooseWorkerStartPosition() {
+
+    }
+
+    private void onCandidateCellsForMove() {
+
+    }
+
+    private void onCandidateCellsForBuild() {
+
+    }
+
+    private void onUseGodPower() {
+
+    }
+
+    private void onBoardUpdated() {
+
+    }
+
+    private void onLoser() {
+
+    }
+
+    private void onWinner() {
+
     }
 
 }
