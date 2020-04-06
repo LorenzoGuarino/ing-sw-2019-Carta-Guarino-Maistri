@@ -207,6 +207,10 @@ public class SantoriniMatch {
         }
     }
 
+    public void checkLoseCondition(){
+
+    }
+
     public List<GodCard> getGodCardsList() {
         return godCardsList;
     }
