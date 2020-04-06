@@ -39,6 +39,7 @@ public class ClientHandler implements Runnable
 
     /**
      * Method that defines an input and output stream for the server
+     * It handles the connection with the client on server side (it is the counterpart of server handler)
      * the input is used to listen to any command that the client will send to server
      * the output is used by the server to send commands to the client
      */
@@ -64,6 +65,7 @@ public class ClientHandler implements Runnable
     /**
      * Method that handles the connection to the client parsing the commands received by the client in XML format
      * with this method the server keeps listening to what the client might send to it
+     * It also prepares an adequate response with the data that the server provides from the Model.
      * @throws IOException
      */
 
@@ -112,23 +114,23 @@ public class ClientHandler implements Runnable
                                 }
                             }
 
-                            // process received command
+                            // process received command and launches the corresponding method that builds the response
                             switch(cmdID){
                                 case clt_Hello:
-                                    strResponseCmd = OnHello();
+                                    strResponseCmd = onHello();
                                     break;
                                 case clt_Deregister:
-                                    strResponseCmd = OnDeregister(cmdData);
+                                    strResponseCmd = onDeregister(cmdData);
                                     break;
                                 case clt_Register:
-                                    strResponseCmd = OnRegister(cmdData);
+                                    strResponseCmd = onRegister(cmdData);
                                     break;
                             }
                         }
                     }
                 }
 
-                // prepare answer for client and return it to client
+                // Sends the response to the client
 
                 if(!strResponseCmd.isEmpty())
                     SendConmand(strResponseCmd);
@@ -152,13 +154,23 @@ public class ClientHandler implements Runnable
         }
     }
 
-    private String OnHello(){
+    /**
+     * Method that prepares the command that will then be processed in xml format in the client
+     * @return the command in string format
+     */
+
+    private String onHello(){
         System.out.println("Got hello from ");
         String ret = "<cmd><id>" + ProtocolTypes.protocolCommand.srv_Hello.toString() + "</id></cmd>";
         return ret;
     }
 
-    private String OnRegister(Node data){
+    /**
+     * Method that prepares the command that will then be processed in xml format in the client
+     * @return the command in string format
+     */
+
+    private String onRegister(Node data){
 
         String strRet = "<cmd><id>" + ProtocolTypes.protocolCommand.srv_Registered.toString() + "</id><data><retcode>FAIL</retcode><reason>Invalid request</reason></data></cmd>";
         nickname = "";
@@ -194,61 +206,131 @@ public class ClientHandler implements Runnable
         return strRet;
     }
 
-    private String OnDeregister(Node data){
+    /**
+     * Method that prepares the command that will then be processed in xml format in the client
+     * @return the command in string format
+     */
+
+    private String onDeregister(Node data){
 
         System.out.println("Received bye from " + nickname);
         lobby.deregisterPlayer(gamer);
-        String strRet = "<cmd><id>" + ProtocolTypes.protocolCommand.srv_Deregistered.toString() + "</id><data></data></cmd>";
+        String strRet = "<cmd><id>" + ProtocolTypes.protocolCommand.srv_Deregistered.toString() + "</id></cmd>";
         return strRet;
     }
+
+    /**
+     * Method that prepares the command that will then be processed in xml format in the client
+     * @return the command in string format
+     */
 
     private void onRegistered() {
 
     }
 
+    /**
+     * Method that prepares the command that will then be processed in xml format in the client
+     * @return the command in string format
+     */
+
     private void onEnteringMatch() {
 
     }
+
+    /**
+     * Method that prepares the command that will then be processed in xml format in the client
+     * @return the command in string format
+     */
 
     private void onEnteredMatch() {
 
     }
 
+    /**
+     * Method that prepares the command that will then be processed in xml format in the client
+     * @return the command in string format
+     */
+
     private void onLeftMatch() {
 
     }
+
+    /**
+     * Method that prepares the command that will then be processed in xml format in the client
+     * @return the command in string format
+     */
 
     private void onStartTurn() {
 
     }
 
+    /**
+     * Method that prepares the command that will then be processed in xml format in the client
+     * @return the command in string format
+     */
+
     private void onDrawBoard() {
 
     }
+
+    /**
+     * Method that prepares the command that will then be processed in xml format in the client
+     * @return the command in string format
+     */
 
     private void onChooseWorkerStartPosition() {
 
     }
 
+    /**
+     * Method that prepares the command that will then be processed in xml format in the client
+     * @return the command in string format
+     */
+
     private void onCandidateCellsForMove() {
 
     }
+
+    /**
+     * Method that prepares the command that will then be processed in xml format in the client
+     * @return the command in string format
+     */
 
     private void onCandidateCellsForBuild() {
 
     }
 
+    /**
+     * Method that prepares the command that will then be processed in xml format in the client
+     * @return the command in string format
+     */
+
     private void onUseGodPower() {
 
     }
+
+    /**
+     * Method that prepares the command that will then be processed in xml format in the client
+     * @return the command in string format
+     */
 
     private void onBoardUpdated() {
 
     }
 
+    /**
+     * Method that prepares the command that will then be processed in xml format in the client
+     * @return the command in string format
+     */
+
     private void onLoser() {
 
     }
+
+    /**
+     * Method that prepares the command that will then be processed in xml format in the client
+     * @return the command in string format
+     */
 
     private void onWinner() {
 

@@ -1,5 +1,9 @@
 package it.polimi.ingsw.PSP027.Network.Client;
 
+/**
+ * @author Elisa Maistri
+ */
+
 public interface ClientObserver {
 
     void OnConnected();

@@ -29,12 +29,21 @@ public class ServerHandler implements Runnable
 
     private List<ServerObserver> observers = new ArrayList<>();
 
+    /**
+     * Constructor: instantiate the ServerHandler setting the server
+     * @param server socket that makes the client speak with the server (through the client handler) via the server handler
+     */
 
     public ServerHandler(Socket server)
     {
         this.server = server;
     }
 
+
+    /**
+     * Method that adds an observer to the list of observers
+     * @param observer observer to add to the list
+     */
 
     public void addObserver(ServerObserver observer)
     {
@@ -43,6 +52,10 @@ public class ServerHandler implements Runnable
         }
     }
 
+    /**
+     * Method that removes an observer from the list of observers
+     * @param observer observer to remove from the list
+     */
 
     public void removeObserver(ServerObserver observer)
     {
@@ -51,24 +64,11 @@ public class ServerHandler implements Runnable
         }
     }
 
-    public void SendRegisterCommand(String nickname)
-    {
-        String cmd = "<cmd><id>" + ProtocolTypes.protocolCommand.clt_Register.toString() + "</id><data><nickname>" + nickname + "</nickname></data></cmd>";
-        SendCommand(cmd);
-    }
 
-    public void SendDeregisterCommand()
-    {
-        bManualDisconnection = true;
-        String cmd = "<cmd><id>" + ProtocolTypes.protocolCommand.clt_Deregister.toString() + "</id></cmd>";
-        SendCommand(cmd);
-    }
-
-    public void SendHello() {
-
-        String cmd = "<cmd><id>" + ProtocolTypes.protocolCommand.clt_Hello.toString() + "</id></cmd>";
-        SendCommand(cmd);
-    }
+    /**
+     * Method used by the others to actually send to command
+     * @param cmd command to send
+     */
 
     public synchronized void SendCommand(String cmd) {
         try {
@@ -79,6 +79,46 @@ public class ServerHandler implements Runnable
         }
     }
 
+    /* *****************************************************************
+     * Methods that sets the command to send with SendCommand() method *
+     *******************************************************************/
+
+    /**
+     * Method that sends the command Register
+     * @param nickname nickname to register the user with
+     */
+
+    public void SendRegisterCommand(String nickname)
+    {
+        String cmd = "<cmd><id>" + ProtocolTypes.protocolCommand.clt_Register.toString() + "</id><data><nickname>" + nickname + "</nickname></data></cmd>";
+        SendCommand(cmd);
+    }
+
+    /**
+     * Method that sends the command Deregister
+     */
+
+    public void SendDeregisterCommand()
+    {
+        bManualDisconnection = true;
+        String cmd = "<cmd><id>" + ProtocolTypes.protocolCommand.clt_Deregister.toString() + "</id></cmd>";
+        SendCommand(cmd);
+    }
+
+    /**
+     * Method that sends the command Hello
+     */
+
+    public void SendHello() {
+
+        String cmd = "<cmd><id>" + ProtocolTypes.protocolCommand.clt_Hello.toString() + "</id></cmd>";
+        SendCommand(cmd);
+    }
+
+    /**
+     * Method that closes the connection to the server
+     */
+
     public synchronized void Stop()
     {
         bManualDisconnection = true;
@@ -87,6 +127,10 @@ public class ServerHandler implements Runnable
             server.close();
         } catch (IOException e) { }
     }
+
+    /**
+     * Method that handles the connection with the server on client side (it is the counterpart of client handler)
+     */
 
     @Override
     public void run()
@@ -109,15 +153,21 @@ public class ServerHandler implements Runnable
         } catch (IOException  e) { }
 
         try {
-            onDisconnected();
+            FireOnDisconnected();
         } catch (IOException | ClassNotFoundException e) { }
 
     }
 
+    /**
+     * Method that handles the connection of the client to the server
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
+
     private void handleServerConnection() throws IOException, ClassNotFoundException {
         System.out.println("Connected to " + server.getInetAddress().getHostAddress());
 
-        onConnected();
+        FireOnConnected();
 
         try {
             while (bRun) {
@@ -157,13 +207,13 @@ public class ServerHandler implements Runnable
                             switch(cmdID)
                             {
                                 case srv_Hello:
-                                    onHello();
+                                    FireOnHello();
                                     break;
                                 case srv_Registered:
-                                    onRegister(cmdData);
+                                    FireOnRegister(cmdData);
                                     break;
                                 case srv_Deregistered:
-                                    onDeregister();
+                                    FireOnDeregister();
                                     break;
                             }
                         }
@@ -177,7 +227,14 @@ public class ServerHandler implements Runnable
         System.out.println("Disconnected from " + server.getInetAddress().getHostAddress());
     }
 
-    private synchronized void onRegister(Node data) throws IOException, ClassNotFoundException
+    /**
+     * Method that fires the OnRegister() method in the client, processing the command received from the server
+     * @param data xml to process
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
+
+    private synchronized void FireOnRegister(Node data) throws IOException, ClassNotFoundException
     {
         /** Possible return data
         * "<data><retcode>FAIL</retcode><reason>Nickname already present</reason></data>";
@@ -228,7 +285,13 @@ public class ServerHandler implements Runnable
         }
     }
 
-    private synchronized void onDeregister() throws IOException, ClassNotFoundException
+    /**
+     * Method that fires the OnDeregister() method in the client
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
+
+    private synchronized void FireOnDeregister() throws IOException, ClassNotFoundException
     {
         /* copy the list of observers in case some observers changes it from inside
          * the notification method */
@@ -243,7 +306,13 @@ public class ServerHandler implements Runnable
         }
     }
 
-    private synchronized void onHello() throws IOException, ClassNotFoundException
+    /**
+     * Method that fires the OnHello() method in the client
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
+
+    private synchronized void FireOnHello() throws IOException, ClassNotFoundException
     {
         /* copy the list of observers in case some observers changes it from inside
          * the notification method */
@@ -258,7 +327,13 @@ public class ServerHandler implements Runnable
         }
     }
 
-    private synchronized void onConnected() throws IOException, ClassNotFoundException
+    /**
+     * Method that fires the OnConnected() method in the client
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
+
+    private synchronized void FireOnConnected() throws IOException, ClassNotFoundException
     {
         /* copy the list of observers in case some observers changes it from inside
          * the notification method */
@@ -273,7 +348,13 @@ public class ServerHandler implements Runnable
         }
     }
 
-    private synchronized void onDisconnected() throws IOException, ClassNotFoundException
+    /**
+     * Method that fires the OnDisconnected() method in the client
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
+
+    private synchronized void FireOnDisconnected() throws IOException, ClassNotFoundException
     {
         /* copy the list of observers in case some observers changes it from inside
          * the notification method */

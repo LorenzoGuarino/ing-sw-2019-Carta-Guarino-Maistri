@@ -4,11 +4,20 @@ import it.polimi.ingsw.PSP027.Network.Client.ClientObserver;
 
 import java.util.Scanner;
 
+/**
+ * @author Elisa Maistri
+ */
+
 public class CLI implements Runnable, ClientObserver {
 
     private Scanner scanner = null;
     private Client client = null;
     private boolean bRun = false;
+
+    /**
+     * Main method of the CLI which the user will run instantiating a new CLI
+     * @param args main arguments
+     */
 
     public static void main( String[] args )
     {
@@ -17,6 +26,12 @@ public class CLI implements Runnable, ClientObserver {
         CLI cli = new CLI();
         cli.run();
     }
+
+    /**
+     * Method that checks if a command entered by the user is valid
+     * @param command command to check
+     * @return true if it's a valid command, otherwise false
+     */
 
     public boolean IsAValidCommand(String command){
 
@@ -37,6 +52,11 @@ public class CLI implements Runnable, ClientObserver {
 
         return false;
     }
+
+    /**
+     * Method that is launched when the CLI starts and handles the action to perform in regard to the command entered by
+     * by the user in an infinite cycle
+     */
 
     @Override
     public void run()
@@ -64,32 +84,31 @@ public class CLI implements Runnable, ClientObserver {
 
                 cmd = cmdline[0];
 
-                if(cmd.equals("connect"))
-                {
-                    if(cmdline.length==2)
-                        client.Connect(cmdline[1]);
-                    else
-                        OnInvalidCommandSyntax("connect");
-                }
-                else if(cmd.equals("disconnect"))
-                {
-                    client.Disconnect();
-                }
-                else if(cmd.equals("register"))
-                {
-                    if(cmdline.length==2)
-                        client.Register(cmdline[1]);
-                    else
-                        OnInvalidCommandSyntax("register");
-                }
-                else if(cmd.equals("deregister"))
-                {
-                    client.Deregister();
-                }
-                else if(cmd.equals("bye"))
-                {
-                    client.Disconnect();
-                    bRun = false;
+                switch (cmd) {
+                    case "connect":
+                        if (cmdline.length == 2)
+                            client.Connect(cmdline[1]);
+                        else
+                            OnInvalidCommandSyntax("connect");
+                        break;
+                    case "disconnect":
+                        client.Disconnect();
+                        break;
+                    case "register":
+                        if (cmdline.length == 2)
+                            client.Register(cmdline[1]);
+                        else
+                            OnInvalidCommandSyntax("register");
+                        break;
+                    case "deregister":
+                        client.Deregister();
+                        break;
+                    case "bye":
+                        client.Disconnect();
+                        bRun = false;
+                        break;
+
+                        //here goes every command that the user will enter in the CLI
                 }
             }
             else
@@ -101,6 +120,11 @@ public class CLI implements Runnable, ClientObserver {
         System.exit(0);
     }
 
+    /**
+     * Method that tells the user why the command was invalid
+     * @param cmd command that determines which error will be displayed to the user
+     */
+
     public void OnInvalidCommandSyntax(String cmd)
     {
         if(cmd.equals("connect"))
@@ -109,6 +133,13 @@ public class CLI implements Runnable, ClientObserver {
             System.out.println("Missing nickname from register command. Syntax:\n register nickname");
     }
 
+    /* ***********************************************************************************
+     * Methods fired by the client's methods triggered in particular connection statuses *
+     *************************************************************************************/
+
+    /**
+     * Method of the ClientObserver interface that is fired by the client after connection
+     */
     @Override
     public void OnConnected()
     {
@@ -119,14 +150,22 @@ public class CLI implements Runnable, ClientObserver {
 
     }
 
+    /**
+     * Method of the ClientObserver interface that is fired by the client if it has been disconnected from the server
+     */
+
     @Override
     public void OnDisconnected()
     {
         System.out.println("You are not actually connected to server.");
         System.out.println("Available commands:");
-        System.out.println("  connect ip:port (this will let you connect to Santorini server.\r\n                   Port is optional. If not specified the default value 2705 will be used)");
+        System.out.println("  connect ip:port (this will let you connect to Santorini server.\r\nPort is optional. If not specified the default value 2705 will be used)");
         System.out.println("  bye (to quit the game)");
     }
+
+    /**
+     * Method of the ClientObserver interface that is fired by the client after the user has registered
+     */
 
     @Override
     public void OnRegistered()
@@ -138,6 +177,10 @@ public class CLI implements Runnable, ClientObserver {
         System.out.println("  bye");
     }
 
+    /**
+     * Method of the ClientObserver interface that is fired by the client after the user has been deregistered
+     */
+
     @Override
     public void OnDeregistered()
     {
@@ -146,6 +189,10 @@ public class CLI implements Runnable, ClientObserver {
         System.out.println("  disconnect");
         System.out.println("  bye");
     }
+
+    /**
+     * Method of the ClientObserver interface that is fired by the client if there was an error when trying to connect
+     */
 
     @Override
     public void OnConnectionError()
