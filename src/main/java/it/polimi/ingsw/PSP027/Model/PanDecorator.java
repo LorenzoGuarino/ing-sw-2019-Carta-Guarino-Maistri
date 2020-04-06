@@ -13,20 +13,15 @@ public class PanDecorator extends GodPowerDecorator {
 
     @Override
     public void applyPower() {
-
-
-       /*
-        Da mettere nel PanDecorator
-        public void checkPanWinConditions(Worker worker, int startLevel){    //this are the win conditions that Pan require
-            if((startLevel-worker.getWorkerPosition().getLevel())>=2){
-                worker.setOwnerHasWin = 1;
-            }else{
-                    //non fare nulla
+            if(this.getDecoratedTurn().getPhaseList().get(1)!=null){
+                MovePhase modifiedPhase = (MovePhase) this.getDecoratedTurn().getPhaseList().get(1);
+                modifiedPhase.setActualDecorator(this);
             }
-        }
-
-        */
     }
 
+    /*@Override
+    public void checkWinCondition(){
+
+    }*/
 
 }
