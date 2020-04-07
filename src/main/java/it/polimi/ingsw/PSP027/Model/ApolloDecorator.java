@@ -5,13 +5,14 @@ import java.util.List;
 
 /**
  * @author Lorenzo Guarino
+ * @author danielecarta
  * */
 public class ApolloDecorator extends GodPowerDecorator{
 
     boolean powerToggled=false;
     /**
      * Constructor
-     *@param decoratedTurn
+     *@param decoratedTurn the turn the decorator is applied onto
      */
 
     public ApolloDecorator(ConcreteTurn decoratedTurn) {

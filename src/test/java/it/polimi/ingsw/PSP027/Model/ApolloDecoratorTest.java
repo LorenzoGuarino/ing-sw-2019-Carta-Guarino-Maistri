@@ -8,6 +8,10 @@ import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 
+/**
+ * @author danielecarta
+ */
+
 public class ApolloDecoratorTest {
     SantoriniMatch santoriniMatch;
     ConcreteTurn turn;
@@ -75,6 +79,22 @@ public class ApolloDecoratorTest {
         Cell x11 = gameBoard.getCell(0);
 
         apolloDecoratoratedTurn.updateBoard(worker11,gameBoard,x21);
+        assertTrue(x11.isOccupiedByWorker());
+        assertEquals(worker11.getWorkerPosition(), x21);
+        assertEquals(worker21.getWorkerPosition(), x11);
+    }
+
+    @Test
+    public void updateBoard_calledFromAMovePhaseWhereAMoveHasToBePerformed(){
+        apolloDecoratoratedTurn=new ApolloDecorator(turn);
+        Cell x21 = gameBoard.getCell(1);//opponentWorkerInNeighboringCell,i should be able to move there
+        worker21.setPosition(gameBoard.getCell(1));
+        Cell x11 = gameBoard.getCell(0);
+
+        MovePhase movePhase= new MovePhase(worker11,gameBoard);
+        turn.getPhaseList().add(movePhase);
+        apolloDecoratoratedTurn.applyPower();
+        movePhase.updateBoard(movePhase.getChosenWorker(),movePhase.getGameBoard(),x21);
         assertTrue(x11.isOccupiedByWorker());
         assertEquals(worker11.getWorkerPosition(), x21);
         assertEquals(worker21.getWorkerPosition(), x11);
