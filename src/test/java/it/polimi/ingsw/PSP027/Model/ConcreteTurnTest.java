@@ -1,10 +1,10 @@
 package it.polimi.ingsw.PSP027.Model;
 
+import it.polimi.ingsw.PSP027.Model.Game.Player;
+import it.polimi.ingsw.PSP027.Model.TurnsManagement.ConcreteTurn;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 public class ConcreteTurnTest {
     SantoriniMatch santoriniMatch;

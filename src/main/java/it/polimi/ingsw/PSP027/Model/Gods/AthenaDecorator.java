@@ -1,4 +1,7 @@
-package it.polimi.ingsw.PSP027.Model;
+package it.polimi.ingsw.PSP027.Model.Gods;
+
+import it.polimi.ingsw.PSP027.Model.TurnsManagement.ConcreteTurn;
+import it.polimi.ingsw.PSP027.Model.TurnsManagement.MovePhase;
 
 public class AthenaDecorator extends GodPowerDecorator {
 

@@ -1,9 +1,9 @@
 package it.polimi.ingsw.PSP027.Model;
 
+import it.polimi.ingsw.PSP027.Model.Game.Player;
+import it.polimi.ingsw.PSP027.Model.Game.Worker;
 import org.junit.After;
 import org.junit.Before;
-
-import static org.junit.Assert.*;
 
 public class WorkerTest {
 

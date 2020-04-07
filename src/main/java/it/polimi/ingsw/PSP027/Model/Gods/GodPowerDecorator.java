@@ -1,4 +1,10 @@
-package it.polimi.ingsw.PSP027.Model;
+package it.polimi.ingsw.PSP027.Model.Gods;
+
+import it.polimi.ingsw.PSP027.Model.Game.Board;
+import it.polimi.ingsw.PSP027.Model.Game.Cell;
+import it.polimi.ingsw.PSP027.Model.Game.Worker;
+import it.polimi.ingsw.PSP027.Model.TurnsManagement.ConcreteTurn;
+import it.polimi.ingsw.PSP027.Model.TurnsManagement.Turn;
 
 import java.util.List;
 
@@ -33,7 +39,7 @@ public abstract class GodPowerDecorator extends Turn {
      * @param chosenWorker
      * @return null
      */
-    public List<Cell> changeCandidateMoves(Worker chosenWorker,Board gameBoard){
+    public List<Cell> changeCandidateMoves(Worker chosenWorker, Board gameBoard){
         return null;
     }
 
