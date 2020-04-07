@@ -1,10 +1,11 @@
-package it.polimi.ingsw.PSP027.Model;
+package it.polimi.ingsw.PSP027.Model.Gods;
 
 import it.polimi.ingsw.PSP027.Model.Game.Board;
 import it.polimi.ingsw.PSP027.Model.Game.Cell;
 import it.polimi.ingsw.PSP027.Model.Game.Player;
 import it.polimi.ingsw.PSP027.Model.Game.Worker;
 import it.polimi.ingsw.PSP027.Model.Gods.MinotaurDecorator;
+import it.polimi.ingsw.PSP027.Model.SantoriniMatch;
 import it.polimi.ingsw.PSP027.Model.TurnsManagement.ConcreteTurn;
 import it.polimi.ingsw.PSP027.Model.TurnsManagement.MovePhase;
 import org.junit.After;
