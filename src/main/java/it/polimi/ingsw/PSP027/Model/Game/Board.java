@@ -1,4 +1,4 @@
-package it.polimi.ingsw.PSP027.Model;
+package it.polimi.ingsw.PSP027.Model.Game;
 
 import java.util.ArrayList;
 import java.util.List;

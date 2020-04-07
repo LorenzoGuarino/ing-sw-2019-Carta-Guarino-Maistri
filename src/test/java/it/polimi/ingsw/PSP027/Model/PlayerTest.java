@@ -1,11 +1,10 @@
 package it.polimi.ingsw.PSP027.Model;
 
+import it.polimi.ingsw.PSP027.Model.Game.GodCard;
+import it.polimi.ingsw.PSP027.Model.Game.Player;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.Assert.*;
 

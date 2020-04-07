@@ -1,4 +1,4 @@
-package it.polimi.ingsw.PSP027.Model;
+package it.polimi.ingsw.PSP027.Model.Game;
 
 /**
  * @author Lorenzo Guarino

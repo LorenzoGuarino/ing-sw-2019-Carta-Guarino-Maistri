@@ -1,4 +1,6 @@
-package it.polimi.ingsw.PSP027.Model;
+package it.polimi.ingsw.PSP027.Model.TurnsManagement;
+
+import it.polimi.ingsw.PSP027.Model.Game.Worker;
 
 import java.util.List;
 

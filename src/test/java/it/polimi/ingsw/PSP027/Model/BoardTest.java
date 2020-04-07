@@ -1,6 +1,7 @@
 package it.polimi.ingsw.PSP027.Model;
 
-import org.junit.After;
+import it.polimi.ingsw.PSP027.Model.Game.Board;
+import it.polimi.ingsw.PSP027.Model.Game.Cell;
 import org.junit.Before;
 import org.junit.Test;
 import java.util.List;

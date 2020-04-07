@@ -1,4 +1,11 @@
-package it.polimi.ingsw.PSP027.Model;
+package it.polimi.ingsw.PSP027.Model.TurnsManagement;
+
+import it.polimi.ingsw.PSP027.Model.Game.GodCard;
+import it.polimi.ingsw.PSP027.Model.Gods.AthenaOppDecorator;
+import it.polimi.ingsw.PSP027.Model.Gods.GodPowerDecorator;
+import it.polimi.ingsw.PSP027.Model.Game.Player;
+import it.polimi.ingsw.PSP027.Model.SantoriniMatch;
+import it.polimi.ingsw.PSP027.Model.Game.Worker;
 
 import java.util.ArrayList;
 
