@@ -18,7 +18,7 @@ public class BuildPhase extends ConcretePhase {
     /**
      * Constructor, builds a standard BuildPhase with a standard candidateBuildingCells list starting from the
      * chosenWorker moved in the MovePhase and the board of the current turn
-     * @param chosenWorker
+     * @param chosenWorker worker that the player is playing the turn with
      */
 
     public BuildPhase(Worker chosenWorker, Board gameBoard) {
@@ -44,7 +44,7 @@ public class BuildPhase extends ConcretePhase {
 
     /**
      * Updates the board after a standard build has been performed onto the chosenCell
-     * @param chosenCell
+     * @param chosenCell cell chosen by the user on which the build will happen
      */
 
     @Override
