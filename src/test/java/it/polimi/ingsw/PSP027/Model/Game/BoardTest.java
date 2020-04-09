@@ -17,10 +17,10 @@ public class BoardTest {
 
     /**
      * setUps a Board to be tested
-     * @throws Exception
      */
+
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         gameBoard = new Board();
     }
 

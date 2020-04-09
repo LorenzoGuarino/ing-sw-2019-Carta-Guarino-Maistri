@@ -1,8 +1,7 @@
 package it.polimi.ingsw.PSP027.Model.Gods;
 
 import it.polimi.ingsw.PSP027.Model.Game.Cell;
-import it.polimi.ingsw.PSP027.Model.TurnsManagement.ConcreteTurn;
-import it.polimi.ingsw.PSP027.Model.Game.Worker;
+import it.polimi.ingsw.PSP027.Model.TurnsManagement.ConcretePhase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,35 +12,23 @@ import java.util.List;
 
 public class AthenaOppDecorator extends GodPowerDecorator{
 
-    /**
-     * Constructor
-     *
-     * @param decoratedTurn
-     */
-    public AthenaOppDecorator(ConcreteTurn decoratedTurn) {
-        super(decoratedTurn);
+    public AthenaOppDecorator(ConcretePhase decoratedPhase) {
+        super(decoratedPhase);
     }
 
-    /**
-     * given a chosenWorker's candidateMoves List it removes the moves that make the worker go up one level
-     * @param chosenWorker
-     * @param candidateMoves
-     * @return
-     */
-
-    public List<Cell> changeCandidateMoves(Worker chosenWorker, List<Cell> candidateMoves) {
-        Cell startingCell = chosenWorker.getWorkerPosition();
-        candidateMoves = new ArrayList<>();
-        for(Cell candidateCell : candidateMoves){     //for each candidate cell in neighbouringCells if
+    @Override
+    public void changeCandidateCells() {
+        Cell startingCell = this.getDecoratedPhase().getChosenWorker().getWorkerPosition();
+        List<Cell> candidateMoves = new ArrayList<>();
+        for(Cell candidateCell : candidateMoves){
             if(candidateCell.getLevel()>startingCell.getLevel()){
                 candidateMoves.remove(candidateCell);
             }
         }
-        return candidateMoves;
     }
 
     @Override
-    public void applyPower() {
+    public void updateBoard(Cell chosenCell) {
 
     }
 }

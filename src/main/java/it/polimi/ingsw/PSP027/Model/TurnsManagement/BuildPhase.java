@@ -10,20 +10,10 @@ import java.util.List;
 
 /**
  * @author Elisa Maistri
+ * @author danielecarta
  */
 
-public class BuildPhase extends Phase {
-    private List<Cell> candidateBuildingCells;
-    private GodPowerDecorator actualDecorator;
-    private Worker chosenWorker;
-    private Board gameBoard;
-
-    /**
-     * emptyConstructor
-     */
-    public BuildPhase(){
-        super();
-    }
+public class BuildPhase extends ConcretePhase {
 
     /**
      * Constructor, builds a standard BuildPhase with a standard candidateBuildingCells list starting from the
@@ -32,48 +22,38 @@ public class BuildPhase extends Phase {
      */
 
     public BuildPhase(Worker chosenWorker, Board gameBoard) {
-        this.gameBoard = gameBoard;
-        this.chosenWorker = chosenWorker;
-        Cell CurrentUpdatedWorkerPosition = chosenWorker.getWorkerPosition();
-        this.candidateBuildingCells = new ArrayList<>();
+        this.setGameBoard(gameBoard);
+        this.setChosenWorker(chosenWorker);
+        this.setCandidateCells(new ArrayList<Cell>());
+        changeCandidateCells();
+    }
 
-        for(Cell candidateCell : gameBoard.getNeighbouringCells(CurrentUpdatedWorkerPosition)) {
+    /**
+     * Updates the candidateBuildingCells in a standard way, that allows the chosen worker to build in any adjacent cell that
+     * is not occupied by any worker and has not a dome
+     */
+
+    public void changeCandidateCells(){
+        Cell CurrentUpdatedWorkerPosition = this.getChosenWorker().getWorkerPosition();
+        for(Cell candidateCell : this.getGameBoard().getNeighbouringCells(CurrentUpdatedWorkerPosition)) {
             if((!candidateCell.isOccupiedByWorker()) && (!candidateCell.checkDome())) {
-                candidateBuildingCells.add(candidateCell);
+                this.getCandidateCells().add(candidateCell);
             }
         }
     }
 
     /**
-     * Copy Constructor
-     * @param buildPhase
+     * Updates the board after a standard build has been performed onto the chosenCell
+     * @param chosenCell
      */
 
-    public BuildPhase(BuildPhase buildPhase){
-        this.chosenWorker = buildPhase.chosenWorker;
-        this.actualDecorator = buildPhase.actualDecorator;
-        this.chosenWorker = buildPhase.chosenWorker;
-        this.gameBoard = buildPhase.gameBoard;
+    @Override
+    public void updateBoard(Cell chosenCell) {
+        if(chosenCell.getLevel()<3){
+            chosenCell.addLevel();
+        }
+        else{
+            chosenCell.addDome();
+        }
     }
-
-    /**
-     * Method that modifies the actual candidateBuildingCells list according to the GodPowerDecorator decorating the BuildPhase's turn
-     * If the decorator doesn't modify BuildConditions returns without doing anything
-     */
-
-    public void changeCandidateBuildingCellsAccordingToDecorator() {
-        List<Cell> candidateDecoratedBuildingCells = this.actualDecorator.changeBuildConditions(chosenWorker, gameBoard);
-        if (candidateDecoratedBuildingCells == null) return;
-        else this.candidateBuildingCells = candidateDecoratedBuildingCells;
-    }
-
-    /**
-     * Method that modifies the way a player can build
-     * If the decorator doesn't modify BuildMode returns without doing anything
-     */
-
-    public void changeBuildModeAccordingToDecorator() {
-
-    }
-
 }

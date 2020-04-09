@@ -2,14 +2,13 @@ package it.polimi.ingsw.PSP027.Model.TurnsManagement;
 
 import it.polimi.ingsw.PSP027.Model.Game.Player;
 import it.polimi.ingsw.PSP027.Model.SantoriniMatch;
-import it.polimi.ingsw.PSP027.Model.TurnsManagement.ConcreteTurn;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 public class ConcreteTurnTest {
     SantoriniMatch santoriniMatch;
-    ConcreteTurn turn;
+    Turn turn;
     Player player1,player2,player3;
 
     @Before
@@ -24,11 +23,6 @@ public class ConcreteTurnTest {
         turn=santoriniMatch.newTurn();
     }
 
-    @Test
-    public void applyPower_WithMinotaurDecoratorApplied(){
-        player1.setPlayerGodCard(santoriniMatch.getGodCardsList().get(8));
-        turn.applyPower();
-    }
     @After
     public void tearDown() throws Exception {
     }

@@ -57,7 +57,7 @@ public class Worker {
      * The setter of position tells to the old position it is no longer occupied by this worker, and the new one that it now is
      * @param position
      */
-    public void setPosition(Cell position) {
+    public void changePosition(Cell position) {
         if(this.position!=null&&this.position.getOccupyingWorker().equals(this)){
             this.position.setWorkerOccupying(null);
         }

@@ -1,58 +1,28 @@
 package it.polimi.ingsw.PSP027.Model.Gods;
 
-import it.polimi.ingsw.PSP027.Model.Game.Board;
-import it.polimi.ingsw.PSP027.Model.Game.Cell;
-import it.polimi.ingsw.PSP027.Model.Game.Worker;
-import it.polimi.ingsw.PSP027.Model.TurnsManagement.ConcreteTurn;
-import it.polimi.ingsw.PSP027.Model.TurnsManagement.Turn;
-
-import java.util.List;
+import it.polimi.ingsw.PSP027.Model.TurnsManagement.ConcretePhase;
+import it.polimi.ingsw.PSP027.Model.TurnsManagement.Phase;
 
 /**
  * @author danielecarta
  */
 
-public abstract class GodPowerDecorator extends Turn {
-    /**
-     * The concrete turn the decorator goes to decorate
-     */
-    private ConcreteTurn decoratedTurn;
+public abstract class GodPowerDecorator extends Phase {
 
     /**
-     * Constructor
-     * @param decoratedTurn
+     * The concrete phase the decorator goes to decorate
      */
-    public GodPowerDecorator(ConcreteTurn decoratedTurn) {
-        this.decoratedTurn = decoratedTurn;
+    private ConcretePhase decoratedPhase;
+
+    public GodPowerDecorator(ConcretePhase decoratedPhase) {
+        this.decoratedPhase = decoratedPhase;
     }
 
-    /**
-     * Getter
-     * @return decoratedTurn
-     */
-    public ConcreteTurn getDecoratedTurn() {
-        return decoratedTurn;
+    public ConcretePhase getDecoratedPhase() {
+        return decoratedPhase;
     }
 
-    /**
-     * Standard changeMoveCondition method
-     * @param chosenWorker
-     * @return null
-     */
-    public List<Cell> changeCandidateMoves(Worker chosenWorker, Board gameBoard){
-        return null;
+    public void setDecoratedPhase(ConcretePhase decoratedPhase) {
+        this.decoratedPhase = decoratedPhase;
     }
-
-    /**
-     * Standard changeBuildCondition method
-     * @param chosenWorker
-     * @return null
-     */
-    public List<Cell> changeBuildConditions(Worker chosenWorker,Board gameBoard){
-        return null;
-    }
-
-    public void updateBoard(Worker chosenWorker,Board gameBoard,Cell chosenCell){}
-
-    public abstract void applyPower();
 }

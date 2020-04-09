@@ -5,9 +5,8 @@ import it.polimi.ingsw.PSP027.Model.Game.GodCard;
 import it.polimi.ingsw.PSP027.Model.Game.Player;
 import it.polimi.ingsw.PSP027.Model.Gods.GodPowerDecorator;
 import it.polimi.ingsw.PSP027.Model.Gods.MinotaurDecorator;
-import it.polimi.ingsw.PSP027.Model.TurnsManagement.ConcreteTurn;
-import it.polimi.ingsw.PSP027.Model.TurnsManagement.MovePhase;
 import it.polimi.ingsw.PSP027.Model.TurnsManagement.Turn;
+import it.polimi.ingsw.PSP027.Model.TurnsManagement.MovePhase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,8 +63,8 @@ public class SantoriniMatch {
      * @return
      */
 
-    public ConcreteTurn newTurn(){
-        return new ConcreteTurn(this.getFirstPlayer(),this);
+    public Turn newTurn(){
+        return new Turn(this.getFirstPlayer(),this);
     }
 
     /**
@@ -73,7 +72,7 @@ public class SantoriniMatch {
      * @return
      */
 
-    public GodPowerDecorator decorateTurn(ConcreteTurn turn) {
+    public GodPowerDecorator decorateTurn(Turn turn) {
         switch (turn.getPlayingPlayer().getPlayerGod().getGodType()){
             //case APOLLO: break;
             //case ARTEMIS: break;
@@ -82,7 +81,7 @@ public class SantoriniMatch {
             //case DEMETER: break;
             //case HEPHAESTUS: break;
             case Minotaur:
-                return new MinotaurDecorator(turn);
+                return null;//new MinotaurDecorator(turn);
             //case PAN: break;
             //case PROMETHEUS: break;
         }
@@ -184,7 +183,7 @@ public class SantoriniMatch {
      * @param lastMovePhase the last MovePhase, currently playing
      */
 
-    public void checkWinCondition(ConcreteTurn currentTurn, MovePhase lastMovePhase){
+    public void checkWinCondition(Turn currentTurn, MovePhase lastMovePhase){
         if(lastMovePhase.getStartChosenWorkerLvl()==2 && currentTurn.getChosenWorker().getWorkerPosition().getLevel()==3){
             endGame(currentTurn.getPlayingPlayer());
         }

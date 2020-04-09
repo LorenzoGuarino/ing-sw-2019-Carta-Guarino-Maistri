@@ -19,7 +19,7 @@ public class PlayerTest {
     public void tearDown() throws Exception {
     }
 
-    @Test
+    /*@Test
     public void addOpponentGodCard() {
         GodCard Apollo = new GodCard("Apollo", "Descrizione", 1);
         player.addOpponentGodCard(Apollo);
@@ -33,7 +33,7 @@ public class PlayerTest {
         assertEquals(Apollo.getGodName(), player.getPlayerGod().getGodName());
         assertEquals(Apollo.getDescription(), player.getPlayerGod().getDescription());
         assertEquals(Apollo.getGodId(), player.getPlayerGod().getGodId());
-    }
+    }*/
 
     @Test
     public void removeOpponentGodCards(){

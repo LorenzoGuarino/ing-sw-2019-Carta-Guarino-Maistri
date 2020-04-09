@@ -8,15 +8,15 @@ import java.util.List;
  * @author danielecarta
  */
 
-public class StartPhase extends Phase {
+public class StartPhase extends ConcretePhase {
 
     private List<Worker> choosableWorkers;
-    private Worker chosenWorker;
 
     /**
      * Constuctor
      * @param choosableWorkers
      */
+
     public StartPhase(List<Worker> choosableWorkers) {
         this.choosableWorkers = choosableWorkers;
     }
@@ -24,6 +24,7 @@ public class StartPhase extends Phase {
     /**
      * @return the list of choosable workers
      */
+
     public List<Worker> getChoosableWorkers() {
         return choosableWorkers;
     }
@@ -34,7 +35,7 @@ public class StartPhase extends Phase {
      */
     public void setChosenWorker(Worker chosenWorker){
         if (choosableWorkers.contains(chosenWorker)) {
-            this.chosenWorker = chosenWorker;
+            this.setChosenWorker(chosenWorker);
             this.setDone(true);
         }
     }
@@ -47,7 +48,4 @@ public class StartPhase extends Phase {
         this.choosableWorkers = choosableWorkers;
     }
 
-    public Worker getChosenWorker() {
-        return chosenWorker;
-    }
 }

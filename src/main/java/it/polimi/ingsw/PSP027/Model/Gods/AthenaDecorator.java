@@ -1,26 +1,21 @@
 package it.polimi.ingsw.PSP027.Model.Gods;
 
-import it.polimi.ingsw.PSP027.Model.TurnsManagement.ConcreteTurn;
-import it.polimi.ingsw.PSP027.Model.TurnsManagement.MovePhase;
+import it.polimi.ingsw.PSP027.Model.Game.Cell;
+import it.polimi.ingsw.PSP027.Model.TurnsManagement.ConcretePhase;
 
 public class AthenaDecorator extends GodPowerDecorator {
 
-
-    /**
-     * Constructor
-     *
-     * @param decoratedTurn
-     */
-    public AthenaDecorator(ConcreteTurn decoratedTurn) {
-        super(decoratedTurn);
+    public AthenaDecorator(ConcretePhase decoratedPhase) {
+        super(decoratedPhase);
     }
 
+    @Override
+    public void changeCandidateCells() {
 
+    }
 
     @Override
-    public void applyPower() {
+    public void updateBoard(Cell chosenCell) {
 
-        MovePhase movePhase= (MovePhase)this.getDecoratedTurn().getPhaseList().get(0);//movephase nella quale sono salito?
-        //movePhase.getStartChosenWorkerLvl()<movePhase.getChosenWorker().getWorkerPosition().getLevel()
     }
 }
