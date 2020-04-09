@@ -49,11 +49,7 @@ public class Cell {
 
     public boolean isOccupiedByOpponentWorker(Player opponentPlayer) {
         if (isOccupiedByWorker()) {
-            if (workerOccupying.getWorkerOwner() != opponentPlayer) {
-                return true;
-            } else {
-                return false;
-            }
+            return workerOccupying.getWorkerOwner() != opponentPlayer;
         }
         return false;
     }
@@ -176,8 +172,8 @@ public class Cell {
     }
 
     /**
-     * given a worker it sets this worker as occupyingWorker of the cell
-     * @param workerOccupying
+     * Method that sets a given worker as the occupying worker of the cell
+     * @param workerOccupying worker that is needed to be set as the occupier of the cell
      */
     public void setWorkerOccupying(Worker workerOccupying) {
         this.workerOccupying = workerOccupying;
