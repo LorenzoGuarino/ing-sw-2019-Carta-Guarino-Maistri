@@ -34,26 +34,6 @@ public class SantoriniMatch {
     private List<GodCard> godCardsList;
     private List<GodCard> godCardsInUse;
 
-    public static final String APOLLO      = "Apollo";
-    public static final String ARTEMIS     = "Artemis";
-    public static final String ATHENA      = "Athena";
-    public static final String ATLAS       = "Atlas";
-    public static final String DEMETER     = "Demeter";
-    public static final String HEPHAESTUS  = "Hephaestus";
-    public static final String MINOTAUR    = "Minotaur";
-    public static final String PAN         = "Pan";
-    public static final String PROMETHEUS  = "Prometheus";
-
-    public static final String APOLLO_D     = "Your Move: Your Worker may move into an opponent Worker's space by forcing their Worker to the space yours just vacated.";
-    public static final String ARTEMIS_D    = "Your Move: Your Worker may move one additional time, but not back to its initial space.";
-    public static final String ATHENA_D     = "Opponent's Turn: If one of your Workers moved up on your last turn, opponent Workers cannot move up this turn.";
-    public static final String ATLAS_D      = "Your Build: Your Worker may build a dome at any level.";
-    public static final String DEMETER_D    = "Your Build: Your Worker may build one additional time, but not on the same space.";
-    public static final String HEPHAESTUS_D = "Your Build: Your Worker may build one additional block (not dome) on top of your first block.";
-    public static final String MINOTAUR_D   = "Your Move: Your Worker may move into an opponent Worker's space, if their Worker can be forced one space straight backwards to an unoccupied space at any level.";
-    public static final String PAN_D        = "Win Condition: You also win if your Worker moves down two or more levels.";
-    public static final String PROMETHEUS_D = "Your Turn: If your Worker does not move up, it may build both before and after moving.";
-
 
     /**
      * Constructor: this creates a new match, creating a list for the players that will the be filled as the players are added
@@ -65,15 +45,15 @@ public class SantoriniMatch {
         playedTurns = new ArrayList<Turn>();
         godCardsList = new ArrayList<GodCard>();
 
-        godCardsList.add(new GodCard(APOLLO, APOLLO_D));
-        godCardsList.add(new GodCard(ARTEMIS, ARTEMIS_D));
-        godCardsList.add(new GodCard(ATHENA, ATHENA_D));
-        godCardsList.add(new GodCard(ATLAS, ATLAS_D));
-        godCardsList.add(new GodCard(DEMETER, DEMETER_D));
-        godCardsList.add(new GodCard(HEPHAESTUS, HEPHAESTUS_D));
-        godCardsList.add(new GodCard(MINOTAUR, MINOTAUR_D));
-        godCardsList.add(new GodCard(PAN, PAN_D));
-        godCardsList.add(new GodCard(PROMETHEUS, PROMETHEUS_D));
+        godCardsList.add(new GodCard(GodCard.GodsType.Apollo, GodCard.APOLLO_D));
+        godCardsList.add(new GodCard(GodCard.GodsType.Artemis, GodCard.ARTEMIS_D));
+        godCardsList.add(new GodCard(GodCard.GodsType.Athena, GodCard.ATHENA_D));
+        godCardsList.add(new GodCard(GodCard.GodsType.Atlas, GodCard.ATLAS_D));
+        godCardsList.add(new GodCard(GodCard.GodsType.Demeter, GodCard.DEMETER_D));
+        godCardsList.add(new GodCard(GodCard.GodsType.Hephaestus, GodCard.HEPHAESTUS_D));
+        godCardsList.add(new GodCard(GodCard.GodsType.Minotaur, GodCard.MINOTAUR_D));
+        godCardsList.add(new GodCard(GodCard.GodsType.Pan, GodCard.PAN_D));
+        godCardsList.add(new GodCard(GodCard.GodsType.Prometheus, GodCard.PROMETHEUS_D));
 
         godCardsInUse = new ArrayList<GodCard>();
         gameBoard = new Board();
@@ -94,14 +74,14 @@ public class SantoriniMatch {
      */
 
     public GodPowerDecorator decorateTurn(ConcreteTurn turn) {
-        switch (turn.getPlayingPlayer().getPlayerGod().getGodName()){
+        switch (turn.getPlayingPlayer().getPlayerGod().getGodType()){
             //case APOLLO: break;
             //case ARTEMIS: break;
             //case ATHENA: break;
             //case ATLAS: break;
             //case DEMETER: break;
             //case HEPHAESTUS: break;
-            case MINOTAUR:
+            case Minotaur:
                 return new MinotaurDecorator(turn);
             //case PAN: break;
             //case PROMETHEUS: break;
