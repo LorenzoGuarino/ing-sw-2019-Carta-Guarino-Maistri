@@ -54,7 +54,7 @@ public class ApolloDecoratorTest {
         x22.addLevel();x22.addLevel();
         MovePhase movePhase= new MovePhase(worker11,gameBoard);
         apolloDecoratedPhase =new ApolloDecorator(movePhase);
-        turn.getPhaseList().add(movePhase);
+        apolloDecoratedPhase.changeCandidateCells();
         ArrayList<Cell> expectedList= new ArrayList<Cell>();
         expectedList.add(x12);
         expectedList.add(x21);
