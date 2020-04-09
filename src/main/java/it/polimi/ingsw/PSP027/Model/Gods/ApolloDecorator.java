@@ -40,7 +40,7 @@ public class ApolloDecorator extends GodPowerDecorator{
     @Override
     public void updateBoard(Cell chosenCell) {
         if (chosenCell.isOccupiedByOpponentWorker(this.getDecoratedPhase().getChosenWorker().getWorkerOwner())) {
-            Worker opponentWorker=chosenCell.getOccupyingWorker();
+            Worker opponentWorker = chosenCell.getOccupyingWorker();
             opponentWorker.changePosition(this.getDecoratedPhase().getChosenWorker().getWorkerPosition());
         }
         this.getDecoratedPhase().getChosenWorker().changePosition(chosenCell);

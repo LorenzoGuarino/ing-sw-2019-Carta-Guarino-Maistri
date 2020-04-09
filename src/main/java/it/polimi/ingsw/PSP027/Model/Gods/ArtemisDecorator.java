@@ -10,6 +10,9 @@ import it.polimi.ingsw.PSP027.Model.TurnsManagement.MovePhase;
  */
 public class ArtemisDecorator extends GodPowerDecorator {
 
+    private boolean AskUserToUsePower = true;
+    private boolean UserWantsToUsePower;
+
 
     public ArtemisDecorator(ConcretePhase decoratedPhase) {
         super(decoratedPhase);

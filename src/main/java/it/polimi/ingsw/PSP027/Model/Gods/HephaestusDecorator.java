@@ -7,6 +7,9 @@ import it.polimi.ingsw.PSP027.Model.TurnsManagement.ConcretePhase;
 
 public class HephaestusDecorator extends GodPowerDecorator{
 
+    private boolean AskUserToUsePower = true;
+    private boolean UserWantsToUsePower;
+
     public HephaestusDecorator(ConcretePhase decoratedPhase) {
         super(decoratedPhase);
     }

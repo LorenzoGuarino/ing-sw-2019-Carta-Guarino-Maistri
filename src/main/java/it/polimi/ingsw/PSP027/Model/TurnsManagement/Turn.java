@@ -40,7 +40,7 @@ public class Turn {
      */
     public void addMovePhase(){
         int phaseListSize = this.getPhaseList().size();
-        if(this.getPhaseList().get(phaseListSize-1).isDone()) {
+        if(this.getPhaseList().get(phaseListSize - 1).isDone()) {
             //if the last phase isDone i can add the movePhase
             MovePhase movePhase = new MovePhase(this.getChosenWorker(), this.getSantoriniMatch().getGameBoard());
             this.getPhaseList().add(movePhase);
