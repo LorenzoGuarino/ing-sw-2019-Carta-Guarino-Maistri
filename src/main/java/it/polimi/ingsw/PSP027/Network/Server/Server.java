@@ -1,7 +1,5 @@
 package it.polimi.ingsw.PSP027.Network.Server;
 
-import it.polimi.ingsw.PSP027.Model.Lobby;
-
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;

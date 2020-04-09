@@ -34,9 +34,9 @@ public class MovePhase extends ConcretePhase {
     public void changeCandidateCells(){
         Cell startingCell = this.getChosenWorker().getWorkerPosition();
         for(Cell candidateCell : this.getGameBoard().getNeighbouringCells(startingCell)){   //for each candidate cell in neighbouringCells if
-        if(     (candidateCell.getLevel()<=startingCell.getLevel()+1)&&                     //the lv i want to get to is higher less than one
-                (!candidateCell.isOccupiedByWorker())&&                                     //it is not occupied by a worker
-                (!candidateCell.checkDome())){                                              //it is not occupied by a dome
+        if(     (candidateCell.getLevel() <= startingCell.getLevel() + 1) &&                //the lv i want to get to is higher less than one
+                (!candidateCell.isOccupiedByWorker()) &&                                    //it is not occupied by a worker
+                (!candidateCell.checkDome())) {                                             //it is not occupied by a dome
             this.getCandidateCells().add(candidateCell);                                    //then add the cell to candidateCells
             }
         }

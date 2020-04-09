@@ -55,7 +55,7 @@ public class MinotaurDecorator extends GodPowerDecorator {
         Worker myWorker = this.getDecoratedPhase().getChosenWorker();
 
         if (chosenCell.isOccupiedByOpponentWorker(myWorker.getWorkerOwner())) {
-            Worker opponentWorker=chosenCell.getOccupyingWorker();
+            Worker opponentWorker = chosenCell.getOccupyingWorker();
 
             opponentWorker.changePosition(this.getDecoratedPhase().getGameBoard().getNextCellAlongThePath(myWorker.getWorkerPosition(),chosenCell));
         }

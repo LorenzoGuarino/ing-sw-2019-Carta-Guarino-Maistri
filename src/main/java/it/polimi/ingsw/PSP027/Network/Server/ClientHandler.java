@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.Date;
 
-import it.polimi.ingsw.PSP027.Model.Lobby;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -24,6 +24,7 @@ public class ClientHandler implements Runnable
     private Lobby lobby = null;
     private String nickname = "";
     private Lobby.Gamer gamer = null;
+    private Date lastHelloTime = null;
 
     /**
      * Constructor of the client handler that will communicate with the client
@@ -89,6 +90,9 @@ public class ClientHandler implements Runnable
                 Document doc = Utils.ParseStringToXMLDocument( strCmd );
 
                 if(doc.hasChildNodes()) {
+
+                    lastHelloTime = new Date();
+
                     Node root = doc.getFirstChild();
 
                     if(root.getNodeName().equals("cmd")) {
@@ -133,7 +137,18 @@ public class ClientHandler implements Runnable
                 // Sends the response to the client
 
                 if(!strResponseCmd.isEmpty())
-                    SendConmand(strResponseCmd);
+                    SendCommand(strResponseCmd);
+
+                Date now = new Date();
+
+                long lastHelloReceivedDelta = now.getTime() - lastHelloTime.getTime();
+
+                // if after 6 seconds we do not receive aa message, we assume client has died
+
+                if(lastHelloReceivedDelta > 6000)
+                {
+                }
+
             }
         } catch (ClassNotFoundException | ClassCastException e) {
             System.out.println("invalid stream from client");
@@ -145,7 +160,7 @@ public class ClientHandler implements Runnable
      * @param cmd command that the server wants to send to the client
      */
 
-    public void SendConmand(String cmd) {
+    public void SendCommand(String cmd) {
         try {
             if(output != null)
                 output.writeObject(cmd);

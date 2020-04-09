@@ -21,7 +21,7 @@ public class AthenaOppDecorator extends GodPowerDecorator{
         Cell startingCell = this.getDecoratedPhase().getChosenWorker().getWorkerPosition();
         List<Cell> candidateMoves = new ArrayList<>();
         for(Cell candidateCell : candidateMoves){
-            if(candidateCell.getLevel()>startingCell.getLevel()){
+            if(candidateCell.getLevel() > startingCell.getLevel()){
                 candidateMoves.remove(candidateCell);
             }
         }

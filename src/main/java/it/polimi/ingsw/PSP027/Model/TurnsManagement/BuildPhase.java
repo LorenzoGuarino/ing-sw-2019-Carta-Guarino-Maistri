@@ -49,7 +49,7 @@ public class BuildPhase extends ConcretePhase {
 
     @Override
     public void updateBoard(Cell chosenCell) {
-        if(chosenCell.getLevel()<3){
+        if(chosenCell.getLevel() < 3){
             chosenCell.addLevel();
         }
         else{

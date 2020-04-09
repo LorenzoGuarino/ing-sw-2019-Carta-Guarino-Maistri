@@ -8,10 +8,10 @@ import it.polimi.ingsw.PSP027.Model.TurnsManagement.MovePhase;
 /**
  * @author danielecarta
  */
-public class ArtemideDecorator extends GodPowerDecorator {
+public class ArtemisDecorator extends GodPowerDecorator {
 
 
-    public ArtemideDecorator(ConcretePhase decoratedPhase) {
+    public ArtemisDecorator(ConcretePhase decoratedPhase) {
         super(decoratedPhase);
     }
 

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.PSP027.Model.Game;
 
 /**
+ * @author Elisa Maistri
  * @author Lorenzo Guarino
  * */
 

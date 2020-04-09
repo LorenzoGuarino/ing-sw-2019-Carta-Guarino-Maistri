@@ -1,4 +1,6 @@
-package it.polimi.ingsw.PSP027.Model;
+package it.polimi.ingsw.PSP027.Network.Server;
+
+import it.polimi.ingsw.PSP027.Model.SantoriniMatch;
 
 import java.util.ArrayList;
 import java.util.List;

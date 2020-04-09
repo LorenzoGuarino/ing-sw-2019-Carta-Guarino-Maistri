@@ -44,7 +44,7 @@ public class StartPhase extends ConcretePhase {
      * Sets the list of choosable workers given a list of workers
      * @param choosableWorkers
      */
-    public void setChosableWorkers(List<Worker> choosableWorkers) {
+    public void setChoosableWorkers(List<Worker> choosableWorkers) {
         this.choosableWorkers = choosableWorkers;
     }
 

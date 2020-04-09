@@ -24,23 +24,24 @@ public class Turn {
      *@param playingPlayer
      */
     public Turn(Player playingPlayer,SantoriniMatch santoriniMatch) {
-        this.santoriniMatch=santoriniMatch;
-        this.playingPlayer=playingPlayer;
+        this.santoriniMatch = santoriniMatch;
+        this.playingPlayer = playingPlayer;
         this.phaseList = new ArrayList<>();
-        StartPhase phase1=new StartPhase(playingPlayer.getPlayerWorkers());
+        StartPhase phase1 = new StartPhase(playingPlayer.getPlayerWorkers());
         this.getPhaseList().add(phase1);
     }
 
     public void updateTurnAfterStartPhase(){
-        StartPhase s=(StartPhase)this.getPhaseList().get(0);
-        this.chosenWorker=s.getChosenWorker();
+        StartPhase s = (StartPhase)this.getPhaseList().get(0);
+        this.chosenWorker = s.getChosenWorker();
     }
     /**
      * adds a MovePhase according to the turn chosenWorker
      */
     public void addMovePhase(){
         int phaseListSize = this.getPhaseList().size();
-        if(this.getPhaseList().get(phaseListSize-1).isDone()) {//if the last phase isDone i can add the movePhase
+        if(this.getPhaseList().get(phaseListSize-1).isDone()) {
+            //if the last phase isDone i can add the movePhase
             MovePhase movePhase = new MovePhase(this.getChosenWorker(), this.getSantoriniMatch().getGameBoard());
             this.getPhaseList().add(movePhase);
         }
