@@ -61,8 +61,8 @@ public class ConcreteTurn extends Turn {
      */
     public GodPowerDecorator secondaryDecoration(ConcreteTurn turn){
         for(GodCard opponentGod:turn.getPlayingPlayer().getOpponentsGodCards()){
-            switch (opponentGod.getGodId()){
-                case 3: return new AthenaOppDecorator(turn);
+            switch (opponentGod.getGodType()){
+                case Athena: return new AthenaOppDecorator(turn);
             }
         }
         return null;
