@@ -58,13 +58,13 @@ public class Worker {
      * @param position
      */
     public void changePosition(Cell position) {
-        if(position==null){
-            if(this.position!=null&&this.position.getOccupyingWorker().equals(this)){
+        if(position == null){
+            if(this.position != null && this.position.getOccupyingWorker().equals(this)){
                 this.position.setWorkerOccupying(null);
             }
             this.position = null;
         }else{
-            if(this.position!=null&&this.position.getOccupyingWorker().equals(this)){
+            if(this.position != null && this.position.getOccupyingWorker().equals(this)){
                 this.position.setWorkerOccupying(null);
             }
             this.position = position;
