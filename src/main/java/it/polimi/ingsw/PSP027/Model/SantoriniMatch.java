@@ -75,16 +75,15 @@ public class SantoriniMatch {
 
     public GodPowerDecorator decorateTurn(Turn turn) {
         switch (turn.getPlayingPlayer().getPlayerGod().getGodType()){
-            //case APOLLO: break;
-            //case ARTEMIS: break;
-            //case ATHENA: break;
-            //case ATLAS: break;
-            //case DEMETER: break;
-            //case HEPHAESTUS: break;
-            case Minotaur:
-                return null;//new MinotaurDecorator(turn);
-            //case PAN: break;
-            //case PROMETHEUS: break;
+            //case Apollo: break;
+            //case Artemis: break;
+            //case Athena: break;
+            //case Atlas: break;
+            //case Demeter: break;
+            //case Hephaestus: break;
+            //case Minotaur: return null; //new MinotaurDecorator(turn);
+            //case Pan: break;
+            //case Prometheus: break;
         }
         return null;
     }
@@ -96,8 +95,8 @@ public class SantoriniMatch {
 
     public void rotatePlayers(){
         ArrayList<Player> tempPlayers= new ArrayList<>();
-        for(int i=0;i<this.getPlayers().size()-1;i++){
-            tempPlayers.add(this.getPlayers().get(i+1));
+        for(int i = 0; i < this.getPlayers().size() - 1; i++){
+            tempPlayers.add(this.getPlayers().get(i + 1));
         }
         tempPlayers.add(this.getPlayers().get(0));
         this.setPlayers(tempPlayers);
@@ -126,13 +125,13 @@ public class SantoriniMatch {
      * @param playerToRemove
      */
     public void removePlayer(Player playerToRemove){
-           for(int i=0; i<playerToRemove.getPlayerWorkers().size(); i++){
+           for(int i = 0; i < playerToRemove.getPlayerWorkers().size(); i++){
                playerToRemove.getPlayerWorkers().get(i).changePosition(null);
            }
            GodCard cardToRemove = playerToRemove.getPlayerGod();
-            for(int j=1; j<this.getPlayers().size(); j++){
+            for(int j = 1; j < this.getPlayers().size(); j++){
                 Player tempPlayer = this.getPlayers().get(j);
-                for(int p=0; p<tempPlayer.getOpponentsGodCards().size(); p++){
+                for(int p = 0; p < tempPlayer.getOpponentsGodCards().size(); p++){
                     if(tempPlayer.getOpponentsGodCards().get(p).getGodName().equals(cardToRemove.getGodName())){
                         tempPlayer.getOpponentsGodCards().remove(tempPlayer.getOpponentsGodCards().get(p));
                     }
@@ -140,8 +139,8 @@ public class SantoriniMatch {
             }
             playerToRemove.removeOpponentGodCards();
         ArrayList<Player> tempPlayers= new ArrayList<>();
-        for(int i=0; i<this.getPlayers().size()-1; i++){
-            tempPlayers.add(this.getPlayers().get(i+1));
+        for(int i = 0; i < this.getPlayers().size() - 1; i++){
+            tempPlayers.add(this.getPlayers().get(i + 1));
         }
         this.setPlayers(tempPlayers);
         checkLoseCondition(this.getPlayers());
@@ -211,13 +210,13 @@ public class SantoriniMatch {
      */
 
     public void checkWinCondition(Turn currentTurn, MovePhase lastMovePhase){
-        if(lastMovePhase.getStartChosenWorkerLvl()==2 && currentTurn.getChosenWorker().getWorkerPosition().getLevel()==3){
+        if(lastMovePhase.getStartChosenWorkerLvl() == 2 && currentTurn.getChosenWorker().getWorkerPosition().getLevel() == 3){
             endGame(currentTurn.getPlayingPlayer());
         }
     }
 
     public void checkLoseCondition(List<Player> playersInGame){
-        if(playersInGame.size()==1){
+        if(playersInGame.size() == 1){
             endGame(playersInGame.get(0));
         }
     }
