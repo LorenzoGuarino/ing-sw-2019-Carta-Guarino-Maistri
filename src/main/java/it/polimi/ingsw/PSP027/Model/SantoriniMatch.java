@@ -3,6 +3,7 @@ package it.polimi.ingsw.PSP027.Model;
 import it.polimi.ingsw.PSP027.Model.Game.Board;
 import it.polimi.ingsw.PSP027.Model.Game.GodCard;
 import it.polimi.ingsw.PSP027.Model.Game.Player;
+import it.polimi.ingsw.PSP027.Model.Game.Worker;
 import it.polimi.ingsw.PSP027.Model.Gods.GodPowerDecorator;
 import it.polimi.ingsw.PSP027.Model.Gods.MinotaurDecorator;
 import it.polimi.ingsw.PSP027.Model.TurnsManagement.Turn;
@@ -121,6 +122,32 @@ public class SantoriniMatch {
     public void addPlayer(Player player) { players.add(player); }
 
     /**
+     * Method that remove the playerToRemove from the game
+     * @param playerToRemove
+     */
+    public void removePlayer(Player playerToRemove){
+           for(int i=0; i<playerToRemove.getPlayerWorkers().size(); i++){
+               playerToRemove.getPlayerWorkers().get(i).changePosition(null);
+           }
+           GodCard cardToRemove = playerToRemove.getPlayerGod();
+            for(int j=1; j<this.getPlayers().size(); j++){
+                Player tempPlayer = this.getPlayers().get(j);
+                for(int p=0; p<tempPlayer.getOpponentsGodCards().size(); p++){
+                    if(tempPlayer.getOpponentsGodCards().get(p).getGodName().equals(cardToRemove.getGodName())){
+                        tempPlayer.getOpponentsGodCards().remove(tempPlayer.getOpponentsGodCards().get(p));
+                    }
+                }
+            }
+            playerToRemove.removeOpponentGodCards();
+        ArrayList<Player> tempPlayers= new ArrayList<>();
+        for(int i=0; i<this.getPlayers().size()-1; i++){
+            tempPlayers.add(this.getPlayers().get(i+1));
+        }
+        this.setPlayers(tempPlayers);
+        checkLoseCondition(this.getPlayers());
+    }
+
+    /**
      * Method that saves the last turn in playedTurns
      * @param playedTurns
      * @param currentTurn
@@ -189,8 +216,10 @@ public class SantoriniMatch {
         }
     }
 
-    public void checkLoseCondition(){
-
+    public void checkLoseCondition(List<Player> playersInGame){
+        if(playersInGame.size()==1){
+            endGame(playersInGame.get(0));
+        }
     }
 
     public List<GodCard> getGodCardsList() {

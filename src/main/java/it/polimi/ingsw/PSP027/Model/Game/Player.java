@@ -30,7 +30,12 @@ public class Player {
         for (int i = 0; i < 2; i++) playerWorkers.add(new Worker(this, i));
     }
 
-    public GodCard getPlayerGod() {
+    /**
+     * Method to get the player's GodCard
+     * @return player's GodCard
+     */
+
+     public GodCard getPlayerGod() {
         return playerGodCard;
     }
 
