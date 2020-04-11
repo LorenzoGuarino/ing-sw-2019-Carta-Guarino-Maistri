@@ -1,7 +1,7 @@
 package it.polimi.ingsw.PSP027.Network.Server;
 
 import it.polimi.ingsw.PSP027.Model.Game.Player;
-import it.polimi.ingsw.PSP027.Model.SantoriniMatch;
+import it.polimi.ingsw.PSP027.Controller.SantoriniMatch;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +25,9 @@ public class Lobby{
      */
     private ArrayList<SantoriniMatch> Matches;
 
+    /**
+     * Class Gamer with its
+     */
     public class Gamer {
         private String nickname;
         private String ipAddress;
@@ -37,12 +40,18 @@ public class Lobby{
     private ArrayList<Gamer> lobbyGamers = new ArrayList<Gamer>();
 
     /**
-     * Constructor: where the application start
+     * Constructor: where the application start. It instantiates an empty list of matches that will then be filled as the players
+     * enter the lobby
      */
 
     public Lobby() {
         Matches = new ArrayList<SantoriniMatch>();
     }
+
+    /**
+     * Method that creates a Match with its separate thread and adds it to the list of matches of the lobby
+     * @return the match created
+     */
 
     public SantoriniMatch createMatch() {
         SantoriniMatch santoriniMatch = new SantoriniMatch();
@@ -97,6 +106,11 @@ public class Lobby{
         return iRet;
     }
 
+    /**
+     * Method that deregister a player removing it from the gamers and from its match's players
+     * @param gamer gamer to deregister
+     */
+
     public void deregisterPlayer(Gamer gamer) {
 
         try {
@@ -121,7 +135,7 @@ public class Lobby{
                                             break;
                                         }
                                     }
-                                    
+
                                     break;
                                 }
                             }

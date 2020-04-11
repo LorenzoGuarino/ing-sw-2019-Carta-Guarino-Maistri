@@ -4,14 +4,11 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 
-import it.polimi.ingsw.PSP027.Model.Game.Player;
-import it.polimi.ingsw.PSP027.Model.SantoriniMatch;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -32,6 +29,11 @@ public class ClientHandler implements Runnable
     private Lobby.Gamer gamer = null;
     private Date lastHelloTime = null;
 
+    /**
+     * Class used to decouple commands sent by each client from the thread that manages the connection with the client
+     * to avoid that potential task consuming actions would block the connection thread for a time long enough to be
+     * considered a potential disconnection by remote client
+     */
     private class ClientCommandsHandler implements Runnable
     {
         ClientHandler owner = null;

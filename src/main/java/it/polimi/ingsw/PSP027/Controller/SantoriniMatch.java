@@ -1,4 +1,4 @@
-package it.polimi.ingsw.PSP027.Model;
+package it.polimi.ingsw.PSP027.Controller;
 
 import it.polimi.ingsw.PSP027.Model.Game.Board;
 import it.polimi.ingsw.PSP027.Model.Game.GodCard;
@@ -133,32 +133,46 @@ public class SantoriniMatch implements Runnable{
      * @param player is the player that is to be added to the list of players
      */
 
-    public void addPlayer(Player player) { players.add(player); }
+    public void addPlayer(Player player) {
+        players.add(player);
+
+        if(players.size()==2)
+            ;
+        else if(players.size()==3)
+            startGame();
+    }
 
     /**
      * Method that removes the playerToRemove and all his attributes from the game
      * @param playerToRemove
      */
-    public void removePlayer(Player playerToRemove){
-           for(int i = 0; i < playerToRemove.getPlayerWorkers().size(); i++){
-               playerToRemove.getPlayerWorkers().get(i).changePosition(null);
-           }
-           GodCard cardToRemove = playerToRemove.getPlayerGod();
-            for(int j = 1; j < this.getPlayers().size(); j++){
+    public void removePlayer(Player playerToRemove) {
+
+        if (matchStarted) {
+            for (int i = 0; i < playerToRemove.getPlayerWorkers().size(); i++) {
+                playerToRemove.getPlayerWorkers().get(i).changePosition(null);
+            }
+            GodCard cardToRemove = playerToRemove.getPlayerGod();
+            for (int j = 1; j < this.getPlayers().size(); j++) {
                 Player tempPlayer = this.getPlayers().get(j);
-                for(int p = 0; p < tempPlayer.getOpponentsGodCards().size(); p++){
-                    if(tempPlayer.getOpponentsGodCards().get(p).getGodName().equals(cardToRemove.getGodName())){
+                for (int p = 0; p < tempPlayer.getOpponentsGodCards().size(); p++) {
+                    if (tempPlayer.getOpponentsGodCards().get(p).getGodName().equals(cardToRemove.getGodName())) {
                         tempPlayer.getOpponentsGodCards().remove(tempPlayer.getOpponentsGodCards().get(p));
                     }
                 }
             }
             playerToRemove.removeOpponentGodCards();
-        ArrayList<Player> tempPlayers= new ArrayList<>();
-        for(int i = 0; i < this.getPlayers().size() - 1; i++){
-            tempPlayers.add(this.getPlayers().get(i + 1));
+
+            ArrayList<Player> tempPlayers = new ArrayList<>();
+            for (int i = 0; i < this.getPlayers().size() - 1; i++) {
+                tempPlayers.add(this.getPlayers().get(i + 1));
+            }
+            this.setPlayers(tempPlayers);
+            checkLoseCondition(this.getPlayers());
         }
-        this.setPlayers(tempPlayers);
-        checkLoseCondition(this.getPlayers());
+        else{
+
+        }
     }
 
     /**
@@ -189,7 +203,6 @@ public class SantoriniMatch implements Runnable{
 
     public void startGame(){
         matchStarted = true; //maybe here
-
     }
 
     /**
