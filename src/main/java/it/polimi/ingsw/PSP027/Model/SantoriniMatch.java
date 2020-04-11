@@ -46,6 +46,9 @@ public class SantoriniMatch implements Runnable{
         matchID = UUID.randomUUID();
         players = new ArrayList<Player>();
         playedTurns = new ArrayList<Turn>();
+        godCardsInUse = new ArrayList<GodCard>();
+        gameBoard = new Board();
+        matchStarted = false;
         godCardsList = new ArrayList<GodCard>();
 
         godCardsList.add(new GodCard(GodCard.GodsType.Apollo, GodCard.APOLLO_D));
@@ -57,11 +60,6 @@ public class SantoriniMatch implements Runnable{
         godCardsList.add(new GodCard(GodCard.GodsType.Minotaur, GodCard.MINOTAUR_D));
         godCardsList.add(new GodCard(GodCard.GodsType.Pan, GodCard.PAN_D));
         godCardsList.add(new GodCard(GodCard.GodsType.Prometheus, GodCard.PROMETHEUS_D));
-
-        godCardsInUse = new ArrayList<GodCard>();
-        gameBoard = new Board();
-
-        matchStarted = false;
     }
 
     @Override
