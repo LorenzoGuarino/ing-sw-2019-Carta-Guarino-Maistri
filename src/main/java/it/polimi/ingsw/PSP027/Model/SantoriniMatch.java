@@ -38,8 +38,9 @@ public class SantoriniMatch implements Runnable{
 
 
     /**
-     * Constructor: this creates a new match, creating a list for the players that will the be filled as the players are added
-     * the same for the list of turns, the gods that will be used in the match and the list of all gods
+     * Constructor: this creates a new match, creating a list for the players that will the be filled as the players are added,
+     * the same for the list of turns, the gods that will be used in the match and the list of all gods, generates the random unique
+     * id of the match, creates a board and sets the variable that tells if the match has started to false
      */
 
     public SantoriniMatch() {
@@ -69,7 +70,7 @@ public class SantoriniMatch implements Runnable{
 
 
     /**
-     * create a new turn for the first player in the list
+     * Method that creates a new turn for the first player in the list
      * @return
      */
 
@@ -78,7 +79,7 @@ public class SantoriniMatch implements Runnable{
     }
 
     /**
-     * decorates the players turn according to its GodCard
+     * Method that decorates the player's turn according to its GodCard
      * @return
      */
 
@@ -111,6 +112,11 @@ public class SantoriniMatch implements Runnable{
         this.setPlayers(tempPlayers);
     }
 
+    /**
+     * Method that sets the list of players
+     * @param players players to set as the match's players
+     */
+
     public void setPlayers(List<Player> players) {
         this.players = players;
     }
@@ -130,7 +136,7 @@ public class SantoriniMatch implements Runnable{
     public void addPlayer(Player player) { players.add(player); }
 
     /**
-     * Method that remove the playerToRemove and all his attributes from the game
+     * Method that removes the playerToRemove and all his attributes from the game
      * @param playerToRemove
      */
     public void removePlayer(Player playerToRemove){
@@ -182,7 +188,7 @@ public class SantoriniMatch implements Runnable{
      */
 
     public void startGame(){
-
+        matchStarted = true; //maybe here
 
     }
 
@@ -192,11 +198,13 @@ public class SantoriniMatch implements Runnable{
 
     public void endGame(Player playerWinner) {
         System.out.println("Player" + playerWinner.getNickname() + "has Won!");
+        /** @TODO tell lobby to handle the ending of the match
+         */
     }
 
     /**
      * Method to use in order to check if there are no players in the match
-     * @return
+     * @return true if the match has players, otherwise false
      */
 
     public boolean hasPlayers() { return !players.isEmpty(); }
@@ -223,6 +231,11 @@ public class SantoriniMatch implements Runnable{
         return matchID;
     }
 
+    /**
+     * Method that checks if the match has already started
+     * @return true if it has started, otherwise false
+     */
+
     public boolean isStarted() {
         return matchStarted;
     }
@@ -233,6 +246,11 @@ public class SantoriniMatch implements Runnable{
      */
 
     public Player getFirstPlayer() { return players.get(0); }
+
+    /**
+     * Method to get the Board of the game
+     * @return the board
+     */
 
     public Board getGameBoard() {
         return gameBoard;
@@ -250,11 +268,21 @@ public class SantoriniMatch implements Runnable{
         }
     }
 
+    /**
+     *
+     * @param playersInGame
+     */
+
     public void checkLoseCondition(List<Player> playersInGame){
         if(playersInGame.size() == 1){
             endGame(playersInGame.get(0));
         }
     }
+
+    /**
+     * Method to get the list of god cards
+     * @return the list of god cards
+     */
 
     public List<GodCard> getGodCardsList() {
         return godCardsList;
