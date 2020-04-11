@@ -4,8 +4,14 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.sql.Time;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.ReentrantLock;
 
+import it.polimi.ingsw.PSP027.Model.Game.Player;
+import it.polimi.ingsw.PSP027.Model.SantoriniMatch;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -26,6 +32,134 @@ public class ClientHandler implements Runnable
     private Lobby.Gamer gamer = null;
     private Date lastHelloTime = null;
 
+    private class ClientCommandsHandler implements Runnable
+    {
+        ClientHandler owner = null;
+        private boolean bRun = true;
+        private ArrayList<Node> commandsList = new ArrayList<Node>();
+        private ReentrantLock CommandsLock = new ReentrantLock();
+
+        ClientCommandsHandler(ClientHandler owner)
+        {
+            this.owner = owner;
+        }
+
+        public void Stop()
+        {
+            bRun = false;
+        }
+
+        public void EnqueueCommand(Node command)
+        {
+            try {
+                while (true) {
+
+                    if (CommandsLock.tryLock(2L, TimeUnit.SECONDS)) {
+
+                        commandsList.add(command);
+                        break;
+                    }
+                    else {
+                        TimeUnit.MILLISECONDS.sleep(200);
+                    }
+                }
+            }
+            catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            finally {
+                CommandsLock.unlock();
+            }
+        }
+
+        public Node DequeueCommand()
+        {
+            Node command = null;
+            try {
+                while (true) {
+
+                    if (CommandsLock.tryLock(2L, TimeUnit.SECONDS)) {
+
+                        if(commandsList.size()>0)
+                            command = commandsList.remove(0);
+                        break;
+                    }
+                    else {
+                        TimeUnit.MILLISECONDS.sleep(200);
+                    }
+                }
+            }
+            catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            finally {
+                CommandsLock.unlock();
+            }
+
+            return command;
+        }
+
+        @Override
+        public void run() {
+
+            if (owner != null) {
+
+                String strResponseCmd = "";
+                Node command = null;
+
+                while (bRun) {
+                    strResponseCmd = "";
+                    command = DequeueCommand();
+
+                    if (command != null) {
+                        if (command.hasChildNodes()) {
+                            NodeList nodes = command.getChildNodes();
+                            Node node;
+
+                            ProtocolTypes.protocolCommand cmdID = ProtocolTypes.protocolCommand.undefined;
+                            Node cmdData = null;
+
+                            // determine received command
+                            for (int i = 0; i < nodes.getLength(); i++) {
+                                node = nodes.item(i);
+
+                                if (node.getNodeName().equals("id")) {
+                                    cmdID = ProtocolTypes.protocolCommand.valueOf(node.getTextContent());
+                                } else if (node.getNodeName().equals("data")) {
+                                    cmdData = node;
+                                }
+                            }
+
+                            // process received command and launches the corresponding method that builds the response
+                            switch (cmdID) {
+                                case clt_Deregister:
+                                    strResponseCmd = onDeregister(cmdData);
+                                    break;
+                                case clt_Register:
+                                    strResponseCmd = onRegister(cmdData);
+                                    break;
+                            }
+                        }
+
+                        if (!strResponseCmd.isEmpty()) {
+                            //System.out.println("Sending data to client : " +  strResponseCmd);
+                            owner.SendCommand(strResponseCmd);
+                            //System.out.println("Sent data to client");
+                        }
+                    }
+                    else {
+                        try {
+                            TimeUnit.MILLISECONDS.sleep(200);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    ClientCommandsHandler cltcmdhndlr  = null;
     /**
      * Constructor of the client handler that will communicate with the client
      * @param client socket of the client that wants to connect with this server
@@ -50,6 +184,12 @@ public class ClientHandler implements Runnable
         try {
             output = new ObjectOutputStream(client.getOutputStream());
             input = new ObjectInputStream(client.getInputStream());
+
+            cltcmdhndlr = new ClientCommandsHandler(this);
+
+            Thread cltcmdhndlrThread = new Thread(cltcmdhndlr);
+            cltcmdhndlrThread.start();
+
             handleClientConnection();
         } catch (IOException e) {
             System.out.println("client " + client.getInetAddress().getHostAddress() + " connection dropped");
@@ -59,6 +199,11 @@ public class ClientHandler implements Runnable
             client.close();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+
+        if(cltcmdhndlr != null)
+        {
+            cltcmdhndlr.Stop();
         }
     }
 
@@ -123,11 +268,8 @@ public class ClientHandler implements Runnable
                                 case clt_Hello:
                                     strResponseCmd = onHello();
                                     break;
-                                case clt_Deregister:
-                                    strResponseCmd = onDeregister(cmdData);
-                                    break;
-                                case clt_Register:
-                                    strResponseCmd = onRegister(cmdData);
+                                default:
+                                    cltcmdhndlr.EnqueueCommand(root);
                                     break;
                             }
                         }
@@ -160,10 +302,12 @@ public class ClientHandler implements Runnable
      * @param cmd command that the server wants to send to the client
      */
 
-    public void SendCommand(String cmd) {
+    public synchronized void SendCommand(String cmd) {
         try {
-            if(output != null)
+            if(output != null) {
                 output.writeObject(cmd);
+                output.flush();
+            }
         }
         catch (IOException e) {
         }
@@ -175,7 +319,7 @@ public class ClientHandler implements Runnable
      */
 
     private String onHello(){
-        System.out.println("Got hello from ");
+        System.out.println("Got hello from " + client.getInetAddress().getHostAddress());
         String ret = "<cmd><id>" + ProtocolTypes.protocolCommand.srv_Hello.toString() + "</id></cmd>";
         return ret;
     }

@@ -82,7 +82,7 @@ public class Client implements Runnable, ServerObserver
 
     public synchronized boolean Connect(String ipaddress)
     {
-        if(connStatus == ConnectionStatus.WaitForConnection) {
+        if(connStatus == ConnectionStatus.KeepDisconnected) {
             String[] address = ipaddress.split(":");
             ip = address[0];
             if (address.length == 2)
@@ -105,7 +105,10 @@ public class Client implements Runnable, ServerObserver
 
     public synchronized boolean Disconnect()
     {
-        if((connStatus == ConnectionStatus.Connected) || (connStatus == ConnectionStatus.KeepConnected)){
+        if((connStatus != ConnectionStatus.Disconnecting) &&
+                (connStatus != ConnectionStatus.KeepDisconnected) &&
+                (connStatus != ConnectionStatus.Disconnected)
+        ){
             connStatus = ConnectionStatus.Disconnecting;
             return true;
         }
@@ -407,6 +410,7 @@ public class Client implements Runnable, ServerObserver
     public synchronized void onConnected() {
         lastHelloTime = new Date();
         connStatus = ConnectionStatus.Connected;
+        regStatus = RegistrationStatus.Unregistered;
         notifyAll();
     }
 
@@ -417,6 +421,7 @@ public class Client implements Runnable, ServerObserver
     @Override
     public synchronized void onDisconnected() {
         connStatus = ConnectionStatus.Disconnected;
+        regStatus = RegistrationStatus.Unregistered;
         notifyAll();
     }
 

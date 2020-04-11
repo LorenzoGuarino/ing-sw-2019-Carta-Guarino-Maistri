@@ -11,6 +11,7 @@ import it.polimi.ingsw.PSP027.Model.TurnsManagement.MovePhase;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @author Elisa Maistri
@@ -18,7 +19,7 @@ import java.util.List;
  * @author danielecarta
  * */
 
-public class SantoriniMatch {
+public class SantoriniMatch implements Runnable{
 
     /**
      * This class manages the game's match. It has the board of the game, the list of players,
@@ -30,9 +31,10 @@ public class SantoriniMatch {
     private Board gameBoard;
     private List<Player> players;
     private List<Turn> playedTurns;
-    private int matchID;
+    private UUID matchID;
     private List<GodCard> godCardsList;
     private List<GodCard> godCardsInUse;
+    private boolean matchStarted;
 
 
     /**
@@ -41,6 +43,7 @@ public class SantoriniMatch {
      */
 
     public SantoriniMatch() {
+        matchID = UUID.randomUUID();
         players = new ArrayList<Player>();
         playedTurns = new ArrayList<Turn>();
         godCardsList = new ArrayList<GodCard>();
@@ -57,7 +60,15 @@ public class SantoriniMatch {
 
         godCardsInUse = new ArrayList<GodCard>();
         gameBoard = new Board();
+
+        matchStarted = false;
     }
+
+    @Override
+    public void run() {
+        // here goes what SantoriniMatch does, so the controller part
+    }
+
 
     /**
      * create a new turn for the first player in the list
@@ -191,6 +202,32 @@ public class SantoriniMatch {
      */
 
     public boolean hasPlayers() { return !players.isEmpty(); }
+
+    /**
+     * Method to get the number of players currently in this match
+     * @return the number of players in the match
+     */
+
+    public int numberOfPlayers() {
+        int numberOfPlayers = 0;
+        for (Player player : players) {
+            numberOfPlayers++;
+        }
+        return numberOfPlayers;
+    }
+
+    /**
+     * Method to get the id of this match
+     * @return the match's id
+     */
+
+    public UUID getMatchId () {
+        return matchID;
+    }
+
+    public boolean isStarted() {
+        return matchStarted;
+    }
 
     /**
      * Method to get the first player of the list of players

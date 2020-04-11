@@ -128,7 +128,7 @@ public class CLI implements Runnable, ClientObserver {
     public void OnInvalidCommandSyntax(String cmd)
     {
         if(cmd.equals("connect"))
-            System.out.println("Missing address from connect command.Syntax:\n connect ip:port\nwhere port is optional");
+            System.out.println("Missing address from connect command.Syntax:\n connect ip:port where port is optional");
         else if(cmd.equals("register"))
             System.out.println("Missing nickname from register command. Syntax:\n register nickname");
     }
@@ -159,7 +159,7 @@ public class CLI implements Runnable, ClientObserver {
     {
         System.out.println("You are not actually connected to server.");
         System.out.println("Available commands:");
-        System.out.println("  connect ip:port (this will let you connect to Santorini server.\r\nPort is optional. If not specified the default value 2705 will be used)");
+        System.out.println("  connect ip:port (this will let you connect to Santorini server. Port is optional. If not specified the default value 2705 will be used)");
         System.out.println("  bye (to quit the game)");
     }
 

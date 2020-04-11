@@ -28,7 +28,7 @@ public class MinotaurDecoratorTest {
 
     @Before
     public void setUp() throws Exception {
-        santoriniMatch= new SantoriniMatch();
+        santoriniMatch = new SantoriniMatch();
         gameBoard= santoriniMatch.getGameBoard();
         player1= new Player();
         player2= new Player();
