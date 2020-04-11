@@ -52,18 +52,18 @@ public class BuildPhaseTest {
     }
 
     @Test
-    public void updateBoard_buldingABlock() {
+    public void updateBoard_buildingABlock() {
         Cell x14 = gameBoard.getCell(15);//lv2 im building onto
         x14.addLevel();x14.addLevel();
         Cell x25 = gameBoard.getCell(21);//workerPos
         worker11.changePosition(x25);
         BuildPhase buildPhase = new BuildPhase(worker11,gameBoard);
         buildPhase.updateBoard(x14);
-        assertTrue(x14.getLevel()==3);
+        assertEquals(3, x14.getLevel());
     }
 
     @Test
-    public void updateBoard_buldingADome() {
+    public void updateBoard_buildingADome() {
         Cell x14 = gameBoard.getCell(15);//lv3 im putting a dome onto
         x14.addLevel();x14.addLevel();x14.addLevel();
         Cell x25 = gameBoard.getCell(21);//workerPos

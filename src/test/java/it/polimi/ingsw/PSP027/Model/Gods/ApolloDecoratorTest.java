@@ -77,6 +77,7 @@ public class ApolloDecoratorTest {
         apolloDecoratedPhase =new ApolloDecorator(movePhase);
         apolloDecoratedPhase.updateBoard(x21);
         assertTrue(x11.isOccupiedByWorker());
+        assertTrue(x21.isOccupiedByWorker());
         assertEquals(worker11.getWorkerPosition(), x21);
         assertEquals(worker21.getWorkerPosition(), x11);
     }

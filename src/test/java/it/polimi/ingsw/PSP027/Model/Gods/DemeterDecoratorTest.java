@@ -52,7 +52,7 @@ public class DemeterDecoratorTest {
         BuildPhase buildPhase = new BuildPhase(worker11,gameBoard);
         demeterDecoratedPhase = new DemeterDecorator(buildPhase);
         demeterDecoratedPhase.changeCandidateCells();
-        assertTrue(expectedList.containsAll(demeterDecoratedPhase.getDecoratedPhase().getCandidateCells())&& demeterDecoratedPhase.getDecoratedPhase().getCandidateCells().containsAll(expectedList));
+        assertTrue(expectedList.containsAll(buildPhase.getCandidateCells()) && buildPhase.getCandidateCells().containsAll(expectedList));
     }
 
     @Test

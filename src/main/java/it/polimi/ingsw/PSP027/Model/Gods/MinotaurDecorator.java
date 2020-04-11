@@ -24,20 +24,21 @@ public class MinotaurDecorator extends GodPowerDecorator {
     public void changeCandidateCells() {
         Cell startingCell = this.getDecoratedPhase().getChosenWorker().getWorkerPosition();
         for (Cell candidateCell : this.getDecoratedPhase().getGameBoard().getNeighbouringCells(startingCell)) {
-            if ((candidateCell.getLevel() <= startingCell.getLevel() + 1) &&
-                    (!candidateCell.checkDome())) {
-                if (!candidateCell.isOccupiedByWorker())
-                    this.getDecoratedPhase().getCandidateCells().add(candidateCell);
-                else {
+            if (!this.getDecoratedPhase().getCandidateCells().contains(candidateCell)) {
+                if ((candidateCell.getLevel() <= startingCell.getLevel() + 1) &&
+                        (!candidateCell.checkDome())) {
+                    if (!candidateCell.isOccupiedByWorker())
+                        this.getDecoratedPhase().getCandidateCells().add(candidateCell);
+                    else {
 
-                    if (candidateCell.isOccupiedByOpponentWorker(this.getDecoratedPhase().getChosenWorker().getWorkerOwner())) {
+                        if (candidateCell.isOccupiedByOpponentWorker(this.getDecoratedPhase().getChosenWorker().getWorkerOwner())) {
 
-                        Cell potentialTargetCellForOpponentWorker = this.getDecoratedPhase().getGameBoard().getNextCellAlongThePath(startingCell, candidateCell);
+                            Cell potentialTargetCellForOpponentWorker = this.getDecoratedPhase().getGameBoard().getNextCellAlongThePath(startingCell, candidateCell);
 
-                        if(potentialTargetCellForOpponentWorker != null)
-                        {
-                            if(!potentialTargetCellForOpponentWorker.checkDome() && !potentialTargetCellForOpponentWorker.isOccupiedByWorker())
-                                this.getDecoratedPhase().getCandidateCells().add(candidateCell);
+                            if (potentialTargetCellForOpponentWorker != null) {
+                                if (!potentialTargetCellForOpponentWorker.checkDome() && !potentialTargetCellForOpponentWorker.isOccupiedByWorker())
+                                    this.getDecoratedPhase().getCandidateCells().add(candidateCell);
+                            }
                         }
                     }
                 }

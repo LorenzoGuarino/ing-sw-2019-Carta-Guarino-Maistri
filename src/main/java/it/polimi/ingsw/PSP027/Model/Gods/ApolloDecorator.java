@@ -24,7 +24,7 @@ public class ApolloDecorator extends GodPowerDecorator{
         Cell startingCell = this.getDecoratedPhase().getChosenWorker().getWorkerPosition();
         for (Cell candidateCell : this.getDecoratedPhase().getGameBoard().getNeighbouringCells(startingCell)) {
             if ((candidateCell.getLevel() <= startingCell.getLevel() + 1) &&
-                    (!candidateCell.checkDome())) {
+                    (!candidateCell.checkDome()) && !this.getDecoratedPhase().getCandidateCells().contains(candidateCell)) {
                 if (!candidateCell.isOccupiedByWorker() || candidateCell.isOccupiedByOpponentWorker(this.getDecoratedPhase().getChosenWorker().getWorkerOwner())) {
                     this.getDecoratedPhase().getCandidateCells().add(candidateCell);
                 }
