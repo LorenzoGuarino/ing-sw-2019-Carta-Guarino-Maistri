@@ -13,6 +13,10 @@ import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 
+/**
+ * @author danielecarta
+ */
+
 public class PrometheusDecoratorTest {
 
     Board gameBoard;
@@ -30,6 +34,11 @@ public class PrometheusDecoratorTest {
         worker11 = player1.getPlayerWorkers().get(0);
         worker21 = player2.getPlayerWorkers().get(0);
     }
+
+    /**
+     * asserts that the first changeCandidateCells call gives a candidateCells list of candidateBuildingCells
+     * even if that's a movePhase
+     */
 
     @Test
     public void changeCandidateCells_firstIterationGivesBuildingCandidates() {
@@ -53,6 +62,10 @@ public class PrometheusDecoratorTest {
         assertTrue(expectedList.containsAll(movephase.getCandidateCells()) && movephase.getCandidateCells().containsAll(expectedList));
     }
 
+    /**
+     * Asserts that the first board update is a building operation on the chosenCell
+     */
+
     @Test
     public void updateBoard_firstIterationBuildingABlock() {
         Cell x14 = gameBoard.getCell(15);//lv2 im building onto
@@ -65,6 +78,10 @@ public class PrometheusDecoratorTest {
         prometheusDecoratedPhase.updateBoard(x14);
         assertEquals(3, x14.getLevel());
     }
+
+    /**
+     * asserts that the second changeCandidateCells call gives a candidateCells list of candidateMoveCells
+     */
 
     @Test
     public void changeCandidateCells_secondIterationGivesMoveCandidates() {
@@ -87,6 +104,10 @@ public class PrometheusDecoratorTest {
         prometheusDecoratedPhase.changeCandidateCells();
         assertTrue(expectedList.containsAll(movephase.getCandidateCells()) && movephase.getCandidateCells().containsAll(expectedList));
     }
+
+    /**
+     * Asserts that the second board update is a move operation on the chosenCell
+     */
 
     @Test
     public void updateBoard_SecondIterationMoveOntoCell() {

@@ -6,6 +6,10 @@ import it.polimi.ingsw.PSP027.Model.Game.Worker;
 
 import java.util.List;
 
+/**
+ * @author danielecarta
+ */
+
 public  abstract class Phase {
 
     private boolean done;

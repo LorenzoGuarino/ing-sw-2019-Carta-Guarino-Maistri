@@ -33,6 +33,10 @@ public class DemeterDecoratorTest {
         worker21 = player2.getPlayerWorkers().get(0);
     }
 
+    /**
+     * asserts that the candidateCells of the movePhase is ok
+     */
+
     @Test
     public void changeCandidateCells() {
         Cell x15 = gameBoard.getCell(20);
@@ -55,6 +59,10 @@ public class DemeterDecoratorTest {
         assertTrue(expectedList.containsAll(buildPhase.getCandidateCells()) && buildPhase.getCandidateCells().containsAll(expectedList));
     }
 
+    /**
+     * asserts that the first call of updateBoard is a standard build action
+     */
+
     @Test
     public void updateBoard_once() {
         Cell x15 = gameBoard.getCell(20);
@@ -72,6 +80,12 @@ public class DemeterDecoratorTest {
         demeterDecoratedPhase.updateBoard(x14);
         assertTrue(x14.getLevel()==3);
     }
+
+    /**
+     * asserts that the second call of updateBoard on the same cell doesn't let the player build on the same cell i
+     * just built onto before
+     */
+
     @Test
     public void updateBoard_twiceOnSameCell() {
         Cell x15 = gameBoard.getCell(20);
@@ -89,6 +103,10 @@ public class DemeterDecoratorTest {
         demeterDecoratedPhase.updateBoard(x14);demeterDecoratedPhase.updateBoard(x14);
         assertTrue(x14.getLevel()==3 && !x14.checkDome());
     }
+
+    /**
+     * asserts that the second call of updateBoard on a different cell i just built onto is allowed and performed
+     */
 
     @Test
     public void updateBoard_twiceOnDifferentCell() {
