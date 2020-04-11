@@ -121,7 +121,7 @@ public class SantoriniMatch {
     public void addPlayer(Player player) { players.add(player); }
 
     /**
-     * Method that remove the playerToRemove from the game
+     * Method that remove the playerToRemove and all his attributes from the game
      * @param playerToRemove
      */
     public void removePlayer(Player playerToRemove){
