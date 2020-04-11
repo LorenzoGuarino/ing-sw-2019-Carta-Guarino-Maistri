@@ -149,7 +149,7 @@ public class Cell {
 
     public boolean addDome()
     {
-        if (canALevelBeAdded())
+        if (!isOccupiedByWorker()&&!checkDome())
         {
             dome = true;
             return true;
