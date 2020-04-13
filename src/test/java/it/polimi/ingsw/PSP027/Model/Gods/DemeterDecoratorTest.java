@@ -34,7 +34,7 @@ public class DemeterDecoratorTest {
     }
 
     /**
-     * asserts that the candidateCells of the movePhase is ok
+     * asserts that the candidateCells of the buildPhase is ok
      */
 
     @Test

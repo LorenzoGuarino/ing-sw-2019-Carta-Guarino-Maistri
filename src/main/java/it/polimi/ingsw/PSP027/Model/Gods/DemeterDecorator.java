@@ -23,14 +23,7 @@ public class DemeterDecorator extends GodPowerDecorator{
 
     @Override
     public void changeCandidateCells() {
-        if(!powerUsed) {
-            Cell CurrentUpdatedWorkerPosition = this.getDecoratedPhase().getChosenWorker().getWorkerPosition();
-            for (Cell candidateCell : this.getDecoratedPhase().getGameBoard().getNeighbouringCells(CurrentUpdatedWorkerPosition)) {
-                if ((!candidateCell.isOccupiedByWorker()) && (!candidateCell.checkDome()) && !this.getDecoratedPhase().getCandidateCells().contains(candidateCell)) {
-                    this.getDecoratedPhase().getCandidateCells().add(candidateCell);
-                }
-            }
-        }
+
     }
 
     /**

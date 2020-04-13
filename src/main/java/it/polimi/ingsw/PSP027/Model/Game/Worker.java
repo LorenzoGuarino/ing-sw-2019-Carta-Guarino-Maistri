@@ -12,12 +12,12 @@ public class Worker {
 
     /**
      * Constructor: creates a new worker, storing who is its owner and its index, setting its position to null
+     *
      * @param owner is the player who owns the worker
      * @param index index that tells which one of the two workers of said player this worker is
      */
 
-    public Worker(Player owner, int index)
-    {
+    public Worker(Player owner, int index) {
         this.owner = owner;
         this.index = index;
         position = null;
@@ -25,51 +25,45 @@ public class Worker {
 
     /**
      * Method used to get the position of the worker on the board
+     *
      * @return the cell that the worker is occupying
      */
 
-    public Cell getWorkerPosition ()
-    {
+    public Cell getWorkerPosition() {
         return position;
     }
 
     /**
      * Method used to get the index of the worker, which can be 1 or 2
+     *
      * @return the index
      */
 
-    public int getWorkerIndex ()
-    {
+    public int getWorkerIndex() {
         return index;
     }
 
     /**
      * Method that gets the worker's owner
+     *
      * @return the Player, owner of the worker
      */
 
-    public Player getWorkerOwner ()
-    {
+    public Player getWorkerOwner() {
         return owner;
     }
 
     /**
      * The setter of position tells to the old position it is no longer occupied by this worker, and the new one that it now is
+     *
      * @param position
      */
     public void changePosition(Cell position) {
-        if(position == null){
-            if(this.position != null && this.position.getOccupyingWorker().equals(this)){
-                this.position.setWorkerOccupying(null);
-            }
-            this.position = null;
-        }else{
-            if(this.position != null && this.position.getOccupyingWorker().equals(this)){
-                this.position.setWorkerOccupying(null);
-            }
-            this.position = position;
-            position.setWorkerOccupying(this);
+        if(this.position!=null&&this.position.getOccupyingWorker().equals(this)){
+            this.position.setWorkerOccupying(null);
         }
+        this.position = position;
+        position.setWorkerOccupying(this);
     }
-
 }
+

@@ -16,7 +16,8 @@ public class GodCard {
         Hephaestus,
         Minotaur,
         Pan,
-        Prometheus
+        Prometheus,
+        AthenaOpp
     }
 
     private GodsType godType;
