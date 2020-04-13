@@ -27,7 +27,7 @@ public class ServerHandler implements Runnable
     private ObjectInputStream input;
     private boolean bRun = true;
 
-    private List<ServerObserver> observers = new ArrayList<>();
+    private List<ServerObserver> observers = new ArrayList<ServerObserver>();
 
     /**
      * Constructor: instantiate the ServerHandler setting the server
@@ -66,7 +66,7 @@ public class ServerHandler implements Runnable
 
 
     /**
-     * Method used by the others to actually send to command
+     * Method used by the others to actually send a command to server
      * @param cmd command to send
      */
 
@@ -165,7 +165,6 @@ public class ServerHandler implements Runnable
      */
 
     private void handleServerConnection() throws IOException, ClassNotFoundException {
-        System.out.println("Connected to " + server.getInetAddress().getHostAddress());
 
         FireOnConnected();
 
@@ -215,6 +214,27 @@ public class ServerHandler implements Runnable
                                 case srv_Deregistered:
                                     FireOnDeregister();
                                     break;
+                                case srv_ChooseMatchType:
+                                    FireOnChooseMatchType();
+                                    break;
+                                case srv_EnteringMatch:
+                                    FireOnEnteringMatch(cmdData);
+                                    break;
+                                case srv_EnteredMatch:
+                                    FireOnEnteredMatch(cmdData);
+                                    break;
+                                case srv_LeftMatch:
+                                    FireOnLeftMatch(cmdData);
+                                    break;
+                                case srv_Loser:
+                                    FireOnLoser();
+                                    break;
+                                case srv_Winner:
+                                    FireOnWinner(cmdData);
+                                    break;
+                                case srv_ChooseGods:
+                                    FireOnChooseGods(cmdData);
+                                    break;
                             }
                         }
                     }
@@ -223,8 +243,245 @@ public class ServerHandler implements Runnable
         } catch (ClassNotFoundException | ClassCastException e) {
             System.out.println("invalid stream from client");
         }
+    }
 
-        System.out.println("Disconnected from " + server.getInetAddress().getHostAddress());
+    private synchronized void FireOnLoser() throws IOException, ClassNotFoundException
+    {
+        /* copy the list of observers in case some observers changes it from inside
+         * the notification method */
+        List<ServerObserver> observersCpy;
+        synchronized (observers) {
+            observersCpy = new ArrayList<ServerObserver>(observers);
+        }
+
+        /* notify the observers that we got the string */
+        for (ServerObserver observer : observersCpy)
+        {
+            observer.onLoser();
+        }
+    }
+
+    private synchronized void FireOnLeftMatch(Node data) throws IOException, ClassNotFoundException
+    {
+        /** data value
+         * <data><<player>nickname</player></data>
+         */
+
+        Node node;
+        String nickname = "";
+
+        if(data.hasChildNodes())
+        {
+            NodeList nodes = data.getChildNodes();
+
+            for(int i = 0; i < nodes.getLength(); i++)
+            {
+                node = nodes.item(i);
+
+                if(node.getNodeName().equals("player"))
+                {
+                    nickname = node.getTextContent();
+                }
+            }
+
+            /* copy the list of observers in case some observers changes it from inside
+             * the notification method */
+            List<ServerObserver> observersCpy;
+            synchronized (observers) {
+                observersCpy = new ArrayList<ServerObserver>(observers);
+            }
+
+            /* notify the observers that we got the string */
+            for (ServerObserver observer : observersCpy)
+            {
+                observer.onLeftMatch(nickname);
+            }
+        }
+    }
+
+    private synchronized void FireOnChooseGods(Node data) throws IOException, ClassNotFoundException
+    {
+        /** data value
+         * <data>
+         *     <requiredgods>2</requiredgods>
+         *     <gods>
+         *         <god>Apollo</god>
+         *         ...
+         *         <god>Prometheus</god>
+         *     </gods>
+         * </data>
+         */
+
+        Node node;
+        int requiredgods = 2;
+        List<String> gods = new ArrayList<String>();
+
+        if(data.hasChildNodes())
+        {
+            NodeList nodes = data.getChildNodes();
+
+            for(int i = 0; i < nodes.getLength(); i++)
+            {
+                node = nodes.item(i);
+
+                if(node.getNodeName().equals("gods"))
+                {
+                    NodeList nodegods = node.getChildNodes();
+
+                    for (int j = 0; j < nodegods.getLength(); j++)
+                    {
+                        gods.add(nodegods.item(j).getTextContent());
+                    }
+                }
+                else if(node.getNodeName().equals("requiredgods")) {
+
+                    requiredgods = Integer.parseInt(node.getTextContent());
+                }
+            }
+
+            /* copy the list of observers in case some observers changes it from inside
+             * the notification method */
+            List<ServerObserver> observersCpy;
+            synchronized (observers) {
+                observersCpy = new ArrayList<ServerObserver>(observers);
+            }
+
+            /* notify the observers that we got the string */
+            for (ServerObserver observer : observersCpy)
+            {
+                observer.onChooseGods(requiredgods, gods);
+            }
+        }
+    }
+
+    private synchronized void FireOnWinner(Node data) throws IOException, ClassNotFoundException
+    {
+        /** data value
+         * <data><<player>winnernick</player></data>
+         */
+
+        Node node;
+        String nickname = "";
+
+        if(data.hasChildNodes())
+        {
+            NodeList nodes = data.getChildNodes();
+
+            for(int i = 0; i < nodes.getLength(); i++)
+            {
+                node = nodes.item(i);
+
+                if(node.getNodeName().equals("player"))
+                {
+                    nickname = node.getTextContent();
+                }
+            }
+
+            /* copy the list of observers in case some observers changes it from inside
+             * the notification method */
+            List<ServerObserver> observersCpy;
+            synchronized (observers) {
+                observersCpy = new ArrayList<ServerObserver>(observers);
+            }
+
+            /* notify the observers that we got the string */
+            for (ServerObserver observer : observersCpy)
+            {
+                observer.onWinner(nickname);
+            }
+        }
+    }
+
+    private synchronized void FireOnEnteredMatch(Node data) throws IOException, ClassNotFoundException
+    {
+        /** data possible value
+         * <data><players><player>nickname1</player><player>nickname2</player></players></data>
+         */
+
+        Node node;
+        List<String> players = new ArrayList<String>();
+
+        if(data.hasChildNodes())
+        {
+            NodeList nodes = data.getChildNodes();
+
+            for(int i = 0; i < nodes.getLength(); i++)
+            {
+                node = nodes.item(i);
+
+                if(node.getNodeName().equals("players"))
+                {
+                    if(node.hasChildNodes())
+                    {
+                        NodeList nodeplayers = node.getChildNodes();
+
+                        for (int j = 0; j < nodeplayers.getLength(); j++)
+                        {
+                            players.add(nodeplayers.item(j).getTextContent());
+                        }
+                    }
+                }
+            }
+
+            /* copy the list of observers in case some observers changes it from inside
+             * the notification method */
+            List<ServerObserver> observersCpy;
+            synchronized (observers) {
+                observersCpy = new ArrayList<ServerObserver>(observers);
+            }
+
+            /* notify the observers that we got the string */
+            for (ServerObserver observer : observersCpy)
+            {
+                observer.onEnteredMatch(players);
+            }
+        }
+    }
+
+    private synchronized void FireOnEnteringMatch(Node data) throws IOException, ClassNotFoundException
+    {
+        /** data possible value
+         * <data><players><player>nickname1</player><player>nickname2</player></players></data>
+         */
+
+        Node node;
+        List<String> players = new ArrayList<String>();
+
+        if(data.hasChildNodes())
+        {
+            NodeList nodes = data.getChildNodes();
+
+            for(int i = 0; i < nodes.getLength(); i++)
+            {
+                node = nodes.item(i);
+
+                if(node.getNodeName().equals("players"))
+                {
+                    if(node.hasChildNodes())
+                    {
+                        NodeList nodeplayers = node.getChildNodes();
+
+                        for (int j = 0; j < nodeplayers.getLength(); j++)
+                        {
+                            players.add(nodeplayers.item(j).getTextContent());
+                        }
+                    }
+                }
+            }
+
+            /* copy the list of observers in case some observers changes it from inside
+             * the notification method */
+            List<ServerObserver> observersCpy;
+            synchronized (observers) {
+                observersCpy = new ArrayList<ServerObserver>(observers);
+            }
+
+            /* notify the observers that we got the string */
+            for (ServerObserver observer : observersCpy)
+            {
+                observer.onEnteringMatch(players);
+            }
+        }
     }
 
     /**
@@ -236,6 +493,8 @@ public class ServerHandler implements Runnable
 
     private synchronized void FireOnRegister(Node data) throws IOException, ClassNotFoundException
     {
+        System.out.println("FireOnRegister");
+
         /** Possible return data
         * "<data><retcode>FAIL</retcode><reason>Nickname already present</reason></data>";
         * "<data><retcode>SUCCESS</retcode></data>";
@@ -267,7 +526,7 @@ public class ServerHandler implements Runnable
              * the notification method */
             List<ServerObserver> observersCpy;
             synchronized (observers) {
-                observersCpy = new ArrayList<>(observers);
+                observersCpy = new ArrayList<ServerObserver>(observers);
             }
 
             /* notify the observers that we got the string */
@@ -293,16 +552,41 @@ public class ServerHandler implements Runnable
 
     private synchronized void FireOnDeregister() throws IOException, ClassNotFoundException
     {
+        System.out.println("FireOnDeregister");
+
         /* copy the list of observers in case some observers changes it from inside
          * the notification method */
         List<ServerObserver> observersCpy;
         synchronized (observers) {
-            observersCpy = new ArrayList<>(observers);
+            observersCpy = new ArrayList<ServerObserver>(observers);
         }
 
         /* notify the observers that we got the string */
         for (ServerObserver observer : observersCpy) {
             observer.onDeregister();
+        }
+    }
+
+    /**
+     * Method that fires the onChooseMatchType() method in the client
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
+
+    private synchronized void FireOnChooseMatchType() throws IOException, ClassNotFoundException
+    {
+        System.out.println("FireOnChooseMatchType");
+
+        /* copy the list of observers in case some observers changes it from inside
+         * the notification method */
+        List<ServerObserver> observersCpy;
+        synchronized (observers) {
+            observersCpy = new ArrayList<ServerObserver>(observers);
+        }
+
+        /* notify the observers that we got the string */
+        for (ServerObserver observer : observersCpy) {
+            observer.onChooseMatchType();
         }
     }
 
@@ -318,7 +602,7 @@ public class ServerHandler implements Runnable
          * the notification method */
         List<ServerObserver> observersCpy;
         synchronized (observers) {
-            observersCpy = new ArrayList<>(observers);
+            observersCpy = new ArrayList<ServerObserver>(observers);
         }
 
         /* notify the observers that we got the string */
@@ -335,11 +619,13 @@ public class ServerHandler implements Runnable
 
     private synchronized void FireOnConnected() throws IOException, ClassNotFoundException
     {
+        System.out.println("FireOnConnected");
+
         /* copy the list of observers in case some observers changes it from inside
          * the notification method */
         List<ServerObserver> observersCpy;
         synchronized (observers) {
-            observersCpy = new ArrayList<>(observers);
+            observersCpy = new ArrayList<ServerObserver>(observers);
         }
 
         /* notify the observers that we got the string */
@@ -356,11 +642,13 @@ public class ServerHandler implements Runnable
 
     private synchronized void FireOnDisconnected() throws IOException, ClassNotFoundException
     {
+        System.out.println("FireOnDisconnected");
+
         /* copy the list of observers in case some observers changes it from inside
          * the notification method */
         List<ServerObserver> observersCpy;
         synchronized (observers) {
-            observersCpy = new ArrayList<>(observers);
+            observersCpy = new ArrayList<ServerObserver>(observers);
         }
 
         /* notify the observers that we got the string */

@@ -6,6 +6,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -21,12 +22,11 @@ import it.polimi.ingsw.PSP027.Network.ProtocolTypes;
 
 public class ClientHandler implements Runnable
 {
-    private Socket client;
+    private Socket client = null;
     private ObjectOutputStream output = null;
     private ObjectInputStream input = null;
     private Lobby lobby = null;
     private String nickname = "";
-    private Lobby.Gamer gamer = null;
     private Date lastHelloTime = null;
 
     /**
@@ -58,7 +58,7 @@ public class ClientHandler implements Runnable
 
                     if (CommandsLock.tryLock(2L, TimeUnit.SECONDS)) {
 
-                        commandsList.add(command);
+                        commandsList.add(command.cloneNode(true));
                         break;
                     }
                     else {
@@ -106,14 +106,15 @@ public class ClientHandler implements Runnable
 
             if (owner != null) {
 
-                String strResponseCmd = "";
                 Node command = null;
 
                 while (bRun) {
-                    strResponseCmd = "";
-                    command = DequeueCommand();
+                   command = DequeueCommand();
 
                     if (command != null) {
+
+                        System.out.println("Processing command: " + command.getTextContent());
+
                         if (command.hasChildNodes()) {
                             NodeList nodes = command.getChildNodes();
                             Node node;
@@ -135,18 +136,18 @@ public class ClientHandler implements Runnable
                             // process received command and launches the corresponding method that builds the response
                             switch (cmdID) {
                                 case clt_Deregister:
-                                    strResponseCmd = onDeregister(cmdData);
+                                    owner.onDeregister(cmdData);
                                     break;
                                 case clt_Register:
-                                    strResponseCmd = onRegister(cmdData);
+                                    owner.onRegister(cmdData);
+                                    break;
+                                case clt_SearchMatchOfGivenType:
+                                    owner.onSearchMatchOfGivenType(cmdData);
+                                    break;
+                                case clt_ChosenGods:
+                                    owner.onChosenGods(cmdData);
                                     break;
                             }
-                        }
-
-                        if (!strResponseCmd.isEmpty()) {
-                            //System.out.println("Sending data to client : " +  strResponseCmd);
-                            owner.SendCommand(strResponseCmd);
-                            //System.out.println("Sent data to client");
                         }
                     }
                     else {
@@ -174,6 +175,10 @@ public class ClientHandler implements Runnable
         this.lobby = lobby;
     }
 
+    public String getNickname() { return nickname; }
+
+    public String getAddress() { return (client != null) ? client.getInetAddress().getHostAddress() : ""; }
+
     /**
      * Method that defines an input and output stream for the server
      * It handles the connection with the client on server side (it is the counterpart of server handler)
@@ -198,6 +203,7 @@ public class ClientHandler implements Runnable
         }
 
         try {
+            lobby.deregisterPlayer(this);
             client.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -225,7 +231,6 @@ public class ClientHandler implements Runnable
                 /* read a String from the stream  */
                 Object next = input.readObject();
                 String strCmd = (String)next;
-                String strResponseCmd = "";
 
                 // convert strCmd into an XML object and evaluate received command
                 // the structure is
@@ -266,9 +271,10 @@ public class ClientHandler implements Runnable
                             }
 
                             // process received command and launches the corresponding method that builds the response
+                            // enqueue commands in a list that will be processed asyncronously within cltcmdhndl thred
                             switch(cmdID){
                                 case clt_Hello:
-                                    strResponseCmd = onHello();
+                                    onHello();
                                     break;
                                 default:
                                     cltcmdhndlr.EnqueueCommand(root);
@@ -277,11 +283,6 @@ public class ClientHandler implements Runnable
                         }
                     }
                 }
-
-                // Sends the response to the client
-
-                if(!strResponseCmd.isEmpty())
-                    SendCommand(strResponseCmd);
 
                 Date now = new Date();
 
@@ -320,10 +321,60 @@ public class ClientHandler implements Runnable
      * @return the command in string format
      */
 
-    private String onHello(){
-        System.out.println("Got hello from " + client.getInetAddress().getHostAddress());
+    private void onHello(){
+        //System.out.println("Got hello from " + client.getInetAddress().getHostAddress());
         String ret = "<cmd><id>" + ProtocolTypes.protocolCommand.srv_Hello.toString() + "</id></cmd>";
-        return ret;
+        SendCommand(ret);
+    }
+
+    private void onChosenGods(Node data) {
+
+    System.out.println("Received onChosenGods from " + nickname);
+    Node node;
+    List<String> gods = new ArrayList<String>();
+
+    if (data.hasChildNodes()) {
+        NodeList nodes = data.getChildNodes();
+
+        for (int i = 0; i < nodes.getLength(); i++) {
+            node = nodes.item(i);
+
+            if (node.getNodeName().equals("gods")) {
+
+                NodeList nodegods = node.getChildNodes();
+
+                for (int j = 0; j < nodegods.getLength(); j++)
+                {
+                    gods.add(nodegods.item(j).getTextContent());
+                }
+            }
+        }
+
+         lobby.SetChosenGodsOnMatch(this, gods);
+    }
+}
+
+    private void onSearchMatchOfGivenType(Node data) {
+
+        System.out.println("Received onSearchMatchOfGivenType from " + nickname);
+        int nPlayers = 1;
+        Node node;
+
+        if (data.hasChildNodes()) {
+            NodeList nodes = data.getChildNodes();
+
+            for (int i = 0; i < nodes.getLength(); i++) {
+                node = nodes.item(i);
+
+                if (node.getNodeName().equals("playerscount")) {
+                    nPlayers = Integer.parseInt(node.getTextContent());
+                }
+            }
+
+            if ((nPlayers>=2) && (nPlayers<=3)) {
+                lobby.searchMatch(this, nPlayers);
+            }
+        }
     }
 
     /**
@@ -331,11 +382,11 @@ public class ClientHandler implements Runnable
      * @return the command in string format
      */
 
-    private String onRegister(Node data){
+    private void onRegister(Node data){
 
-        String strRet = "<cmd><id>" + ProtocolTypes.protocolCommand.srv_Registered.toString() + "</id><data><retcode>FAIL</retcode><reason>Invalid request</reason></data></cmd>";
         nickname = "";
         Node node;
+        String strRet = "<cmd><id>" + ProtocolTypes.protocolCommand.srv_Registered.toString() + "</id><data><retcode>FAIL</retcode><reason>Invalid request</reason></data></cmd>";
 
         if(data.hasChildNodes())
         {
@@ -353,18 +404,25 @@ public class ClientHandler implements Runnable
 
             if(!nickname.isEmpty())
             {
-                gamer = lobby.registerNewPlayer(nickname, client.getInetAddress().getHostAddress());
-
-                if(gamer == null)
-                    strRet = "<cmd><id>" + ProtocolTypes.protocolCommand.srv_Registered.toString() + "</id><data><retcode>FAIL</retcode><reason>Nickname already present</reason></data></cmd>";
-                else
+                if(lobby.registerNewPlayer(this)) {
                     strRet = "<cmd><id>" + ProtocolTypes.protocolCommand.srv_Registered.toString() + "</id><data><retcode>SUCCESS</retcode></data></cmd>";
-            }
-            else
-                strRet = "<cmd><id>" + ProtocolTypes.protocolCommand.srv_Registered.toString() + "</id><data><retcode>FAIL</retcode><reason>Missing nickname</reason></data></cmd>";
-        }
+                    SendCommand(strRet);
 
-        return strRet;
+                    /* DEREM this if player should automatically start a match once registered rather than waiting for an explicit request from player
+                    strRet = "<cmd><id>" + ProtocolTypes.protocolCommand.srv_ChooseMatchType.toString() + "</id></cmd>";
+                    SendCommand(strRet);
+                    */
+                }
+                else {
+                    strRet = "<cmd><id>" + ProtocolTypes.protocolCommand.srv_Registered.toString() + "</id><data><retcode>FAIL</retcode><reason>Nickname already present</reason></data></cmd>";
+                    SendCommand(strRet);
+                }
+            }
+            else {
+                strRet = "<cmd><id>" + ProtocolTypes.protocolCommand.srv_Registered.toString() + "</id><data><retcode>FAIL</retcode><reason>Missing nickname</reason></data></cmd>";
+                SendCommand(strRet);
+            }
+        }
     }
 
     /**
@@ -372,12 +430,12 @@ public class ClientHandler implements Runnable
      * @return the command in string format
      */
 
-    private String onDeregister(Node data){
+    private void onDeregister(Node data){
 
         System.out.println("Received bye from " + nickname);
-        lobby.deregisterPlayer(gamer);
+        lobby.deregisterPlayer(this);
         String strRet = "<cmd><id>" + ProtocolTypes.protocolCommand.srv_Deregistered.toString() + "</id></cmd>";
-        return strRet;
+        SendCommand(strRet);
     }
 
     /**

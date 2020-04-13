@@ -10,10 +10,9 @@ import java.util.List;
 
 public class Player {
 
-    private String nickname;
+    private Gamer gamer;
     private List<Worker> playerWorkers;
     private GodCard playerGodCard;
-
     private List<GodCard> opponentsGodCards;
 
 
@@ -28,6 +27,11 @@ public class Player {
         opponentsGodCards = new ArrayList<GodCard>();
 
         for (int i = 0; i < 2; i++) playerWorkers.add(new Worker(this, i));
+    }
+
+    public void SendCommand(String cmd) {
+        if(gamer != null)
+            gamer.client.SendCommand(cmd);
     }
 
     /**
@@ -45,16 +49,16 @@ public class Player {
      * */
 
     public String getNickname() {
-        return nickname;
+        return (gamer != null) ? gamer.getNickname() : "";
     }
 
     /**
-     * Method to set the player's nickname
-     * @param nickname player nickname to set
+     * Method to set the player's gamer associated
+     * @param gamer to set
      */
 
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
+    public void setGamer(Gamer gamer) {
+        this.gamer = gamer;
     }
 
     /**

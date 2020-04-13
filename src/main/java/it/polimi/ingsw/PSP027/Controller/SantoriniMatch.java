@@ -8,10 +8,12 @@ import it.polimi.ingsw.PSP027.Model.Gods.GodPowerDecorator;
 import it.polimi.ingsw.PSP027.Model.Gods.MinotaurDecorator;
 import it.polimi.ingsw.PSP027.Model.TurnsManagement.Turn;
 import it.polimi.ingsw.PSP027.Model.TurnsManagement.MovePhase;
+import it.polimi.ingsw.PSP027.Network.ProtocolTypes;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Elisa Maistri
@@ -29,13 +31,14 @@ public class SantoriniMatch implements Runnable{
      */
 
     private Board gameBoard;
+    private int requiredPlayers;
     private List<Player> players;
     private List<Turn> playedTurns;
     private UUID matchID;
     private List<GodCard> godCardsList;
     private List<GodCard> godCardsInUse;
     private boolean matchStarted;
-
+    private boolean matchEnded;
 
     /**
      * Constructor: this creates a new match, creating a list for the players that will the be filled as the players are added,
@@ -45,12 +48,15 @@ public class SantoriniMatch implements Runnable{
 
     public SantoriniMatch() {
         matchID = UUID.randomUUID();
+        requiredPlayers = 2;
         players = new ArrayList<Player>();
         playedTurns = new ArrayList<Turn>();
         godCardsInUse = new ArrayList<GodCard>();
         gameBoard = new Board();
         matchStarted = false;
+        matchEnded = false;
         godCardsList = new ArrayList<GodCard>();
+
 
         godCardsList.add(new GodCard(GodCard.GodsType.Apollo, GodCard.APOLLO_D));
         godCardsList.add(new GodCard(GodCard.GodsType.Artemis, GodCard.ARTEMIS_D));
@@ -63,9 +69,41 @@ public class SantoriniMatch implements Runnable{
         godCardsList.add(new GodCard(GodCard.GodsType.Prometheus, GodCard.PROMETHEUS_D));
     }
 
+    public int GetRequiredNumberOfPlayers()  { return requiredPlayers; }
+
+    public void SetRequiredNumberOfPlayers(int playersCount)
+    {
+        if(!matchStarted)
+            requiredPlayers = playersCount;
+    }
     @Override
     public void run() {
         // here goes what SantoriniMatch does, so the controller part
+        try {
+            while(!matchEnded) {
+
+                if (matchStarted) {
+
+                    // manage game
+
+                } else {
+                    TimeUnit.MILLISECONDS.sleep(200);
+                }
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setGodCardsInUse (List<String> chosengods) {
+        for (String chosengod : chosengods) {
+            for (GodCard god : godCardsList) {
+                if(god.getGodName().equals(chosengod)) {
+                    godCardsInUse.add(god);
+                    break;
+                }
+            }
+        }
     }
 
 
@@ -104,12 +142,10 @@ public class SantoriniMatch implements Runnable{
      */
 
     public void rotatePlayers(){
-        ArrayList<Player> tempPlayers= new ArrayList<>();
-        for(int i = 0; i < this.getPlayers().size() - 1; i++){
-            tempPlayers.add(this.getPlayers().get(i + 1));
-        }
-        tempPlayers.add(this.getPlayers().get(0));
-        this.setPlayers(tempPlayers);
+
+        Player p = players.get(0);
+        players.remove(p);
+        players.add(p);
     }
 
     /**
@@ -133,12 +169,29 @@ public class SantoriniMatch implements Runnable{
      * @param player is the player that is to be added to the list of players
      */
 
-    public void addPlayer(Player player) {
+    public synchronized void addPlayer(Player player) {
+        if(matchStarted)
+            return;
+
         players.add(player);
 
-        if(players.size()==2)
-            ;
-        else if(players.size()==3)
+        String cmd = "<cmd><id>" + ProtocolTypes.protocolCommand.srv_EnteringMatch.toString() + "</id><data><players>";
+        for(int i = 0; i < players.size(); i++){
+
+            cmd += "<player>" + players.get(i).getNickname() + "</player>";
+        }
+
+        cmd += "</players></data></cmd>";
+
+        System.out.println("SantoriniMatch addPlayer cmd: " + cmd);
+
+
+        for(int i = 0; i < players.size(); i++){
+
+            players.get(i).SendCommand(cmd);
+        }
+
+        if(players.size() == requiredPlayers)
             startGame();
     }
 
@@ -146,15 +199,16 @@ public class SantoriniMatch implements Runnable{
      * Method that removes the playerToRemove and all his attributes from the game
      * @param playerToRemove
      */
-    public void removePlayer(Player playerToRemove) {
+    public synchronized void removePlayer(Player playerToRemove) {
 
         if (matchStarted) {
+
             for (int i = 0; i < playerToRemove.getPlayerWorkers().size(); i++) {
                 playerToRemove.getPlayerWorkers().get(i).changePosition(null);
             }
             GodCard cardToRemove = playerToRemove.getPlayerGod();
-            for (int j = 1; j < this.getPlayers().size(); j++) {
-                Player tempPlayer = this.getPlayers().get(j);
+            for (int j = 1; j < players.size(); j++) {
+                Player tempPlayer = players.get(j);
                 for (int p = 0; p < tempPlayer.getOpponentsGodCards().size(); p++) {
                     if (tempPlayer.getOpponentsGodCards().get(p).getGodName().equals(cardToRemove.getGodName())) {
                         tempPlayer.getOpponentsGodCards().remove(tempPlayer.getOpponentsGodCards().get(p));
@@ -163,15 +217,42 @@ public class SantoriniMatch implements Runnable{
             }
             playerToRemove.removeOpponentGodCards();
 
-            ArrayList<Player> tempPlayers = new ArrayList<>();
-            for (int i = 0; i < this.getPlayers().size() - 1; i++) {
-                tempPlayers.add(this.getPlayers().get(i + 1));
+            // notify removed player of having lost game
+            String cmd = "<cmd><id>" + ProtocolTypes.protocolCommand.srv_Loser.toString()  + "</id></cmd>";
+            System.out.println("SantoriniMatch removePlayer notify loser players cmd: " + cmd);
+            playerToRemove.SendCommand(cmd);
+
+            players.remove(playerToRemove);
+
+            // notify remainig players that one player has been removed
+            cmd = "<cmd><id>" + ProtocolTypes.protocolCommand.srv_LeftMatch.toString()  + "</id><data><player>" + playerToRemove.getNickname() + "</player></data></cmd>";
+            System.out.println("SantoriniMatch removePlayer notify remaining players of player removal cmd: " + cmd);
+
+            for(int i = 0; i < players.size(); i++){
+
+                players.get(i).SendCommand(cmd);
             }
-            this.setPlayers(tempPlayers);
-            checkLoseCondition(this.getPlayers());
+
+            checkLoseCondition(players);
         }
         else{
 
+            players.remove(playerToRemove);
+
+            String cmd = "<cmd><id>" + ProtocolTypes.protocolCommand.srv_EnteringMatch.toString()  + "</id><data><players>";
+            for(int i = 0; i < players.size(); i++){
+
+                cmd += "<player>" + players.get(i).getNickname() + "</player>";
+            }
+
+            cmd += "</players></data></cmd>";
+
+            System.out.println("SantoriniMatch removePlayer cmd: " + cmd);
+
+            for(int i = 0; i < players.size(); i++){
+
+                players.get(i).SendCommand(cmd);
+            }
         }
     }
 
@@ -202,7 +283,35 @@ public class SantoriniMatch implements Runnable{
      */
 
     public void startGame(){
-        matchStarted = true; //maybe here
+        matchStarted = true;
+
+        // notify players that game has started
+        String cmd = "<cmd><id>" + ProtocolTypes.protocolCommand.srv_EnteredMatch.toString()  + "</id><data><players>";
+        for(int i = 0; i < players.size(); i++){
+
+            cmd += "<player>" + players.get(i).getNickname() + "</player>";
+        }
+
+        cmd += "</players></data></cmd>";
+
+        System.out.println("SantoriniMatch startGame cmd: " + cmd);
+
+        for(int i = 0; i < players.size(); i++){
+
+            players.get(i).SendCommand(cmd);
+        }
+
+        // perform starting game stuffs here
+
+        cmd = "<cmd><id>" + ProtocolTypes.protocolCommand.srv_ChooseGods.toString()  + "</id><data><requiredgods>" + Integer.toString(requiredPlayers) + "</requiredgods><gods>";
+        for(int i = 0; i < godCardsList.size(); i++){
+
+            cmd += "<god>" + godCardsList.get(i).getGodName() + "</god>";
+        }
+
+        cmd += "</gods></data></cmd>";
+
+        players.get(0).SendCommand(cmd);
     }
 
     /**
@@ -210,7 +319,16 @@ public class SantoriniMatch implements Runnable{
      */
 
     public void endGame(Player playerWinner) {
-        System.out.println("Player" + playerWinner.getNickname() + "has Won!");
+        System.out.println("Player " + playerWinner.getNickname() + " has Won!");
+
+        // send to all players the winner one
+        String cmd = "<cmd><id>" + ProtocolTypes.protocolCommand.srv_Winner.toString()  + "</id><data><player>" + playerWinner.getNickname() + "</player></data></cmd>";
+
+        for(int i = 0; i < players.size(); i++){
+
+            players.get(i).SendCommand(cmd);
+        }
+
         /** @TODO tell lobby to handle the ending of the match
          */
     }
@@ -228,11 +346,7 @@ public class SantoriniMatch implements Runnable{
      */
 
     public int numberOfPlayers() {
-        int numberOfPlayers = 0;
-        for (Player player : players) {
-            numberOfPlayers++;
-        }
-        return numberOfPlayers;
+        return players.size();
     }
 
     /**

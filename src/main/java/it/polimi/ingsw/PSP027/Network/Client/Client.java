@@ -1,5 +1,6 @@
 package it.polimi.ingsw.PSP027.Network.Client;
 
+import it.polimi.ingsw.PSP027.Network.ProtocolTypes;
 import it.polimi.ingsw.PSP027.Network.Server.Server;
 
 import java.io.IOException;
@@ -19,7 +20,7 @@ public class Client implements Runnable, ServerObserver
     private Socket server = null;
     private ServerHandler serverHandler = null;
     private String nickname = "";
-    private String ip = "127.0.0.1";
+    private String ip = "";
     private int port = Server.SOCKET_PORT;
     private Date lastHelloTime = null;
 
@@ -49,6 +50,7 @@ public class Client implements Runnable, ServerObserver
     private RegistrationStatus regStatus = RegistrationStatus.Unregistered;
     private ConnectionStatus connStatus = ConnectionStatus.Disconnected;
 
+    public String getNickname() { return nickname; }
     /**
      * Method that adds an observer to the list of observers
      * @param observer observer to add
@@ -83,12 +85,30 @@ public class Client implements Runnable, ServerObserver
     public synchronized boolean Connect(String ipaddress)
     {
         if(connStatus == ConnectionStatus.KeepDisconnected) {
+            boolean bWrongAddress = false;
             String[] address = ipaddress.split(":");
             ip = address[0];
-            if (address.length == 2)
+
+            if(ip.length()==0) {
+                bWrongAddress = true;
+                ip = "127.0.0.1";
+            }
+
+            if (address.length == 2) {
                 port = Integer.parseInt(address[1]);
+                if((port<1024) || (port > 65535))
+                {
+                    bWrongAddress = true;
+                    port = Server.SOCKET_PORT;
+                }
+            }
             else
                 port = Server.SOCKET_PORT;
+
+            if(bWrongAddress)
+            {
+                // should either notify UI that we are defaulting to 127.0.0.1:SOCKET_PORT and connect OR return false !
+            }
 
             connStatus = ConnectionStatus.Connecting;
             return true;
@@ -179,6 +199,46 @@ public class Client implements Runnable, ServerObserver
         return false;
     }
 */
+
+    public synchronized boolean SearchMatch(int nPlayer)
+    {
+        if(connStatus == ConnectionStatus.KeepConnected) {
+
+            if (regStatus == RegistrationStatus.Registered) {
+
+                String strCmd = "<cmd><id>" + ProtocolTypes.protocolCommand.clt_SearchMatchOfGivenType.toString()  + "</id><data><playerscount>" + Integer.toString(nPlayer) + "</playerscount></data></cmd>";
+
+                serverHandler.SendCommand(strCmd);
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public synchronized boolean ChosenGods(List<String> godCardsList)
+    {
+        if(connStatus == ConnectionStatus.KeepConnected) {
+
+            if (regStatus == RegistrationStatus.Registered) {
+
+                String cmd = "<cmd><id>" + ProtocolTypes.protocolCommand.clt_ChosenGods.toString() + "</id><data><gods>";
+
+                for(int i = 0; i < godCardsList.size(); i++){
+
+                    cmd += "<god>" + godCardsList.get(i) + "</god>";
+                }
+
+                cmd += "</gods></data></cmd>";
+
+                serverHandler.SendCommand(cmd);
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     /**
      * Method that creates a socket to connect with the server, and if successful
      * create the adapter with a separate thread that will communicate with the server
@@ -396,6 +456,115 @@ public class Client implements Runnable, ServerObserver
         }
     }
 
+    private void FireOnRegistrationError(String error)
+    {
+        List<ClientObserver> observersCpy;
+        synchronized (observers) {
+            observersCpy = new ArrayList<>(observers);
+        }
+
+        /* notify the observers that we got the string */
+        for (ClientObserver observer: observersCpy) {
+            observer.OnRegistrationError(error);
+        }
+    }
+
+    /**
+     * Method that fires the OnDeregistered() method of the observer (client instance)
+     */
+
+    private void FireOnChooseMatchType()
+    {
+        List<ClientObserver> observersCpy;
+        synchronized (observers) {
+            observersCpy = new ArrayList<>(observers);
+        }
+
+        /* notify the observers that we got the string */
+        for (ClientObserver observer: observersCpy) {
+            observer.OnChooseMatchType();
+        }
+    }
+
+    private void FireOnEnteringMatch(List<String> players)
+    {
+        List<ClientObserver> observersCpy;
+        synchronized (observers) {
+            observersCpy = new ArrayList<>(observers);
+        }
+
+        /* notify the observers that we got the string */
+        for (ClientObserver observer: observersCpy) {
+            observer.OnEnteringMatch(players);
+        }
+    }
+
+    private void FireOnEnteredMatch(List<String> players)
+    {
+        List<ClientObserver> observersCpy;
+        synchronized (observers) {
+            observersCpy = new ArrayList<>(observers);
+        }
+
+        /* notify the observers that we got the string */
+        for (ClientObserver observer: observersCpy) {
+            observer.OnEnteredMatch(players);
+        }
+    }
+
+    private void FireOnLeftMatch(String nickname)
+    {
+        List<ClientObserver> observersCpy;
+        synchronized (observers) {
+            observersCpy = new ArrayList<>(observers);
+        }
+
+        /* notify the observers that we got the string */
+        for (ClientObserver observer: observersCpy) {
+            observer.OnLeftMatch(nickname);
+        }
+    }
+
+    private void FireOnChooseGods(int requiredgods, List<String> gods)
+    {
+        List<ClientObserver> observersCpy;
+        synchronized (observers) {
+            observersCpy = new ArrayList<>(observers);
+        }
+
+        /* notify the observers that we got the string */
+        for (ClientObserver observer: observersCpy) {
+            observer.OnChooseGods(requiredgods, gods);
+        }
+    }
+
+    private void FireOnWinner(String nickname)
+    {
+        List<ClientObserver> observersCpy;
+        synchronized (observers) {
+            observersCpy = new ArrayList<>(observers);
+        }
+
+        /* notify the observers that we got the string */
+        for (ClientObserver observer: observersCpy) {
+            observer.OnWinner(nickname);
+        }
+    }
+
+    private void FireOnLoser()
+    {
+        List<ClientObserver> observersCpy;
+        synchronized (observers) {
+            observersCpy = new ArrayList<>(observers);
+        }
+
+        /* notify the observers that we got the string */
+        for (ClientObserver observer: observersCpy) {
+            observer.OnLoser();
+        }
+    }
+
+
     /* *****************************************************************************************************************
      * Events that catch the messages fired by the ServerHandler through the ServerObserver interface                  *
      * IMPORTANT NOTE: "lastHelloTime = new Date();" must be located in each event related to a message sent by server *
@@ -449,12 +618,60 @@ public class Client implements Runnable, ServerObserver
     @Override
     public synchronized void onRegistrationError(String error)
     {
-        System.out.println("Registration failed: " + error);
         regStatus = RegistrationStatus.Unregistered;
         lastHelloTime = new Date();
+        FireOnRegistrationError(error);
         notifyAll();
     }
 
+    @Override
+    public synchronized void onChooseMatchType() {
+        lastHelloTime = new Date();
+        FireOnChooseMatchType();
+        notifyAll();
+    }
+
+    @Override
+    public synchronized void onEnteringMatch(List<String> players) {
+        lastHelloTime = new Date();
+        FireOnEnteringMatch(players);
+        notifyAll();
+    }
+
+    @Override
+    public synchronized void onEnteredMatch(List<String> players) {
+        lastHelloTime = new Date();
+        FireOnEnteredMatch(players);
+        notifyAll();
+    }
+
+    @Override
+    public synchronized void onLeftMatch(String nickname) {
+        lastHelloTime = new Date();
+        FireOnLeftMatch(nickname);
+        notifyAll();
+    }
+
+    @Override
+    public synchronized void onChooseGods(int requiredgods, List<String> gods) {
+        lastHelloTime = new Date();
+        FireOnChooseGods(requiredgods, gods);
+        notifyAll();
+    }
+
+    @Override
+    public synchronized void onWinner(String nickname) {
+        lastHelloTime = new Date();
+        FireOnWinner(nickname);
+        notifyAll();
+    }
+
+    @Override
+    public synchronized void onLoser() {
+        lastHelloTime = new Date();
+        FireOnLoser();
+        notifyAll();
+    }
     /**
      * Method that sets the connection status to Registered and calls the method that
      * fires the OnRegistered method of the observer (client instance)
@@ -480,21 +697,6 @@ public class Client implements Runnable, ServerObserver
         lastHelloTime = new Date();
         FireOnDeregistered();
         notifyAll();
-    }
-
-    @Override
-    public synchronized void onSearchMatch() {
-        lastHelloTime = new Date();
-    }
-
-    @Override
-    public synchronized void onLeaveMatch() {
-        lastHelloTime = new Date();
-    }
-
-    @Override
-    public synchronized void onChosenGods() {
-        lastHelloTime = new Date();
     }
 
     @Override

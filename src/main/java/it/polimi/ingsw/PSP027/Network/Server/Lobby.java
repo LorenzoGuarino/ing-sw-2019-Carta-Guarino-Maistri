@@ -1,5 +1,6 @@
 package it.polimi.ingsw.PSP027.Network.Server;
 
+import it.polimi.ingsw.PSP027.Model.Game.Gamer;
 import it.polimi.ingsw.PSP027.Model.Game.Player;
 import it.polimi.ingsw.PSP027.Controller.SantoriniMatch;
 
@@ -15,7 +16,6 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class Lobby{
 
-
     private ReentrantLock GamersLock = new ReentrantLock();
 
     /**
@@ -24,15 +24,6 @@ public class Lobby{
      * number of players (3) or have already started with just 2 players.
      */
     private ArrayList<SantoriniMatch> Matches;
-
-    /**
-     * Class Gamer with its
-     */
-    public class Gamer {
-        private String nickname;
-        private String ipAddress;
-        private UUID matchAssociated;
-    }
 
     /**
      * List of the gamers that are currently in the lobby, wither waiting for a game to play or already playing a match
@@ -53,8 +44,10 @@ public class Lobby{
      * @return the match created
      */
 
-    public SantoriniMatch createMatch() {
+    public SantoriniMatch createMatch(int playersCount) {
+
         SantoriniMatch santoriniMatch = new SantoriniMatch();
+        santoriniMatch.SetRequiredNumberOfPlayers(playersCount);
         Matches.add(santoriniMatch);
         Thread santoriniMatchThread = new Thread(santoriniMatch);
         santoriniMatchThread.start();
@@ -63,14 +56,15 @@ public class Lobby{
     }
 
     /**
-     * Method that checks if a player with the same nickname and the same IP adress has already entered the lobby
-     * @param nickname of the potential gamer to be added with another method if this method assures that is not already registered
-     * @param ipaddress of the potential gamer to be added with another method if this method assures that is not already registered
+     * Method that checks if a gamer with the same nickname and the same IP adress has already entered the lobby
+     * @param client identifying the gamer
      * @return 1 if the gamer is already in the lobby, 0 if not present, -1 if there is another gamer using the give nickname
      */
 
-    public int checkIfAPlayerIsAlreadyRegistered (String nickname, String ipaddress) {
+    public int checkIfAGamerIsAlreadyRegistered (ClientHandler client) {
         int iRet = 0;
+
+        System.out.println("checkIfAGamerIsAlreadyRegistered " + client.getNickname());
 
         try{
             while(true) {
@@ -78,10 +72,10 @@ public class Lobby{
                 if (GamersLock.tryLock(2L, TimeUnit.SECONDS)) {
                     for (Gamer gamerInLobby : lobbyGamers) {
 
-                        if (gamerInLobby.nickname.equals(nickname)) {
+                        if (gamerInLobby.client.getNickname().equals(client.getNickname())) {
                             iRet = -1;
 
-                            if(gamerInLobby.ipAddress.equals(ipaddress))
+                            if(gamerInLobby.client.getAddress().equals(client.getAddress()))
                                 iRet = 1;
 
                             break;
@@ -103,15 +97,19 @@ public class Lobby{
             GamersLock.unlock();
         }
 
+        System.out.println("checkIfAGamerIsAlreadyRegistered " + client.getNickname() + " returns " + Integer.toString(iRet));
+
         return iRet;
     }
 
     /**
      * Method that deregister a player removing it from the gamers and from its match's players
-     * @param gamer gamer to deregister
+     * @param client identifying the gamer to deregister
      */
 
-    public void deregisterPlayer(Gamer gamer) {
+    public void deregisterPlayer(ClientHandler client) {
+
+        System.out.println("deregisterPlayer " + client.getNickname());
 
         try {
             while (true) {
@@ -122,15 +120,16 @@ public class Lobby{
 
                     for (Gamer gamerInLobby : lobbyGamers) {
 
-                        if (gamerInLobby.nickname.equals(gamer.nickname)) {
+                        if (gamerInLobby.client.getNickname().equals(client.getNickname()) &&
+                            gamerInLobby.client.getAddress().equals(client.getAddress())) {
 
                             for (SantoriniMatch match : Matches) {
-                                if (gamer.matchAssociated == match.getMatchId()) {
+                                if (gamerInLobby.matchAssociated == match.getMatchId()) {
 
                                     List<Player> matchPlayers = match.getPlayers();
 
                                     for(Player player : matchPlayers) {
-                                        if(player.getNickname().equals(gamer.nickname)) {
+                                        if(player.getNickname().equals(gamerInLobby.client.getNickname())) {
                                             match.removePlayer(player);
                                             break;
                                         }
@@ -142,6 +141,8 @@ public class Lobby{
 
                             lobbyGamers.remove(gamerInLobby);
 
+                            System.out.println("deregisterPlayer " + client.getNickname() + " done");
+
                             break;
                         }
                     }
@@ -162,68 +163,140 @@ public class Lobby{
 
     }
 
-    /**
-     * Method that registers a new player in the lobby if possible
-     * @param nickname of the gamer to add to the lobby gamers
-     * @param ipaddress of the gamer to add to the lobby gamers
-     * @return the gamer object added to the lobby if any or null
-     */
+    public void searchMatch(ClientHandler client, int playersCount)
+    {
+        System.out.println("searchMatch for " + client.getNickname() + " with " + Integer.toString(playersCount) + " players");
 
-    public Gamer registerNewPlayer(String nickname, String ipaddress) {
-
-        Gamer gamer = null;
+        boolean matchFound = false;
 
         try {
             while (true) {
 
                 if (GamersLock.tryLock(2L, TimeUnit.SECONDS)) {
 
-                    int iRet = 0; // gamer not found
-
                     for (Gamer gamerInLobby : lobbyGamers) {
 
-                        if (gamerInLobby.nickname.equals(nickname)) {
-                            iRet = -1; // nickname found
+                        if ((gamerInLobby.client.getNickname().equals(client.getNickname())) &&
+                                (gamerInLobby.client.getAddress().equals(client.getAddress()))
+                        ) {
 
-                            if(gamerInLobby.ipAddress.equals(ipaddress)) {
-                                iRet = 1; // correct gamer found
-                                gamer = gamerInLobby;
+                            for (SantoriniMatch match : Matches) {
+                                if ((match.GetRequiredNumberOfPlayers() == playersCount) && !match.isStarted()) {
+
+                                    gamerInLobby.matchAssociated = match.getMatchId();
+
+                                    Player player = new Player();
+                                    player.setGamer(gamerInLobby);
+                                    match.addPlayer(player);
+
+                                    matchFound = true;
+                                    break;
+                                }
+                            }
+
+                            if (!matchFound) {
+                                SantoriniMatch match = createMatch(playersCount);
+                                if (match != null) {
+
+                                    gamerInLobby.matchAssociated = match.getMatchId();
+
+                                    Player player = new Player();
+                                    player.setGamer(gamerInLobby);
+                                    match.addPlayer(player);
+
+                                    matchFound = true;
+
+                                    System.out.println("searchMatch set match " + match.getMatchId().toString() + " for " + client.getNickname());
+                                }
                             }
 
                             break;
                         }
                     }
 
+                    break;
+                }
+                else {
+                    TimeUnit.MILLISECONDS.sleep(200);
+                }
+            }
+        }
+        catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        finally {
+            GamersLock.unlock();
+        }
+    }
+
+
+    public void SetChosenGodsOnMatch(ClientHandler client, List<String> chosengods) {
+
+        try {
+            while (true) {
+
+                if (GamersLock.tryLock(2L, TimeUnit.SECONDS)) {
+
+                    for (Gamer gamerInLobby : lobbyGamers) {
+
+                        if ((gamerInLobby.client.getNickname().equals(client.getNickname())) &&
+                                (gamerInLobby.client.getAddress().equals(client.getAddress()))
+                        ) {
+
+                            for (SantoriniMatch match : Matches) {
+                                if (match.getMatchId() == gamerInLobby.matchAssociated) {
+                                    match.setGodCardsInUse(chosengods);
+                                    break;
+                                }
+                            }
+
+                            break;
+                        }
+                    }
+
+                    break;
+                }
+                else {
+                    TimeUnit.MILLISECONDS.sleep(200);
+                }
+            }
+        }
+        catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        finally {
+            GamersLock.unlock();
+        }
+    }
+
+    /**
+     * Method that registers a new player in the lobby if possible
+     * @param client identifying the gamer to add to the lobby gamers
+     * @return the gamer object added to the lobby if any or null
+     */
+
+    public boolean registerNewPlayer(ClientHandler client) {
+
+        System.out.println("registerNewPlayer " + client.getNickname());
+        boolean bRet = false;
+
+        try {
+            while (true) {
+
+                if (GamersLock.tryLock(2L, TimeUnit.SECONDS)) {
+
+                    int iRet = checkIfAGamerIsAlreadyRegistered(client);
+
                     if(iRet == 0) {
-                        gamer = new Gamer();
-                        gamer.nickname = nickname;
-                        gamer.ipAddress = ipaddress;
+                        Gamer gamer = new Gamer();
+                        gamer.client = client;
                         lobbyGamers.add(gamer);
+                    }
 
-                        boolean matchFound = false;
-
-                        for (SantoriniMatch match : Matches) {
-                            if (match.numberOfPlayers() < 3 && !match.isStarted()) {
-
-                                Player player = new Player();
-                                player.setNickname(gamer.nickname);
-                                match.addPlayer(player);
-                                gamer.matchAssociated = match.getMatchId();
-                                matchFound = true;
-                                break;
-                            }
-                        }
-
-                        if (!matchFound) {
-                            SantoriniMatch match = createMatch();
-                            if (match != null) {
-                                Player player = new Player();
-                                player.setNickname(gamer.nickname);
-                                match.addPlayer(player);
-                                gamer.matchAssociated = match.getMatchId();
-                            }
-                        }
-
+                    if(iRet >= 0)
+                    {
+                        bRet = true;
+                        System.out.println("registerNewPlayer " + client.getNickname() + " done");
                     }
 
                     break;
@@ -240,7 +313,7 @@ public class Lobby{
             GamersLock.unlock();
         }
 
-        return gamer;
+        return bRet;
     }
 
 }
