@@ -103,6 +103,53 @@ public class Lobby{
     }
 
     /**
+     * Method that registers a new player in the lobby if possible
+     * @param client identifying the gamer to add to the lobby gamers
+     * @return the gamer object added to the lobby if any or null
+     */
+
+    public boolean registerNewPlayer(ClientHandler client) {
+
+        System.out.println("registerNewPlayer " + client.getNickname());
+        boolean bRet = false;
+
+        try {
+            while (true) {
+
+                if (GamersLock.tryLock(2L, TimeUnit.SECONDS)) {
+
+                    int iRet = checkIfAGamerIsAlreadyRegistered(client);
+
+                    if(iRet == 0) {
+                        Gamer gamer = new Gamer();
+                        gamer.client = client;
+                        lobbyGamers.add(gamer);
+                    }
+
+                    if(iRet >= 0)
+                    {
+                        bRet = true;
+                        System.out.println("registerNewPlayer " + client.getNickname() + " done");
+                    }
+
+                    break;
+                }
+                else {
+                    TimeUnit.MILLISECONDS.sleep(200);
+                }
+            }
+        }
+        catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        finally {
+            GamersLock.unlock();
+        }
+
+        return bRet;
+    }
+
+    /**
      * Method that deregister a player removing it from the gamers and from its match's players
      * @param client identifying the gamer to deregister
      */
@@ -163,8 +210,14 @@ public class Lobby{
 
     }
 
-    public void searchMatch(ClientHandler client, int playersCount)
-    {
+    /**
+     * Method that searches for a Match for the gamer that entered the lobby keeping in mind the number of players with which
+     * the gamer wants to play with
+     * @param client identifying the gamer that wants to enter a match
+     * @param playersCount number of players of the type of match the gamer wants to play (2 or 3)
+     */
+
+    public void searchMatch(ClientHandler client, int playersCount) {
         System.out.println("searchMatch for " + client.getNickname() + " with " + Integer.toString(playersCount) + " players");
 
         boolean matchFound = false;
@@ -229,6 +282,11 @@ public class Lobby{
         }
     }
 
+    /**
+     * Method that gets the chosen gods by the client (chosen by the first gamer that enetred the match) and asks the match to save them
+     * @param client identifying the gamer that chose the gods
+     * @param chosengods list of the names of the gods that are going to be used in the match
+     */
 
     public void SetChosenGodsOnMatch(ClientHandler client, List<String> chosengods) {
 
@@ -270,33 +328,42 @@ public class Lobby{
     }
 
     /**
-     * Method that registers a new player in the lobby if possible
-     * @param client identifying the gamer to add to the lobby gamers
-     * @return the gamer object added to the lobby if any or null
+     * Method that gets the chosen god by a player among the chosen gods that the first gamer that entered the match chose
+     * and sets it as the player's god card
+     * @param client identifying the gamer that chose the god
+     * @param chosengod name of the god that the player wants to have as a god card
      */
 
-    public boolean registerNewPlayer(ClientHandler client) {
-
-        System.out.println("registerNewPlayer " + client.getNickname());
-        boolean bRet = false;
+    public void SetChosenGodOfPlayer(ClientHandler client, String chosengod) {
 
         try {
             while (true) {
 
                 if (GamersLock.tryLock(2L, TimeUnit.SECONDS)) {
 
-                    int iRet = checkIfAGamerIsAlreadyRegistered(client);
+                    for (Gamer gamerInLobby : lobbyGamers) {
 
-                    if(iRet == 0) {
-                        Gamer gamer = new Gamer();
-                        gamer.client = client;
-                        lobbyGamers.add(gamer);
-                    }
+                        if ((gamerInLobby.client.getNickname().equals(client.getNickname())) &&
+                                (gamerInLobby.client.getAddress().equals(client.getAddress()))
+                        ) {
 
-                    if(iRet >= 0)
-                    {
-                        bRet = true;
-                        System.out.println("registerNewPlayer " + client.getNickname() + " done");
+                            for (SantoriniMatch match : Matches) {
+                                if (match.getMatchId() == gamerInLobby.matchAssociated) {
+
+                                    List<Player> matchPlayers = match.getPlayers();
+
+                                    for(Player player : matchPlayers) {
+                                        if(player.getNickname().equals(gamerInLobby.client.getNickname())) {
+                                            match.setGodCardForPlayer(player, chosengod);
+                                            break;
+                                        }
+                                    }
+                                    break;
+                                }
+                            }
+
+                            break;
+                        }
                     }
 
                     break;
@@ -312,8 +379,6 @@ public class Lobby{
         finally {
             GamersLock.unlock();
         }
-
-        return bRet;
     }
 
 }

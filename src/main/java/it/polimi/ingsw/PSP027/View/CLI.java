@@ -1,5 +1,6 @@
 package it.polimi.ingsw.PSP027.View;
 
+import it.polimi.ingsw.PSP027.Model.Game.GodCard;
 import it.polimi.ingsw.PSP027.Network.Client.Client;
 import it.polimi.ingsw.PSP027.Network.Client.ClientObserver;
 
@@ -29,6 +30,7 @@ public class CLI implements Runnable, ClientObserver {
     private static String DEREGISTER_COMMAND = "deregister";
     private static String SEARCHMATCH_COMMAND = "searchmatch";
     private static String CHOSENGODS_COMMAND = "chosengods";
+    private static String CHOSENGOD_COMMAND = "chosengod";
     private static String PLAY_COMMAND = "play";
 
     private static String DISCONNECT_COMMAND_LABEL =  "  " + DISCONNECT_COMMAND + " (to disconnect from server)";
@@ -43,6 +45,126 @@ public class CLI implements Runnable, ClientObserver {
     private static String QUIT_GAME_LABEL = "Thank you for having played Santorini game.\n\nSee you soon!";
     private static String CHOOSE_MATCH_TYPE_LABEL = "Please, enter the number of opponent players you wanna play with (choose between 1 or 2)";
     private static String SEARCHING_MATCH_LABEL = "Searching match ... please wait ...";
+
+    /* *********************************************************************************************************
+     * ********************************* UTILITY STRINGS FOR CLI RENDERING *********************************** *
+     * *********************************************************************************************************/
+
+    // Reset
+    public static final String RESET = "\033[0m";  // Text Reset
+
+    // Regular Colors
+    public static final String BLACK = "\033[0;30m";   // BLACK
+    public static final String RED = "\033[0;31m";     // RED
+    public static final String GREEN = "\033[0;32m";   // GREEN
+    public static final String YELLOW = "\033[0;33m";  // YELLOW
+    public static final String BLUE = "\033[0;34m";    // BLUE
+    public static final String PURPLE = "\033[0;35m";  // PURPLE
+    public static final String CYAN = "\033[0;36m";    // CYAN
+    public static final String WHITE = "\033[0;37m";   // WHITE
+
+    // Bold
+    public static final String BLACK_BOLD = "\033[1;30m";  // BLACK
+    public static final String RED_BOLD = "\033[1;31m";    // RED
+    public static final String GREEN_BOLD = "\033[1;32m";  // GREEN
+    public static final String YELLOW_BOLD = "\033[1;33m"; // YELLOW
+    public static final String BLUE_BOLD = "\033[1;34m";   // BLUE
+    public static final String PURPLE_BOLD = "\033[1;35m"; // PURPLE
+    public static final String CYAN_BOLD = "\033[1;36m";   // CYAN
+    public static final String WHITE_BOLD = "\033[1;37m";  // WHITE
+
+    // Underline
+    public static final String BLACK_UNDERLINED = "\033[4;30m";  // BLACK
+    public static final String RED_UNDERLINED = "\033[4;31m";    // RED
+    public static final String GREEN_UNDERLINED = "\033[4;32m";  // GREEN
+    public static final String YELLOW_UNDERLINED = "\033[4;33m"; // YELLOW
+    public static final String BLUE_UNDERLINED = "\033[4;34m";   // BLUE
+    public static final String PURPLE_UNDERLINED = "\033[4;35m"; // PURPLE
+    public static final String CYAN_UNDERLINED = "\033[4;36m";   // CYAN
+    public static final String WHITE_UNDERLINED = "\033[4;37m";  // WHITE
+
+    // Background
+    public static final String BLACK_BACKGROUND = "\033[40m";  // BLACK
+    public static final String RED_BACKGROUND = "\033[41m";    // RED
+    public static final String GREEN_BACKGROUND = "\033[42m";  // GREEN
+    public static final String YELLOW_BACKGROUND = "\033[43m"; // YELLOW
+    public static final String BLUE_BACKGROUND = "\033[44m";   // BLUE
+    public static final String PURPLE_BACKGROUND = "\033[45m"; // PURPLE
+    public static final String CYAN_BACKGROUND = "\033[46m";   // CYAN
+    public static final String WHITE_BACKGROUND = "\033[47m";  // WHITE
+
+    // High Intensity
+    public static final String BLACK_BRIGHT = "\033[0;90m";  // BLACK
+    public static final String RED_BRIGHT = "\033[0;91m";    // RED
+    public static final String GREEN_BRIGHT = "\033[0;92m";  // GREEN
+    public static final String YELLOW_BRIGHT = "\033[0;93m"; // YELLOW
+    public static final String BLUE_BRIGHT = "\033[0;94m";   // BLUE
+    public static final String PURPLE_BRIGHT = "\033[0;95m"; // PURPLE
+    public static final String CYAN_BRIGHT = "\033[0;96m";   // CYAN
+    public static final String WHITE_BRIGHT = "\033[0;97m";  // WHITE
+
+    // Bold High Intensity
+    public static final String BLACK_BOLD_BRIGHT = "\033[1;90m"; // BLACK
+    public static final String RED_BOLD_BRIGHT = "\033[1;91m";   // RED
+    public static final String GREEN_BOLD_BRIGHT = "\033[1;92m"; // GREEN
+    public static final String YELLOW_BOLD_BRIGHT = "\033[1;93m";// YELLOW
+    public static final String BLUE_BOLD_BRIGHT = "\033[1;94m";  // BLUE
+    public static final String PURPLE_BOLD_BRIGHT = "\033[1;95m";// PURPLE
+    public static final String CYAN_BOLD_BRIGHT = "\033[1;96m";  // CYAN
+    public static final String WHITE_BOLD_BRIGHT = "\033[1;97m"; // WHITE
+
+    // High Intensity backgrounds
+    public static final String BLACK_BACKGROUND_BRIGHT = "\033[0;100m";// BLACK
+    public static final String RED_BACKGROUND_BRIGHT = "\033[0;101m";// RED
+    public static final String GREEN_BACKGROUND_BRIGHT = "\033[0;102m";// GREEN
+    public static final String YELLOW_BACKGROUND_BRIGHT = "\033[0;103m";// YELLOW
+    public static final String BLUE_BACKGROUND_BRIGHT = "\033[0;104m";// BLUE
+    public static final String PURPLE_BACKGROUND_BRIGHT = "\033[0;105m"; // PURPLE
+    public static final String CYAN_BACKGROUND_BRIGHT = "\033[0;106m";  // CYAN
+    public static final String WHITE_BACKGROUND_BRIGHT = "\033[0;107m";   // WHITE
+
+    public void ColoredPrintRGB(String txt, int fr, int fg, int fb, int br, int bg, int bb)
+    {
+        String forecolor = "\033[38;2;" + Integer.toString(fr) + ";" + Integer.toString(fg) + ";" + Integer.toString(fb);
+        String background = "\033[48;2;" + Integer.toString(br) + ";" + Integer.toString(bg) + ";" + Integer.toString(bb);
+        System.out.print(forecolor);
+        System.out.print(background);
+        System.out.print(txt);
+        System.out.print(RESET);
+    }
+
+    public void ColoredPrintLnRGB(String txt, int fr, int fg, int fb, int br, int bg, int bb)
+    {
+        String forecolor = "\033[38;2;" + Integer.toString(fr) + ";" + Integer.toString(fg) + ";" + Integer.toString(fb);
+        String background = "\033[48;2;" + Integer.toString(br) + ";" + Integer.toString(bg) + ";" + Integer.toString(bb);
+        System.out.print(forecolor);
+        System.out.print(background);
+        System.out.println(txt);
+        System.out.print(RESET);
+    }
+
+    public void ColoredPrint(String txt, String forecolor, String background)
+    {
+        System.out.print(forecolor);
+        System.out.print(background);
+        System.out.print(txt);
+        System.out.print(RESET);
+    }
+
+    public void ColoredPrintLn(String txt, String forecolor, String background)
+    {
+        System.out.print(forecolor);
+        System.out.print(background);
+        System.out.println(txt);
+        System.out.print(RESET);
+    }
+
+    public void clearScreen() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+    }
+
+    /* ************************************************************************************************* */
 
     private enum CLIConnectionState
     {
@@ -61,8 +183,13 @@ public class CLI implements Runnable, ClientObserver {
         cli_Deregistering,
         cli_ChoosingMatch,
         cli_ChoosingGods,
+        cli_ChoosingGod,
         cli_WaitForSomethingToHappen,
     }
+
+    /**
+     * class to manage the user input
+     */
 
     private class Keyboardinput implements Runnable{
 
@@ -90,8 +217,7 @@ public class CLI implements Runnable, ClientObserver {
      * @param args main arguments
      */
 
-    public static void main( String[] args )
-    {
+    public static void main( String[] args ) {
         /* Instantiate a new CLI which will also receive events from
          * the server by implementing the ServerObserver interface */
         CLI cli = new CLI();
@@ -124,6 +250,10 @@ public class CLI implements Runnable, ClientObserver {
         return false;
     }
 
+    /**
+     * Method used when waiting for a user input
+     */
+
     private void WaitForUserInput() {
         try {
             abortUserInput = false;
@@ -141,8 +271,7 @@ public class CLI implements Runnable, ClientObserver {
      */
 
     @Override
-    public void run()
-    {
+    public void run() {
         System.out.println("Welcome to Santorini Game !");
 
         client = new Client();
@@ -203,13 +332,16 @@ public class CLI implements Runnable, ClientObserver {
                     {
                         case cli_Deregistered:
                         {
-                            System.out.println(AVAILABLE_COMMANDS_LABEL);
+                            ColoredPrint(AVAILABLE_COMMANDS_LABEL, WHITE, BLUE_BACKGROUND);
+                            System.out.print("");
+                            //System.out.println(AVAILABLE_COMMANDS_LABEL);
                             System.out.println(REGISTER_COMMAND_LABEL);
                             System.out.println(DISCONNECT_COMMAND_LABEL);
                             System.out.println(BYE_COMMAND_LABEL);
                             WaitForUserInput();
                         }
                         break;
+
                         case cli_Registering:
                         case cli_Deregistering:
                         {
@@ -221,6 +353,7 @@ public class CLI implements Runnable, ClientObserver {
                             }
                         }
                         break;
+
                         case cli_Registered:
                         {
                             System.out.println(AVAILABLE_COMMANDS_LABEL);
@@ -231,6 +364,7 @@ public class CLI implements Runnable, ClientObserver {
                             WaitForUserInput();
                         }
                         break;
+
                         case cli_ChoosingMatch:
                         {
                             System.out.println(CHOOSE_MATCH_TYPE_LABEL);
@@ -247,9 +381,11 @@ public class CLI implements Runnable, ClientObserver {
                             }
                         }
                         break;
+
                         case cli_ChoosingGods:
                         {
                             if(gods != null) {
+                                clearScreen();
                                 System.out.println("Please choose " + Integer.toString(requiredgods) + " gods among the listed ones:");
 
                                 for (int i = 0; i < gods.size(); i++) {
@@ -257,41 +393,171 @@ public class CLI implements Runnable, ClientObserver {
                                 }
 
                                 System.out.println("Enter a comma separated list of gods");
+                                System.out.println("For a description of a god's power, enter \"help god's name\"");
                                 WaitForUserInput();
 
-                                String[] chosengods = cmdLine.split(",");
+                                String[] helpcmd = cmdLine.split(" ");
+                                if(helpcmd[0].equals("help")) {
+                                    if(helpcmd.length == 2) {
+                                        switch (helpcmd[1]) {
+                                            case GodCard.APOLLO:
+                                                System.out.println(GodCard.APOLLO_D);
+                                                break;
+                                            case GodCard.ARTEMIS:
+                                                System.out.println(GodCard.ARTEMIS_D);
+                                                break;
+                                            case GodCard.ATHENA:
+                                                System.out.println(GodCard.ATHENA_D);
+                                                break;
+                                            case GodCard.ATLAS:
+                                                System.out.println(GodCard.ATLAS_D);
+                                                break;
+                                            case GodCard.DEMETER:
+                                                System.out.println(GodCard.DEMETER_D);
+                                                break;
+                                            case GodCard.HEPHAESTUS:
+                                                System.out.println(GodCard.HEPHAESTUS_D);
+                                                break;
+                                            case GodCard.MINOTAUR:
+                                                System.out.println(GodCard.MINOTAUR_D);
+                                                break;
+                                            case GodCard.PAN:
+                                                System.out.println(GodCard.PAN_D);
+                                                break;
+                                            case GodCard.PROMETHEUS:
+                                                System.out.println(GodCard.PROMETHEUS_D);
+                                                break;
+                                        }
+                                        System.out.println("\n\n");
+                                    }
+                                }
+                                else {
+                                    String[] chosengods = cmdLine.split(",");
 
-                                if (chosengods.length == requiredgods) {
+                                    if (chosengods.length == requiredgods) {
 
-                                    boolean bFound = false;
+                                        boolean bFound = false;
 
-                                    for (String chosengod : chosengods) {
-                                        chosengod = chosengod.trim();
-                                        bFound = false;
-                                        for (int i = 0; i < gods.size(); i++) {
-                                            if(gods.get(i).equals(chosengod)) {
-                                                bFound = true;
+                                        for (String chosengod : chosengods) {
+                                            chosengod = chosengod.trim();
+                                            bFound = false;
+                                            for (int i = 0; i < gods.size(); i++) {
+                                                if(gods.get(i).equals(chosengod)) {
+                                                    bFound = true;
+                                                    break;
+                                                }
+                                            }
+                                            if(bFound == false) {
                                                 break;
                                             }
-                                        }
-                                        if(bFound == false) {
-                                            break;
+
                                         }
 
-                                    }
-
-                                    if(bFound == true) {
-                                        // create an emulated command with proper syntax for
-                                        // processing entered command section
-                                        cmdLine = CHOSENGODS_COMMAND + " ";
-                                        for (String chosengod : chosengods) {
-                                            cmdLine += chosengod.trim() + " ";
+                                        if(bFound == true) {
+                                            // create an emulated command with proper syntax for
+                                            // processing entered command section
+                                            cmdLine = CHOSENGODS_COMMAND + " ";
+                                            for (String chosengod : chosengods) {
+                                                cmdLine += chosengod.trim() + " ";
+                                            }
                                         }
                                     }
                                 }
                             }
                         }
                         break;
+
+                        case cli_ChoosingGod:
+                        {
+                            if(gods != null) {
+                                clearScreen();
+                                if (gods.size() > 1) {
+                                    System.out.println("Please choose your god from the listed ones:");
+                                    for (int i = 0; i < gods.size(); i++) {
+                                        System.out.println(gods.get(i));
+                                    }
+
+                                    System.out.println("Enter a comma separated list of gods");
+                                    System.out.println("For a description of a god's power, enter \"help god's name\"");
+                                    WaitForUserInput();
+
+                                    String[] helpcmd = cmdLine.split(" ");
+                                    if(helpcmd[0].equals("help")) {
+                                        if(helpcmd.length == 2) {
+                                            switch (helpcmd[1]) {
+                                                case GodCard.APOLLO:
+                                                    System.out.println(GodCard.APOLLO_D);
+                                                    break;
+                                                case GodCard.ARTEMIS:
+                                                    System.out.println(GodCard.ARTEMIS_D);
+                                                    break;
+                                                case GodCard.ATHENA:
+                                                    System.out.println(GodCard.ATHENA_D);
+                                                    break;
+                                                case GodCard.ATLAS:
+                                                    System.out.println(GodCard.ATLAS_D);
+                                                    break;
+                                                case GodCard.DEMETER:
+                                                    System.out.println(GodCard.DEMETER_D);
+                                                    break;
+                                                case GodCard.HEPHAESTUS:
+                                                    System.out.println(GodCard.HEPHAESTUS_D);
+                                                    break;
+                                                case GodCard.MINOTAUR:
+                                                    System.out.println(GodCard.MINOTAUR_D);
+                                                    break;
+                                                case GodCard.PAN:
+                                                    System.out.println(GodCard.PAN_D);
+                                                    break;
+                                                case GodCard.PROMETHEUS:
+                                                    System.out.println(GodCard.PROMETHEUS_D);
+                                                    break;
+                                            }
+                                            System.out.println("\n\n");
+                                        }
+                                    }
+                                    else {
+                                        String[] chosengods = cmdLine.split(",");
+
+                                        if (chosengods.length == requiredgods) {
+
+                                            boolean bFound = false;
+
+                                            for (String chosengod : chosengods) {
+                                                chosengod = chosengod.trim();
+                                                bFound = false;
+                                                for (int i = 0; i < gods.size(); i++) {
+                                                    if(gods.get(i).equals(chosengod)) {
+                                                        bFound = true;
+                                                        break;
+                                                    }
+                                                }
+                                                if(bFound == false) {
+                                                    break;
+                                                }
+
+                                            }
+
+                                            if(bFound == true) {
+                                                // create an emulated command with proper syntax for
+                                                // processing entered command section
+                                                cmdLine = CHOSENGOD_COMMAND + " ";
+                                                for (String chosengod : chosengods) {
+                                                    cmdLine += chosengod.trim() + " ";
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                }
+                                else {
+                                    System.out.println("Your god is: " + gods.get(0));
+                                    cmdLine = CHOSENGOD_COMMAND + " " + gods.get(0);
+                                }
+                            }
+                        }
+                            break;
+
                         case cli_WaitForSomethingToHappen:
                         {
                             // in this state user is allowed to enter commands on commandline
@@ -305,12 +571,13 @@ public class CLI implements Runnable, ClientObserver {
                         break;
                     }
 
-                    // processing entered command section
+
+                    // PROCESSING ENTERED COMMAND
                     if(!cmdLine.isEmpty())
                     {
                         String[] cmdlineParts = cmdLine.split(" ");
 
-                        // NOT GAME RELATED COMMANDS
+                        /* ************************** NOT GAME RELATED COMMANDS ********************** */
                         if(cmdlineParts[0].equals(DISCONNECT_COMMAND))
                         {
                             connstate = CLIConnectionState.cli_disconnecting;
@@ -342,7 +609,7 @@ public class CLI implements Runnable, ClientObserver {
                             gamestate = CLIGameState.cli_ChoosingMatch;
                         }
 
-                        // GAME RELATED COMMANDS
+                        /* ******************* GAME RELATED COMMANDS ******************** */
 
                         else if(cmdlineParts[0].equals(SEARCHMATCH_COMMAND))
                         {
@@ -362,6 +629,14 @@ public class CLI implements Runnable, ClientObserver {
                                     chosengods.add(cmdlineParts[i]);
                                 }
                                 client.ChosenGods(chosengods);
+                            }
+                        }
+                        else if(cmdlineParts[0].equals(CHOSENGOD_COMMAND))
+                        {
+                            if (cmdlineParts.length == 2)
+                            {
+                                gamestate = CLIGameState.cli_WaitForSomethingToHappen;
+                                client.ChosenGod(cmdlineParts[1]);
                             }
                         }
                         cmdLine = "";
@@ -397,12 +672,24 @@ public class CLI implements Runnable, ClientObserver {
     /**
      * Method of the ClientObserver interface that is fired by the client after connection
      */
+
     @Override
-    public void OnConnected()
-    {
+    public void OnConnected() {
         abortUserInput = true;
         System.out.println(CONNECTED_LABEL);
         connstate = CLIConnectionState.cli_Connected;
+    }
+
+    /**
+     * Method of the ClientObserver interface that is fired by the client if there was an error when trying to connect
+     */
+
+    @Override
+    public void OnConnectionError() {
+        abortUserInput = true;
+        System.out.println(DISCONNECTED_LABEL);
+        connstate = CLIConnectionState.cli_disconnected;
+        gamestate = CLIGameState.cli_Deregistered;
     }
 
     /**
@@ -410,8 +697,7 @@ public class CLI implements Runnable, ClientObserver {
      */
 
     @Override
-    public void OnDisconnected()
-    {
+    public void OnDisconnected() {
         System.out.println(DISCONNECTED_LABEL);
         abortUserInput = true;
         gamestate = CLIGameState.cli_Deregistered;
@@ -423,11 +709,20 @@ public class CLI implements Runnable, ClientObserver {
      */
 
     @Override
-    public void OnRegistered()
-    {
+    public void OnRegistered() {
         abortUserInput = true;
         gamestate = CLIGameState.cli_Registered;
         System.out.println("Welcome " + client.getNickname());
+    }
+
+    /**
+     * Method of the ClientObserver interface that is fired by the client if there was an error when trying to register
+     */
+
+    @Override
+    public void OnRegistrationError(String error) {
+        gamestate = CLIGameState.cli_Deregistered;
+        System.out.println("Registration failed: " + error);
     }
 
     /**
@@ -435,25 +730,36 @@ public class CLI implements Runnable, ClientObserver {
      */
 
     @Override
-    public void OnDeregistered()
-    {
+    public void OnDeregistered() {
         abortUserInput = true;
         gamestate = CLIGameState.cli_Deregistered;
+    }
+
+    /**
+     * Method of the ClientObserver interface that is fired by the client when a user leaves the match
+     * @param nickname nicknames of the user that left the match
+     */
+
+    @Override
+    public void OnLeftMatch(String nickname) {
+        System.out.println(nickname + " has left the game.");
     }
 
     /**
      * Method of the ClientObserver interface that is fired by the client after connection
      */
     @Override
-    public void OnChooseMatchType()
-    {
+    public void OnChooseMatchType() {
         abortUserInput = true;
         gamestate = CLIGameState.cli_ChoosingMatch;
     }
 
+    /**
+     * Method of the ClientObserver interface that is fired by the client when entering a match
+     */
+
     @Override
-    public void OnEnteringMatch(List<String> players)
-    {
+    public void OnEnteringMatch(List<String> players) {
         System.out.println("Entering match. Current players:");
 
         for(int i=0; i<players.size(); i++)
@@ -464,9 +770,12 @@ public class CLI implements Runnable, ClientObserver {
         System.out.println("Waiting for other players to join match");
     }
 
+    /**
+     * Method of the ClientObserver interface that is fired by the client when it has entered a match
+     */
+
     @Override
-    public void OnEnteredMatch(List<String> players)
-    {
+    public void OnEnteredMatch(List<String> players) {
         System.out.println("Entered match. Current players:");
 
         for(int i=0; i<players.size(); i++)
@@ -475,25 +784,36 @@ public class CLI implements Runnable, ClientObserver {
         }
     }
 
+    /**
+     * Method of the ClientObserver interface that is fired by the client when choosing the list of gods to use in the match
+     * @param requiredgods number of gods that the client must choose
+     * @param gods gods' names chosen by the user
+     */
+
     @Override
-    public void OnChooseGods(int requiredgods, List<String> gods)
-    {
+    public void OnChooseGods(int requiredgods, List<String> gods) {
         abortUserInput = true;
         gamestate = CLIGameState.cli_ChoosingGods;
         this.requiredgods = requiredgods;
         this.gods = gods;
     }
 
-    @Override
-    public void OnRegistrationError(String error) {
-        gamestate = CLIGameState.cli_Deregistered;
-        System.out.println("Registration failed: " + error);
-    }
+    /**
+     * Method of the ClientObserver interface that is fired by the client when choosing the god to play with
+     * @param chosengods chosen gods to set as the gods managed by the cli that will communicate them to the user
+     */
 
     @Override
-    public void OnLeftMatch(String nickname) {
-        System.out.println(nickname + " has left the game.");
+    public void OnChooseGod(List<String> chosengods) {
+        abortUserInput = true;
+        gamestate = CLIGameState.cli_ChoosingGod;
+        this.gods = chosengods;
     }
+
+    /**
+     * Method of the ClientObserver interface that is fired by the client when there's a winner
+     * @param nickname nickname of the winner
+     */
 
     @Override
     public void OnWinner(String nickname) {
@@ -503,21 +823,13 @@ public class CLI implements Runnable, ClientObserver {
             System.out.println(nickname + " has won the game.");
     }
 
+    /**
+     * Method of the ClientObserver interface that is fired by the client when a user loses
+     */
+
     @Override
     public void OnLoser() {
         System.out.println("You have lost! Better luck next time.");
     }
 
-    /**
-     * Method of the ClientObserver interface that is fired by the client if there was an error when trying to connect
-     */
-
-    @Override
-    public void OnConnectionError()
-    {
-        abortUserInput = true;
-        System.out.println(DISCONNECTED_LABEL);
-        connstate = CLIConnectionState.cli_disconnected;
-        gamestate = CLIGameState.cli_Deregistered;
-    }
 }

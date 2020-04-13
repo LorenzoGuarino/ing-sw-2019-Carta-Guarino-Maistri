@@ -16,7 +16,6 @@ public class Player {
     private List<GodCard> opponentsGodCards;
 
 
-
     /**
      * Constructor: creates a player, creating its workers
      */
@@ -24,14 +23,11 @@ public class Player {
     public Player() {
         playerWorkers = new ArrayList<Worker>();
 
+        playerGodCard = null;
+
         opponentsGodCards = new ArrayList<GodCard>();
 
         for (int i = 0; i < 2; i++) playerWorkers.add(new Worker(this, i));
-    }
-
-    public void SendCommand(String cmd) {
-        if(gamer != null)
-            gamer.client.SendCommand(cmd);
     }
 
     /**
@@ -39,36 +35,28 @@ public class Player {
      * @return player's GodCard
      */
 
-     public GodCard getPlayerGod() {
-        return playerGodCard;
-    }
+     public GodCard getPlayerGod() { return playerGodCard; }
 
     /**
      * Method to get the player's nickname
      * @return player's nickname
      * */
 
-    public String getNickname() {
-        return (gamer != null) ? gamer.getNickname() : "";
-    }
+    public String getNickname() { return (gamer != null) ? gamer.getNickname() : ""; }
 
     /**
      * Method to set the player's gamer associated
      * @param gamer to set
      */
 
-    public void setGamer(Gamer gamer) {
-        this.gamer = gamer;
-    }
+    public void setGamer(Gamer gamer) { this.gamer = gamer; }
 
     /**
      * Method to get the list of the player's workers
      * @return the player's workers
      */
 
-    public List<Worker> getPlayerWorkers() {
-        return playerWorkers;
-    }
+    public List<Worker> getPlayerWorkers() { return playerWorkers; }
 
     /**
      * Method to add an opponent's god when it needs to decorate this player's next turn
@@ -76,9 +64,7 @@ public class Player {
      *                    on the number of players and if they influence their opponent's turn or not)
      */
 
-    public void addOpponentGodCard(GodCard opponentGod) {
-        opponentsGodCards.add(opponentGod);
-    }
+    public void addOpponentGodCard(GodCard opponentGod) { opponentsGodCards.add(opponentGod); }
 
     /**
      * Method that clears the list of the opponent's gods.
@@ -86,16 +72,14 @@ public class Player {
      * influenced by its opponent's gods unless they need to (in that case their god will be read to the list with setOpponentGod()
      */
 
-    public void removeOpponentGodCards() {
-        opponentsGodCards.clear();
-    }
+    public void removeOpponentGodCards() { opponentsGodCards.clear(); }
 
     /**
      * Method that starts the turn played by this player
+     * @TODO play turn
      * */
 
-    public void playTurn() {
-    }
+    public void playTurn() { }
 
     /**
      * Method that returns the list of opponent's gods that will influence this player's next turn
@@ -103,13 +87,25 @@ public class Player {
      * an opponent's turn
      */
 
-    public List<GodCard> getOpponentsGodCards() {
-        return opponentsGodCards;
+    public List<GodCard> getOpponentsGodCards() { return opponentsGodCards; }
+
+    /**
+     * Method that sets the player's god card
+     * @param playerGodCard god card to set for this player
+     */
+
+    public void setPlayerGodCard(GodCard playerGodCard) { this.playerGodCard = playerGodCard; }
+
+    /**
+     * Method used by Santorini Match to send the command that it generates to its players
+     * @param cmd command to send
+     */
+
+    public void SendCommand(String cmd) {
+        if(gamer != null)
+            gamer.client.SendCommand(cmd);
     }
 
-    public void setPlayerGodCard(GodCard playerGodCard) {
-        this.playerGodCard = playerGodCard;
-    }
 
     /*
     /**

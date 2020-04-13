@@ -19,6 +19,7 @@ public interface ClientObserver {
     void OnRegistrationError(String error);
     void OnLeftMatch(String nickname);
     void OnChooseGods(int requiredgods, List<String> gods);
+    void OnChooseGod(List<String> chosengods);
     void OnWinner(String nickname);
     void OnLoser();
 

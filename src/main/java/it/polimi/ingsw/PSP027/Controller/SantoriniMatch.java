@@ -69,13 +69,6 @@ public class SantoriniMatch implements Runnable{
         godCardsList.add(new GodCard(GodCard.GodsType.Prometheus, GodCard.PROMETHEUS_D));
     }
 
-    public int GetRequiredNumberOfPlayers()  { return requiredPlayers; }
-
-    public void SetRequiredNumberOfPlayers(int playersCount)
-    {
-        if(!matchStarted)
-            requiredPlayers = playersCount;
-    }
     @Override
     public void run() {
         // here goes what SantoriniMatch does, so the controller part
@@ -95,50 +88,54 @@ public class SantoriniMatch implements Runnable{
         }
     }
 
-    public void setGodCardsInUse (List<String> chosengods) {
-        for (String chosengod : chosengods) {
-            for (GodCard god : godCardsList) {
-                if(god.getGodName().equals(chosengod)) {
-                    godCardsInUse.add(god);
-                    break;
-                }
-            }
-        }
-    }
-
-
     /**
-     * Method that creates a new turn for the first player in the list
-     * @return
+     * Method to use in order to check if there are no players in the match
+     * @return true if the match has players, otherwise false
      */
 
-    public Turn newTurn(){
-        return new Turn(this.getFirstPlayer(),this);
-    }
+    public boolean hasPlayers() { return !players.isEmpty(); }
 
     /**
-     * Method that decorates the player's turn according to its GodCard
-     * @return
+     * Method to get the number of players currently in this match
+     * @return the number of players in the match
      */
 
-    public GodPowerDecorator decorateTurn(Turn turn) {
-        switch (turn.getPlayingPlayer().getPlayerGod().getGodType()){
-            //case Apollo: break;
-            //case Artemis: break;
-            //case Athena: break;
-            //case Atlas: break;
-            //case Demeter: break;
-            //case Hephaestus: break;
-            //case Minotaur: return null; //new MinotaurDecorator(turn);
-            //case Pan: break;
-            //case Prometheus: break;
-        }
-        return null;
+    public int numberOfPlayers() { return players.size(); }
+
+    /**
+     * Method to get the id of this match
+     * @return the match's id
+     */
+
+    public UUID getMatchId () { return matchID; }
+
+    /**
+     * Method that checks if the match has already started
+     * @return true if it has started, otherwise false
+     */
+
+    public boolean isStarted() { return matchStarted; }
+
+    /**
+     * Method to get the first player of the list of players
+     * @return the first player
+     */
+
+    public Player getFirstPlayer() { return players.get(0); }
+
+    /**
+     * Method to get the Board of the game
+     * @return the board
+     */
+
+    public Board getGameBoard() {
+        return gameBoard;
     }
 
     /**
-     * Method to make the old players list a new one that has as last player the old first player,as first player the old second player
-     * and as (eventually) player in the middle the old last player
+     * Method that changes the list of players in order to rotate them.
+     * EXAMPLE: players A , B and C will be rotated to B, C and A.
+     * The players will be rotated with each turn in order to have each time as the first player the one that is playing the turn
      */
 
     public void rotatePlayers(){
@@ -158,14 +155,42 @@ public class SantoriniMatch implements Runnable{
     }
 
     /**
-     * Method to get the list of players
+     * Method to get the list of players in the match
      * @return the list of players
      */
 
     public List<Player> getPlayers() { return players; }
 
     /**
-     * Method used to add a player to the game
+     * Method to get the list of god cards
+     * @return the list of god cards
+     */
+
+    public List<GodCard> getGodCardsList() { return godCardsList; }
+
+    /**
+     * Method to get the number of players that will play this match
+     * @return the required players, which can be 2 or 3
+     */
+    public int GetRequiredNumberOfPlayers()  { return requiredPlayers; }
+
+    /**
+     * Method that sets the required number of players as the number of players that will play in the match (chosen by the gamer)
+     * @param playersCount number of players that this match will require
+     */
+
+    public void SetRequiredNumberOfPlayers(int playersCount) {
+        if(!matchStarted)
+            requiredPlayers = playersCount;
+    }
+
+
+    /* ****************************************************************************************************
+     * METHODS WITH WHICH THE SEND COMMAND CYCLE BEGINS
+     ******************************************************************************************************/
+
+    /**
+     * Method used to add a player to the match, if it has not started yet
      * @param player is the player that is to be added to the list of players
      */
 
@@ -206,7 +231,9 @@ public class SantoriniMatch implements Runnable{
             for (int i = 0; i < playerToRemove.getPlayerWorkers().size(); i++) {
                 playerToRemove.getPlayerWorkers().get(i).changePosition(null);
             }
+
             GodCard cardToRemove = playerToRemove.getPlayerGod();
+
             for (int j = 1; j < players.size(); j++) {
                 Player tempPlayer = players.get(j);
                 for (int p = 0; p < tempPlayer.getOpponentsGodCards().size(); p++) {
@@ -215,6 +242,7 @@ public class SantoriniMatch implements Runnable{
                     }
                 }
             }
+
             playerToRemove.removeOpponentGodCards();
 
             // notify removed player of having lost game
@@ -228,9 +256,9 @@ public class SantoriniMatch implements Runnable{
             cmd = "<cmd><id>" + ProtocolTypes.protocolCommand.srv_LeftMatch.toString()  + "</id><data><player>" + playerToRemove.getNickname() + "</player></data></cmd>";
             System.out.println("SantoriniMatch removePlayer notify remaining players of player removal cmd: " + cmd);
 
-            for(int i = 0; i < players.size(); i++){
+            for (Player player : players) {
 
-                players.get(i).SendCommand(cmd);
+                player.SendCommand(cmd);
             }
 
             checkLoseCondition(players);
@@ -249,37 +277,15 @@ public class SantoriniMatch implements Runnable{
 
             System.out.println("SantoriniMatch removePlayer cmd: " + cmd);
 
-            for(int i = 0; i < players.size(); i++){
+            for (Player player : players) {
 
-                players.get(i).SendCommand(cmd);
+                player.SendCommand(cmd);
             }
         }
     }
 
     /**
-     * Method that saves the last turn in playedTurns
-     * @param playedTurns
-     * @param currentTurn
-     */
-
-    public void saveGame(List<Turn> playedTurns, Turn currentTurn) {
-
-
-    }
-
-    /**
-     * Method that resumes the game by restarting at last turn saved
-     * @param playedTurns
-     * @param currentTurn
-     */
-
-    public void resumeGame(List<Turn> playedTurns, Turn currentTurn) {
-
-
-    }
-
-    /**
-     * Method that do the setup of the game
+     * Method that does the setup of the game
      */
 
     public void startGame(){
@@ -312,10 +318,13 @@ public class SantoriniMatch implements Runnable{
         cmd += "</gods></data></cmd>";
 
         players.get(0).SendCommand(cmd);
+
+
     }
 
     /**
      * Method that ends the game if the win conditions are verified
+     * @TODO tell lobby to handle the ending of the match
      */
 
     public void endGame(Player playerWinner) {
@@ -329,62 +338,123 @@ public class SantoriniMatch implements Runnable{
             players.get(i).SendCommand(cmd);
         }
 
-        /** @TODO tell lobby to handle the ending of the match
-         */
     }
 
     /**
-     * Method to use in order to check if there are no players in the match
-     * @return true if the match has players, otherwise false
+     * Method that sets the god cards in use with the god cards chosen by the user (2 or 3 cards depending of the required number of players of the match
+     * @param chosengods list of the names of the gods chosen by the user
      */
 
-    public boolean hasPlayers() { return !players.isEmpty(); }
+    public void setGodCardsInUse (List<String> chosengods) {
+        for (String chosengod : chosengods) {
+            for (GodCard god : godCardsList) {
+                if(god.getGodName().equals(chosengod)) {
+                    godCardsInUse.add(god);
+                    break;
+                }
+            }
+        }
 
-    /**
-     * Method to get the number of players currently in this match
-     * @return the number of players in the match
-     */
+        rotatePlayers();
 
-    public int numberOfPlayers() {
-        return players.size();
+        String cmd = "<cmd><id>" + ProtocolTypes.protocolCommand.srv_ChooseGod.toString()  + "</id><data><gods>";
+        for(int i = 0; i < godCardsInUse.size(); i++){
+
+            cmd += "<god>" + godCardsInUse.get(i).getGodName() + "</god>";
+        }
+
+        cmd += "</gods></data></cmd>";
+
+        players.get(0).SendCommand(cmd);
     }
 
     /**
-     * Method to get the id of this match
-     * @return the match's id
+     * Method that assigns the chosen god card by the user to its player's god card
+     * @param player player that has chosen the god card
+     * @param chosengod name of the god that the player has chosen
+     * @TODO Start setting players' workers' position asking them to the client
      */
 
-    public UUID getMatchId () {
-        return matchID;
+    public void setGodCardForPlayer (Player player, String chosengod) {
+
+        for(GodCard god : godCardsList) {
+            if(god.getGodName().equals(chosengod)) {
+                godCardsInUse.remove(god);
+                player.setPlayerGodCard(god);
+                break;
+            }
+        }
+
+        rotatePlayers();
+
+        if(players.get(0).getPlayerGod() == null) {
+            String cmd = "<cmd><id>" + ProtocolTypes.protocolCommand.srv_ChooseGod.toString()  + "</id><data><gods>";
+            for(int i = 0; i < godCardsInUse.size(); i++){
+
+                cmd += "<god>" + godCardsInUse.get(i).getGodName() + "</god>";
+            }
+
+            cmd += "</gods></data></cmd>";
+            players.get(0).SendCommand(cmd);
+        }
+        else {
+            //all players have a god card. START HERE THE COMMANDS TO MAKE THE PLAYERS CHOOSE THEIR WORKER'S PLACE
+        }
+    }
+
+
+
+
+
+    /* ***************************************************************************************** */
+
+    /**
+     * Method that creates a new turn for the first player in the list
+     * @return
+     */
+
+    public Turn newTurn(){
+        return new Turn(this.getFirstPlayer(),this);
     }
 
     /**
-     * Method that checks if the match has already started
-     * @return true if it has started, otherwise false
+     * Method that decorates the player's turn according to its GodCard
+     * @return
      */
 
-    public boolean isStarted() {
-        return matchStarted;
+    public GodPowerDecorator decorateTurn(Turn turn) {
+        switch (turn.getPlayingPlayer().getPlayerGod().getGodType()){
+            //case Apollo: break;
+            //case Artemis: break;
+            //case Athena: break;
+            //case Atlas: break;
+            //case Demeter: break;
+            //case Hephaestus: break;
+            //case Minotaur: return null; //new MinotaurDecorator(turn);
+            //case Pan: break;
+            //case Prometheus: break;
+        }
+        return null;
     }
 
     /**
-     * Method to get the first player of the list of players
-     * @return the first player
+     * Method that saves the last turn in playedTurns
+     * @param playedTurns
+     * @param currentTurn
      */
 
-    public Player getFirstPlayer() { return players.get(0); }
+    public void saveGame(List<Turn> playedTurns, Turn currentTurn) { }
 
     /**
-     * Method to get the Board of the game
-     * @return the board
+     * Method that resumes the game by restarting at last turn saved
+     * @param playedTurns
+     * @param currentTurn
      */
 
-    public Board getGameBoard() {
-        return gameBoard;
-    }
+    public void resumeGame(List<Turn> playedTurns, Turn currentTurn) { }
 
     /**
-     * Method that check is the Win condition are verified, in this case end the game
+     * Method that checks is the Win condition are verified, in this case end the game
      * @param currentTurn the last ConcreteTurn, currently playing
      * @param lastMovePhase the last MovePhase, currently playing
      */
@@ -404,14 +474,5 @@ public class SantoriniMatch implements Runnable{
         if(playersInGame.size() == 1){
             endGame(playersInGame.get(0));
         }
-    }
-
-    /**
-     * Method to get the list of god cards
-     * @return the list of god cards
-     */
-
-    public List<GodCard> getGodCardsList() {
-        return godCardsList;
     }
 }

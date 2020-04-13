@@ -34,8 +34,7 @@ public class ClientHandler implements Runnable
      * to avoid that potential task consuming actions would block the connection thread for a time long enough to be
      * considered a potential disconnection by remote client
      */
-    private class ClientCommandsHandler implements Runnable
-    {
+    private class ClientCommandsHandler implements Runnable {
         ClientHandler owner = null;
         private boolean bRun = true;
         private ArrayList<Node> commandsList = new ArrayList<Node>();
@@ -147,6 +146,8 @@ public class ClientHandler implements Runnable
                                 case clt_ChosenGods:
                                     owner.onChosenGods(cmdData);
                                     break;
+                                case clt_ChosenGod:
+                                    owner.onChosenGod(cmdData);
                             }
                         }
                     }
@@ -163,19 +164,29 @@ public class ClientHandler implements Runnable
     }
 
     ClientCommandsHandler cltcmdhndlr  = null;
+
     /**
      * Constructor of the client handler that will communicate with the client
      * @param client socket of the client that wants to connect with this server
      * @param lobby reference to the main lobby
      */
 
-    ClientHandler(Socket client, Lobby lobby)
-    {
+    ClientHandler(Socket client, Lobby lobby) {
         this.client = client;
         this.lobby = lobby;
     }
 
+    /**
+     * Method to get the nickname with which this client has been registered on the server
+     * @return the nickname
+     */
+
     public String getNickname() { return nickname; }
+
+    /**
+     * Method to get the address from which this client has connected to the server
+     * @return the address
+     */
 
     public String getAddress() { return (client != null) ? client.getInetAddress().getHostAddress() : ""; }
 
@@ -214,7 +225,6 @@ public class ClientHandler implements Runnable
             cltcmdhndlr.Stop();
         }
     }
-
 
     /**
      * Method that handles the connection to the client parsing the commands received by the client in XML format
@@ -271,7 +281,7 @@ public class ClientHandler implements Runnable
                             }
 
                             // process received command and launches the corresponding method that builds the response
-                            // enqueue commands in a list that will be processed asyncronously within cltcmdhndl thred
+                            // enqueue commands in a list that will be processed asyncronously within cltcmdhndl thread
                             switch(cmdID){
                                 case clt_Hello:
                                     onHello();
@@ -316,6 +326,11 @@ public class ClientHandler implements Runnable
         }
     }
 
+
+    /* ***********************************************************************
+     * METHODS THAT PREPARE THE COMMANDS THAT THE SERVER SENDS TO ITS CLIENT *
+     * ***********************************************************************/
+
     /**
      * Method that prepares the command that will then be processed in xml format in the client
      * @return the command in string format
@@ -327,58 +342,13 @@ public class ClientHandler implements Runnable
         SendCommand(ret);
     }
 
-    private void onChosenGods(Node data) {
-
-    System.out.println("Received onChosenGods from " + nickname);
-    Node node;
-    List<String> gods = new ArrayList<String>();
-
-    if (data.hasChildNodes()) {
-        NodeList nodes = data.getChildNodes();
-
-        for (int i = 0; i < nodes.getLength(); i++) {
-            node = nodes.item(i);
-
-            if (node.getNodeName().equals("gods")) {
-
-                NodeList nodegods = node.getChildNodes();
-
-                for (int j = 0; j < nodegods.getLength(); j++)
-                {
-                    gods.add(nodegods.item(j).getTextContent());
-                }
-            }
-        }
-
-         lobby.SetChosenGodsOnMatch(this, gods);
-    }
-}
-
-    private void onSearchMatchOfGivenType(Node data) {
-
-        System.out.println("Received onSearchMatchOfGivenType from " + nickname);
-        int nPlayers = 1;
-        Node node;
-
-        if (data.hasChildNodes()) {
-            NodeList nodes = data.getChildNodes();
-
-            for (int i = 0; i < nodes.getLength(); i++) {
-                node = nodes.item(i);
-
-                if (node.getNodeName().equals("playerscount")) {
-                    nPlayers = Integer.parseInt(node.getTextContent());
-                }
-            }
-
-            if ((nPlayers>=2) && (nPlayers<=3)) {
-                lobby.searchMatch(this, nPlayers);
-            }
-        }
-    }
-
     /**
      * Method that prepares the command that will then be processed in xml format in the client
+     * It is used to process the xml received from the client containing the client's username with which it wants to be registered
+     * and if it's a valid nickname (not empty) it triggers the method of the lobby that registers the gamer with this nickname, otherwise it
+     * responds that the nickname's missing
+     * It builds the command response (xml in string format) depending on the succession or failure fo the user's registering (if the
+     * nickname is already used by another gamer)
      * @return the command in string format
      */
 
@@ -427,6 +397,7 @@ public class ClientHandler implements Runnable
 
     /**
      * Method that prepares the command that will then be processed in xml format in the client
+     * It is used to deregister a gamer triggering a method of the lobby that does the action
      * @return the command in string format
      */
 
@@ -439,120 +410,96 @@ public class ClientHandler implements Runnable
     }
 
     /**
-     * Method that prepares the command that will then be processed in xml format in the client
-     * @return the command in string format
+     * Method that processes the chosen gods written in the command in xml format received from the client
+     * It triggers a method of the lobby that saves this chosen gods as the gods in use in the match
+     * @param data xml of the chosen gods received from the client
      */
 
-    private void onRegistered() {
+    private void onChosenGods(Node data) {
 
+        System.out.println("Received onChosenGods from " + nickname);
+        Node node;
+        List<String> gods = new ArrayList<String>();
+
+        if (data.hasChildNodes()) {
+            NodeList nodes = data.getChildNodes();
+
+            for (int i = 0; i < nodes.getLength(); i++) {
+                node = nodes.item(i);
+
+                if (node.getNodeName().equals("gods")) {
+
+                    NodeList nodegods = node.getChildNodes();
+
+                    for (int j = 0; j < nodegods.getLength(); j++)
+                    {
+                        gods.add(nodegods.item(j).getTextContent());
+                    }
+                }
+            }
+
+             lobby.SetChosenGodsOnMatch(this, gods);
+        }
     }
 
     /**
-     * Method that prepares the command that will then be processed in xml format in the client
-     * @return the command in string format
+     * Method that processes the chosen god written in the command in xml format received from the client
+     * It triggers a method of the lobby that saves this chosen god as the player's god card
+     * @param data xml containing the chosen god by the client
      */
 
-    private void onEnteringMatch() {
+    private void onChosenGod(Node data) {
 
+        System.out.println("Received onChosenGod from " + nickname);
+        Node node;
+
+        String god = "";
+
+        if (data.hasChildNodes()) {
+            NodeList nodes = data.getChildNodes();
+
+            for (int i = 0; i < nodes.getLength(); i++) {
+                node = nodes.item(i);
+
+                if (node.getNodeName().equals("data")) {
+                    god = node.getTextContent();
+                }
+            }
+
+            lobby.SetChosenGodOfPlayer(this, god);
+        }
     }
 
     /**
-     * Method that prepares the command that will then be processed in xml format in the client
-     * @return the command in string format
+     * Method that processes the command in xml format received from the client
+     * It triggers a method of the lobby that searches an available match for the client that requested it with its requested number of players
+     * @param data xml containing the number of players in the type of match (2 or 3) that the client requested to play
      */
 
-    private void onEnteredMatch() {
+    private void onSearchMatchOfGivenType(Node data) {
 
+        System.out.println("Received onSearchMatchOfGivenType from " + nickname);
+
+        int nPlayers = 1; //for default
+        Node node;
+
+        if (data.hasChildNodes()) {
+            NodeList nodes = data.getChildNodes();
+
+            for (int i = 0; i < nodes.getLength(); i++) {
+                node = nodes.item(i);
+
+                if (node.getNodeName().equals("playerscount")) {
+                    nPlayers = Integer.parseInt(node.getTextContent());
+                }
+            }
+
+            if ((nPlayers >= 2) && (nPlayers <= 3)) {
+                lobby.searchMatch(this, nPlayers);
+            }
+        }
     }
 
-    /**
-     * Method that prepares the command that will then be processed in xml format in the client
-     * @return the command in string format
-     */
 
-    private void onLeftMatch() {
-
-    }
-
-    /**
-     * Method that prepares the command that will then be processed in xml format in the client
-     * @return the command in string format
-     */
-
-    private void onStartTurn() {
-
-    }
-
-    /**
-     * Method that prepares the command that will then be processed in xml format in the client
-     * @return the command in string format
-     */
-
-    private void onDrawBoard() {
-
-    }
-
-    /**
-     * Method that prepares the command that will then be processed in xml format in the client
-     * @return the command in string format
-     */
-
-    private void onChooseWorkerStartPosition() {
-
-    }
-
-    /**
-     * Method that prepares the command that will then be processed in xml format in the client
-     * @return the command in string format
-     */
-
-    private void onCandidateCellsForMove() {
-
-    }
-
-    /**
-     * Method that prepares the command that will then be processed in xml format in the client
-     * @return the command in string format
-     */
-
-    private void onCandidateCellsForBuild() {
-
-    }
-
-    /**
-     * Method that prepares the command that will then be processed in xml format in the client
-     * @return the command in string format
-     */
-
-    private void onUseGodPower() {
-
-    }
-
-    /**
-     * Method that prepares the command that will then be processed in xml format in the client
-     * @return the command in string format
-     */
-
-    private void onBoardUpdated() {
-
-    }
-
-    /**
-     * Method that prepares the command that will then be processed in xml format in the client
-     * @return the command in string format
-     */
-
-    private void onLoser() {
-
-    }
-
-    /**
-     * Method that prepares the command that will then be processed in xml format in the client
-     * @return the command in string format
-     */
-
-    private void onWinner() {
-
-    }
 
 }

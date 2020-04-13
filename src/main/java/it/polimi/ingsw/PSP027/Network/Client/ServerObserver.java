@@ -21,7 +21,7 @@ public interface ServerObserver
     void onLeftMatch(String nickname);
     void onLoser();
     void onChooseGods(int requiredgods, List<String> gods);
-    void onChooseGod();
+    void onChooseGod(List<String> chosengods);
     void onWorkerStartPositionChosen();
     void onChooseWorker();
     void onMoveWorker();
