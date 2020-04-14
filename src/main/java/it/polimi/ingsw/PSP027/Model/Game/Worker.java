@@ -63,7 +63,8 @@ public class Worker {
             this.position.setWorkerOccupying(null);
         }
         this.position = position;
-        position.setWorkerOccupying(this);
+        if(position != null)
+            position.setWorkerOccupying(this);
     }
 }
 

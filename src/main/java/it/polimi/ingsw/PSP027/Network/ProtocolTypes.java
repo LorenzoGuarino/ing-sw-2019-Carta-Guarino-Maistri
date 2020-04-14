@@ -20,6 +20,8 @@ public class ProtocolTypes {
         clt_ChosenGod,
         srv_ChooseGods,
         srv_ChooseGod,
+        srv_ChooseFirstPlayer,
+        clt_ChosenFirstPlayer,
         srv_StartTurn,
         srv_DrawBoard,
         srv_ChooseWorkerStartPosition,

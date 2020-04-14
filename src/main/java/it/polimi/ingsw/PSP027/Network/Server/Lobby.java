@@ -381,4 +381,51 @@ public class Lobby{
         }
     }
 
+    /**
+     * Method that gets the chosen player by the first gamer that enetered the match among the players in the match itself
+     * and sets it as the first player of the list of players
+     * @param client identifying the gamer that chose the god
+     * @param chosenplayer nickname of the player that will be the first to place its workers and then start the game
+     */
+
+    public void SetFirstPlayerOnMatch(ClientHandler client, String chosenplayer) {
+
+        try {
+            while (true) {
+
+                if (GamersLock.tryLock(2L, TimeUnit.SECONDS)) {
+
+                    for (Gamer gamerInLobby : lobbyGamers) {
+
+                        if ((gamerInLobby.client.getNickname().equals(client.getNickname())) &&
+                                (gamerInLobby.client.getAddress().equals(client.getAddress()))
+                        ) {
+
+                            for (SantoriniMatch match : Matches) {
+                                if (match.getMatchId() == gamerInLobby.matchAssociated) {
+                                    match.setFirstPlayer(chosenplayer);
+
+                                    break;
+                                }
+                            }
+
+                            break;
+                        }
+                    }
+
+                    break;
+                }
+                else {
+                    TimeUnit.MILLISECONDS.sleep(200);
+                }
+            }
+        }
+        catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        finally {
+            GamersLock.unlock();
+        }
+    }
+
 }

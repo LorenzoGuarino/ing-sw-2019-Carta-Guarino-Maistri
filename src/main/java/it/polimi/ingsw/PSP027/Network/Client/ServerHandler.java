@@ -236,6 +236,10 @@ public class ServerHandler implements Runnable
                                     break;
                                 case srv_ChooseGod:
                                     FireOnChooseGod(cmdData);
+                                    break;
+                                case srv_ChooseFirstPlayer:
+                                    FireOnChooseFirstPlayer(cmdData);
+                                    break;
                             }
                         }
                     }
@@ -694,6 +698,56 @@ public class ServerHandler implements Runnable
             /* notify the observers that we got the string */
             for (ServerObserver observer : observersCpy) {
                 observer.onChooseGod(chosengods);
+            }
+        }
+    }
+
+    /**
+     * Method that fires the OnChooseFirstPlayer() method in the client, processing the command received from the server
+     * @param data xml to process
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
+
+    private synchronized void FireOnChooseFirstPlayer(Node data) throws IOException, ClassNotFoundException {
+        /* data value
+         * <data>
+         *     <players>
+         *         <player></player>
+         *         ...
+         *         <player></player>
+         *     </players>
+         * </data>
+         */
+
+        Node node;
+        List<String> players = new ArrayList<String>();
+
+        if (data.hasChildNodes()) {
+            NodeList nodes = data.getChildNodes();
+
+            for (int i = 0; i < nodes.getLength(); i++) {
+                node = nodes.item(i);
+
+                if (node.getNodeName().equals("players")) {
+                    NodeList nodegods = node.getChildNodes();
+
+                    for (int j = 0; j < nodegods.getLength(); j++) {
+                        players.add(nodegods.item(j).getTextContent());
+                    }
+                }
+            }
+
+            /* copy the list of observers in case some observers changes it from inside
+             * the notification method */
+            List<ServerObserver> observersCpy;
+            synchronized (observers) {
+                observersCpy = new ArrayList<ServerObserver>(observers);
+            }
+
+            /* notify the observers that we got the string */
+            for (ServerObserver observer : observersCpy) {
+                observer.onChooseFirstPlayer(players);
             }
         }
     }

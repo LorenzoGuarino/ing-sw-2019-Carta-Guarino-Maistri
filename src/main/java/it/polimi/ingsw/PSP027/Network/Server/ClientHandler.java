@@ -148,6 +148,9 @@ public class ClientHandler implements Runnable
                                     break;
                                 case clt_ChosenGod:
                                     owner.onChosenGod(cmdData);
+                                    break;
+                                case clt_ChosenFirstPlayer:
+                                    owner.onChosenFirstPlayer(cmdData);
                             }
                         }
                     }
@@ -461,12 +464,40 @@ public class ClientHandler implements Runnable
             for (int i = 0; i < nodes.getLength(); i++) {
                 node = nodes.item(i);
 
-                if (node.getNodeName().equals("data")) {
+                if (node.getNodeName().equals("player")) {
                     god = node.getTextContent();
                 }
             }
 
             lobby.SetChosenGodOfPlayer(this, god);
+        }
+    }
+
+    /**
+     * Method that processes the chosen god written in the command in xml format received from the client
+     * It triggers a method of the lobby that saves this chosen god as the player's god card
+     * @param data xml containing the chosen god by the client
+     */
+
+    private void onChosenFirstPlayer(Node data) {
+
+        System.out.println("Received onChosenFirstPlayer from " + nickname);
+        Node node;
+
+        String player = "";
+
+        if (data.hasChildNodes()) {
+            NodeList nodes = data.getChildNodes();
+
+            for (int i = 0; i < nodes.getLength(); i++) {
+                node = nodes.item(i);
+
+                if (node.getNodeName().equals("player")) {
+                    player = node.getTextContent();
+                }
+            }
+
+            lobby.SetFirstPlayerOnMatch(this, player);
         }
     }
 

@@ -372,12 +372,11 @@ public class SantoriniMatch implements Runnable{
      * Method that assigns the chosen god card by the user to its player's god card
      * @param player player that has chosen the god card
      * @param chosengod name of the god that the player has chosen
-     * @TODO Start setting players' workers' position asking them to the client
      */
 
     public void setGodCardForPlayer (Player player, String chosengod) {
 
-        for(GodCard god : godCardsList) {
+        for(GodCard god : godCardsInUse) {
             if(god.getGodName().equals(chosengod)) {
                 godCardsInUse.remove(god);
                 player.setPlayerGodCard(god);
@@ -398,12 +397,37 @@ public class SantoriniMatch implements Runnable{
             players.get(0).SendCommand(cmd);
         }
         else {
-            //all players have a god card. START HERE THE COMMANDS TO MAKE THE PLAYERS CHOOSE THEIR WORKER'S PLACE
+            //all players have a god card. START HERE TO ASK TO CHOOSE FOR THE FIRST PLAYER
+            String cmd = "<cmd><id>" + ProtocolTypes.protocolCommand.srv_ChooseFirstPlayer.toString()  + "</id><data><players>";
+            for(int i = 0; i < players.size(); i++){
+
+                cmd += "<player>" + players.get(i).getNickname() + "</player>";
+            }
+
+            cmd += "</players></data></cmd>";
+            players.get(0).SendCommand(cmd);
+
         }
     }
 
+    /**
+     * Method that sets the chosen first player by the user as the first player of the game
+     * @param chosenplayer name of the player that the player has chosen
+     * @TODO place workers
+     */
 
+    public void setFirstPlayer(String chosenplayer) {
 
+        while(true) {
+            if(chosenplayer.equals(players.get(0).getNickname())) {
+                break;
+            }
+            else {
+                rotatePlayers();
+            }
+        }
+
+    }
 
 
     /* ***************************************************************************************** */

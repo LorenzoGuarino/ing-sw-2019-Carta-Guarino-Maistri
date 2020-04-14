@@ -22,6 +22,7 @@ public interface ServerObserver
     void onLoser();
     void onChooseGods(int requiredgods, List<String> gods);
     void onChooseGod(List<String> chosengods);
+    void onChooseFirstPlayer(List<String> players);
     void onWorkerStartPositionChosen();
     void onChooseWorker();
     void onMoveWorker();

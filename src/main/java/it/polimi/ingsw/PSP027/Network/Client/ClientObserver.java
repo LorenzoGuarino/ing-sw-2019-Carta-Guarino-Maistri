@@ -20,6 +20,7 @@ public interface ClientObserver {
     void OnLeftMatch(String nickname);
     void OnChooseGods(int requiredgods, List<String> gods);
     void OnChooseGod(List<String> chosengods);
+    void OnChooseFirstPlayer(List<String> players);
     void OnWinner(String nickname);
     void OnLoser();
 

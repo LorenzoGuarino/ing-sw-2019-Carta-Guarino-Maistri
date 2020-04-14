@@ -22,6 +22,7 @@ public class CLI implements Runnable, ClientObserver {
     private int requiredgods = 0;
     private List<String> gods = null;
     private boolean abortUserInput = false;
+    private List<String> players = null;
 
     private static String DISCONNECT_COMMAND =  "disconnect";
     private static String BYE_COMMAND =  "bye";
@@ -31,6 +32,7 @@ public class CLI implements Runnable, ClientObserver {
     private static String SEARCHMATCH_COMMAND = "searchmatch";
     private static String CHOSENGODS_COMMAND = "chosengods";
     private static String CHOSENGOD_COMMAND = "chosengod";
+    private static String CHOSENFIRSTPLAYER_COMMAND = "firstplayerchosen";
     private static String PLAY_COMMAND = "play";
 
     private static String DISCONNECT_COMMAND_LABEL =  "  " + DISCONNECT_COMMAND + " (to disconnect from server)";
@@ -184,7 +186,8 @@ public class CLI implements Runnable, ClientObserver {
         cli_ChoosingMatch,
         cli_ChoosingGods,
         cli_ChoosingGod,
-        cli_WaitForSomethingToHappen,
+        cli_ChoosingFirstPlayer,
+        cli_WaitForSomethingToHappen
     }
 
     /**
@@ -477,7 +480,6 @@ public class CLI implements Runnable, ClientObserver {
                                         System.out.println(gods.get(i));
                                     }
 
-                                    System.out.println("Enter a comma separated list of gods");
                                     System.out.println("For a description of a god's power, enter \"help god's name\"");
                                     WaitForUserInput();
 
@@ -517,43 +519,67 @@ public class CLI implements Runnable, ClientObserver {
                                         }
                                     }
                                     else {
-                                        String[] chosengods = cmdLine.split(",");
+                                        String chosengod = cmdLine;
 
-                                        if (chosengods.length == requiredgods) {
-
-                                            boolean bFound = false;
-
-                                            for (String chosengod : chosengods) {
-                                                chosengod = chosengod.trim();
-                                                bFound = false;
-                                                for (int i = 0; i < gods.size(); i++) {
-                                                    if(gods.get(i).equals(chosengod)) {
-                                                        bFound = true;
-                                                        break;
-                                                    }
-                                                }
-                                                if(bFound == false) {
-                                                    break;
-                                                }
-
-                                            }
-
-                                            if(bFound == true) {
-                                                // create an emulated command with proper syntax for
-                                                // processing entered command section
-                                                cmdLine = CHOSENGOD_COMMAND + " ";
-                                                for (String chosengod : chosengods) {
-                                                    cmdLine += chosengod.trim() + " ";
-                                                }
+                                        chosengod = chosengod.trim();
+                                        boolean bFound = false;
+                                        for (int i = 0; i < gods.size(); i++) {
+                                            if(gods.get(i).equals(chosengod)) {
+                                                bFound = true;
+                                                break;
                                             }
                                         }
-                                    }
+                                        if(bFound == false) {
+                                            break;
+                                        }
 
+                                        if(bFound == true) {
+                                            // create an emulated command with proper syntax for
+                                            // processing entered command section
+                                            cmdLine = CHOSENGOD_COMMAND + " " + chosengod;
+                                        }
+                                    }
                                 }
                                 else {
                                     System.out.println("Your god is: " + gods.get(0));
                                     cmdLine = CHOSENGOD_COMMAND + " " + gods.get(0);
                                 }
+                            }
+                        }
+                            break;
+                        case cli_ChoosingFirstPlayer:
+                        {
+                            if(players != null)
+                            {
+                                clearScreen();
+                                System.out.println("Please choose the player that will be the first one to place its workers on the board and then the first to play the game between the listed players:");
+                                for (int i = 0; i < players.size(); i++) {
+                                    System.out.println(players.get(i));
+                                }
+
+                                WaitForUserInput();
+
+                                String chosenplayer = cmdLine;
+                                chosenplayer = chosenplayer.trim();
+
+                                boolean bFound = false;
+
+                                for(String player : players) {
+                                    if(player.equals(cmdLine)) {
+                                        bFound = true;
+                                        break;
+                                    }
+                                }
+
+                                if(bFound == false) {
+                                    break;
+                                }
+                                else {
+                                    // create an emulated command with proper syntax for
+                                    // processing entered command section
+                                    cmdLine = CHOSENFIRSTPLAYER_COMMAND + " " + chosenplayer;
+                                }
+
                             }
                         }
                             break;
@@ -629,6 +655,7 @@ public class CLI implements Runnable, ClientObserver {
                                     chosengods.add(cmdlineParts[i]);
                                 }
                                 client.ChosenGods(chosengods);
+                                System.out.println("Please wait ...");
                             }
                         }
                         else if(cmdlineParts[0].equals(CHOSENGOD_COMMAND))
@@ -637,6 +664,14 @@ public class CLI implements Runnable, ClientObserver {
                             {
                                 gamestate = CLIGameState.cli_WaitForSomethingToHappen;
                                 client.ChosenGod(cmdlineParts[1]);
+                            }
+                        }
+                        else if (cmdlineParts[0].equals(CHOSENFIRSTPLAYER_COMMAND))
+                        {
+                            if(cmdlineParts.length == 2)
+                            {
+                                gamestate = CLIGameState.cli_WaitForSomethingToHappen;
+                                client.ChosenFirstPlayer(cmdlineParts[1]);
                             }
                         }
                         cmdLine = "";
@@ -809,6 +844,21 @@ public class CLI implements Runnable, ClientObserver {
         gamestate = CLIGameState.cli_ChoosingGod;
         this.gods = chosengods;
     }
+
+    /**
+     * Method of the ClientObserver interface that is fired by the client when choosing the first player that
+     * will place its workers and start playing
+     * @param players players in the match from which the selection must be done
+     */
+
+    @Override
+    public void OnChooseFirstPlayer(List<String> players) {
+        abortUserInput = true;
+        gamestate = CLIGameState.cli_ChoosingFirstPlayer;
+        this.players = players;
+    }
+
+
 
     /**
      * Method of the ClientObserver interface that is fired by the client when there's a winner

@@ -259,7 +259,28 @@ public class Client implements Runnable, ServerObserver
 
             if (regStatus == RegistrationStatus.Registered) {
 
-                String cmd = "<cmd><id>" + ProtocolTypes.protocolCommand.clt_ChosenGod.toString() + "</id><data>" + chosengod + "</data></cmd>";
+                String cmd = "<cmd><id>" + ProtocolTypes.protocolCommand.clt_ChosenGod.toString() + "</id><data><player>" + chosengod + "</player></data></cmd>";
+
+                serverHandler.SendCommand(cmd);
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Method that sends a command to the server with the data required
+     * @param chosenplayer first player chosen by the user
+     * @return true if operation successful, false otherwise
+     */
+
+    public synchronized boolean ChosenFirstPlayer(String chosenplayer) {
+        if(connStatus == ConnectionStatus.KeepConnected) {
+
+            if (regStatus == RegistrationStatus.Registered) {
+
+                String cmd = "<cmd><id>" + ProtocolTypes.protocolCommand.clt_ChosenFirstPlayer.toString() + "</id><data><player>" + chosenplayer + "</player></data></cmd>";
 
                 serverHandler.SendCommand(cmd);
                 return true;
@@ -594,6 +615,22 @@ public class Client implements Runnable, ServerObserver
     }
 
     /**
+     * Method that fires the OnChooseFirstPlayer() method of the observer (client instance)
+     */
+
+    private void FireOnChooseFirstPlayer(List<String> players) {
+        List<ClientObserver> observersCpy;
+        synchronized (observers) {
+            observersCpy = new ArrayList<>(observers);
+        }
+
+        /* notify the observers that we got the string */
+        for (ClientObserver observer: observersCpy) {
+            observer.OnChooseFirstPlayer(players);
+        }
+    }
+
+    /**
      * Method that fires the OnWinner() method of the observer (client instance)
      */
 
@@ -781,6 +818,21 @@ public class Client implements Runnable, ServerObserver
         FireOnChooseGod(chosengods);
         notifyAll();
     }
+
+    /**
+     * Method that fires the OnChooseFirstPlayer method of the observer (client instance)
+     * @param players players form which the user must choose who will be the first player
+     *                placing the workers and consequently to play the first turn
+     */
+
+    @Override
+    public synchronized void onChooseFirstPlayer(List<String> players) {
+        lastHelloTime = new Date();
+        FireOnChooseFirstPlayer(players);
+        notifyAll();
+    }
+
+
 
     /**
      * Method that fires the OnWinner method of the observer (client instance)
