@@ -9,8 +9,6 @@ import it.polimi.ingsw.PSP027.Model.TurnsManagement.ConcretePhase;
 
 public class DemeterDecorator extends GodPowerDecorator{
 
-    private boolean AskUserToUsePower = true;
-    private boolean UserWantsToUsePower;
     private boolean powerUsed = false;
 
     public DemeterDecorator(ConcretePhase decoratedPhase) {
