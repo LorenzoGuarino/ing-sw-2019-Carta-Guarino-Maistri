@@ -2,6 +2,7 @@ package it.polimi.ingsw.PSP027.Network.Client;
 
 import it.polimi.ingsw.PSP027.Network.ProtocolTypes;
 import it.polimi.ingsw.PSP027.Network.Server.Server;
+import org.w3c.dom.Node;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -281,6 +282,28 @@ public class Client implements Runnable, ServerObserver
             if (regStatus == RegistrationStatus.Registered) {
 
                 String cmd = "<cmd><id>" + ProtocolTypes.protocolCommand.clt_ChosenFirstPlayer.toString() + "</id><data><player>" + chosenplayer + "</player></data></cmd>";
+
+                serverHandler.SendCommand(cmd);
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Method that sends a command to the server with the data required
+     * @param chosenfirstplayer position of the first worker the user wants to place on the board
+     * @param chosensecondplayer position of the second worker the user wants to place on the board
+     * @return true if operation successful, false otherwise
+     */
+
+    public synchronized boolean ChosenWorkersFirstPositions(String chosenfirstplayer, String chosensecondplayer) {
+        if(connStatus == ConnectionStatus.KeepConnected) {
+
+            if (regStatus == RegistrationStatus.Registered) {
+
+                String cmd = "<cmd><id>" + ProtocolTypes.protocolCommand.clt_ChosenWorkersFirstPositions.toString() + "</id><data><positions><position>" + chosenfirstplayer + "</position><position>" + chosensecondplayer + "</position></positions></data></cmd>";
 
                 serverHandler.SendCommand(cmd);
                 return true;
@@ -631,6 +654,22 @@ public class Client implements Runnable, ServerObserver
     }
 
     /**
+     * Method that fires the OnChooseWorkerStartPosition() method of the observer (client instance)
+     */
+
+    private void FireOnChooseWorkerStartPosition(Node board) {
+        List<ClientObserver> observersCpy;
+        synchronized (observers) {
+            observersCpy = new ArrayList<>(observers);
+        }
+
+        /* notify the observers that we got the string */
+        for (ClientObserver observer: observersCpy) {
+            observer.OnChooseWorkerStartPosition(board);
+        }
+    }
+
+    /**
      * Method that fires the OnWinner() method of the observer (client instance)
      */
 
@@ -829,6 +868,19 @@ public class Client implements Runnable, ServerObserver
     public synchronized void onChooseFirstPlayer(List<String> players) {
         lastHelloTime = new Date();
         FireOnChooseFirstPlayer(players);
+        notifyAll();
+    }
+
+
+    /**
+     * Method that fires the OnChooseWorkerStartPosition method of the observer (client instance)
+     * @param board board to print in the user interface when a player has to choose the starting position of its workers
+     */
+
+    @Override
+    public synchronized void onChooseWorkerStartPosition(Node board) {
+        lastHelloTime = new Date();
+        FireOnChooseWorkerStartPosition(board);
         notifyAll();
     }
 

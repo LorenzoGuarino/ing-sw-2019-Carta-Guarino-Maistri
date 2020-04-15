@@ -9,6 +9,7 @@ import it.polimi.ingsw.PSP027.Model.Gods.MinotaurDecorator;
 import it.polimi.ingsw.PSP027.Model.TurnsManagement.Turn;
 import it.polimi.ingsw.PSP027.Model.TurnsManagement.MovePhase;
 import it.polimi.ingsw.PSP027.Network.ProtocolTypes;
+import it.polimi.ingsw.PSP027.View.CLI;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -397,7 +398,15 @@ public class SantoriniMatch implements Runnable{
             players.get(0).SendCommand(cmd);
         }
         else {
-            //all players have a god card. START HERE TO ASK TO CHOOSE FOR THE FIRST PLAYER
+            // all players have a god card. START HERE TO ASK TO CHOOSE FOR THE FIRST PLAYER
+            // NOTE: sice we should send the command to the master player, that was the last one
+            // choosing god card, actually this user is the last in the list of players
+            // due to former rotatePlayers(). so we need to rotate list to put him in front
+            rotatePlayers();
+
+            if(players.size()==3)
+                rotatePlayers();
+
             String cmd = "<cmd><id>" + ProtocolTypes.protocolCommand.srv_ChooseFirstPlayer.toString()  + "</id><data><players>";
             for(int i = 0; i < players.size(); i++){
 
@@ -413,11 +422,11 @@ public class SantoriniMatch implements Runnable{
     /**
      * Method that sets the chosen first player by the user as the first player of the game
      * @param chosenplayer name of the player that the player has chosen
-     * @TODO place workers
      */
 
     public void setFirstPlayer(String chosenplayer) {
 
+        // rotate players till the first one matches given one
         while(true) {
             if(chosenplayer.equals(players.get(0).getNickname())) {
                 break;
@@ -427,7 +436,84 @@ public class SantoriniMatch implements Runnable{
             }
         }
 
+        // The first player who is going to place the workers (and then start the game) is set as the first player in the list of players.
+        // Start here the process of asking to place the workers
+
+        String cmd = "<cmd><id>" + ProtocolTypes.protocolCommand.srv_ChooseWorkerStartPosition.toString()  + "</id><data><board>";
+
+        for(int i = 0; i < gameBoard.getBoard().size(); i++) {
+            cmd += "<cell id=\"" + Integer.toString(i) +
+                    "\" level=\"" + Integer.toString(gameBoard.getCell(i).getLevel()) +
+                    "\" dome=\"" + Boolean.toString(gameBoard.getCell(i).checkDome());
+
+
+            if(gameBoard.getCell(i).isOccupiedByWorker()) {
+                cmd += "\" nickname=\"" + gameBoard.getCell(i).getOccupyingWorker().getWorkerOwner().getNickname();
+            }
+            else {
+                cmd += "\" nickname=\"\"";
+            }
+
+            cmd += " />";
+        }
+
+        cmd += "</board></data></cmd>";
+
+        players.get(0).SendCommand(cmd);
+
     }
+
+
+    /**
+     * Method that sets the chosen starting positions of a player and updates the board
+     * @param chosenpositions positions chosen where to place the workers
+     * @TODO start game
+     */
+
+    public void setWorkersStartPosition(Player player, List<String> chosenpositions) {
+
+        for(int i = 0; i < 2; i++) {
+
+            int chosencellindex;
+
+            chosencellindex = (chosenpositions.get(i).charAt(0) - 'A') * 5 + (chosenpositions.get(i).charAt(1) - '1');
+
+            player.getPlayerWorkers().get(i).setPosition(gameBoard.getCell(chosencellindex));
+            gameBoard.getCell(chosencellindex).setWorkerOccupying(player.getPlayerWorkers().get(i));
+        }
+
+        rotatePlayers();
+
+        if(players.get(0).getPlayerWorkers().get(0).getWorkerPosition() == null) {
+
+            String cmd = "<cmd><id>" + ProtocolTypes.protocolCommand.srv_ChooseWorkerStartPosition.toString()  + "</id><data><board>";
+
+            for(int i = 0; i < gameBoard.getBoard().size(); i++) {
+                cmd += "<cell id=\"" + Integer.toString(i) +
+                        "\" level=\"" + Integer.toString(gameBoard.getCell(i).getLevel()) +
+                        "\" dome=\"" + Boolean.toString(gameBoard.getCell(i).checkDome());
+
+
+                if(gameBoard.getCell(i).isOccupiedByWorker()) {
+                    cmd += "\" nickname=\"" + gameBoard.getCell(i).getOccupyingWorker().getWorkerOwner().getNickname();
+                }
+                else {
+                    cmd += "\" nickname=\"";
+                }
+
+                cmd += "\" />";
+            }
+
+            cmd += "</board></data></cmd>";
+
+            players.get(0).SendCommand(cmd);
+        }
+        else {
+            //ALL PLAYERS HAVE PLACED THEIR WORKERS. START GAME
+        }
+
+    }
+
 
 
     /* ***************************************************************************************** */

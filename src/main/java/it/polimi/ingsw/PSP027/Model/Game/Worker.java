@@ -55,16 +55,24 @@ public class Worker {
 
     /**
      * The setter of position tells to the old position it is no longer occupied by this worker, and the new one that it now is
-     *
      * @param position
      */
     public void changePosition(Cell position) {
-        if(this.position!=null&&this.position.getOccupyingWorker().equals(this)){
+        if((this.position != null) && this.position.getOccupyingWorker().equals(this)){
             this.position.setWorkerOccupying(null);
         }
         this.position = position;
         if(position != null)
             position.setWorkerOccupying(this);
+    }
+
+    /**
+     * Method that sets the worker's first position
+     * @param position position to set
+     */
+
+    public void setPosition(Cell position) {
+        this.position = position;
     }
 }
 

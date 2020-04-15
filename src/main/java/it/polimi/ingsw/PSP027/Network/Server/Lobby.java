@@ -428,4 +428,57 @@ public class Lobby{
         }
     }
 
+    /**
+     * Method that gets the chosen workers' starting positions by the player and places them on the board, updating it.
+     * @param client identifying the gamer that chose the positions
+     * @param chosenpositions chosen positions where to place the player's 2 workers on the board before starting the game
+     */
+
+    public void SetChosenWorkersFirstPosition(ClientHandler client, List<String> chosenpositions) {
+
+        try {
+            while (true) {
+
+                if (GamersLock.tryLock(2L, TimeUnit.SECONDS)) {
+
+                    for (Gamer gamerInLobby : lobbyGamers) {
+
+                        if ((gamerInLobby.client.getNickname().equals(client.getNickname())) &&
+                                (gamerInLobby.client.getAddress().equals(client.getAddress()))
+                        ) {
+
+                            for (SantoriniMatch match : Matches) {
+                                if (match.getMatchId() == gamerInLobby.matchAssociated) {
+
+                                    List<Player> matchPlayers = match.getPlayers();
+
+                                    for(Player player : matchPlayers) {
+                                        if(player.getNickname().equals(gamerInLobby.client.getNickname())) {
+                                            match.setWorkersStartPosition(player, chosenpositions);
+                                            break;
+                                        }
+                                    }
+                                    break;
+                                }
+                            }
+
+                            break;
+                        }
+                    }
+
+                    break;
+                }
+                else {
+                    TimeUnit.MILLISECONDS.sleep(200);
+                }
+            }
+        }
+        catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        finally {
+            GamersLock.unlock();
+        }
+    }
+
 }

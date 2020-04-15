@@ -151,6 +151,11 @@ public class ClientHandler implements Runnable
                                     break;
                                 case clt_ChosenFirstPlayer:
                                     owner.onChosenFirstPlayer(cmdData);
+                                    break;
+                                case clt_ChosenWorkersFirstPositions:
+                                    owner.onChosenWorkersFirstPositions(cmdData);
+                                    break;
+
                             }
                         }
                     }
@@ -413,6 +418,36 @@ public class ClientHandler implements Runnable
     }
 
     /**
+     * Method that processes the command in xml format received from the client
+     * It triggers a method of the lobby that searches an available match for the client that requested it with its requested number of players
+     * @param data xml containing the number of players in the type of match (2 or 3) that the client requested to play
+     */
+
+    private void onSearchMatchOfGivenType(Node data) {
+
+        System.out.println("Received onSearchMatchOfGivenType from " + nickname);
+
+        int nPlayers = 1; //for default
+        Node node;
+
+        if (data.hasChildNodes()) {
+            NodeList nodes = data.getChildNodes();
+
+            for (int i = 0; i < nodes.getLength(); i++) {
+                node = nodes.item(i);
+
+                if (node.getNodeName().equals("playerscount")) {
+                    nPlayers = Integer.parseInt(node.getTextContent());
+                }
+            }
+
+            if ((nPlayers >= 2) && (nPlayers <= 3)) {
+                lobby.searchMatch(this, nPlayers);
+            }
+        }
+    }
+
+    /**
      * Method that processes the chosen gods written in the command in xml format received from the client
      * It triggers a method of the lobby that saves this chosen gods as the gods in use in the match
      * @param data xml of the chosen gods received from the client
@@ -502,32 +537,35 @@ public class ClientHandler implements Runnable
     }
 
     /**
-     * Method that processes the command in xml format received from the client
-     * It triggers a method of the lobby that searches an available match for the client that requested it with its requested number of players
-     * @param data xml containing the number of players in the type of match (2 or 3) that the client requested to play
+     * Method that processes the chosen gods written in the command in xml format received from the client
+     * It triggers a method of the lobby that saves the starting workers' position chosen
+     * @param data xml of the chosen positions received from the client
      */
 
-    private void onSearchMatchOfGivenType(Node data) {
+    private void onChosenWorkersFirstPositions(Node data) {
 
-        System.out.println("Received onSearchMatchOfGivenType from " + nickname);
-
-        int nPlayers = 1; //for default
+        System.out.println("Received onChosenWorkersFirstPositions from " + nickname);
         Node node;
+        List<String> chosenpositions = new ArrayList<String>();
 
         if (data.hasChildNodes()) {
-            NodeList nodes = data.getChildNodes();
+            NodeList positions = data.getChildNodes();
 
-            for (int i = 0; i < nodes.getLength(); i++) {
-                node = nodes.item(i);
+            for (int i = 0; i < positions.getLength(); i++) {
+                node = positions.item(i);
 
-                if (node.getNodeName().equals("playerscount")) {
-                    nPlayers = Integer.parseInt(node.getTextContent());
+                if (node.getNodeName().equals("positions")) {
+
+                    NodeList position = node.getChildNodes();
+
+                    for (int j = 0; j < position.getLength(); j++)
+                    {
+                        chosenpositions.add(position.item(j).getTextContent());
+                    }
                 }
             }
 
-            if ((nPlayers >= 2) && (nPlayers <= 3)) {
-                lobby.searchMatch(this, nPlayers);
-            }
+            lobby.SetChosenWorkersFirstPosition(this, chosenpositions);
         }
     }
 

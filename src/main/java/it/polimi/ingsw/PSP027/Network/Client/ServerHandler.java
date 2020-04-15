@@ -140,9 +140,9 @@ public class ServerHandler implements Runnable
         } catch (IOException | ClassNotFoundException | ClassCastException  e) {
 
             if(bManualDisconnection)
-                System.out.println("server connection closed");
+                System.out.println("\nserver connection closed");
             else
-                System.out.println("server has died");
+                System.out.println("\nserver has died");
         }
 
         try {
@@ -240,6 +240,8 @@ public class ServerHandler implements Runnable
                                 case srv_ChooseFirstPlayer:
                                     FireOnChooseFirstPlayer(cmdData);
                                     break;
+                                case srv_ChooseWorkerStartPosition:
+                                    FireOnChooseWorkerStartPosition(cmdData);
                             }
                         }
                     }
@@ -282,7 +284,6 @@ public class ServerHandler implements Runnable
 
     private synchronized void FireOnConnected() throws IOException, ClassNotFoundException
     {
-        System.out.println("FireOnConnected");
 
         /* copy the list of observers in case some observers changes it from inside
          * the notification method */
@@ -305,8 +306,6 @@ public class ServerHandler implements Runnable
 
     private synchronized void FireOnDisconnected() throws IOException, ClassNotFoundException
     {
-        System.out.println("FireOnDisconnected");
-
         /* copy the list of observers in case some observers changes it from inside
          * the notification method */
         List<ServerObserver> observersCpy;
@@ -328,7 +327,6 @@ public class ServerHandler implements Runnable
      */
 
     private synchronized void FireOnRegister(Node data) throws IOException, ClassNotFoundException {
-        System.out.println("FireOnRegister");
 
         /* Possible return data
          * "<data>
@@ -751,6 +749,56 @@ public class ServerHandler implements Runnable
             }
         }
     }
+
+    /**
+     * Method that fires the OnChooseWorkerStartPosition() method in the client, processing the command received from the server
+     * @param data xml to process and then pass on to OnChooseWorkerStartPosition()
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
+
+    private synchronized void FireOnChooseWorkerStartPosition(Node data) throws IOException, ClassNotFoundException {
+        /* data value (example)
+         * <data>
+         *     <board>
+         *         <cell id="0" level="2" dome="false" nickname="Elisa" />
+         *         ...
+         *         <cell id="24" level="0" dome ="false" nickname="" />
+         *     </board>
+         * </data>
+         */
+
+        Node node;
+
+
+
+        if (data.hasChildNodes()) {
+            NodeList nodes = data.getChildNodes();
+
+            for (int i = 0; i < nodes.getLength(); i++) {
+                node = nodes.item(i);
+
+                if (node.getNodeName().equals("board")) {
+
+                    //Here we don't process the command received because it's only graphic, the cli will process it instead
+
+                    /* copy the list of observers in case some observers changes it from inside
+                     * the notification method */
+                    List<ServerObserver> observersCpy;
+                    synchronized (observers) {
+                        observersCpy = new ArrayList<ServerObserver>(observers);
+                    }
+
+                    /* notify the observers that we got the string */
+                    for (ServerObserver observer : observersCpy) {
+                        observer.onChooseWorkerStartPosition(node);
+                    }
+
+                }
+            }
+        }
+    }
+
 
     /**
      * Method that fires the OnLoser() method in the client, processing the command received from the server
