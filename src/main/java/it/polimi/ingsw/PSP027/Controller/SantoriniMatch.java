@@ -308,7 +308,9 @@ public class SantoriniMatch implements Runnable{
             players.get(i).SendCommand(cmd);
         }
 
-        // perform starting game stuffs here
+        saveGame();
+
+        // perform starting game stuffs here: choose gods card at first
 
         cmd = "<cmd><id>" + ProtocolTypes.protocolCommand.srv_ChooseGods.toString()  + "</id><data><requiredgods>" + Integer.toString(requiredPlayers) + "</requiredgods><gods>";
         for(int i = 0; i < godCardsList.size(); i++){
@@ -319,7 +321,6 @@ public class SantoriniMatch implements Runnable{
         cmd += "</gods></data></cmd>";
 
         players.get(0).SendCommand(cmd);
-
 
     }
 
@@ -358,6 +359,8 @@ public class SantoriniMatch implements Runnable{
 
         rotatePlayers();
 
+        saveGame();
+
         String cmd = "<cmd><id>" + ProtocolTypes.protocolCommand.srv_ChooseGod.toString()  + "</id><data><gods>";
         for(int i = 0; i < godCardsInUse.size(); i++){
 
@@ -386,6 +389,8 @@ public class SantoriniMatch implements Runnable{
         }
 
         rotatePlayers();
+
+        saveGame();
 
         if(players.get(0).getPlayerGod() == null) {
             String cmd = "<cmd><id>" + ProtocolTypes.protocolCommand.srv_ChooseGod.toString()  + "</id><data><gods>";
@@ -436,31 +441,12 @@ public class SantoriniMatch implements Runnable{
             }
         }
 
+        saveGame();
+
         // The first player who is going to place the workers (and then start the game) is set as the first player in the list of players.
         // Start here the process of asking to place the workers
 
-        String cmd = "<cmd><id>" + ProtocolTypes.protocolCommand.srv_ChooseWorkerStartPosition.toString()  + "</id><data><board>";
-
-        for(int i = 0; i < gameBoard.getBoard().size(); i++) {
-            cmd += "<cell id=\"" + Integer.toString(i) +
-                    "\" level=\"" + Integer.toString(gameBoard.getCell(i).getLevel()) +
-                    "\" dome=\"" + Boolean.toString(gameBoard.getCell(i).checkDome());
-
-
-            if(gameBoard.getCell(i).isOccupiedByWorker()) {
-                cmd += "\" nickname=\"" + gameBoard.getCell(i).getOccupyingWorker().getWorkerOwner().getNickname();
-            }
-            else {
-                cmd += "\" nickname=\"\"";
-            }
-
-            cmd += " />";
-        }
-
-        cmd += "</board></data></cmd>";
-
-        players.get(0).SendCommand(cmd);
-
+        SendCurrentBoardToPlayerWithGivenCommand(players.get(0), ProtocolTypes.protocolCommand.srv_ChooseWorkerStartPosition);
     }
 
 
@@ -484,37 +470,43 @@ public class SantoriniMatch implements Runnable{
 
         rotatePlayers();
 
+        saveGame();
+
         if(players.get(0).getPlayerWorkers().get(0).getWorkerPosition() == null) {
 
-            String cmd = "<cmd><id>" + ProtocolTypes.protocolCommand.srv_ChooseWorkerStartPosition.toString()  + "</id><data><board>";
-
-            for(int i = 0; i < gameBoard.getBoard().size(); i++) {
-                cmd += "<cell id=\"" + Integer.toString(i) +
-                        "\" level=\"" + Integer.toString(gameBoard.getCell(i).getLevel()) +
-                        "\" dome=\"" + Boolean.toString(gameBoard.getCell(i).checkDome());
-
-
-                if(gameBoard.getCell(i).isOccupiedByWorker()) {
-                    cmd += "\" nickname=\"" + gameBoard.getCell(i).getOccupyingWorker().getWorkerOwner().getNickname();
-                }
-                else {
-                    cmd += "\" nickname=\"";
-                }
-
-                cmd += "\" />";
-            }
-
-            cmd += "</board></data></cmd>";
-
-            players.get(0).SendCommand(cmd);
+            SendCurrentBoardToPlayerWithGivenCommand(players.get(0), ProtocolTypes.protocolCommand.srv_ChooseWorkerStartPosition);
         }
         else {
-            //ALL PLAYERS HAVE PLACED THEIR WORKERS. START GAME
+            //ALL PLAYERS HAVE PLACED THEIR WORKERS. START TURNS
+
         }
 
     }
 
+    private void SendCurrentBoardToPlayerWithGivenCommand(Player player, ProtocolTypes.protocolCommand command)
+    {
+        String cmd = "<cmd><id>" + command.toString()  + "</id><data><board>";
 
+        for(int i = 0; i < gameBoard.getBoard().size(); i++) {
+            cmd += "<cell id=\"" + Integer.toString(i) +
+                    "\" level=\"" + Integer.toString(gameBoard.getCell(i).getLevel()) +
+                    "\" dome=\"" + Boolean.toString(gameBoard.getCell(i).checkDome());
+
+
+            if(gameBoard.getCell(i).isOccupiedByWorker()) {
+                cmd += "\" nickname=\"" + gameBoard.getCell(i).getOccupyingWorker().getWorkerOwner().getNickname();
+            }
+            else {
+                cmd += "\" nickname=\"";
+            }
+
+            cmd += "\" />";
+        }
+
+        cmd += "</board></data></cmd>";
+
+        player.SendCommand(cmd);
+    }
 
     /* ***************************************************************************************** */
 
@@ -549,19 +541,44 @@ public class SantoriniMatch implements Runnable{
 
     /**
      * Method that saves the last turn in playedTurns
-     * @param playedTurns
-     * @param currentTurn
+     * @param
+     * @param
      */
 
-    public void saveGame(List<Turn> playedTurns, Turn currentTurn) { }
+    public void saveGame() {
+        
+        // save an xml file with all data members of SantoriniMatch.
+        // the file name will be the UUID of the match
+        //
+        // godCardsList does not have to be saved since it is a fixed structure
+        // matchStarted is always true if game has been saved
+        //
+        // <SantoriniMatch matchID requiredPlayers>
+        // <board><cell .../>...<cell ... /></board>
+        // <players><player>....</player>...<player>....</player></players>
+        // <godCardsInUse><godcard></godcard>...<godcard></godcard></godCardsInUse>
+        // <turns><turn>...</turn>....<turn>...</turn></turns>
+        // </SantoriniMatch>
+
+    }
 
     /**
      * Method that resumes the game by restarting at last turn saved
-     * @param playedTurns
-     * @param currentTurn
+     * @param
+     * @param
      */
 
-    public void resumeGame(List<Turn> playedTurns, Turn currentTurn) { }
+    public void resumeGame() {
+        // read saved game, using UUID to get the file
+        // process xml data to recreate SantoriniMatch structure.
+        // then processing the data recreated, we can resume game at the time it was left. for example:
+        // if playedTurns is not empty, the last Turn in the list was the last one played (so last player playing is known)
+        // if godCardsInUse is empty, we know we should start asking to choose cards
+        // if godCardsInUse is not empty, checking players godcard chosen or workers position we can determine if all players had
+        // selected the god card and/or positioned workers ....
+
+
+    }
 
     /**
      * Method that checks is the Win condition are verified, in this case end the game
