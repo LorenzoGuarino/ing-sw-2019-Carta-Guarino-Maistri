@@ -4,6 +4,7 @@ import it.polimi.ingsw.PSP027.Model.Game.Cell;
 import it.polimi.ingsw.PSP027.Model.Game.Worker;
 import it.polimi.ingsw.PSP027.Model.Game.Cell;
 import it.polimi.ingsw.PSP027.Model.TurnsManagement.ConcretePhase;
+import it.polimi.ingsw.PSP027.Model.TurnsManagement.MovePhase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,7 +60,11 @@ public class PrometheusDecorator extends GodPowerDecorator{
     @Override
     public void updateBoard(Cell chosenCell) {
         if(powerUsed){
+            MovePhase movePhase = (MovePhase) this.getDecoratedPhase();     //using movePhase to get startChosenWorkerLvl
             this.getChosenWorker().changePosition(chosenCell);
+            if(movePhase.getStartChosenWorkerLvl()==2 && this.getChosenWorker().getWorkerPosition().getLevel()==3){     //check if the win conditions are verified
+                this.getChosenWorker().getWorkerOwner().setHasWon(true);
+            }
             this.getDecoratedPhase().setDone(true);
         }
         if (!powerUsed) {

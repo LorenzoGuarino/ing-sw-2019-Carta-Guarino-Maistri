@@ -40,11 +40,19 @@ public class ArtemisDecorator extends GodPowerDecorator {
     @Override
     public void updateBoard(Cell chosenCell) {
         if(powerUsed){
+            MovePhase movePhase = (MovePhase) this.getDecoratedPhase();     //using movePhase to get startChosenWorkerLvl
             this.getChosenWorker().changePosition(chosenCell);
+            if(movePhase.getStartChosenWorkerLvl()==2 && this.getChosenWorker().getWorkerPosition().getLevel()==3){
+                this.getChosenWorker().getWorkerOwner().setHasWon(true);
+            }
         }
         if (!powerUsed) {
+            MovePhase movePhase = (MovePhase) this.getDecoratedPhase();     //using movePhase to get startChosenWorkerLvl
             Cell startingCell=this.getChosenWorker().getWorkerPosition();
             this.getChosenWorker().changePosition(chosenCell);
+            if(movePhase.getStartChosenWorkerLvl()==2 && this.getChosenWorker().getWorkerPosition().getLevel()==3){    //check if the win conditions are verified
+                this.getChosenWorker().getWorkerOwner().setHasWon(true);
+            }
             this.setPowerUsed(true);
             this.changeCandidateCells();
             this.getCandidateCells().remove(startingCell);

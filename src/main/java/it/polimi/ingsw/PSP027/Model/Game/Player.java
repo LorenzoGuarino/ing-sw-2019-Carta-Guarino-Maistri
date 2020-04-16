@@ -14,13 +14,15 @@ public class Player {
     private List<Worker> playerWorkers;
     private GodCard playerGodCard;
     private List<GodCard> opponentsGodCards;
-
+    private boolean hasWon;
 
     /**
      * Constructor: creates a player, creating its workers
      */
 
     public Player() {
+        hasWon = false;
+
         playerWorkers = new ArrayList<Worker>();
 
         playerGodCard = null;
@@ -28,6 +30,22 @@ public class Player {
         opponentsGodCards = new ArrayList<GodCard>();
 
         for (int i = 0; i < 2; i++) playerWorkers.add(new Worker(this, i));
+    }
+
+    /**
+     * Method that return if the player hasWon
+     * @return hasWon value
+     */
+    public boolean isHasWon() {
+        return hasWon;
+    }
+
+    /**
+     * Method that set HasWon
+     * @param hasWon to set
+     */
+    public void setHasWon(boolean hasWon) {
+        this.hasWon = hasWon;
     }
 
     /**

@@ -49,6 +49,9 @@ public class MovePhase extends ConcretePhase {
 
     public void updateBoard(Cell chosenCell){
             this.getChosenWorker().changePosition(chosenCell);
+            if(startChosenWorkerLvl==2 && this.getChosenWorker().getWorkerPosition().getLevel()==3){
+                this.getChosenWorker().getWorkerOwner().setHasWon(true);
+            }
     }
 
     public int getStartChosenWorkerLvl() {

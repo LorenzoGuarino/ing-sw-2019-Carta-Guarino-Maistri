@@ -3,6 +3,7 @@ package it.polimi.ingsw.PSP027.Model.Gods;
 import it.polimi.ingsw.PSP027.Model.Game.Cell;
 import it.polimi.ingsw.PSP027.Model.Game.Worker;
 import it.polimi.ingsw.PSP027.Model.TurnsManagement.ConcretePhase;
+import it.polimi.ingsw.PSP027.Model.TurnsManagement.MovePhase;
 
 /**
  * @author danielecarta
@@ -53,6 +54,7 @@ public class MinotaurDecorator extends GodPowerDecorator {
 
     @Override
     public void updateBoard(Cell chosenCell) {
+        MovePhase movePhase = (MovePhase) this.getDecoratedPhase();     //using movePhase to get startChosenWorkerLvl
         Worker myWorker = this.getDecoratedPhase().getChosenWorker();
 
         if (chosenCell.isOccupiedByOpponentWorker(myWorker.getWorkerOwner())) {
@@ -61,6 +63,9 @@ public class MinotaurDecorator extends GodPowerDecorator {
             opponentWorker.changePosition(this.getDecoratedPhase().getGameBoard().getNextCellAlongThePath(myWorker.getWorkerPosition(),chosenCell));
         }
         myWorker.changePosition(chosenCell);
+        if(movePhase.getStartChosenWorkerLvl()==2 && myWorker.getWorkerPosition().getLevel()==3){    //check if the win conditions are verified
+            this.getChosenWorker().getWorkerOwner().setHasWon(true);
+        }
     }
 }
 

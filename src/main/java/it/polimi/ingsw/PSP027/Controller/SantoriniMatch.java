@@ -579,18 +579,18 @@ public class SantoriniMatch implements Runnable{
 
 
     }
-
+/*
     /**
      * Method that checks is the Win condition are verified, in this case end the game
      * @param currentTurn the last ConcreteTurn, currently playing
      * @param lastMovePhase the last MovePhase, currently playing
-     */
+
 
     public void checkWinCondition(Turn currentTurn, MovePhase lastMovePhase){
         if(lastMovePhase.getStartChosenWorkerLvl() == 2 && currentTurn.getChosenWorker().getWorkerPosition().getLevel() == 3){
             endGame(currentTurn.getPlayingPlayer());
         }
-    }
+    }*/
 
     /**
      *
