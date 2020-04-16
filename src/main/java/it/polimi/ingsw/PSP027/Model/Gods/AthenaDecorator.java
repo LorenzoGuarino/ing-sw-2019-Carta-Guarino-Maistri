@@ -25,8 +25,11 @@ public class AthenaDecorator extends GodPowerDecorator {
      */
     @Override
     public void updateBoard(Cell chosenCell) {
-        this.getChosenWorker().changePosition(chosenCell);
         MovePhase movePhase = (MovePhase)this.getDecoratedPhase();
+        this.getChosenWorker().changePosition(chosenCell);
+        if(movePhase.getStartChosenWorkerLvl()==2 && this.getChosenWorker().getWorkerPosition().getLevel()==3){    //check if the win conditions are verified
+            this.getChosenWorker().getWorkerOwner().setHasWon(true);
+        }
         if (movePhase.getStartChosenWorkerLvl()<this.getDecoratedPhase().getChosenWorker().getWorkerPosition().getLevel()) {
             applyPowerOnOtherPlayers();
         }
