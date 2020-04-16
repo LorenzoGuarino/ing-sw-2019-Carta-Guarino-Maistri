@@ -477,6 +477,7 @@ public class SantoriniMatch implements Runnable{
             SendCurrentBoardToPlayerWithGivenCommand(players.get(0), ProtocolTypes.protocolCommand.srv_ChooseWorkerStartPosition);
         }
         else {
+
             //ALL PLAYERS HAVE PLACED THEIR WORKERS. START TURNS
 
         }
@@ -546,7 +547,7 @@ public class SantoriniMatch implements Runnable{
      */
 
     public void saveGame() {
-        
+
         // save an xml file with all data members of SantoriniMatch.
         // the file name will be the UUID of the match
         //
