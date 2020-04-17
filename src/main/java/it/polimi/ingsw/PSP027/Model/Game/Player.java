@@ -109,7 +109,7 @@ public class Player {
     public void setPlayerGodCard(GodCard playerGodCard) { this.playerGodCard = playerGodCard; }
 
     /**
-     * Method used by Santorini Match to send the command that it generates to its players
+     * Method used by Santorini Match and Turn to send the command that it generates to its players
      * @param cmd command to send
      */
 

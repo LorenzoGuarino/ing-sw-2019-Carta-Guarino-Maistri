@@ -532,6 +532,12 @@ public class Lobby{
         }
     }
 
+    /**
+     * Method that gets the chosen worker's cell id and propagates it to the match of the player that has made the choice
+     * @param client identifying the player that chose the worker
+     * @param chosenWorker id of the chosen worker's cell
+     */
+
     public void SetChosenWorker(ClientHandler client, String chosenWorker) {
         try {
             while (true) {

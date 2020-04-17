@@ -44,8 +44,7 @@ public class SantoriniMatch implements Runnable{
         CreateTurn,
         WaitForTurnTerminated
     }
-
-    private TurnState turnState = TurnState.WaitForBeingReadyToPlayTurns;
+    private TurnState turnState; //enum variable that will change the state of the santorini match
 
 
     /**
@@ -64,8 +63,10 @@ public class SantoriniMatch implements Runnable{
         matchStarted = false;
         matchEnded = false;
         godCardsList = new ArrayList<GodCard>();
-
-
+        // when the match is instantiated it must be in the state of the thread where it just waits for the setup
+        // (done with a communication question-answer with the client) to be over. Then it will be changed to the
+        // state which passes the control over to the turn.
+        turnState = TurnState.WaitForBeingReadyToPlayTurns;
 
         godCardsList.add(new GodCard(GodCard.GodsType.Apollo, GodCard.APOLLO_D));
         godCardsList.add(new GodCard(GodCard.GodsType.Artemis, GodCard.ARTEMIS_D));
@@ -77,6 +78,11 @@ public class SantoriniMatch implements Runnable{
         godCardsList.add(new GodCard(GodCard.GodsType.Pan, GodCard.PAN_D));
         godCardsList.add(new GodCard(GodCard.GodsType.Prometheus, GodCard.PROMETHEUS_D));
     }
+
+    /**
+     * SantoriniMatch Thread. It has three states:
+     * WaitForBeingReadyToPlayTurns is the default method when santorini match
+     */
 
     @Override
     public void run() {
@@ -125,9 +131,36 @@ public class SantoriniMatch implements Runnable{
             e.printStackTrace();
         }
 
-        // when this point is reached, the thread will dye
+        // when this point is reached, the thread will die
         // lobby can now destroy this SantoriniMatch object
         owner.removeMatch(this);
+    }
+
+    /**
+     * Method that creates a new turn for the first player in the list
+     * @return
+     */
+
+    public Turn newTurn(){
+        return new Turn(this.getFirstPlayer(),this);
+    }
+
+    /**
+     * Method to get the current turn being played in the match
+     * @return the turn
+     */
+
+    public Turn getTurn() {
+        return turn;
+    }
+
+    /**
+     * Method that sets a turn as the current turn of the match
+     * @param turn turn to set as the match's turn
+     */
+
+    public void setTurn(Turn turn) {
+        this.turn = turn;
     }
 
     /**
@@ -228,7 +261,7 @@ public class SantoriniMatch implements Runnable{
 
 
     /* ****************************************************************************************************
-     * METHODS WITH WHICH THE SEND COMMAND CYCLE BEGINS
+     *                        METHODS WITH WHICH THE SEND COMMAND CYCLE BEGINS                             *
      ******************************************************************************************************/
 
     /**
@@ -327,7 +360,9 @@ public class SantoriniMatch implements Runnable{
     }
 
     /**
-     * Method that does the setup of the game
+     * Method that does the setup of the game. It notifies the players that they have entered the match and
+     * the communication with the client regardin the playing of the match actually starts with the server that asks
+     * to the first player that enetred the match to choose #numberofplayers gods among the possible god cards
      */
 
     public void startGame(){
@@ -495,7 +530,6 @@ public class SantoriniMatch implements Runnable{
     /**
      * Method that sets the chosen starting positions of a player and updates the board
      * @param chosenpositions positions chosen where to place the workers
-     * @TODO start game
      */
 
     public void setWorkersStartPosition(Player player, List<String> chosenpositions) {
@@ -519,10 +553,39 @@ public class SantoriniMatch implements Runnable{
             SendCurrentBoardToPlayerWithGivenCommand(players.get(0), ProtocolTypes.protocolCommand.srv_ChooseWorkerStartPosition);
         }
         else {
-            this.turnState=TurnState.CreateTurn;
+
+            // THE SETUP OF THE GAME IS DONE. THE TURNS CAN NOW BE PLAYED.
+            // The thread of SantoriniMatch needs to change the state from WaitForBeingReadyToPlayTurns to CreateTurn
+            // and the controller continues from now on passes on to the Turn until someone has won
+            this.turnState = TurnState.CreateTurn;
         }
 
     }
+
+    /* ******************* METHODS CALLED WHEN RECEIVING DATA FROM THE CLIENT WHEN THE TURN HAS STARTED ************** */
+
+    /**
+     * Method that receives the worker from the client and passes it to the turn that will set is as the chosen worker of
+     * the turn with the method setChosenWorker.
+     * @param worker int representing the id of the cell containing the worker chosen by the user
+     */
+
+    public void setChosenWorker(String worker) {
+        int chosencellindex;
+
+        chosencellindex = Integer.parseInt(worker);
+        Worker tempWorker = getGameBoard().getCell(chosencellindex).getOccupyingWorker();
+        turn.setChosenWorker(tempWorker);
+    }
+
+
+    /* ************************************************ UTILITY METHODS ************************************************ */
+
+    /**
+     * Method that sends the board as a string in xml format to the client
+     * @param player player to send the command to
+     * @param command command id to send with the board
+     */
 
     public void SendCurrentBoardToPlayerWithGivenCommand(Player player, ProtocolTypes.protocolCommand command)
     {
@@ -549,16 +612,8 @@ public class SantoriniMatch implements Runnable{
         player.SendCommand(cmd);
     }
 
-    /* ***************************************************************************************** */
-
-    /**
-     * Method that creates a new turn for the first player in the list
-     * @return
-     */
-
-    public Turn newTurn(){
-        return new Turn(this.getFirstPlayer(),this);
-    }
+    /* *************************************************************************************************************************** */
+    // METHODS TO CHECK AND FIX!
 
     /**
      * Method that decorates the player's turn according to its GodCard
@@ -644,20 +699,5 @@ public class SantoriniMatch implements Runnable{
         }
     }
 
-    public void setChosenWorker(String worker) {
-            int chosencellindex;
-
-            chosencellindex = Integer.parseInt(worker);
-            Worker tempWorker = getGameBoard().getCell(chosencellindex).getOccupyingWorker();
-        turn.setChosenWorker(tempWorker);
-    }
-
-    public Turn getTurn() {
-        return turn;
-    }
-
-    public void setTurn(Turn turn) {
-        this.turn = turn;
-    }
 
 }

@@ -202,6 +202,9 @@ public class ServerHandler implements Runnable
                                 }
                             }
 
+                            //SWITCH BASED ON THE COMMAND RECEIVED FROM THE SERVER THAT FIRES THE RIGHT METHOD THAT WILL
+                            // PASS THE DATA TO THE CLIENT IN ORDER TO REACH THE CLI
+
                             switch(cmdID)
                             {
                                 case srv_Hello:
@@ -773,8 +776,6 @@ public class ServerHandler implements Runnable
 
         Node node;
 
-
-
         if (data.hasChildNodes()) {
             NodeList nodes = data.getChildNodes();
 
@@ -802,9 +803,11 @@ public class ServerHandler implements Runnable
         }
     }
 
+    /* ************************************* METHODS REGARDING THE COMMUNICATION WHEN THE TURN HAS STARTED ************************+ */
+
     /**
-     * Method that fires the OnChooseWorkerToPlay method in the client , processing the command received from the server
-     * @param data
+     * Method that fires the OnChooseWorker method in the client, processing the command received from the server
+     * @param data xml to process and then pass on to onChooseWorker
      */
     private void FireOnChooseWorker(Node data) {
         /* data value (example)
@@ -816,6 +819,7 @@ public class ServerHandler implements Runnable
          *     </board>
          * </data>
          */
+
         Node node;
         if (data.hasChildNodes()) {
             NodeList nodes = data.getChildNodes();
@@ -835,6 +839,9 @@ public class ServerHandler implements Runnable
             }
         }
     }
+
+
+
 
 
     /**

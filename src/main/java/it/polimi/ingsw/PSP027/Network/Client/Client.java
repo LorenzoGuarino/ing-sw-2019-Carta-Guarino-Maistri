@@ -913,12 +913,27 @@ public class Client implements Runnable, ServerObserver
         notifyAll();
     }
 
+
+
+    /* ************************************* METHODS REGARDING THE COMMUNICATION WHEN THE TURN HAS STARTED ************************+ */
+
+    /**
+     * Method that fires the OnChooseWorker method of the observer (client instance)
+     * @param board board to print in the user interface when a player has to choose the worker to play the turn with
+     */
+
     @Override
     public synchronized void onChooseWorker(Node board) {
         lastHelloTime = new Date();
         FireOnChooseWorker(board);
         notifyAll();
     }
+
+
+
+
+
+
 
 
     /**
@@ -946,11 +961,8 @@ public class Client implements Runnable, ServerObserver
 
 
 
-    /* ****************************************************************** */
-    @Override
-    public synchronized void onWorkerStartPositionChosen() {
-        lastHelloTime = new Date();
-    }
+    /* ***************************************************************************************************************** */
+    // METHODS TO CHECK AND FIX AND MIGHT BE DELETED/MODIFIED
 
     @Override
     public synchronized void onMoveWorker() {

@@ -25,9 +25,9 @@ public  abstract class Phase {
 
     /**
      * Updates the the board of each phase according to its type and the action performed on the given cell
-     * @pa
-     * ram chosenCell
+     * @param chosenCell
      */
+
     public abstract void updateBoard(Cell chosenCell);
 
     public boolean isDone() {

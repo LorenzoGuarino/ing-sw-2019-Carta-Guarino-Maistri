@@ -26,9 +26,10 @@ public class ProtocolTypes {
         clt_ChosenFirstPlayer,
         srv_ChooseWorkerStartPosition,
         clt_ChosenWorkersFirstPositions,
+        srv_ChooseWorker,
+        clt_ChosenWorker,
         srv_StartTurn,
         srv_DrawBoard,
-        clt_ChooseWorker,
         srv_CandidateCellsForMove,
         clt_MoveWorker,
         srv_CandidateCellsForBuild,
@@ -37,8 +38,6 @@ public class ProtocolTypes {
         clt_UseGodPower,
         srv_BoardUpdated,
         srv_Loser,
-        srv_Winner,
-        srv_ChooseWorker,
-        clt_ChosenWorker
+        srv_Winner
     }
 }

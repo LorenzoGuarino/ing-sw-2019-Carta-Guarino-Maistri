@@ -337,9 +337,9 @@ public class ClientHandler implements Runnable
     }
 
 
-    /* ***********************************************************************
-     * METHODS THAT PREPARE THE COMMANDS THAT THE SERVER SENDS TO ITS CLIENT *
-     * ***********************************************************************/
+    /* **********************************************************************************************************************
+     * METHODS THAT PREPARE THE COMMANDS THAT THE SERVER SENDS TO ITS CLIENT AND METHODS THAT PROCESS THE RECEIVED COMMANDS *
+     * **********************************************************************************************************************/
 
     /**
      * Method that prepares the command that will then be processed in xml format in the client
@@ -418,6 +418,9 @@ public class ClientHandler implements Runnable
         String strRet = "<cmd><id>" + ProtocolTypes.protocolCommand.srv_Deregistered.toString() + "</id></cmd>";
         SendCommand(strRet);
     }
+
+
+    /* **************** METHODS THAT PROCESS THE XML STRING RECEIVED FROM THE CLIENT IN THE FASE PF SETTING UP THE MATCH *************** */
 
     /**
      * Method that processes the command in xml format received from the client
@@ -539,7 +542,7 @@ public class ClientHandler implements Runnable
     }
 
     /**
-     * Method that processes the chosen gods written in the command in xml format received from the client
+     * Method that processes the chosen workers written in the command in xml format received from the client
      * It triggers a method of the lobby that saves the starting workers' position chosen
      * @param data xml of the chosen positions received from the client
      */
@@ -570,6 +573,14 @@ public class ClientHandler implements Runnable
             lobby.SetChosenWorkersFirstPosition(this, chosenpositions);
         }
     }
+
+    /* *************** METHODS THAT PROCESS THE COMMAND RECEIVED FROM THE CLIENT WHEN THE TURNS HAVE STARTED ************** */
+
+    /**
+     * Method that process the chosen worker written in the command in xml format received from the client.
+     * It triggers a method in the lobby that sets the chosen worker in the turn that is being played in the correspondent match
+     * @param data xml of the chosen worker received from the client
+     */
 
     private void onChosenWorker(Node data) {
 
