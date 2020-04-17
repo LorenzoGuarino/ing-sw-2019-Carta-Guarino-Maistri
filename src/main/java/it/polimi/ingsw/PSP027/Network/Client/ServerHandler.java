@@ -242,6 +242,10 @@ public class ServerHandler implements Runnable
                                     break;
                                 case srv_ChooseWorkerStartPosition:
                                     FireOnChooseWorkerStartPosition(cmdData);
+                                    break;
+                                case srv_ChooseWorker:
+                                    FireOnChooseWorker(cmdData);
+                                    break;
                             }
                         }
                     }
@@ -251,7 +255,6 @@ public class ServerHandler implements Runnable
             System.out.println("invalid stream from client");
         }
     }
-
 
 
 
@@ -794,6 +797,40 @@ public class ServerHandler implements Runnable
                         observer.onChooseWorkerStartPosition(node);
                     }
 
+                }
+            }
+        }
+    }
+
+    /**
+     * Method that fires the OnChooseWorkerToPlay method in the client , processing the command received from the server
+     * @param data
+     */
+    private void FireOnChooseWorker(Node data) {
+        /* data value (example)
+         * <data>
+         *     <board>
+         *         <cell id="0" level="2" dome="false" nickname="Elisa" />
+         *         ...
+         *         <cell id="24" level="0" dome ="false" nickname="" />
+         *     </board>
+         * </data>
+         */
+        Node node;
+        if (data.hasChildNodes()) {
+            NodeList nodes = data.getChildNodes();
+
+            for (int i = 0; i < nodes.getLength(); i++) {
+                node = nodes.item(i);
+
+                if (node.getNodeName().equals("board")) {
+                    List<ServerObserver> observersCpy;
+                    synchronized (observers) {
+                        observersCpy = new ArrayList<ServerObserver>(observers);
+                    }
+                    for (ServerObserver observer : observersCpy) {
+                        observer.onChooseWorker(node);
+                    }
                 }
             }
         }

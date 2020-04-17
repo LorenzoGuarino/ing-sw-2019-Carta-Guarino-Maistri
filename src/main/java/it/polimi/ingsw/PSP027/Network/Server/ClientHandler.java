@@ -155,6 +155,8 @@ public class ClientHandler implements Runnable
                                 case clt_ChosenWorkersFirstPositions:
                                     owner.onChosenWorkersFirstPositions(cmdData);
                                     break;
+                                case clt_ChosenWorker:
+                                    owner.onChosenWorker(cmdData);
 
                             }
                         }
@@ -569,6 +571,23 @@ public class ClientHandler implements Runnable
         }
     }
 
+    private void onChosenWorker(Node data) {
 
+        System.out.println("Received onChosenWorker from " + nickname);
+        String chosenWorker="";
+        Node node;
 
+        if (data.hasChildNodes()) {
+            NodeList nodes = data.getChildNodes();
+
+            for (int i = 0; i < nodes.getLength(); i++) {
+                node = nodes.item(i);
+
+                if (node.getNodeName().equals("worker")) {
+                    chosenWorker = node.getTextContent();
+                }
+            }
+            lobby.SetChosenWorker(this, chosenWorker);
+        }
+    }
 }

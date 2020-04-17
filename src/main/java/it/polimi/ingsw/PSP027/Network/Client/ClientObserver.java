@@ -26,5 +26,5 @@ public interface ClientObserver {
     void OnChooseWorkerStartPosition(Node board);
     void OnWinner(String nickname);
     void OnLoser();
-
+    void OnChooseWorker(Node board);
 }

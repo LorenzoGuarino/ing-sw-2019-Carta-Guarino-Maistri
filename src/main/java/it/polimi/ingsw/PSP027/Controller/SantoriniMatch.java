@@ -3,6 +3,7 @@ package it.polimi.ingsw.PSP027.Controller;
 import it.polimi.ingsw.PSP027.Model.Game.Board;
 import it.polimi.ingsw.PSP027.Model.Game.GodCard;
 import it.polimi.ingsw.PSP027.Model.Game.Player;
+import it.polimi.ingsw.PSP027.Model.Game.Worker;
 import it.polimi.ingsw.PSP027.Model.Gods.GodPowerDecorator;
 import it.polimi.ingsw.PSP027.Network.ProtocolTypes;
 import it.polimi.ingsw.PSP027.Network.Server.Lobby;
@@ -30,18 +31,19 @@ public class SantoriniMatch implements Runnable{
     private Board gameBoard;
     private int requiredPlayers;
     private List<Player> players;
-    private List<Turn> playedTurns;
     private UUID matchID;
     private List<GodCard> godCardsList;
     private List<GodCard> godCardsInUse;
     private boolean matchStarted;
     private boolean matchEnded;
     private Lobby owner;
+    private Turn turn = null;
+
     private enum TurnState {
         WaitForBeingReadyToPlayTurns,
         CreateTurn,
         WaitForTurnTerminated
-    };
+    }
 
     private TurnState turnState = TurnState.WaitForBeingReadyToPlayTurns;
 
@@ -57,12 +59,12 @@ public class SantoriniMatch implements Runnable{
         matchID = UUID.randomUUID();
         requiredPlayers = 2;
         players = new ArrayList<Player>();
-        playedTurns = new ArrayList<Turn>();
         godCardsInUse = new ArrayList<GodCard>();
         gameBoard = new Board();
         matchStarted = false;
         matchEnded = false;
         godCardsList = new ArrayList<GodCard>();
+
 
 
         godCardsList.add(new GodCard(GodCard.GodsType.Apollo, GodCard.APOLLO_D));
@@ -78,8 +80,6 @@ public class SantoriniMatch implements Runnable{
 
     @Override
     public void run() {
-
-        Turn turn = null;
         // here goes what SantoriniMatch does, so the controller part
         try {
             while(!matchEnded) {
@@ -519,15 +519,12 @@ public class SantoriniMatch implements Runnable{
             SendCurrentBoardToPlayerWithGivenCommand(players.get(0), ProtocolTypes.protocolCommand.srv_ChooseWorkerStartPosition);
         }
         else {
-
-            //ALL PLAYERS HAVE PLACED THEIR WORKERS. START TURNS
-
-
+            this.turnState=TurnState.CreateTurn;
         }
 
     }
 
-    private void SendCurrentBoardToPlayerWithGivenCommand(Player player, ProtocolTypes.protocolCommand command)
+    public void SendCurrentBoardToPlayerWithGivenCommand(Player player, ProtocolTypes.protocolCommand command)
     {
         String cmd = "<cmd><id>" + command.toString()  + "</id><data><board>";
 
@@ -646,4 +643,21 @@ public class SantoriniMatch implements Runnable{
             endGame(playersInGame.get(0));
         }
     }
+
+    public void setChosenWorker(String worker) {
+            int chosencellindex;
+
+            chosencellindex = Integer.parseInt(worker);
+            Worker tempWorker = getGameBoard().getCell(chosencellindex).getOccupyingWorker();
+        turn.setChosenWorker(tempWorker);
+    }
+
+    public Turn getTurn() {
+        return turn;
+    }
+
+    public void setTurn(Turn turn) {
+        this.turn = turn;
+    }
+
 }

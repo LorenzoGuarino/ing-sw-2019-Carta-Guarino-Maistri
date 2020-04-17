@@ -202,6 +202,7 @@ public class CLI implements Runnable, ClientObserver {
     private static String CHOSENFIRSTPLAYER_COMMAND = "firstplayerchosen";
     private static String PLAY_COMMAND = "play";
     private static String WORKERSPOSITION_COMMAND = "workerspositionchosen";
+    private static String CHOSENWORKER_COMMAND = "workerchosen";
 
     private static String DISCONNECT_COMMAND_LABEL = "  " + BLACK_BOLD + DISCONNECT_COMMAND + RESET + " (to disconnect from server)";
     private static String BYE_COMMAND_LABEL = "  " + BLACK_BOLD + BYE_COMMAND + RESET + " (to quit the game)";
@@ -239,6 +240,8 @@ public class CLI implements Runnable, ClientObserver {
         cli_ChoosingWorkersStartPosition,
         cli_ManagePlacingFirstWorker,
         cli_ManagePlacingSecondWorker,
+        cli_ChooseWorkerToPlay,
+        cli_ChoosingWorker,
         cli_WaitForSomethingToHappen
     }
 
@@ -699,6 +702,37 @@ public class CLI implements Runnable, ClientObserver {
                         }
                         break;
 
+                        case cli_ChoosingWorker:  {
+                            System.out.println("\nPlease select the cell occupied by the worker you want to play with.\n" + ITALIC + BOLD +
+                                    "Remember:" + RESET + ITALIC + " You can only select workers of your own property, marked by your color" +
+                                    "\n\n" + RESET +
+                                    "Syntax to indicate the cell occupied by the worker you want to select: \"LetterNumber\"");
+
+                            WaitForUserInput();
+
+                            String position = cmdLine.trim();
+
+                            if (position.length() == 2) {
+                                if (position.charAt(0) == 'A' || position.charAt(0) == 'B' || position.charAt(0) == 'C' || position.charAt(0) == 'D' || position.charAt(0) == 'E') {
+                                    if (position.charAt(1) == '1' || position.charAt(1) == '2' || position.charAt(1) == '3' || position.charAt(1) == '4' || position.charAt(1) == '5') {
+
+                                        int chosenCellIndex;
+
+                                        chosenCellIndex = (position.charAt(0) - 'A') * 5 + (position.charAt(1) - '1');
+
+                                        //control that the position chosen is occupied by one of the players workers
+                                        if(getNicknameOfCellNode(getCellNodeGivenTheID(chosenCellIndex)).equals(client.getNickname())) {
+
+                                            cmdLine = CHOSENWORKER_COMMAND + " " + chosenCellIndex;
+
+                                            gamestate = CLIGameState.cli_WaitForSomethingToHappen;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        break;
+
                         case cli_WaitForSomethingToHappen: {
                             // in this state user is allowed to enter commands on commandline
                             // which will be processed on switch exit
@@ -768,6 +802,11 @@ public class CLI implements Runnable, ClientObserver {
                             if (cmdlineParts.length == 3) {
                                 gamestate = CLIGameState.cli_WaitForSomethingToHappen;
                                 client.ChosenWorkersFirstPositions(cmdlineParts[1], cmdlineParts[2]);
+                            }
+                        } else if (cmdlineParts[0].equals(CHOSENWORKER_COMMAND)) {
+                            if (cmdlineParts.length == 2) {
+                                gamestate = CLIGameState.cli_WaitForSomethingToHappen;
+                                client.ChosenWorker(cmdlineParts[1]);
                             }
                         }
                         cmdLine = "";
@@ -977,6 +1016,13 @@ public class CLI implements Runnable, ClientObserver {
     public void OnChooseWorkerStartPosition(Node board) {
         abortUserInput = true;
         gamestate = CLIGameState.cli_ChoosingWorkersStartPosition;
+        this.nodeboard = board;
+    }
+
+    @Override
+    public void OnChooseWorker(Node board) {
+        abortUserInput = true;
+        gamestate = CLIGameState.cli_ChoosingWorker;
         this.nodeboard = board;
     }
 

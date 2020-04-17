@@ -1,5 +1,7 @@
 package it.polimi.ingsw.PSP027.Network;
 
+import javax.lang.model.type.TypeMirror;
+
 public class ProtocolTypes {
 
     public enum protocolCommand {
@@ -35,6 +37,8 @@ public class ProtocolTypes {
         clt_UseGodPower,
         srv_BoardUpdated,
         srv_Loser,
-        srv_Winner
+        srv_Winner,
+        srv_ChooseWorker,
+        clt_ChosenWorker
     }
 }

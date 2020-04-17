@@ -532,4 +532,50 @@ public class Lobby{
         }
     }
 
+    public void SetChosenWorker(ClientHandler client, String chosenWorker) {
+        try {
+            while (true) {
+
+                if (GamersLock.tryLock(2L, TimeUnit.SECONDS)) {
+
+                    for (Gamer gamerInLobby : lobbyGamers) {
+
+                        if ((gamerInLobby.client.getNickname().equals(client.getNickname())) &&
+                                (gamerInLobby.client.getAddress().equals(client.getAddress()))
+                        ) {
+
+                            for (SantoriniMatch match : Matches) {
+                                if (match.getMatchId() == gamerInLobby.matchAssociated) {
+
+                                    List<Player> matchPlayers = match.getPlayers();
+
+                                    for(Player player : matchPlayers) {
+                                        if(player.getNickname().equals(gamerInLobby.client.getNickname())) {
+                                            match.setChosenWorker(chosenWorker);
+                                            break;
+                                        }
+                                    }
+                                    break;
+                                }
+                            }
+
+                            break;
+                        }
+                    }
+
+                    break;
+                }
+                else {
+                    TimeUnit.MILLISECONDS.sleep(200);
+                }
+            }
+        }
+        catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        finally {
+            GamersLock.unlock();
+        }
+    }
+
 }

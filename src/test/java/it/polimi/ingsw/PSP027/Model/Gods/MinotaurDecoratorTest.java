@@ -19,8 +19,6 @@ import static org.junit.Assert.*;
  */
 
 public class MinotaurDecoratorTest {
-    SantoriniMatch santoriniMatch;
-    Turn turn;
     Player player1,player2;
     Worker worker11,worker21;
     MinotaurDecorator minotaurDecoratedPhase;
@@ -28,16 +26,11 @@ public class MinotaurDecoratorTest {
 
     @Before
     public void setUp() throws Exception {
-        santoriniMatch = new SantoriniMatch();
-        gameBoard= santoriniMatch.getGameBoard();
         player1= new Player();
         player2= new Player();
-        santoriniMatch.addPlayer(player1);
-        santoriniMatch.addPlayer(player2);
         worker11= player1.getPlayerWorkers().get(0);
         worker11.changePosition(gameBoard.getCell(0));
         worker21= player2.getPlayerWorkers().get(0);
-        turn= new Turn(player1,santoriniMatch);
 
     }
 

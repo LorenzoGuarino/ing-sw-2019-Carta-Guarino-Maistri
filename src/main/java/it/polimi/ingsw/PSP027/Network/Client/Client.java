@@ -313,6 +313,21 @@ public class Client implements Runnable, ServerObserver
         return false;
     }
 
+    public synchronized boolean ChosenWorker(String chosenWorker) {
+        if(connStatus == ConnectionStatus.KeepConnected) {
+
+            if (regStatus == RegistrationStatus.Registered) {
+
+                String cmd = "<cmd><id>" + ProtocolTypes.protocolCommand.clt_ChosenWorker.toString() + "</id><data><worker>" + chosenWorker + "</worker></data></cmd>";
+
+                serverHandler.SendCommand(cmd);
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     /**
      * Method that creates a socket to connect with the server, and if successful
      * create the adapter with a separate thread that will communicate with the server
@@ -669,6 +684,18 @@ public class Client implements Runnable, ServerObserver
         }
     }
 
+    private void FireOnChooseWorker(Node board) {
+        List<ClientObserver> observersCpy;
+        synchronized (observers) {
+            observersCpy = new ArrayList<>(observers);
+        }
+
+        /* notify the observers that we got the string */
+        for (ClientObserver observer: observersCpy) {
+            observer.OnChooseWorker(board);
+        }
+    }
+
     /**
      * Method that fires the OnWinner() method of the observer (client instance)
      */
@@ -700,6 +727,8 @@ public class Client implements Runnable, ServerObserver
             observer.OnLoser();
         }
     }
+
+
 
 
     /* *****************************************************************************************************************
@@ -884,6 +913,12 @@ public class Client implements Runnable, ServerObserver
         notifyAll();
     }
 
+    @Override
+    public synchronized void onChooseWorker(Node board) {
+        lastHelloTime = new Date();
+        FireOnChooseWorker(board);
+        notifyAll();
+    }
 
 
     /**
@@ -914,11 +949,6 @@ public class Client implements Runnable, ServerObserver
     /* ****************************************************************** */
     @Override
     public synchronized void onWorkerStartPositionChosen() {
-        lastHelloTime = new Date();
-    }
-
-    @Override
-    public synchronized void onChooseWorker() {
         lastHelloTime = new Date();
     }
 

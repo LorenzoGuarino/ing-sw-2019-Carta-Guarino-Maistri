@@ -7,6 +7,7 @@ import it.polimi.ingsw.PSP027.Model.Game.Worker;
 import it.polimi.ingsw.PSP027.Model.TurnsManagement.MovePhase;
 import it.polimi.ingsw.PSP027.Model.TurnsManagement.Phase;
 import it.polimi.ingsw.PSP027.Model.TurnsManagement.StartPhase;
+import it.polimi.ingsw.PSP027.Network.ProtocolTypes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,40 +31,9 @@ public class Turn {
         this.playingPlayer = playingPlayer;
         this.phaseList = new ArrayList<>();
         this.bCompleted = false;
-        StartPhase phase1 = new StartPhase(playingPlayer.getPlayerWorkers());
-        this.getPhaseList().add(phase1);
 
+        this.santoriniMatch.SendCurrentBoardToPlayerWithGivenCommand(playingPlayer, ProtocolTypes.protocolCommand.srv_ChooseWorker);
 
-    }
-
-    public void updateTurnAfterStartPhase(){
-        StartPhase s = (StartPhase)this.getPhaseList().get(0);
-        this.chosenWorker = s.getChosenWorker();
-    }
-    /**
-     * adds a MovePhase according to the turn chosenWorker
-     */
-    public void addMovePhase(){
-        int phaseListSize = this.getPhaseList().size();
-        if(this.getPhaseList().get(phaseListSize - 1).isDone()) {
-            //if the last phase isDone i can add the movePhase
-            MovePhase movePhase = new MovePhase(this.getChosenWorker(), this.getSantoriniMatch().getGameBoard());
-            this.getPhaseList().add(movePhase);
-        }
-    }
-
-    /**
-     * given a turn it applies the mandatory opponents' gods decorators
-     * @param turn
-     * @return
-     */
-    public GodPowerDecorator secondaryDecoration(Turn turn){
-        for(GodCard opponentGod:turn.getPlayingPlayer().getOpponentsGodCards()){
-            switch (opponentGod.getGodType()){
-                case Athena: return null;//new AthenaOppDecorator(turn);
-            }
-        }
-        return null;
     }
 
     public Player getPlayingPlayer() {
@@ -86,6 +56,11 @@ public class Turn {
         this.phaseList = phaseList;
     }
 
+    public void setChosenWorker(Worker chosenWorker) {
+        this.chosenWorker = chosenWorker;
+        //there stops the cmd call by cli
+    }
+
     public boolean IsCompleted() {
 
         return bCompleted;
@@ -95,4 +70,5 @@ public class Turn {
 
         return playingPlayer.HasWon();
     }
+
 }

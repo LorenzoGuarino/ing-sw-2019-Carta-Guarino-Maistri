@@ -27,9 +27,8 @@ public interface ServerObserver
     void onChooseFirstPlayer(List<String> players);
     void onChooseWorkerStartPosition(Node node);
     void onWorkerStartPositionChosen();
-    void onChooseWorker();
+    void onChooseWorker(Node node);
     void onMoveWorker();
     void onBuild();
     void onUseGodPower();
-
 }
