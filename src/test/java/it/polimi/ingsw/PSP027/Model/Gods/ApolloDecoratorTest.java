@@ -6,7 +6,7 @@ import it.polimi.ingsw.PSP027.Model.Game.Player;
 import it.polimi.ingsw.PSP027.Model.Game.Worker;
 import it.polimi.ingsw.PSP027.Controller.SantoriniMatch;
 import it.polimi.ingsw.PSP027.Model.TurnsManagement.MovePhase;
-import it.polimi.ingsw.PSP027.Model.TurnsManagement.Turn;
+import it.polimi.ingsw.PSP027.Controller.Turn;
 import org.junit.Before;
 import org.junit.Test;
 

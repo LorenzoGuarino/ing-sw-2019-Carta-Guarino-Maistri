@@ -17,6 +17,7 @@ import java.util.concurrent.locks.ReentrantLock;
 public class Lobby{
 
     private ReentrantLock GamersLock = new ReentrantLock();
+    private ReentrantLock MatchesLock = new ReentrantLock();
 
     /**
      * List of the matches created by the Lobby. A new one is created when a gamer is added to
@@ -28,7 +29,7 @@ public class Lobby{
     /**
      * List of the gamers that are currently in the lobby, wither waiting for a game to play or already playing a match
      */
-    private ArrayList<Gamer> lobbyGamers = new ArrayList<Gamer>();
+    private ArrayList<Gamer> lobbyGamers;
 
     /**
      * Constructor: where the application start. It instantiates an empty list of matches that will then be filled as the players
@@ -37,6 +38,7 @@ public class Lobby{
 
     public Lobby() {
         Matches = new ArrayList<SantoriniMatch>();
+        lobbyGamers = new ArrayList<Gamer>();
     }
 
     /**
@@ -46,13 +48,62 @@ public class Lobby{
 
     public SantoriniMatch createMatch(int playersCount) {
 
-        SantoriniMatch santoriniMatch = new SantoriniMatch();
-        santoriniMatch.SetRequiredNumberOfPlayers(playersCount);
-        Matches.add(santoriniMatch);
-        Thread santoriniMatchThread = new Thread(santoriniMatch);
-        santoriniMatchThread.start();
+        SantoriniMatch santoriniMatch = null;
+        try {
+            while (true) {
+
+                if (MatchesLock.tryLock(2L, TimeUnit.SECONDS)) {
+
+                    santoriniMatch = new SantoriniMatch(this);
+                    santoriniMatch.SetRequiredNumberOfPlayers(playersCount);
+                    Matches.add(santoriniMatch);
+                    Thread santoriniMatchThread = new Thread(santoriniMatch);
+                    santoriniMatchThread.start();
+
+                    break;
+                }
+                else {
+                    TimeUnit.MILLISECONDS.sleep(200);
+                }
+            }
+        }
+        catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        finally {
+            MatchesLock.unlock();
+        }
+
 
         return santoriniMatch;
+    }
+
+    /**
+     * Method that creates a Match with its separate thread and adds it to the list of matches of the lobby
+     * @return the match created
+     */
+
+    public void removeMatch(SantoriniMatch santoriniMatch) {
+
+        try {
+            while (true) {
+
+                if (MatchesLock.tryLock(2L, TimeUnit.SECONDS)) {
+
+                    Matches.remove(santoriniMatch);
+                    break;
+                }
+                else {
+                    TimeUnit.MILLISECONDS.sleep(200);
+                }
+            }
+        }
+        catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        finally {
+            MatchesLock.unlock();
+        }
     }
 
     /**

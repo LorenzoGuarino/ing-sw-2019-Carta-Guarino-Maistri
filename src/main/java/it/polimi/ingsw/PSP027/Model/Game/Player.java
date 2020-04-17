@@ -36,7 +36,7 @@ public class Player {
      * Method that return if the player hasWon
      * @return hasWon value
      */
-    public boolean isHasWon() {
+    public boolean HasWon() {
         return hasWon;
     }
 
@@ -92,12 +92,6 @@ public class Player {
 
     public void removeOpponentGodCards() { opponentsGodCards.clear(); }
 
-    /**
-     * Method that starts the turn played by this player
-     * @TODO play turn
-     * */
-
-    public void playTurn() { }
 
     /**
      * Method that returns the list of opponent's gods that will influence this player's next turn

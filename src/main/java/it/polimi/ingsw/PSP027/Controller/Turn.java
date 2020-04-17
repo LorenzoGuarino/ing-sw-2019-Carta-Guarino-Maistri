@@ -1,10 +1,12 @@
-package it.polimi.ingsw.PSP027.Model.TurnsManagement;
+package it.polimi.ingsw.PSP027.Controller;
 
 import it.polimi.ingsw.PSP027.Model.Game.GodCard;
 import it.polimi.ingsw.PSP027.Model.Gods.GodPowerDecorator;
 import it.polimi.ingsw.PSP027.Model.Game.Player;
-import it.polimi.ingsw.PSP027.Controller.SantoriniMatch;
 import it.polimi.ingsw.PSP027.Model.Game.Worker;
+import it.polimi.ingsw.PSP027.Model.TurnsManagement.MovePhase;
+import it.polimi.ingsw.PSP027.Model.TurnsManagement.Phase;
+import it.polimi.ingsw.PSP027.Model.TurnsManagement.StartPhase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +20,7 @@ public class Turn {
     private Worker chosenWorker;
     private Player playingPlayer;
     private SantoriniMatch santoriniMatch;
-
+    private boolean bCompleted;
     /**
      * Constructor, given the player instantiates a standard phaseList
      *@param playingPlayer
@@ -27,8 +29,11 @@ public class Turn {
         this.santoriniMatch = santoriniMatch;
         this.playingPlayer = playingPlayer;
         this.phaseList = new ArrayList<>();
+        this.bCompleted = false;
         StartPhase phase1 = new StartPhase(playingPlayer.getPlayerWorkers());
         this.getPhaseList().add(phase1);
+
+
     }
 
     public void updateTurnAfterStartPhase(){
@@ -79,5 +84,15 @@ public class Turn {
 
     public void setPhaseList(List<Phase> phaseList) {
         this.phaseList = phaseList;
+    }
+
+    public boolean IsCompleted() {
+
+        return bCompleted;
+    }
+
+    public boolean CurrentPlayerHasWon() {
+
+        return playingPlayer.HasWon();
     }
 }

@@ -3,13 +3,9 @@ package it.polimi.ingsw.PSP027.Controller;
 import it.polimi.ingsw.PSP027.Model.Game.Board;
 import it.polimi.ingsw.PSP027.Model.Game.GodCard;
 import it.polimi.ingsw.PSP027.Model.Game.Player;
-import it.polimi.ingsw.PSP027.Model.Game.Worker;
 import it.polimi.ingsw.PSP027.Model.Gods.GodPowerDecorator;
-import it.polimi.ingsw.PSP027.Model.Gods.MinotaurDecorator;
-import it.polimi.ingsw.PSP027.Model.TurnsManagement.Turn;
-import it.polimi.ingsw.PSP027.Model.TurnsManagement.MovePhase;
 import it.polimi.ingsw.PSP027.Network.ProtocolTypes;
-import it.polimi.ingsw.PSP027.View.CLI;
+import it.polimi.ingsw.PSP027.Network.Server.Lobby;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +36,15 @@ public class SantoriniMatch implements Runnable{
     private List<GodCard> godCardsInUse;
     private boolean matchStarted;
     private boolean matchEnded;
+    private Lobby owner;
+    private enum TurnState {
+        WaitForBeingReadyToPlayTurns,
+        CreateTurn,
+        WaitForTurnTerminated
+    };
+
+    private TurnState turnState = TurnState.WaitForBeingReadyToPlayTurns;
+
 
     /**
      * Constructor: this creates a new match, creating a list for the players that will the be filled as the players are added,
@@ -47,7 +52,8 @@ public class SantoriniMatch implements Runnable{
      * id of the match, creates a board and sets the variable that tells if the match has started to false
      */
 
-    public SantoriniMatch() {
+    public SantoriniMatch(Lobby lobby) {
+        owner = lobby;
         matchID = UUID.randomUUID();
         requiredPlayers = 2;
         players = new ArrayList<Player>();
@@ -72,13 +78,44 @@ public class SantoriniMatch implements Runnable{
 
     @Override
     public void run() {
+
+        Turn turn = null;
         // here goes what SantoriniMatch does, so the controller part
         try {
             while(!matchEnded) {
 
                 if (matchStarted) {
 
-                    // manage game
+                    switch(turnState)
+                    {
+                        case WaitForBeingReadyToPlayTurns:
+                        {
+                            TimeUnit.MILLISECONDS.sleep(200);
+                        }
+                            break;
+                        case CreateTurn:
+                        {
+                            turn = newTurn();
+                            turnState = TurnState.WaitForTurnTerminated;
+                        }
+                            break;
+                        case WaitForTurnTerminated:
+                        {
+                            if(turn.IsCompleted())
+                            {
+                                if(turn.CurrentPlayerHasWon())
+                                {
+                                    endGame(turn.getPlayingPlayer());
+                                }
+                                else {
+                                    turnState = TurnState.CreateTurn;
+                                    rotatePlayers();
+                                }
+                            }
+                            else
+                                TimeUnit.MILLISECONDS.sleep(200);
+                        }
+                    }
 
                 } else {
                     TimeUnit.MILLISECONDS.sleep(200);
@@ -87,6 +124,10 @@ public class SantoriniMatch implements Runnable{
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
+        // when this point is reached, the thread will dye
+        // lobby can now destroy this SantoriniMatch object
+        owner.removeMatch(this);
     }
 
     /**
@@ -340,6 +381,7 @@ public class SantoriniMatch implements Runnable{
             players.get(i).SendCommand(cmd);
         }
 
+        matchEnded = true;
     }
 
     /**
@@ -479,6 +521,7 @@ public class SantoriniMatch implements Runnable{
         else {
 
             //ALL PLAYERS HAVE PLACED THEIR WORKERS. START TURNS
+
 
         }
 
