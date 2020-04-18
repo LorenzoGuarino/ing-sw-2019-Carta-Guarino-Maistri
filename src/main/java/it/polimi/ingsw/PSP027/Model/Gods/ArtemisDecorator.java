@@ -9,7 +9,7 @@ import it.polimi.ingsw.PSP027.Controller.MovePhase;
  */
 public class ArtemisDecorator extends GodPowerDecorator {
 
-    private boolean powerUsed=false;
+    private boolean powerUsed = false;
 
     public ArtemisDecorator(ConcretePhase decoratedPhase) {
         super(decoratedPhase);
@@ -61,4 +61,6 @@ public class ArtemisDecorator extends GodPowerDecorator {
     public void setPowerUsed(boolean powerUsed) {
         this.powerUsed = powerUsed;
     }
+
+
 }

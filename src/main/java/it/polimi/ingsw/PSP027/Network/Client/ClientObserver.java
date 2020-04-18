@@ -1,6 +1,7 @@
 package it.polimi.ingsw.PSP027.Network.Client;
 
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import java.util.List;
 
@@ -23,9 +24,9 @@ public interface ClientObserver {
     void OnChooseGods(int requiredgods, List<String> gods);
     void OnChooseGod(List<String> chosengods);
     void OnChooseFirstPlayer(List<String> players);
-    void OnChooseWorkerStartPosition(Node board);
+    void OnChooseWorkerStartPosition(NodeList board);
     void OnWinner(String nickname);
     void OnLoser();
     void OnChooseWorker(Node board);
-    void OnCandidateCellsForMove(Node candidates);
+    void OnCandidateCellsForMove(NodeList nodes);
 }

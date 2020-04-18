@@ -8,7 +8,7 @@ import it.polimi.ingsw.PSP027.Controller.MovePhase;
  * @author danielecarta
  */
 
-public class PrometheusDecorator extends GodPowerDecorator{
+public class PrometheusDecorator extends GodPowerDecorator {
 
     public boolean powerUsed = false;
 

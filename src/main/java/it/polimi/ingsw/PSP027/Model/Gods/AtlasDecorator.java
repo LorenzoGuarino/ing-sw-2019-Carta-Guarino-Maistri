@@ -7,7 +7,7 @@ import it.polimi.ingsw.PSP027.Controller.ConcretePhase;
  * @author Elisa Maistri
  */
 
-public class AtlasDecorator extends GodPowerDecorator{
+public class AtlasDecorator extends GodPowerDecorator {
 
     public AtlasDecorator(ConcretePhase decoratedPhase) {
         super(decoratedPhase);

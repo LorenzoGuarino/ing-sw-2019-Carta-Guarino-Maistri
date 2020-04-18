@@ -118,23 +118,4 @@ public class Player {
             gamer.client.SendCommand(cmd);
     }
 
-
-    /*
-    /**
-     * PROBABILMENTE NON ANDRÁ QUI
-     * Method that instantiate the decorator of the player's god
-     * @param godToBuild god whose decorator needs to be instantiated
-
-    public void buildDecorator(GodCard godToBuild) {
-        if (playerGod.getGodName().equals("Apollo")) { new ApolloDecorator(); }
-        if (playerGod.getGodName().equals("Artemis")) { new ArtemisDecorator(); }
-        if (playerGod.getGodName().equals("Atlas")) { new AtlasDecorator(); }
-        if (playerGod.getGodName().equals("Demeter")) { new DemeterDecorator(); }
-        if (playerGod.getGodName().equals("Hephaestus")) { new HephaestusDecorator(); }
-        if (playerGod.getGodName().equals("Minotaur")) { new MinotaurDecorator(); }
-        if (playerGod.getGodName().equals("Pan")) { new PanDecorator(); }
-        if (playerGod.getGodName().equals("Prometheus")) { new PrometheusDecorator(); }
-    }
-     */
-
 }

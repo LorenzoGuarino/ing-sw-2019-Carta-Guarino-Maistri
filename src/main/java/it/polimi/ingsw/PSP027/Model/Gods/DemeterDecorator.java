@@ -7,7 +7,7 @@ import it.polimi.ingsw.PSP027.Controller.ConcretePhase;
  * @author danielecarta
  */
 
-public class DemeterDecorator extends GodPowerDecorator{
+public class DemeterDecorator extends GodPowerDecorator {
 
     private boolean powerUsed = false;
 

@@ -618,7 +618,15 @@ public class SantoriniMatch implements Runnable{
             cmd += "\" />";
         }
 
-        cmd += "</board></data></cmd>";
+        cmd += "</board><players>";
+
+        for (int i = 0; i < players.size(); i++) {
+            cmd += "<player nickname=\"" + players.get(i).getNickname() + "\" god=\"" + players.get(i).getPlayerGod().getGodName() + "\" />";
+        }
+
+         cmd += "</players></data></cmd>";
+
+        System.out.println("SendCurrentBoardToPlayerWithGivenCommand: " + cmd);
 
         player.SendCommand(cmd);
     }

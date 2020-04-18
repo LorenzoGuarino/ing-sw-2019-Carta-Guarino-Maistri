@@ -2,6 +2,7 @@ package it.polimi.ingsw.PSP027.Controller;
 
 import it.polimi.ingsw.PSP027.Model.Game.Player;
 import it.polimi.ingsw.PSP027.Model.Game.Worker;
+import it.polimi.ingsw.PSP027.Model.Gods.*;
 import it.polimi.ingsw.PSP027.Network.ProtocolTypes;
 
 import java.util.ArrayList;
@@ -120,12 +121,37 @@ public class Turn {
     public void setChosenWorker(Worker chosenWorker) {
         this.chosenWorker = chosenWorker;
         //there stops the cmd call by cli
+
+        // Check if the player's god will be applied to the move phase and then if it needs to be applied by default or it must be asked to the player
+
+        // qui bisogna controllare alcune cose:
+        // se il decorator viene applicato alla move
+        //    se il decorator non va chiesto all'utente -> si procede come è già scritto creando la movephase normale
+        //    se il decorator deve essere chiesto all'utente bisogna mandare il messaggio "Do you want to use your god card? [Yes/No]"
+        //         se risponde no -> si procede come è già scritto creando la movephase normale
+        //         se risponde si -> si crea una move phase decorata
+
+        // Lo stesso ragionamento andrà fatto quando il turno avrà finito la move e dovrà creare la build (quindi nel metodo setCandidateMove, e poi la end
+
+
+
+        /* ?????
+        if (playingPlayer.getPlayerGod().getGodName().equals("Apollo")) { new ApolloDecorator(); }
+        if (playingPlayer.getPlayerGod().getGodName().equals("Artemis")) { new ArtemisDecorator(); }
+        if (playingPlayer.getPlayerGod().getGodName().equals("Atlas")) { new AtlasDecorator(); }
+        if (playingPlayer.getPlayerGod().getGodName().equals("Demeter")) { new DemeterDecorator(); }
+        if (playingPlayer.getPlayerGod().getGodName().equals("Hephaestus")) { new HephaestusDecorator(); }
+        if (playingPlayer.getPlayerGod().getGodName().equals("Minotaur")) { new MinotaurDecorator(); }
+        if (playingPlayer.getPlayerGod().getGodName().equals("Pan")) { new PanDecorator(); }
+        if (playingPlayer.getPlayerGod().getGodName().equals("Prometheus")) { new PrometheusDecorator(); }
+         */
+
         movephase = new MovePhase(this.chosenWorker, this.santoriniMatch.getGameBoard());
         this.phaseList.add(movephase);
     }
 
     /**
-     * Method that update the board with the new position of the worker
+     * Method that updates the board with the new position of the worker
      * @param chosenCellIndex cell where the worker is moving onto
      * @TODO create build phase
      */

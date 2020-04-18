@@ -10,6 +10,8 @@ import java.util.ArrayList;
 
 /**
  * @author danielecarta
+ * @author Lorenzo Guarino
+ * @author Elisa Maistri
  */
 
 public class MovePhase extends ConcretePhase {
@@ -30,6 +32,7 @@ public class MovePhase extends ConcretePhase {
         this.setCandidateCells(new ArrayList<Cell>());
         changeCandidateCells();
 
+        //This starts the communication of the move phase with the client
         SendCandidateMoves(playingPlayer, ProtocolTypes.protocolCommand.srv_CandidateCellsForMove);
     }
 
@@ -40,10 +43,16 @@ public class MovePhase extends ConcretePhase {
     public void changeCandidateCells(){
         Cell startingCell = this.getChosenWorker().getWorkerPosition();
         for(Cell candidateCell : this.getGameBoard().getNeighbouringCells(startingCell)){   //for each candidate cell in neighbouringCells if
-        if(     (candidateCell.getLevel() <= startingCell.getLevel() + 1) &&                //the lv i want to get to is higher less than one
-                (!candidateCell.isOccupiedByWorker()) &&                                    //it is not occupied by a worker
-                (!candidateCell.checkDome())) {                                             //it is not occupied by a dome
-            this.getCandidateCells().add(candidateCell);                                    //then add the cell to candidateCells
+            if(     (candidateCell.getLevel() <= startingCell.getLevel() + 1) &&                //the lv i want to get to is higher less than one
+                    (!candidateCell.isOccupiedByWorker()) &&                                    //it is not occupied by a worker
+                    (!candidateCell.checkDome())) {                                             //it is not occupied by a dome
+                System.out.println("changeCandidateCells inserting cell " + candidateCell.getCellIndex());
+                this.getCandidateCells().add(candidateCell);                                    //then add the cell to candidateCells
+                }
+            else
+            {
+                System.out.println("changeCandidateCells discarding cell " + candidateCell.getCellIndex() + " (l=" +
+                        candidateCell.getLevel() + ", w=" + candidateCell.isOccupiedByWorker() + ", d=" + candidateCell.checkDome());
             }
         }
     }
@@ -74,14 +83,38 @@ public class MovePhase extends ConcretePhase {
      * @param command string to send at the Client
      */
     public void SendCandidateMoves(Player player, ProtocolTypes.protocolCommand command){
-        String cmd = "<cmd><id>" + command.toString()  + "</id><data><candidates>";
-        for(int i=0; i<getCandidateCells().size(); i++){
+        String cmd = "<cmd><id>" + command.toString()  + "</id><data><board>";
+
+        for(int i = 0; i < getGameBoard().getBoard().size(); i++) {
+            cmd += "<cell id=\"" + Integer.toString(i) +
+                    "\" level=\"" + Integer.toString(getGameBoard().getCell(i).getLevel()) +
+                    "\" dome=\"" + Boolean.toString(getGameBoard().getCell(i).checkDome());
+
+
+            if(getGameBoard().getCell(i).isOccupiedByWorker()) {
+                cmd += "\" nickname=\"" + getGameBoard().getCell(i).getOccupyingWorker().getWorkerOwner().getNickname();
+            }
+            else {
+                cmd += "\" nickname=\"";
+            }
+
+            cmd += "\" />";
+        }
+
+        cmd += "</board><candidates>";
+
+        for(int i=0; i < getCandidateCells().size(); i++){
             cmd += "<cell id=\"" + Integer.toString(getCandidateCells().get(i).getCellIndex());
             cmd += "\" />";
         }
+
         cmd += "</candidates></data></cmd>";
+
+        System.out.println("SendCandidateMoves " + cmd);
+
         player.SendCommand(cmd);
     }
+
     public void setCandidateMove(int index){
         updateBoard(getGameBoard().getCell(index));
     }

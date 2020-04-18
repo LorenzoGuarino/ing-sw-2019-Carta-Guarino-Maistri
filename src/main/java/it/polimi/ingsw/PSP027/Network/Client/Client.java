@@ -3,6 +3,7 @@ package it.polimi.ingsw.PSP027.Network.Client;
 import it.polimi.ingsw.PSP027.Network.ProtocolTypes;
 import it.polimi.ingsw.PSP027.Network.Server.Server;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -696,7 +697,7 @@ public class Client implements Runnable, ServerObserver
      * Method that fires the OnChooseWorkerStartPosition() method of the observer (client instance)
      */
 
-    private void FireOnChooseWorkerStartPosition(Node board) {
+    private void FireOnChooseWorkerStartPosition(NodeList nodes) {
         List<ClientObserver> observersCpy;
         synchronized (observers) {
             observersCpy = new ArrayList<>(observers);
@@ -704,7 +705,7 @@ public class Client implements Runnable, ServerObserver
 
         /* notify the observers that we got the string */
         for (ClientObserver observer: observersCpy) {
-            observer.OnChooseWorkerStartPosition(board);
+            observer.OnChooseWorkerStartPosition(nodes);
         }
     }
 
@@ -726,9 +727,9 @@ public class Client implements Runnable, ServerObserver
 
     /**
      * Method that fires the OnCandidateCellsForMove() method of the observer (client instance)
-     * @param candidates cells where the worker selected can move onto
+     * @param nodes cells where the worker selected can move onto
      */
-    private void FireOnCandidateCellsForMove(Node candidates) {
+    private void FireOnCandidateCellsForMove(NodeList nodes) {
         List<ClientObserver> observersCpy;
         synchronized (observers) {
             observersCpy = new ArrayList<>(observers);
@@ -736,7 +737,7 @@ public class Client implements Runnable, ServerObserver
 
         /* notify the observers that we got the string */
         for (ClientObserver observer: observersCpy) {
-            observer.OnCandidateCellsForMove(candidates);
+            observer.OnCandidateCellsForMove(nodes);
         }
     }
 
@@ -947,13 +948,15 @@ public class Client implements Runnable, ServerObserver
 
     /**
      * Method that fires the OnChooseWorkerStartPosition method of the observer (client instance)
-     * @param board board to print in the user interface when a player has to choose the starting position of its workers
+     * @param nodes board to print in the user interface when a player has to choose the starting
+     *              position of its workers and the list of players with their gods that the CLI
+     *              needs to save
      */
 
     @Override
-    public synchronized void onChooseWorkerStartPosition(Node board) {
+    public synchronized void onChooseWorkerStartPosition(NodeList nodes) {
         lastHelloTime = new Date();
-        FireOnChooseWorkerStartPosition(board);
+        FireOnChooseWorkerStartPosition(nodes);
         notifyAll();
     }
 
@@ -975,12 +978,13 @@ public class Client implements Runnable, ServerObserver
 
     /**
      * Method that fires the OnCandidateCellsForMove method of the observer (client instance)
-     * @param candidates cells where the worker selected can move onto
+     * @param nodes xml not yet processed containing the board and the candidate cells for the move
      */
+
     @Override
-    public synchronized void onCandidateCellsForMove(Node candidates) {
+    public synchronized void onCandidateCellsForMove(NodeList nodes) {
         lastHelloTime = new Date();
-        FireOnCandidateCellsForMove(candidates);
+        FireOnCandidateCellsForMove(nodes);
         notifyAll();
     }
 

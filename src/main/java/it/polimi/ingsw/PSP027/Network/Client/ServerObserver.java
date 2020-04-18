@@ -1,6 +1,7 @@
 package it.polimi.ingsw.PSP027.Network.Client;
 
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import java.util.List;
 
@@ -25,9 +26,9 @@ public interface ServerObserver
     void onChooseGods(int requiredgods, List<String> gods);
     void onChooseGod(List<String> chosengods);
     void onChooseFirstPlayer(List<String> players);
-    void onChooseWorkerStartPosition(Node node);
+    void onChooseWorkerStartPosition(NodeList node);
     void onChooseWorker(Node node);
-    void onCandidateCellsForMove(Node node);
+    void onCandidateCellsForMove(NodeList nodes);
     void onMoveWorker();
     void onBuild();
     void onUseGodPower();

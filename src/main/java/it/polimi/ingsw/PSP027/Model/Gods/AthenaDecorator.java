@@ -55,4 +55,5 @@ public class AthenaDecorator extends GodPowerDecorator {
         otherPlayer1.addOpponentGodCard(new GodCard(GodCard.GodsType.AthenaOpp, "You can't move up this turn"));
         otherPlayer2.addOpponentGodCard(new GodCard(GodCard.GodsType.AthenaOpp, "You can't move up this turn"));
     }
+
 }

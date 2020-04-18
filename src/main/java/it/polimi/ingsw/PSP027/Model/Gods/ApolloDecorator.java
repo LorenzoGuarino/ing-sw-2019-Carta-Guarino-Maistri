@@ -8,7 +8,7 @@ import it.polimi.ingsw.PSP027.Controller.MovePhase;
 /**
  * @author danielecarta
  * */
-public class ApolloDecorator extends GodPowerDecorator{
+public class ApolloDecorator extends GodPowerDecorator {
 
     public ApolloDecorator(ConcretePhase decoratedPhase) {
         super(decoratedPhase);
@@ -50,4 +50,5 @@ public class ApolloDecorator extends GodPowerDecorator{
             this.getChosenWorker().getWorkerOwner().setHasWon(true);
         }
     }
+
 }

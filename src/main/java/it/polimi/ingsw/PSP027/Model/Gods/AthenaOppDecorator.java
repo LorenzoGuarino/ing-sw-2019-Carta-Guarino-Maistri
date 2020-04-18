@@ -10,7 +10,7 @@ import java.util.List;
  * @author danielecarta
  */
 
-public class AthenaOppDecorator extends GodPowerDecorator{
+public class AthenaOppDecorator extends GodPowerDecorator {
 
     public AthenaOppDecorator(ConcretePhase decoratedPhase) {
         super(decoratedPhase);
@@ -37,4 +37,5 @@ public class AthenaOppDecorator extends GodPowerDecorator{
      */
     @Override
     public void updateBoard(Cell chosenCell) { this.getChosenWorker().changePosition(chosenCell); }
+
 }

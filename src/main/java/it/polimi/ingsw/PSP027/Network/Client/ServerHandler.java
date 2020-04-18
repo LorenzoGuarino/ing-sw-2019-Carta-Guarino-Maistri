@@ -782,27 +782,18 @@ public class ServerHandler implements Runnable
         if (data.hasChildNodes()) {
             NodeList nodes = data.getChildNodes();
 
-            for (int i = 0; i < nodes.getLength(); i++) {
-                node = nodes.item(i);
-
-                if (node.getNodeName().equals("board")) {
-
-                    //Here we don't process the command received because it's only graphic, the cli will process it instead
-
-                    /* copy the list of observers in case some observers changes it from inside
-                     * the notification method */
-                    List<ServerObserver> observersCpy;
-                    synchronized (observers) {
-                        observersCpy = new ArrayList<ServerObserver>(observers);
-                    }
-
-                    /* notify the observers that we got the string */
-                    for (ServerObserver observer : observersCpy) {
-                        observer.onChooseWorkerStartPosition(node);
-                    }
-
-                }
+            /* copy the list of observers in case some observers changes it from inside
+             * the notification method */
+            List<ServerObserver> observersCpy;
+            synchronized (observers) {
+                observersCpy = new ArrayList<ServerObserver>(observers);
             }
+
+            /* notify the observers that we got the string */
+            for (ServerObserver observer : observersCpy) {
+                observer.onChooseWorkerStartPosition(nodes);
+            }
+
         }
     }
 
@@ -850,6 +841,11 @@ public class ServerHandler implements Runnable
     private void FireOnCandidateCellsForMove(Node data){
         /* data value (example)
          * <data>
+         *     <board>
+         *         <cell id="0" level="2" dome="false" nickname="Elisa" />
+         *         ...
+         *         <cell id="24" level="0" dome ="false" nickname="" />
+         *     </board>
          *     <candidates>
          *         <cell id="0"/>
          *         ...
@@ -857,25 +853,18 @@ public class ServerHandler implements Runnable
          *     </candidates>
          * </data>
          */
-        Node node;
+
         if (data.hasChildNodes()) {
             NodeList nodes = data.getChildNodes();
 
-            for (int i = 0; i < nodes.getLength(); i++) {
-                node = nodes.item(i);
-
-                if (node.getNodeName().equals("candidates")) {
-                    List<ServerObserver> observersCpy;
-                    synchronized (observers) {
-                        observersCpy = new ArrayList<ServerObserver>(observers);
-                    }
-                    for (ServerObserver observer : observersCpy) {
-                        observer.onCandidateCellsForMove(node);
-                    }
-                }
+            List<ServerObserver> observersCpy;
+            synchronized (observers) {
+                observersCpy = new ArrayList<ServerObserver>(observers);
+            }
+            for (ServerObserver observer : observersCpy) {
+                observer.onCandidateCellsForMove(nodes);
             }
         }
-
     }
 
 
