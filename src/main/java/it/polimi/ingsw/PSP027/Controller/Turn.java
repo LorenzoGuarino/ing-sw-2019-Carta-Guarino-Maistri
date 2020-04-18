@@ -121,6 +121,7 @@ public class Turn {
         this.chosenWorker = chosenWorker;
         //there stops the cmd call by cli
         movephase = new MovePhase(this.chosenWorker, this.santoriniMatch.getGameBoard());
+        this.phaseList.add(movephase);
     }
 
     /**
