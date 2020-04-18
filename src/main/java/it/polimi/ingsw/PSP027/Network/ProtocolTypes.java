@@ -31,6 +31,7 @@ public class ProtocolTypes {
         srv_StartTurn,
         srv_DrawBoard,
         srv_CandidateCellsForMove,
+        clt_CandidateMove,
         clt_MoveWorker,
         srv_CandidateCellsForBuild,
         clt_Build,

@@ -1,8 +1,8 @@
 package it.polimi.ingsw.PSP027.Model.Gods;
 
 import it.polimi.ingsw.PSP027.Model.Game.Cell;
-import it.polimi.ingsw.PSP027.Model.TurnsManagement.ConcretePhase;
-import it.polimi.ingsw.PSP027.Model.TurnsManagement.MovePhase;
+import it.polimi.ingsw.PSP027.Controller.ConcretePhase;
+import it.polimi.ingsw.PSP027.Controller.MovePhase;
 
 /**
  * @author danielecarta

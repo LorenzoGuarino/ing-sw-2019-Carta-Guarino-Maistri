@@ -1,4 +1,4 @@
-package it.polimi.ingsw.PSP027.Model.TurnsManagement;
+package it.polimi.ingsw.PSP027.Controller;
 
 import it.polimi.ingsw.PSP027.Model.Game.Cell;
 

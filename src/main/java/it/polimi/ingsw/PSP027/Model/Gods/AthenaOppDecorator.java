@@ -1,7 +1,7 @@
 package it.polimi.ingsw.PSP027.Model.Gods;
 
 import it.polimi.ingsw.PSP027.Model.Game.Cell;
-import it.polimi.ingsw.PSP027.Model.TurnsManagement.ConcretePhase;
+import it.polimi.ingsw.PSP027.Controller.ConcretePhase;
 
 import java.util.ArrayList;
 import java.util.List;

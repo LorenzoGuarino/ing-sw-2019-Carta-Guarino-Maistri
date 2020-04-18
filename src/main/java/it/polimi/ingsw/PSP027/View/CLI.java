@@ -24,6 +24,7 @@ public class CLI implements Runnable, ClientObserver {
     private boolean abortUserInput = false;
     private List<String> players = null;
     private Node nodeboard;
+    private Node nodecandidatecellsformove;
     private String[] cellsToPrint = new String[25];
     private Map<String, String> NicknameColorMap = new HashMap<String, String>(); //maps the nickname to its assigned color for its workers on the board
 
@@ -184,6 +185,7 @@ public class CLI implements Runnable, ClientObserver {
     private static String PLAY_COMMAND = "play";
     private static String WORKERSPOSITION_COMMAND = "workerspositionchosen";
     private static String CHOSENWORKER_COMMAND = "workerchosen";
+    private static String CANDIDATECELLFORMOVE_COMMAND = "candidatecellchosen";
 
     /* ******************************************************** LABELS ***************************************************** */
 
@@ -224,6 +226,7 @@ public class CLI implements Runnable, ClientObserver {
         cli_ManagePlacingFirstWorker,
         cli_ManagePlacingSecondWorker,
         cli_ChoosingWorker,
+        cli_CandidateCellsForMove,
         cli_WaitForSomethingToHappen
     }
 
@@ -735,7 +738,56 @@ public class CLI implements Runnable, ClientObserver {
                             }
                         }
                         break;
+                        case cli_CandidateCellsForMove: {
+                            clearScreen();
+                            //ADD A DIFFERENT BACKGROUND FOR SPOTTING THE CANDIDATE MOVES
 
+                            setCellsToPrint();
+
+                            printBoard();
+                            System.out.println("\nPlease select the cell you want to move on.\n" + ITALIC + BOLD +
+                                    "Remember:" + RESET + ITALIC + " You can only select cells near your selected worker, marked by your " + NicknameColorMap.get(client.getNickname()) + "color" +
+                                    "\n" + RESET +
+                                    "Syntax to indicate the cell you want to select: \"LetterNumber\"");
+
+                            WaitForUserInput();
+
+                            String position = cmdLine.trim();
+
+                            if (position.length() == 2) {
+                                if (position.charAt(0) == 'A' || position.charAt(0) == 'B' || position.charAt(0) == 'C' || position.charAt(0) == 'D' || position.charAt(0) == 'E') {
+                                    if (position.charAt(1) == '1' || position.charAt(1) == '2' || position.charAt(1) == '3' || position.charAt(1) == '4' || position.charAt(1) == '5') {
+
+                                        int chosenCellIndex;
+
+                                        chosenCellIndex = (position.charAt(0) - 'A') * 5 + (position.charAt(1) - '1');
+
+                                        //control that the cell chosen is one of the candidate cells
+                                        Node cell;
+
+                                        if (nodecandidatecellsformove.hasChildNodes()) {
+                                            NodeList cells = nodecandidatecellsformove.getChildNodes();
+
+                                            for (int i = 0; i < cells.getLength(); i++) {
+                                                cell = cells.item(i);
+                                                if (cell.getNodeName().equals("cell")) {
+                                                    int id = getIdOfCellNode(cell);
+                                                    if(id==chosenCellIndex) {
+
+                                                        cmdLine = CANDIDATECELLFORMOVE_COMMAND + " " + chosenCellIndex;
+
+                                                        gamestate = CLIGameState.cli_WaitForSomethingToHappen;
+                                                    }
+
+                                                }
+                                            }
+                                        }
+
+                                    }
+                                }
+                            }
+                        }
+                        break;
                         case cli_WaitForSomethingToHappen: {
                             // in this state user is allowed to enter commands on commandline
                             // which will be processed on switch exit
@@ -812,6 +864,11 @@ public class CLI implements Runnable, ClientObserver {
                             if (cmdlineParts.length == 2) {
                                 gamestate = CLIGameState.cli_WaitForSomethingToHappen;
                                 client.ChosenWorker(cmdlineParts[1]);
+                            }
+                        }else if(cmdlineParts[0].equals(CANDIDATECELLFORMOVE_COMMAND)){
+                            if (cmdlineParts.length == 2) {
+                                gamestate = CLIGameState.cli_WaitForSomethingToHappen;
+                                client.CandidateMove(cmdlineParts[1]);
                             }
                         }
                         cmdLine = "";
@@ -1026,8 +1083,8 @@ public class CLI implements Runnable, ClientObserver {
     /* ************************************* METHODS REGARDING THE COMMUNICATION WHEN THE TURN HAS STARTED ************************+ */
 
     /**
-     * Method of the ClientObserver interface that is fired by the client when choosing thw worker to play the turn with
-     * @param board board in xml format that needs to be processed vy the CLI when it prints the board
+     * Method of the ClientObserver interface that is fired by the client when choosing the worker to play the turn with
+     * @param board board in xml format that needs to be processed by the CLI when it prints the board
      */
 
     @Override
@@ -1035,6 +1092,17 @@ public class CLI implements Runnable, ClientObserver {
         abortUserInput = true;
         gamestate = CLIGameState.cli_ChoosingWorker;
         this.nodeboard = board;
+    }
+
+    /**
+     * Method of the ClientObserver interface that is fired by the client when choosing the cell to move the worker onto
+     * @param candidates cells where is possible to move the worker in xml format that needs to be processed by the CLI
+     */
+    @Override
+    public void OnCandidateCellsForMove(Node candidates) {
+        abortUserInput = true;
+        gamestate = CLIGameState.cli_CandidateCellsForMove;
+        this.nodecandidatecellsformove = candidates;
     }
 
 

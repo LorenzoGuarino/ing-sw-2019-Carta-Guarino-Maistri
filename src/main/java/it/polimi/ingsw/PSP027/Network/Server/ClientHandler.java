@@ -157,7 +157,10 @@ public class ClientHandler implements Runnable
                                     break;
                                 case clt_ChosenWorker:
                                     owner.onChosenWorker(cmdData);
-
+                                    break;
+                                case clt_CandidateMove:
+                                    owner.onCandidateMove(cmdData);
+                                    break;
                             }
                         }
                     }
@@ -601,4 +604,30 @@ public class ClientHandler implements Runnable
             lobby.SetChosenWorker(this, chosenWorker);
         }
     }
+
+    /**
+     * Method that process the candidate cell written in the command in xml format received from the client.
+     * It triggers a method in the lobby that sets the chosen cell in the turn that is being played in the correspondent match
+     * @param data xml of the chosen cell received from the client
+     */
+    private void onCandidateMove(Node data) {
+
+        System.out.println("Received onCandidateMove from " + nickname);
+        String chosenCell="";
+        Node node;
+
+        if (data.hasChildNodes()) {
+            NodeList nodes = data.getChildNodes();
+
+            for (int i = 0; i < nodes.getLength(); i++) {
+                node = nodes.item(i);
+
+                if (node.getNodeName().equals("cell")) {
+                    chosenCell = node.getTextContent();
+                }
+            }
+            lobby.SetCandidateMove(this, chosenCell);
+        }
+    }
+
 }

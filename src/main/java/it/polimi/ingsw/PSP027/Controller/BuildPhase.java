@@ -1,12 +1,10 @@
-package it.polimi.ingsw.PSP027.Model.TurnsManagement;
+package it.polimi.ingsw.PSP027.Controller;
 
 import it.polimi.ingsw.PSP027.Model.Game.Board;
 import it.polimi.ingsw.PSP027.Model.Game.Cell;
-import it.polimi.ingsw.PSP027.Model.Gods.GodPowerDecorator;
 import it.polimi.ingsw.PSP027.Model.Game.Worker;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Elisa Maistri

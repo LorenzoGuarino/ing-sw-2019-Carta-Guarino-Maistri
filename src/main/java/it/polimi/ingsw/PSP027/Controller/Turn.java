@@ -1,12 +1,7 @@
 package it.polimi.ingsw.PSP027.Controller;
 
-import it.polimi.ingsw.PSP027.Model.Game.GodCard;
-import it.polimi.ingsw.PSP027.Model.Gods.GodPowerDecorator;
 import it.polimi.ingsw.PSP027.Model.Game.Player;
 import it.polimi.ingsw.PSP027.Model.Game.Worker;
-import it.polimi.ingsw.PSP027.Model.TurnsManagement.MovePhase;
-import it.polimi.ingsw.PSP027.Model.TurnsManagement.Phase;
-import it.polimi.ingsw.PSP027.Model.TurnsManagement.StartPhase;
 import it.polimi.ingsw.PSP027.Network.ProtocolTypes;
 
 import java.util.ArrayList;
@@ -23,6 +18,7 @@ public class Turn {
     private Player playingPlayer;
     private SantoriniMatch santoriniMatch;
     private boolean bCompleted;
+    private MovePhase movephase;
 
     /**
      * Constructor: it is called by santorini match when the setup of the game is done and the turn of the first player can start.
@@ -119,12 +115,21 @@ public class Turn {
     /**
      * Method that sets the chosen worker by the user that will play the turn and instantiates the move phase
      * @param chosenWorker worker chosen by the user
-     * @TODO create move phase and delegate to the phase the next communication
      */
 
     public void setChosenWorker(Worker chosenWorker) {
         this.chosenWorker = chosenWorker;
         //there stops the cmd call by cli
+        movephase = new MovePhase(this.chosenWorker, this.santoriniMatch.getGameBoard());
+    }
+
+    /**
+     * Method that update the board with the new position of the worker
+     * @param chosenCellIndex cell where the worker is moving onto
+     * @TODO create build phase
+     */
+    public void setCandidateMove(int chosenCellIndex){
+        this.movephase.setCandidateMove(chosenCellIndex);
     }
 
 }

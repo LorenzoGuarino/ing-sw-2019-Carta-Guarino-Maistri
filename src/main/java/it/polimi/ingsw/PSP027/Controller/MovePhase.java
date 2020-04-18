@@ -1,8 +1,11 @@
-package it.polimi.ingsw.PSP027.Model.TurnsManagement;
+package it.polimi.ingsw.PSP027.Controller;
 
 import it.polimi.ingsw.PSP027.Model.Game.Board;
 import it.polimi.ingsw.PSP027.Model.Game.Cell;
+import it.polimi.ingsw.PSP027.Model.Game.Player;
 import it.polimi.ingsw.PSP027.Model.Game.Worker;
+import it.polimi.ingsw.PSP027.Network.ProtocolTypes;
+
 import java.util.ArrayList;
 
 /**
@@ -12,7 +15,7 @@ import java.util.ArrayList;
 public class MovePhase extends ConcretePhase {
 
     private int startChosenWorkerLvl;
-
+    private Player playingPlayer;
     /**
      * Constructor, builds a standard MovePhase with a standard candidateMoves list
      * @param chosenWorker the worker i'm moving
@@ -20,11 +23,14 @@ public class MovePhase extends ConcretePhase {
      */
 
     public MovePhase(Worker chosenWorker,Board gameBoard) {
+        this.playingPlayer = chosenWorker.getWorkerOwner();
         this.setGameBoard(gameBoard);
         this.setChosenWorker(chosenWorker);
         this.setStartChosenWorkerLvl(chosenWorker.getWorkerPosition().getLevel());
         this.setCandidateCells(new ArrayList<Cell>());
         changeCandidateCells();
+
+        SendCandidateMoves(playingPlayer, ProtocolTypes.protocolCommand.srv_CandidateCellsForMove);
     }
 
     /**
@@ -61,4 +67,23 @@ public class MovePhase extends ConcretePhase {
     public void setStartChosenWorkerLvl(int startChosenWorkerLvl) {
         this.startChosenWorkerLvl = startChosenWorkerLvl;
     }
+
+    /**
+     * Method that send the cmd to send the candidate cells for the move phase
+     * @param player player that will choose the move to do
+     * @param command string to send at the Client
+     */
+    public void SendCandidateMoves(Player player, ProtocolTypes.protocolCommand command){
+        String cmd = "<cmd><id>" + command.toString()  + "</id><data><candidates>";
+        for(int i=0; i<getCandidateCells().size(); i++){
+            cmd += "<cell id=\"" + Integer.toString(getCandidateCells().get(i).getCellIndex());
+            cmd += "\" />";
+        }
+        cmd += "</candidates></data></cmd>";
+        player.SendCommand(cmd);
+    }
+    public void setCandidateMove(int index){
+        updateBoard(getGameBoard().getCell(index));
+    }
+
 }

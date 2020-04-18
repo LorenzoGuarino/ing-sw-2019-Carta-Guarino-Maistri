@@ -249,6 +249,9 @@ public class ServerHandler implements Runnable
                                 case srv_ChooseWorker:
                                     FireOnChooseWorker(cmdData);
                                     break;
+                                case srv_CandidateCellsForMove:
+                                    FireOnCandidateCellsForMove(cmdData);
+                                    break;
                             }
                         }
                     }
@@ -840,7 +843,40 @@ public class ServerHandler implements Runnable
         }
     }
 
+    /**
+     * Method that fires the OnCandidateCellsForMove method in the client, processing the command received from the server
+     * @param data xml to process and then pass on to onCandidateCellsForMove
+     */
+    private void FireOnCandidateCellsForMove(Node data){
+        /* data value (example)
+         * <data>
+         *     <candidates>
+         *         <cell id="0"/>
+         *         ...
+         *         <cell id="8"/>
+         *     </candidates>
+         * </data>
+         */
+        Node node;
+        if (data.hasChildNodes()) {
+            NodeList nodes = data.getChildNodes();
 
+            for (int i = 0; i < nodes.getLength(); i++) {
+                node = nodes.item(i);
+
+                if (node.getNodeName().equals("candidates")) {
+                    List<ServerObserver> observersCpy;
+                    synchronized (observers) {
+                        observersCpy = new ArrayList<ServerObserver>(observers);
+                    }
+                    for (ServerObserver observer : observersCpy) {
+                        observer.onCandidateCellsForMove(node);
+                    }
+                }
+            }
+        }
+
+    }
 
 
 

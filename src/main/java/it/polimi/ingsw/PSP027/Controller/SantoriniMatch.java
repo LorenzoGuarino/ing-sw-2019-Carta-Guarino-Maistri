@@ -578,6 +578,17 @@ public class SantoriniMatch implements Runnable{
         turn.setChosenWorker(tempWorker);
     }
 
+    /**
+     * Method that receives the chosen cell from the client and passes it to the turn that will set the new position for the worker with the method setCandidateMove
+     * @param chosenCell int representing the id of the chosen cell
+     */
+    public void setCandidateMove(String chosenCell){
+        int chosenCellIndex;
+        chosenCellIndex = Integer.parseInt(chosenCell);
+
+        turn.setCandidateMove(chosenCellIndex);
+    }
+
 
     /* ************************************************ UTILITY METHODS ************************************************ */
 

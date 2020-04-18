@@ -1,11 +1,9 @@
 package it.polimi.ingsw.PSP027.Model.Gods;
 
 import it.polimi.ingsw.PSP027.Model.Game.*;
-import it.polimi.ingsw.PSP027.Model.TurnsManagement.MovePhase;
+import it.polimi.ingsw.PSP027.Controller.MovePhase;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.lang.reflect.Modifier;
 
 import static org.junit.Assert.*;
 

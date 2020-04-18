@@ -313,6 +313,11 @@ public class Client implements Runnable, ServerObserver
         return false;
     }
 
+    /**
+     * Method that sends a command to the server with the data required
+     * @param chosenWorker worker choose by the player that is playing the turn
+     * @return true if operation successful, false otherwise
+     */
     public synchronized boolean ChosenWorker(String chosenWorker) {
         if(connStatus == ConnectionStatus.KeepConnected) {
 
@@ -328,6 +333,25 @@ public class Client implements Runnable, ServerObserver
         return false;
     }
 
+    /**
+     * Method that sends a command to the server with the data required
+     * @param chosenCell Cell that is chosen to move the worker onto
+     * @return true if operation successful, false otherwise
+     */
+    public synchronized boolean CandidateMove(String chosenCell) {
+        if(connStatus == ConnectionStatus.KeepConnected) {
+
+            if (regStatus == RegistrationStatus.Registered) {
+
+                String cmd = "<cmd><id>" + ProtocolTypes.protocolCommand.clt_CandidateMove.toString() + "</id><data><cell>" + chosenCell + "</cell></data></cmd>";
+
+                serverHandler.SendCommand(cmd);
+                return true;
+            }
+        }
+
+        return false;
+    }
     /**
      * Method that creates a socket to connect with the server, and if successful
      * create the adapter with a separate thread that will communicate with the server
@@ -684,6 +708,10 @@ public class Client implements Runnable, ServerObserver
         }
     }
 
+    /**
+     * Method that fires the OnChooseWorker() method of the observer (client instance)
+     * @param board current board of the game
+     */
     private void FireOnChooseWorker(Node board) {
         List<ClientObserver> observersCpy;
         synchronized (observers) {
@@ -693,6 +721,22 @@ public class Client implements Runnable, ServerObserver
         /* notify the observers that we got the string */
         for (ClientObserver observer: observersCpy) {
             observer.OnChooseWorker(board);
+        }
+    }
+
+    /**
+     * Method that fires the OnCandidateCellsForMove() method of the observer (client instance)
+     * @param candidates cells where the worker selected can move onto
+     */
+    private void FireOnCandidateCellsForMove(Node candidates) {
+        List<ClientObserver> observersCpy;
+        synchronized (observers) {
+            observersCpy = new ArrayList<>(observers);
+        }
+
+        /* notify the observers that we got the string */
+        for (ClientObserver observer: observersCpy) {
+            observer.OnCandidateCellsForMove(candidates);
         }
     }
 
@@ -929,11 +973,16 @@ public class Client implements Runnable, ServerObserver
         notifyAll();
     }
 
-
-
-
-
-
+    /**
+     * Method that fires the OnCandidateCellsForMove method of the observer (client instance)
+     * @param candidates cells where the worker selected can move onto
+     */
+    @Override
+    public synchronized void onCandidateCellsForMove(Node candidates) {
+        lastHelloTime = new Date();
+        FireOnCandidateCellsForMove(candidates);
+        notifyAll();
+    }
 
 
     /**
