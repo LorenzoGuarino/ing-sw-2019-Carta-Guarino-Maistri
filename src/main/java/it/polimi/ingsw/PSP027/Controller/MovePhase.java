@@ -17,7 +17,6 @@ import java.util.ArrayList;
 public class MovePhase extends ConcretePhase {
 
     private int startChosenWorkerLvl;
-    private Player playingPlayer;
     /**
      * Constructor, builds a standard MovePhase with a standard candidateMoves list
      * @param chosenWorker the worker i'm moving
@@ -25,15 +24,21 @@ public class MovePhase extends ConcretePhase {
      */
 
     public MovePhase(Worker chosenWorker,Board gameBoard) {
-        this.playingPlayer = chosenWorker.getWorkerOwner();
+        this.setPlayingPlayer(chosenWorker.getWorkerOwner());
         this.setGameBoard(gameBoard);
         this.setChosenWorker(chosenWorker);
         this.setStartChosenWorkerLvl(chosenWorker.getWorkerPosition().getLevel());
         this.setCandidateCells(new ArrayList<Cell>());
-        changeCandidateCells();
+    }
 
+    /**
+     * Method to call when creating the move phase in order to trigger the start of the phase and the communication with the client
+     */
+
+    public void startMovePhase() {
+        changeCandidateCells();
         //This starts the communication of the move phase with the client
-        SendCandidateMoves(playingPlayer, ProtocolTypes.protocolCommand.srv_CandidateCellsForMove);
+        SendCandidateMoves(this.getPlayingPlayer(), ProtocolTypes.protocolCommand.srv_CandidateCellsForMove);
     }
 
     /**
@@ -109,8 +114,6 @@ public class MovePhase extends ConcretePhase {
         }
 
         cmd += "</candidates></data></cmd>";
-
-        System.out.println("SendCandidateMoves " + cmd);
 
         player.SendCommand(cmd);
     }

@@ -20,8 +20,32 @@ public class GodCard {
         AthenaOpp
     }
 
+    public enum WhereToApply {
+        AskBeforeMove,
+        ApplyBeforeMove,
+        AskAfterMove,
+        ApplyAfterMove,
+        AskBeforeBuild,
+        ApplyBeforeBuild,
+        AskAfterBuild,
+        ApplyAfterBuild,
+        AskBeforeEnd,
+        ApplyBeforeEnd,
+    }
+
+    public enum WhereToApplyWhenOpponent {
+        ApplyBeforeMove,
+        ApplyAfterMove,
+        ApplyBeforeBuild,
+        ApplyAfterBuild,
+        ApplyBeforeEnd,
+        Undefined
+    }
+
     private GodsType godType;
     private String description;
+    private WhereToApply whereToApply;
+    private WhereToApplyWhenOpponent oppWhereToApply;
 
     public static final String APOLLO_D     = "Your Move: Your Worker may move into an opponent Worker's space by forcing their Worker to the space yours just vacated.";
     public static final String ARTEMIS_D    = "Your Move: Your Worker may move one additional time, but not back to its initial space.";
@@ -49,10 +73,17 @@ public class GodCard {
      * @param description description of this god ability
      */
 
-    public GodCard(GodsType godType, String description) {
+    public GodCard(GodsType godType, String description, WhereToApply whereToApply, WhereToApplyWhenOpponent oppWhereToApply) {
         this.godType = godType;
         this.description = description;
+        this.whereToApply = whereToApply;
+        this.oppWhereToApply = oppWhereToApply;
     }
+
+    /**
+     * Method to get the GodType of the god card
+     * @return the god type form an enum
+     */
 
     public GodsType getGodType() {
         return godType;
@@ -97,6 +128,25 @@ public class GodCard {
 
     public String getDescription() {
         return description;
+    }
+
+    /**
+     * Method to query when the info about where the opponent god card must be applied is needed
+     * @return where it must be applied form an enum
+     * It can be Undefined if the god card doesn't affect an opponent's turn and therefore will never be added to a player's opponent god card
+     */
+
+    public WhereToApplyWhenOpponent getOppWhereToApply() {
+        return oppWhereToApply;
+    }
+
+    /**
+     * Method to query when the info about where the god card must be applied/ must be asked is needed
+     * @return where it must be applied or asked form an enum
+     */
+
+    public WhereToApply getWhereToApply() {
+        return whereToApply;
     }
 
 }

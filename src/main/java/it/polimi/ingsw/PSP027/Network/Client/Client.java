@@ -336,6 +336,25 @@ public class Client implements Runnable, ServerObserver
 
     /**
      * Method that sends a command to the server with the data required
+     * @param answer contains Yes or No if the user wants to apply the god's power or not
+     * @return true if operation successful, false otherwise
+     */
+    public synchronized boolean ChosenAnswerForApplyingGod(String answer) {
+        if(connStatus == ConnectionStatus.KeepConnected) {
+
+            if (regStatus == RegistrationStatus.Registered) {
+
+                String cmd = "<cmd><id>" + ProtocolTypes.protocolCommand.clt_AnswerApplyOrNotGod.toString() + "</id><data><answer>" + answer + "</answer></data></cmd>";
+
+                serverHandler.SendCommand(cmd);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Method that sends a command to the server with the data required
      * @param chosenCell Cell that is chosen to move the worker onto
      * @return true if operation successful, false otherwise
      */
@@ -726,6 +745,22 @@ public class Client implements Runnable, ServerObserver
     }
 
     /**
+     * Method that fires the OnAskBeforeApplyingGod() method of the observer (client instance)
+     * @param board current board of the game
+     */
+    private void FireOnAskBeforeApplyingGod(Node board) {
+        List<ClientObserver> observersCpy;
+        synchronized (observers) {
+            observersCpy = new ArrayList<>(observers);
+        }
+
+        /* notify the observers that we got the string */
+        for (ClientObserver observer: observersCpy) {
+            observer.OnAskBeforeApplyingGod(board);
+        }
+    }
+
+    /**
      * Method that fires the OnCandidateCellsForMove() method of the observer (client instance)
      * @param nodes cells where the worker selected can move onto
      */
@@ -973,6 +1008,18 @@ public class Client implements Runnable, ServerObserver
     public synchronized void onChooseWorker(Node board) {
         lastHelloTime = new Date();
         FireOnChooseWorker(board);
+        notifyAll();
+    }
+
+    /**
+     * Method that fires the OnChooseWorker method of the observer (client instance)
+     * @param board board to print in the user interface when a player has to choose the worker to play the turn with
+     */
+
+    @Override
+    public synchronized void onAskBeforeApplyingGod(Node board) {
+        lastHelloTime = new Date();
+        FireOnAskBeforeApplyingGod(board);
         notifyAll();
     }
 

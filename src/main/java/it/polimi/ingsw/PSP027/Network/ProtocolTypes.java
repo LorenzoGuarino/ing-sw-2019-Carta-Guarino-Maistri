@@ -28,6 +28,8 @@ public class ProtocolTypes {
         clt_ChosenWorkersFirstPositions,
         srv_ChooseWorker,
         clt_ChosenWorker,
+        srv_AskBeforeApplyingGod,
+        clt_AnswerApplyOrNotGod,
         srv_StartTurn,
         srv_DrawBoard,
         srv_CandidateCellsForMove,

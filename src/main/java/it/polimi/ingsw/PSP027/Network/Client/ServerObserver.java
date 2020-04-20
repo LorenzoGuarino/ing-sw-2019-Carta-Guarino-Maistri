@@ -28,6 +28,7 @@ public interface ServerObserver
     void onChooseFirstPlayer(List<String> players);
     void onChooseWorkerStartPosition(NodeList node);
     void onChooseWorker(Node node);
+    void onAskBeforeApplyingGod(Node node);
     void onCandidateCellsForMove(NodeList nodes);
     void onMoveWorker();
     void onBuild();

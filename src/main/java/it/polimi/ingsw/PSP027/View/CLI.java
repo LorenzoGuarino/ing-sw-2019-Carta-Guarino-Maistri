@@ -66,9 +66,9 @@ public class CLI implements Runnable, ClientObserver {
     public static final String LINE = SANTORINI_UNDERLINE + "                                                                                                                    " + RESET;
     public static final String WELCOME = SANTORINI_WELCOME + "Welcome to Santorini Game !" + RESET;
     public static final String AVAILABLECOMMANDS = "\n" + SANTORINI_HIGHLIGHT + " Available commands: " + RESET;
-    public static final String COLOR_PLAYER_1 = "\033[38;5;204m";
-    public static final String COLOR_PLAYER_2 = "\033[38;5;157m";
-    public static final String COLOR_PLAYER_3 = "\033[38;5;141m";
+    public static final String COLOR_PLAYER_1 = "\033[38;5;198m";
+    public static final String COLOR_PLAYER_2 = "\033[38;5;48m";
+    public static final String COLOR_PLAYER_3 = "\033[38;5;45m";
     public static final String ERROR_TEXT = "\033[0;38;5;196;48;5;232m";
 
     public void clearScreen() {
@@ -91,6 +91,7 @@ public class CLI implements Runnable, ClientObserver {
     private static String PLAY_COMMAND = "play";
     private static String WORKERSPOSITION_COMMAND = "workerspositionchosen";
     private static String CHOSENWORKER_COMMAND = "workerchosen";
+    private static String APPLYGODANSWER_COMMAND = "answerapplygod";
     private static String CANDIDATECELLFORMOVE_COMMAND = "candidatecellchosen";
 
     /* ******************************************************** LABELS ***************************************************** */
@@ -98,7 +99,7 @@ public class CLI implements Runnable, ClientObserver {
     private static String DISCONNECT_COMMAND_LABEL = "  " + DEFAULT_BOLD + DISCONNECT_COMMAND + RESET + " (to disconnect from server)";
     private static String BYE_COMMAND_LABEL = "  " + DEFAULT_BOLD + BYE_COMMAND + RESET + " (to quit the game)";
     private static String CONNECT_COMMAND_LABEL = "  " + DEFAULT_BOLD + CONNECT_COMMAND + RESET + " ip:port (this will let you connect to Santorini server. Port is optional. If not specified the default value 2705 will be used)";
-    private static String REGISTER_COMMAND_LABEL = "  " + DEFAULT_BOLD + REGISTER_COMMAND + " nickname" + RESET + "(to register yourself within Santorini game using given nickname)";
+    private static String REGISTER_COMMAND_LABEL = "  " + DEFAULT_BOLD + REGISTER_COMMAND + " nickname" + RESET + " (to register yourself within Santorini game using given nickname)";
     private static String DEREGISTER_COMMAND_LABEL = "  " + DEFAULT_BOLD + DEREGISTER_COMMAND + RESET + " (to deregister yourself from Santorini game)";
     private static String PLAY_COMMAND_LABEL = "  " + DEFAULT_BOLD + PLAY_COMMAND + RESET + " (to start a new match)";
     private static String CONNECTED_LABEL = DEFAULT_ITALIC + "Successfully connected to server." + RESET + "\n";
@@ -131,6 +132,7 @@ public class CLI implements Runnable, ClientObserver {
         cli_ManagePlacingFirstWorker,
         cli_ManagePlacingSecondWorker,
         cli_ChoosingWorker,
+        cli_ChoosingToApplyGod,
         cli_CandidateCellsForMove,
         cli_WaitForSomethingToHappen
     }
@@ -642,9 +644,29 @@ public class CLI implements Runnable, ClientObserver {
                             }
                         }
                         break;
+                        case cli_ChoosingToApplyGod:  {
+
+                            clearScreen();
+
+                            setCellsToPrint();
+
+                            printBoard();
+
+                            System.out.println(DEFAULT_BOLD + "\nDo you want to apply your GodCard's power? [Yes/No]\n" + RESET);
+
+                            WaitForUserInput();
+
+                            String answer = cmdLine.trim();
+
+                            if (answer.equals("Yes") || answer.equals("No")) {
+                                cmdLine = APPLYGODANSWER_COMMAND + " " + answer;
+
+                                gamestate = CLIGameState.cli_WaitForSomethingToHappen;
+                            }
+                        }
+                        break;
                         case cli_CandidateCellsForMove: {
                             clearScreen();
-                            //ADD A DIFFERENT BACKGROUND FOR SPOTTING THE CANDIDATE MOVES
 
                             setCellsToPrint();
 
@@ -761,7 +783,12 @@ public class CLI implements Runnable, ClientObserver {
                                 gamestate = CLIGameState.cli_WaitForSomethingToHappen;
                                 client.ChosenWorker(cmdlineParts[1]);
                             }
-                        }else if(cmdlineParts[0].equals(CANDIDATECELLFORMOVE_COMMAND)){
+                        } else if (cmdlineParts[0].equals(APPLYGODANSWER_COMMAND)) {
+                            if (cmdlineParts.length == 2) {
+                                gamestate = CLIGameState.cli_WaitForSomethingToHappen;
+                                client.ChosenAnswerForApplyingGod(cmdlineParts[1]);
+                            }
+                        } else if(cmdlineParts[0].equals(CANDIDATECELLFORMOVE_COMMAND)){
                             if (cmdlineParts.length == 2) {
                                 gamestate = CLIGameState.cli_WaitForSomethingToHappen;
                                 client.CandidateMove(cmdlineParts[1]);
@@ -1014,6 +1041,18 @@ public class CLI implements Runnable, ClientObserver {
     public void OnChooseWorker(Node board) {
         abortUserInput = true;
         gamestate = CLIGameState.cli_ChoosingWorker;
+        this.nodeboard = board;
+    }
+
+    /**
+     * Method of the ClientObserver interface that is fired by the client when choosing wheteher to use the god power or not
+     * @param board board in xml format that needs to be processed by the CLI when it prints the board
+     */
+
+    @Override
+    public void OnAskBeforeApplyingGod(Node board) {
+        abortUserInput = true;
+        gamestate = CLIGameState.cli_ChoosingToApplyGod;
         this.nodeboard = board;
     }
 

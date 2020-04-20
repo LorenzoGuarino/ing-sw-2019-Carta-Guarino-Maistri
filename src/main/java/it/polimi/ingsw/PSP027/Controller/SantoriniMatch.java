@@ -68,15 +68,15 @@ public class SantoriniMatch implements Runnable{
         // state which passes the control over to the turn.
         turnState = TurnState.WaitForBeingReadyToPlayTurns;
 
-        godCardsList.add(new GodCard(GodCard.GodsType.Apollo, GodCard.APOLLO_D));
-        godCardsList.add(new GodCard(GodCard.GodsType.Artemis, GodCard.ARTEMIS_D));
-        godCardsList.add(new GodCard(GodCard.GodsType.Athena, GodCard.ATHENA_D));
-        godCardsList.add(new GodCard(GodCard.GodsType.Atlas, GodCard.ATLAS_D));
-        godCardsList.add(new GodCard(GodCard.GodsType.Demeter, GodCard.DEMETER_D));
-        godCardsList.add(new GodCard(GodCard.GodsType.Hephaestus, GodCard.HEPHAESTUS_D));
-        godCardsList.add(new GodCard(GodCard.GodsType.Minotaur, GodCard.MINOTAUR_D));
-        godCardsList.add(new GodCard(GodCard.GodsType.Pan, GodCard.PAN_D));
-        godCardsList.add(new GodCard(GodCard.GodsType.Prometheus, GodCard.PROMETHEUS_D));
+        godCardsList.add(new GodCard(GodCard.GodsType.Apollo, GodCard.APOLLO_D, GodCard.WhereToApply.ApplyBeforeMove, GodCard.WhereToApplyWhenOpponent.Undefined));
+        godCardsList.add(new GodCard(GodCard.GodsType.Artemis, GodCard.ARTEMIS_D, GodCard.WhereToApply.AskAfterMove, GodCard.WhereToApplyWhenOpponent.Undefined));
+        godCardsList.add(new GodCard(GodCard.GodsType.Athena, GodCard.ATHENA_D, GodCard.WhereToApply.ApplyAfterMove, GodCard.WhereToApplyWhenOpponent.ApplyBeforeMove));
+        godCardsList.add(new GodCard(GodCard.GodsType.Atlas, GodCard.ATLAS_D, GodCard.WhereToApply.AskBeforeBuild, GodCard.WhereToApplyWhenOpponent.Undefined));
+        godCardsList.add(new GodCard(GodCard.GodsType.Demeter, GodCard.DEMETER_D, GodCard.WhereToApply.AskAfterBuild, GodCard.WhereToApplyWhenOpponent.Undefined));
+        godCardsList.add(new GodCard(GodCard.GodsType.Hephaestus, GodCard.HEPHAESTUS_D, GodCard.WhereToApply.AskAfterBuild, GodCard.WhereToApplyWhenOpponent.Undefined));
+        godCardsList.add(new GodCard(GodCard.GodsType.Minotaur, GodCard.MINOTAUR_D, GodCard.WhereToApply.ApplyBeforeMove, GodCard.WhereToApplyWhenOpponent.Undefined));
+        godCardsList.add(new GodCard(GodCard.GodsType.Pan, GodCard.PAN_D, GodCard.WhereToApply.ApplyAfterMove, GodCard.WhereToApplyWhenOpponent.Undefined));
+        godCardsList.add(new GodCard(GodCard.GodsType.Prometheus, GodCard.PROMETHEUS_D, GodCard.WhereToApply.AskBeforeMove, GodCard.WhereToApplyWhenOpponent.Undefined));
     }
 
     /**
@@ -523,7 +523,12 @@ public class SantoriniMatch implements Runnable{
         // The first player who is going to place the workers (and then start the game) is set as the first player in the list of players.
         // Start here the process of asking to place the workers
 
-        SendCurrentBoardToPlayerWithGivenCommand(players.get(0), ProtocolTypes.protocolCommand.srv_ChooseWorkerStartPosition);
+        String cmd = "<cmd><id>" + ProtocolTypes.protocolCommand.srv_ChooseWorkerStartPosition.toString()  + "</id><data>";
+        cmd += boardToXMLString();
+        cmd += "</data></cmd>";
+
+        players.get(0).SendCommand(cmd);
+
     }
 
 
@@ -550,7 +555,11 @@ public class SantoriniMatch implements Runnable{
 
         if(players.get(0).getPlayerWorkers().get(0).getWorkerPosition() == null) {
 
-            SendCurrentBoardToPlayerWithGivenCommand(players.get(0), ProtocolTypes.protocolCommand.srv_ChooseWorkerStartPosition);
+            String cmd = "<cmd><id>" + ProtocolTypes.protocolCommand.srv_ChooseWorkerStartPosition.toString()  + "</id><data>";
+            cmd += boardToXMLString();
+            cmd += "</data></cmd>";
+
+            players.get(0).SendCommand(cmd);
         }
         else {
 
@@ -579,6 +588,16 @@ public class SantoriniMatch implements Runnable{
     }
 
     /**
+     * Method that receives the answer on the matter of applying the god's power or not from the client and passes it to the turn
+     * that will take a different action if the answer is yes or no
+     * @param answer string containing yes or no
+     */
+
+    public void setAnswer(String answer) {
+        turn.setAnswer(answer);
+    }
+
+    /**
      * Method that receives the chosen cell from the client and passes it to the turn that will set the new position for the worker with the method setCandidateMove
      * @param chosenCell int representing the id of the chosen cell
      */
@@ -593,66 +612,44 @@ public class SantoriniMatch implements Runnable{
     /* ************************************************ UTILITY METHODS ************************************************ */
 
     /**
-     * Method that sends the board as a string in xml format to the client
-     * @param player player to send the command to
-     * @param command command id to send with the board
+     * Method that builds the string in xml format that represents the board with the players
+     * (used to print their god and their color on the board's legend
+     * @return the string to attach in the data node of the command string to send to the client
      */
 
-    public void SendCurrentBoardToPlayerWithGivenCommand(Player player, ProtocolTypes.protocolCommand command)
-    {
-        String cmd = "<cmd><id>" + command.toString()  + "</id><data><board>";
+    public String boardToXMLString() {
+
+        String xmlBoard = "<board>";
 
         for(int i = 0; i < gameBoard.getBoard().size(); i++) {
-            cmd += "<cell id=\"" + Integer.toString(i) +
+            xmlBoard += "<cell id=\"" + Integer.toString(i) +
                     "\" level=\"" + Integer.toString(gameBoard.getCell(i).getLevel()) +
                     "\" dome=\"" + Boolean.toString(gameBoard.getCell(i).checkDome());
 
 
             if(gameBoard.getCell(i).isOccupiedByWorker()) {
-                cmd += "\" nickname=\"" + gameBoard.getCell(i).getOccupyingWorker().getWorkerOwner().getNickname();
+                xmlBoard += "\" nickname=\"" + gameBoard.getCell(i).getOccupyingWorker().getWorkerOwner().getNickname();
             }
             else {
-                cmd += "\" nickname=\"";
+                xmlBoard += "\" nickname=\"";
             }
 
-            cmd += "\" />";
+            xmlBoard += "\" />";
         }
 
-        cmd += "</board><players>";
+        xmlBoard += "</board><players>";
 
         for (int i = 0; i < players.size(); i++) {
-            cmd += "<player nickname=\"" + players.get(i).getNickname() + "\" god=\"" + players.get(i).getPlayerGod().getGodName() + "\" />";
+            xmlBoard += "<player nickname=\"" + players.get(i).getNickname() + "\" god=\"" + players.get(i).getPlayerGod().getGodName() + "\" />";
         }
 
-         cmd += "</players></data></cmd>";
+        xmlBoard += "</players>";
 
-        System.out.println("SendCurrentBoardToPlayerWithGivenCommand: " + cmd);
-
-        player.SendCommand(cmd);
+        return xmlBoard;
     }
 
     /* *************************************************************************************************************************** */
     // METHODS TO CHECK AND FIX!
-
-    /**
-     * Method that decorates the player's turn according to its GodCard
-     * @return
-     */
-
-    public GodPowerDecorator decorateTurn(Turn turn) {
-        switch (turn.getPlayingPlayer().getPlayerGod().getGodType()){
-            //case Apollo: break;
-            //case Artemis: break;
-            //case Athena: break;
-            //case Atlas: break;
-            //case Demeter: break;
-            //case Hephaestus: break;
-            //case Minotaur: return null; //new MinotaurDecorator(turn);
-            //case Pan: break;
-            //case Prometheus: break;
-        }
-        return null;
-    }
 
     /**
      * Method that saves the last turn in playedTurns

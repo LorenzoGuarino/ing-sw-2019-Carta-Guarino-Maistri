@@ -158,6 +158,8 @@ public class ClientHandler implements Runnable
                                 case clt_ChosenWorker:
                                     owner.onChosenWorker(cmdData);
                                     break;
+                                case clt_AnswerApplyOrNotGod:
+                                    owner.onChosenAnswerForApplyingGod(cmdData);
                                 case clt_CandidateMove:
                                     owner.onCandidateMove(cmdData);
                                     break;
@@ -588,7 +590,7 @@ public class ClientHandler implements Runnable
     private void onChosenWorker(Node data) {
 
         System.out.println("Received onChosenWorker from " + nickname);
-        String chosenWorker="";
+        String chosenWorker = "";
         Node node;
 
         if (data.hasChildNodes()) {
@@ -602,6 +604,34 @@ public class ClientHandler implements Runnable
                 }
             }
             lobby.SetChosenWorker(this, chosenWorker);
+        }
+    }
+
+    /**
+     * Method that process the answer in xml format received from the client, containing the info that
+     * indicates whether the user wants to apply the god's power or not
+     * It triggers a method in the lobby that sends the answer to the right match and then it is received by the turn who
+     * has to take a different action if the answer is yes or no
+     * @param data xml of the answer received from the client
+     */
+
+    private void onChosenAnswerForApplyingGod(Node data) {
+
+        System.out.println("Received onChosenAnswerForApplyingGod from " + nickname);
+        String answer = "";
+        Node node;
+
+        if (data.hasChildNodes()) {
+            NodeList nodes = data.getChildNodes();
+
+            for (int i = 0; i < nodes.getLength(); i++) {
+                node = nodes.item(i);
+
+                if (node.getNodeName().equals("answer")) {
+                    answer = node.getTextContent();
+                }
+            }
+            lobby.SetAnswer(this, answer);
         }
     }
 

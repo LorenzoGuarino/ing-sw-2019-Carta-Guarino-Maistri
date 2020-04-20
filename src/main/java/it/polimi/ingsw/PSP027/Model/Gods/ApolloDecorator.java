@@ -7,6 +7,7 @@ import it.polimi.ingsw.PSP027.Controller.MovePhase;
 
 /**
  * @author danielecarta
+ * @author Elisa Maistri
  * */
 public class ApolloDecorator extends GodPowerDecorator {
 
@@ -15,14 +16,22 @@ public class ApolloDecorator extends GodPowerDecorator {
     }
 
     /**
-     * Method called by a decorated turn's movePhase, it makes it possible to move in an enemy occupied cell
-     * if the next space is not occupied
+     * Method called by a decorated turn's movePhase, it makes it possible to move in an enemy occupied cell swapping places with that enemy worker
      * @return a list of cells which you can move onto
      */
 
     @Override
     public void changeCandidateCells() {
         Cell startingCell = this.getDecoratedPhase().getChosenWorker().getWorkerPosition();
+
+        for(int i = 0; i < this.getDecoratedPhase().getGameBoard().getBoard().size(); i++) {
+            if(this.getDecoratedPhase().getGameBoard().getCell(i).isOccupiedByWorker()) {
+                if(this.getDecoratedPhase().getGameBoard().getCell(i).getOccupyingWorker().getWorkerOwner() != this.getDecoratedPhase().getPlayingPlayer()) {
+                    this.getDecoratedPhase().getCandidateCells().add(this.getDecoratedPhase().getGameBoard().getCell(i));
+                }
+            }
+        }
+
         for (Cell candidateCell : this.getDecoratedPhase().getGameBoard().getNeighbouringCells(startingCell)) {
             if ((candidateCell.getLevel() <= startingCell.getLevel() + 1) &&
                     (!candidateCell.checkDome()) && !this.getDecoratedPhase().getCandidateCells().contains(candidateCell)) {
@@ -45,6 +54,7 @@ public class ApolloDecorator extends GodPowerDecorator {
             Worker opponentWorker = chosenCell.getOccupyingWorker();
             opponentWorker.changePosition(this.getDecoratedPhase().getChosenWorker().getWorkerPosition());
         }
+
         this.getDecoratedPhase().getChosenWorker().changePosition(chosenCell);
         if(movePhase.getStartChosenWorkerLvl()==2 && this.getChosenWorker().getWorkerPosition().getLevel()==3){     //check if the win conditions are verified
             this.getChosenWorker().getWorkerOwner().setHasWon(true);

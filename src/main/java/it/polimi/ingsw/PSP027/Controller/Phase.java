@@ -2,6 +2,7 @@ package it.polimi.ingsw.PSP027.Controller;
 
 import it.polimi.ingsw.PSP027.Model.Game.Board;
 import it.polimi.ingsw.PSP027.Model.Game.Cell;
+import it.polimi.ingsw.PSP027.Model.Game.Player;
 import it.polimi.ingsw.PSP027.Model.Game.Worker;
 
 import java.util.List;
@@ -16,6 +17,7 @@ public  abstract class Phase {
     private List<Cell> candidateCells;
     private Worker chosenWorker;
     private Board gameBoard;
+    private Player playingplayer;
 
     /**
      * Changes the candidate cells list of each phase according to its type
@@ -56,6 +58,14 @@ public  abstract class Phase {
 
     public Board getGameBoard() {
         return gameBoard;
+    }
+
+    public Player getPlayingPlayer() {
+        return playingplayer;
+    }
+
+    public void setPlayingPlayer(Player player) {
+        this.playingplayer = player;
     }
 
     public void setGameBoard(Board gameBoard) {
