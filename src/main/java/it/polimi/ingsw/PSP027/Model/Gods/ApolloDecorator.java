@@ -41,16 +41,17 @@ public class ApolloDecorator extends GodPowerDecorator {
 
             for (Cell candidateCell : this.getGameBoard().getNeighbouringCells(startingCell)) {
 
-                if(this.getCandidateCells().indexOf(candidateCell) == -1) {                 //for each candidate cell in neighbouringCells not already within the list , if
-                    if ((candidateCell.getLevel() <= startingCell.getLevel() + 1) &&        //the lv i want to get to is higher less than one
-                            (!candidateCell.checkDome()) &&                                 //it is not occupied by a dome
-                            (candidateCell.isOccupiedByOpponentWorker(this.getPlayingPlayer()))){
-                        System.out.println("APOLLO: evalCandidateCells inserting cell " + candidateCell.getCellIndex());
-                        this.getCandidateCells().add(candidateCell);                        //then add the cell to candidateCells
-                    } else {
-                        System.out.println("APOLLO: evalCandidateCells discarding cell " + candidateCell.getCellIndex() + " (l=" +
-                                candidateCell.getLevel() + ", w=" + candidateCell.isOccupiedByWorker() + ", d=" + candidateCell.checkDome());
-                    }
+                    if(this.getCandidateCells().indexOf(candidateCell) == -1) {                 //for each candidate cell in neighbouringCells not already within the list , if
+                        if ((candidateCell.getLevel() <= startingCell.getLevel() + 1) &&        //the lv i want to get to is higher less than one
+                                (!candidateCell.checkDome())) {                                 //it is not occupied by a dome
+                            System.out.println("APOLLO: evalCandidateCells inserting cell " + candidateCell.getCellIndex());
+                            this.getCandidateCells().add(candidateCell);                        //then add the cell to candidateCells
+                        } else {
+                            System.out.println("APOLLO: evalCandidateCells discarding cell " + candidateCell.getCellIndex() + " (l=" +
+                                    candidateCell.getLevel() + ", w=" + candidateCell.isOccupiedByWorker() + ", d=" + candidateCell.checkDome());
+                        }
+
+
                 }
             }
         }
