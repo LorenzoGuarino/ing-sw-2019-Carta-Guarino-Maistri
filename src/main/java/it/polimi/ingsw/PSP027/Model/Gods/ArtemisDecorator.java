@@ -2,7 +2,6 @@ package it.polimi.ingsw.PSP027.Model.Gods;
 
 import it.polimi.ingsw.PSP027.Model.Game.Cell;
 import it.polimi.ingsw.PSP027.Controller.Phase;
-import it.polimi.ingsw.PSP027.Controller.MovePhase;
 
 /**
  * @author Elisa Maistri
@@ -24,9 +23,10 @@ public class ArtemisDecorator extends GodPowerDecorator {
         // call nested phase evalCandidateCells
         super.evalCandidateCells();
 
-        if(this.getWorker().getMoveCounter() == 1) {
+        if(IsAMovePhase()) {
+
             // Artemis overrides only (second) move phase
-            if(IsAMovePhase()) {
+            if(this.getWorker().getMoveCounter() == 1) {
 
                 // Artemis excludes the cell it started from from the new candidate moves
 
@@ -51,7 +51,7 @@ public class ArtemisDecorator extends GodPowerDecorator {
 
     @Override
     public void performActionOnCell(Cell chosenCell) {
+
         super.performActionOnCell(chosenCell);
     }
-
 }

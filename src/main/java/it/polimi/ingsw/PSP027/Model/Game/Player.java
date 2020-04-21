@@ -15,6 +15,7 @@ public class Player {
     private GodCard playerGodCard;
     private List<GodCard> opponentsGodCards;
     private boolean hasWon;
+    private boolean hasLost;
 
     /**
      * Constructor: creates a player, creating its workers
@@ -22,6 +23,7 @@ public class Player {
 
     public Player() {
         hasWon = false;
+        hasLost = false;
 
         playerWorkers = new ArrayList<Worker>();
 
@@ -41,11 +43,27 @@ public class Player {
     }
 
     /**
+     * Method that return if the player hasWon
+     * @return hasWon value
+     */
+    public boolean HasLost() {
+        return hasLost;
+    }
+
+    /**
      * Method that set HasWon
      * @param hasWon to set
      */
     public void setHasWon(boolean hasWon) {
         this.hasWon = hasWon;
+    }
+
+    /**
+     * Method that set HasLost
+     * @param hasLost to set
+     */
+    public void setHasLost(boolean hasLost) {
+        this.hasLost = hasLost;
     }
 
     /**

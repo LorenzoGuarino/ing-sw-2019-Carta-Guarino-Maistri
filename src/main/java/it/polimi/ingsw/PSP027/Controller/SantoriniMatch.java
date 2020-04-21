@@ -80,13 +80,11 @@ public class SantoriniMatch implements Runnable{
         godCardsList.add(new GodCard(GodCard.GodsType.Prometheus, GodCard.WhereToApply.Move, GodCard.ToWhomIsApplied.Owner));
 
         // advanced gods
-        godCardsList.add(new GodCard(GodCard.GodsType.Zeus, GodCard.WhereToApply.Build, GodCard.ToWhomIsApplied.Owner));
-        godCardsList.add(new GodCard(GodCard.GodsType.Triton, GodCard.WhereToApply.Move, GodCard.ToWhomIsApplied.Owner));
-        godCardsList.add(new GodCard(GodCard.GodsType.Hera, GodCard.WhereToApply.WinCondition, GodCard.ToWhomIsApplied.Opponent));
+        godCardsList.add(new GodCard(GodCard.GodsType.Ares, GodCard.WhereToApply.EndTurn, GodCard.ToWhomIsApplied.Owner));
         godCardsList.add(new GodCard(GodCard.GodsType.Hestia, GodCard.WhereToApply.ExtraBuild, GodCard.ToWhomIsApplied.Owner));
-        godCardsList.add(new GodCard(GodCard.GodsType.Limus, GodCard.WhereToApply.Build, GodCard.ToWhomIsApplied.Opponent));
-        godCardsList.add(new GodCard(GodCard.GodsType.Chronos, GodCard.WhereToApply.WinCondition, GodCard.ToWhomIsApplied.Owner));
         godCardsList.add(new GodCard(GodCard.GodsType.Medusa, GodCard.WhereToApply.EndTurn, GodCard.ToWhomIsApplied.Owner));
+        godCardsList.add(new GodCard(GodCard.GodsType.Poseidon, GodCard.WhereToApply.EndTurn, GodCard.ToWhomIsApplied.Owner));
+        godCardsList.add(new GodCard(GodCard.GodsType.Zeus, GodCard.WhereToApply.Build, GodCard.ToWhomIsApplied.Owner));
     }
 
     /**
@@ -122,6 +120,10 @@ public class SantoriniMatch implements Runnable{
                                 if(turn.CurrentPlayerHasWon())
                                 {
                                     endGame(turn.getPlayingPlayer());
+                                }
+                                else if(turn.CurrentPlayerHasLost())
+                                {
+
                                 }
                                 else {
                                     turnState = TurnState.CreateTurn;
@@ -597,7 +599,7 @@ public class SantoriniMatch implements Runnable{
 
         if((turn != null) && (tempWorker != null)) {
 
-            tempWorker.ResetWorkerCounters();
+            tempWorker.ResetWorkerTurnVars();
             turn.setChosenWorker(tempWorker);
         }
     }

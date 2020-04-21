@@ -1,45 +1,32 @@
 package it.polimi.ingsw.PSP027.Model.Gods;
-
-import it.polimi.ingsw.PSP027.Model.Game.Cell;
 import it.polimi.ingsw.PSP027.Controller.Phase;
+import it.polimi.ingsw.PSP027.Model.Game.Cell;
 
-/**
- * @author danielecarta
- */
+public class HestiaDecorator extends GodPowerDecorator {
 
-public class DemeterDecorator extends GodPowerDecorator {
-
-    private boolean powerUsed = false;
-
-    public DemeterDecorator(Phase decoratedPhase, boolean bActAsOpponentGod) {
+    public HestiaDecorator(Phase decoratedPhase, boolean bActAsOpponentGod) {
 
         super(decoratedPhase, bActAsOpponentGod);
     }
 
-    /**
-     * If the power hasn't yet been used, it gives a standard candidate cells list to build on
-     */
-
-    @Override
     public void evalCandidateCells() {
 
         // call nested phase evalCandidateCells
         super.evalCandidateCells();
 
         if(IsABuildPhase()) {
-            // Demeter overrides only (second) build phase
+            // Hestia overrides only (second) build phase
             if(this.getWorker().getBuildCounter() == 1) {
 
-                // Demeter excludes the cell it builf before
-
+                // Hestia excludes the cells on the perimeter from build
                 Cell startingCell = this.getWorker().getWorkerPosition();
 
                 for (Cell candidateCell : this.getGameBoard().getNeighbouringCells(startingCell)) {
 
-                    if(this.getWorker().getLastBuiltCell().getCellIndex() == candidateCell.getCellIndex()) {
-                        System.out.println("DEMETER: evalCandidateCells discarding cell " + candidateCell.getCellIndex() + " (l=" +
+                    if(candidateCell.isAPerimeterCell()) {
+                        System.out.println("HESTIA: evalCandidateCells discarding cell " + candidateCell.getCellIndex() + " (l=" +
                                 candidateCell.getLevel() + ", w=" + candidateCell.isOccupiedByWorker() + ", d=" + candidateCell.checkDome());
-                        this.getCandidateCells().remove(candidateCell.getCellIndex());
+                        this.getCandidateCells().remove(candidateCell);
                     }
                 }
             }

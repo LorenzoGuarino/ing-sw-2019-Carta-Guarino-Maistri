@@ -20,11 +20,9 @@ public class GodCard {
 
         // choose 5 among the next gods
         Zeus,
-        Triton,
-        Hera,
-        Limus,
+        Ares,
         Hestia,
-        Chronos,
+        Poseidon,
         Medusa
     }
 
@@ -57,12 +55,10 @@ public class GodCard {
     public static final String PAN_D        = "Win Condition: You also win if your Worker moves down two or more levels.";
     public static final String PROMETHEUS_D = "Your Turn: If your Worker does not move up, it may build both before and after moving.";
     public static final String ZEUS_D       = "Your Build: Your Worker may build under itself in its current space, forcing it up one level. You do not win by forcing yourself up to the third level.";
-    public static final String TRITON_D     = "Your Move: Each time your Worker moves onto a perimeter space (ground or block), it may immediately move again.";
-    public static final String HERA_D       = "Opponent's Turn: An opponent cannot win by moving on to a perimeter space.";
-    public static final String LIMUS_D      = "Opponent's Turn: Opponent Workers cannot build on spaces neighbouring your Workers, unless building a dome to create a Complete Tower";
     public static final String HESTIA_D     = "Your Build: Your Worker may build one additional time. The additional build cannot be on a perimeter space";
-    public static final String CHRONUS_D    = "Win Condition: You also win when there are at least five Complete Towers on the board.";
     public static final String MEDUSA_D     = "End of Your Turn: If any of your opponent's Workers occupy lower neighbouring spaces, replace them all with blocks and remove them from the game";
+    public static final String ARES_D       = "";
+    public static final String POSEIDON_D   = "";
 
     public static final String APOLLO      = "Apollo";
     public static final String ARTEMIS     = "Artemis";
@@ -74,12 +70,10 @@ public class GodCard {
     public static final String PAN         = "Pan";
     public static final String PROMETHEUS  = "Prometheus";
     public static final String ZEUS        = "Zeus";
-    public static final String TRITON      = "Triton";
-    public static final String HERA        = "Hera";
-    public static final String LIMUS       = "Limus";
     public static final String HESTIA      = "Hestia";
-    public static final String CHRONUS     = "Chronus";
     public static final String MEDUSA      = "Medusa";
+    public static final String ARES        = "Ares";
+    public static final String POSEIDON    = "Poseidon";
 
     /**
      * Constructor: create a god with its name, description and id
@@ -128,20 +122,14 @@ public class GodCard {
                 return PAN;
             case Prometheus:
                 return PROMETHEUS;
-
-// choose 5 among the next gods
             case Zeus:
                 return ZEUS;
-            case Triton:
-                return TRITON;
-            case Hera:
-                return HERA;
-            case Limus:
-                return LIMUS;
+            case Ares:
+                return ARES;
+            case Poseidon:
+                return POSEIDON;
             case Hestia:
                 return HESTIA;
-            case Chronos:
-                return CHRONUS;
             case Medusa:
                 return MEDUSA;
             default:
@@ -176,21 +164,14 @@ public class GodCard {
                 return PAN_D;
             case Prometheus:
                 return PROMETHEUS_D;
-
-// choose 5 among the next gods
-
             case Zeus:
                 return ZEUS_D;
-            case Triton:
-                return TRITON_D;
-            case Hera:
-                return HERA_D;
-            case Limus:
-                return LIMUS_D;
+            case Poseidon:
+                return POSEIDON_D;
+            case Ares:
+                return ARES_D;
             case Hestia:
                 return HESTIA_D;
-            case Chronos:
-                return CHRONUS_D;
             case Medusa:
                 return MEDUSA_D;
             default:
@@ -226,7 +207,6 @@ public class GodCard {
         switch(godType)
         {
             case Artemis:
-            case Triton:
                 return true;
             default:
                 return false;

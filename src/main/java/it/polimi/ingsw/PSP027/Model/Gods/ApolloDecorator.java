@@ -66,7 +66,7 @@ public class ApolloDecorator extends GodPowerDecorator {
     public void performActionOnCell(Cell chosenCell) {
 
         // apollo can swap workers within move phase
-        if(getDecoratedPhase().IsAMovePhase()) {
+        if(IsAMovePhase()) {
 
             if (chosenCell.isOccupiedByOpponentWorker(getWorker().getWorkerOwner())) {
 

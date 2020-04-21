@@ -1,11 +1,10 @@
 package it.polimi.ingsw.PSP027.Model.Gods;
-
-import it.polimi.ingsw.PSP027.Model.Game.Cell;
 import it.polimi.ingsw.PSP027.Controller.Phase;
+import it.polimi.ingsw.PSP027.Model.Game.Cell;
 
-public class HephaestusDecorator extends GodPowerDecorator {
+public class ZeusDecorator extends GodPowerDecorator {
 
-    public HephaestusDecorator(Phase decoratedPhase, boolean bActAsOpponentGod) {
+    public ZeusDecorator(Phase decoratedPhase, boolean bActAsOpponentGod) {
 
         super(decoratedPhase, bActAsOpponentGod);
     }
@@ -23,13 +22,9 @@ public class HephaestusDecorator extends GodPowerDecorator {
 
         if(IsABuildPhase()) {
 
-            // Hephaestus overrides only (second) build phase
-            if(this.getWorker().getBuildCounter() == 1) {
-
-                // Hephaestus allow build only on the cell it built before
-                this.getCandidateCells().clear();
-                this.getCandidateCells().add(this.getWorker().getLastBuiltCell());
-            }
+            // Zeus allow build even on the cell under worker, if not at third level
+            if(this.getWorker().getWorkerPosition().getLevel()<3)
+                this.getCandidateCells().add(this.getWorker().getWorkerPosition());
         }
     }
 

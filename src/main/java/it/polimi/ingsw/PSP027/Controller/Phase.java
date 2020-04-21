@@ -16,12 +16,12 @@ import java.util.List;
 public class Phase {
 
     // enum that indicates the type of phase the decorated actual phase will be
-    //@TODO might need to add "End"
 
     public enum PhaseType {
         Undefined,
         Move,
-        Build
+        Build,
+        End
     }
 
     private List<Cell> candidateCells = null;
@@ -61,7 +61,6 @@ public class Phase {
     public void Init(Worker chosenWorker, Board gameBoard)
     {
         candidateCells = new ArrayList<Cell>();
-        this.phaseType = phaseType;
         this.chosenWorker = chosenWorker;
         this.gameBoard = gameBoard;
     }
@@ -71,9 +70,10 @@ public class Phase {
      * the action will be executed by the decorator who extends the phase and therefore will override this method
      */
 
-    public void startPhase() {
+    public boolean startPhase() {
         // method that is overridden by the god power decorator that extends the phase
         // in order to create a decorated phase that will be the one to play the turn with
+        return true;
     }
 
     /**
@@ -94,6 +94,16 @@ public class Phase {
     public boolean IsAMovePhase() {
 
         return (phaseType == PhaseType.Move);
+    }
+
+    /**
+     * Method that tells if this phase is an end
+     * @return true if it is, otherwise false
+     */
+
+    public boolean IsAnEndPhase() {
+
+        return (phaseType == PhaseType.End);
     }
 
     /**

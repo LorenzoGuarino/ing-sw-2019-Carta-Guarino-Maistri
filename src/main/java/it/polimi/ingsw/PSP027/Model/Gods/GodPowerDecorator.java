@@ -144,19 +144,30 @@ public abstract class GodPowerDecorator extends Phase {
      */
 
     @Override
-    public void startPhase() {
+    public boolean startPhase() {
 
         evalCandidateCells();
 
         ProtocolTypes.protocolCommand cmd = ProtocolTypes.protocolCommand.undefined;
 
-        if(decoratedPhase.IsAMovePhase())
-            cmd = ProtocolTypes.protocolCommand.srv_CandidateCellsForMove;
-        else if(decoratedPhase.IsABuildPhase())
-            cmd = ProtocolTypes.protocolCommand.srv_CandidateCellsForBuild;
+        // if there are no candidate cells
+        if(getCandidateCells().size()>0) {
 
-        if(cmd != ProtocolTypes.protocolCommand.undefined)
-            decoratedPhase.SendCandidateCells(cmd);
+            if (decoratedPhase.IsAMovePhase())
+                cmd = ProtocolTypes.protocolCommand.srv_CandidateCellsForMove;
+            else if (decoratedPhase.IsABuildPhase())
+                cmd = ProtocolTypes.protocolCommand.srv_CandidateCellsForBuild;
+            else if (decoratedPhase.IsAnEndPhase())
+                cmd = ProtocolTypes.protocolCommand.srv_CandidateCellsForEnd;
+
+            if (cmd != ProtocolTypes.protocolCommand.undefined)
+            {
+                decoratedPhase.SendCandidateCells(cmd);
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**

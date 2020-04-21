@@ -8,10 +8,12 @@ public class Worker {
 
     private int index;
     private Cell oldPosition;
+    private Cell oldBuiltCell;
     private Cell currentPosition;
     private Player owner;
     private int movecount;
     private int buildcount;
+    private boolean buildDomeOnNextBuild;
 
     /**
      * Constructor: creates a new worker, storing who is its owner and its index, setting its position to null
@@ -25,14 +27,28 @@ public class Worker {
         this.index = index;
         oldPosition = null;
         currentPosition = null;
+        oldBuiltCell = null;
+        movecount = 0;
+        buildcount = 0;
+        buildDomeOnNextBuild = false;
+    }
+
+    public void ResetWorkerTurnVars()
+    {
+        buildDomeOnNextBuild = false;
+        oldBuiltCell = null;
         movecount = 0;
         buildcount = 0;
     }
 
-    public void ResetWorkerCounters()
+    public boolean HasToBuildADomeOnNextBuildPhase()
     {
-        movecount = 0;
-        buildcount = 0;
+        return buildDomeOnNextBuild;
+    }
+
+    public Cell getLastBuiltCell()
+    {
+        return oldBuiltCell;
     }
 
     public void IncrementMoveCounter()

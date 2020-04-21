@@ -20,7 +20,6 @@ public class Turn {
     private Player playingPlayer;
     private SantoriniMatch santoriniMatch;
     private boolean bCompleted;
-    private boolean applyPower;
 
     /**
      * Constructor: it is called by santorini match when the setup of the game is done and the turn of the first player can start.
@@ -81,7 +80,7 @@ public class Turn {
             }
         }
 
-        CreateMovePhase();
+        CreateMovePhase(true);
     }
 
     /**
@@ -90,7 +89,7 @@ public class Turn {
      */
     public void setAnswer(String answer) {
 
-        applyPower = answer.equals("Yes");
+
     }
 
     /**
@@ -189,22 +188,26 @@ public class Turn {
         return playingPlayer.HasWon();
     }
 
+    public boolean CurrentPlayerHasLost(){
 
-    /**
-     * Method that prepares the command when asking the client to choose whether to use the god power or not and actually sends the command
-     */
-    public void askToUSeGodPower() {
-        String cmd = "<cmd><id>" + ProtocolTypes.protocolCommand.srv_AskBeforeApplyingGod.toString()  + "</id><data>";
-        cmd += this.santoriniMatch.boardToXMLString();
-        cmd += "</data></cmd>";
-        playingPlayer.SendCommand(cmd);
+        return playingPlayer.HasLost();
     }
+
+//    /**
+//     * Method that prepares the command when asking the client to choose whether to use the god power or not and actually sends the command
+//     */
+//    public void askToUSeGodPower() {
+//        String cmd = "<cmd><id>" + ProtocolTypes.protocolCommand.srv_AskBeforeApplyingGod.toString()  + "</id><data>";
+//        cmd += this.santoriniMatch.boardToXMLString();
+//        cmd += "</data></cmd>";
+//        playingPlayer.SendCommand(cmd);
+//    }
 
     /**
      * Method that creates a move phase, applying the right decorator to it
      */
 
-    public void CreateMovePhase()
+    public void CreateMovePhase(boolean bMandatory)
     {
         // create move phase and apply decorator to it.
         // the decorated resulting phase is the one that is stored on the phase list
@@ -229,14 +232,20 @@ public class Turn {
         else
             phaseList.add(playergodphase);
 
-        phaseList.get(phaseList.size()-1).startPhase();
+        boolean bCanPerformPhase = phaseList.get(phaseList.size()-1).startPhase();
+
+        if(!bCanPerformPhase && bMandatory){
+            // player has lost !!!
+            getPlayingPlayer().setHasLost(true);
+            bCompleted = true;
+        }
     }
 
     /**
      * Method that creates a build phase, applying the right decorator to it
      */
 
-    public void CreateBuildPhase()
+    public void CreateBuildPhase(boolean bMandatory)
     {
         // create build phase and apply decorator to it.
         // the decorated resulting phase is the one that is stored on the phase list
@@ -260,7 +269,13 @@ public class Turn {
         else
             phaseList.add(playergodphase);
 
-        phaseList.get(phaseList.size()-1).startPhase(); //actually calls the method startPhase of the player's own decorator
+        boolean bCanPerformPhase = phaseList.get(phaseList.size()-1).startPhase(); //actually calls the method startPhase of the player's own decorator
+
+        if(!bCanPerformPhase && bMandatory){
+            // player has lost !!!
+            getPlayingPlayer().setHasLost(true);
+            bCompleted = true;
+        }
     }
 
     /**

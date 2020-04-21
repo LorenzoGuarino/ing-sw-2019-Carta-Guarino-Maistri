@@ -31,6 +31,14 @@ public class Cell {
 
     public int getCellIndex() { return index; }
 
+    public boolean isAPerimeterCell()
+    {
+        int Ri = index/5;
+        int Ci = index%5;
+
+        return ((Ri==0) || (Ri==4) || (Ci==0) || (Ci==4));
+    }
+
     /**
      * Method that checks if the cell is occupied by a worker
      * @return true if the cell has a worker on it, otherwise false
@@ -68,7 +76,12 @@ public class Cell {
 
     public boolean isCompleteTower()
     {
-        return (level == 3) && dome;
+        return ((level == 3) && dome);
+    }
+
+    public boolean canALevelBeRemoved()
+    {
+        return ((level > 0) && !isOccupiedByWorker() && !dome);
     }
 
     /**
@@ -78,7 +91,7 @@ public class Cell {
 
     public boolean canALevelBeAdded()
     {
-        return (level != 3) && !isOccupiedByWorker();
+        return ((level != 3) && !isOccupiedByWorker());
     }
 
     /**
@@ -95,8 +108,22 @@ public class Cell {
             {
                 return true;
             }
-            else return WorkerToMove.getWorkerPosition().level == level - 1;
+            else
+                return WorkerToMove.getWorkerPosition().level == (level - 1);
          }
+        else
+        {
+            return false;
+        }
+    }
+
+    public boolean removeLevel()
+    {
+        if (canALevelBeRemoved())
+        {
+            level--;
+            return true;
+        }
         else
         {
             return false;
@@ -140,7 +167,7 @@ public class Cell {
      * @return true if a dome can be added to a tower, otherwise false
      */
 
-    public boolean canADomeBeAdded() { return level == 3 && (!dome); }
+    public boolean canADomeBeAdded() { return (level == 3) && (!dome); }
 
     /**
      * Method that adds a dome to the cell

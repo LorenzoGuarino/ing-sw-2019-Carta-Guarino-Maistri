@@ -37,6 +37,7 @@ public class ProtocolTypes {
         clt_MoveWorker,
         srv_CandidateCellsForBuild,
         clt_Build,
+        srv_CandidateCellsForEnd,
         srv_UseGodPower,
         clt_UseGodPower,
         srv_BoardUpdated,

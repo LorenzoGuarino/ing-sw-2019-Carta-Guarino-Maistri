@@ -22,7 +22,10 @@ public class AtlasDecorator extends GodPowerDecorator {
      */
 
     @Override
-    public void evalCandidateCells() { }
+    public void evalCandidateCells() {
+        // call nested phase evalCandidateCells
+        super.evalCandidateCells();
+    }
 
     /**
      * Method used by Atlas to add a dome regardless of the level preexisting on the cell if the player checked yes to
@@ -32,6 +35,15 @@ public class AtlasDecorator extends GodPowerDecorator {
 
     @Override
     public void performActionOnCell(Cell chosenCell) {
-        chosenCell.addDome();
+
+        if(IsABuildPhase()) {
+            if (getWorker().HasToBuildADomeOnNextBuildPhase()) {
+                chosenCell.addDome();
+            } else {
+                super.performActionOnCell(chosenCell);
+            }
+        }
+        else
+            super.performActionOnCell(chosenCell);
     }
 }
