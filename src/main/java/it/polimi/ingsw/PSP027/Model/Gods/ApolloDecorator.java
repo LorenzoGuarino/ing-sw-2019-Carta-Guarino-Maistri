@@ -32,7 +32,7 @@ public class ApolloDecorator extends GodPowerDecorator {
         super.evalCandidateCells();
 
         // Apollo override only move phase
-        if(getDecoratedPhase().IsAMovePhase()) {
+        if(IsAMovePhase()) {
 
             // Apollo adds cells to the current CandidateCells list, including the ones that are occupied
             // by other workers
@@ -66,9 +66,9 @@ public class ApolloDecorator extends GodPowerDecorator {
         // apollo can swap workers within move phase
         if(getDecoratedPhase().IsAMovePhase()) {
 
-            if (chosenCell.isOccupiedByOpponentWorker(this.getDecoratedPhase().getWorker().getWorkerOwner())) {
+            if (chosenCell.isOccupiedByOpponentWorker(getWorker().getWorkerOwner())) {
 
-                Cell oldCell = getDecoratedPhase().getWorker().getWorkerPosition();
+                Cell oldCell = getWorker().getWorkerPosition();
 
                 chosenCell.getOccupyingWorker().changePosition(oldCell);
             }

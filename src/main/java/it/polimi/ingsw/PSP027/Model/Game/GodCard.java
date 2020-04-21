@@ -56,13 +56,13 @@ public class GodCard {
     public static final String MINOTAUR_D   = "Your Move: Your Worker may move into an opponent Worker's space, if their Worker can be forced one space straight backwards to an unoccupied space at any level.";
     public static final String PAN_D        = "Win Condition: You also win if your Worker moves down two or more levels.";
     public static final String PROMETHEUS_D = "Your Turn: If your Worker does not move up, it may build both before and after moving.";
-    public static final String ZEUS_D       = "";
-    public static final String TRITON_D     = "";
-    public static final String HERA_D       = "";
-    public static final String LIMUS_D      = "";
-    public static final String HESTIA_D     = "";
-    public static final String CHRONOS_D    = "";
-    public static final String MEDUSA_D     = "";
+    public static final String ZEUS_D       = "Your Build: Your Worker may build under itself in its current space, forcing it up one level. You do not win by forcing yourself up to the third level.";
+    public static final String TRITON_D     = "Your Move: Each time your Worker moves onto a perimeter space (ground or block), it may immediately move again.";
+    public static final String HERA_D       = "Opponent's Turn: An opponent cannot win by moving on to a perimeter space.";
+    public static final String LIMUS_D      = "Opponent's Turn: Opponent Workers cannot build on spaces neighbouring your Workers, unless building a dome to create a Complete Tower";
+    public static final String HESTIA_D     = "Your Build: Your Worker may build one additional time. The additional build cannot be on a perimeter space";
+    public static final String CHRONUS_D    = "Win Condition: You also win when there are at least five Complete Towers on the board.";
+    public static final String MEDUSA_D     = "End of Your Turn: If any of your opponent's Workers occupy lower neighbouring spaces, replace them all with blocks and remove them from the game";
 
     public static final String APOLLO      = "Apollo";
     public static final String ARTEMIS     = "Artemis";
@@ -78,7 +78,7 @@ public class GodCard {
     public static final String HERA        = "Hera";
     public static final String LIMUS       = "Limus";
     public static final String HESTIA      = "Hestia";
-    public static final String CHRONOS     = "Chronos";
+    public static final String CHRONUS     = "Chronus";
     public static final String MEDUSA      = "Medusa";
 
     /**
@@ -141,7 +141,7 @@ public class GodCard {
             case Hestia:
                 return HESTIA;
             case Chronos:
-                return CHRONOS;
+                return CHRONUS;
             case Medusa:
                 return MEDUSA;
             default:
@@ -190,7 +190,7 @@ public class GodCard {
             case Hestia:
                 return HESTIA_D;
             case Chronos:
-                return CHRONOS_D;
+                return CHRONUS_D;
             case Medusa:
                 return MEDUSA_D;
             default:
@@ -216,6 +216,11 @@ public class GodCard {
         return whereToApply;
     }
 
+    /**
+     * Method to call in order to know if the god card allows an extra move
+     * @return true if it allows it, otherwise false
+     */
+
     public boolean AllowExtraMove() {
 
         switch(godType)
@@ -228,6 +233,11 @@ public class GodCard {
         }
     }
 
+    /**
+     * Method to call in order to know if a godcard allows an extra build before the move.
+     * @return true if it allows it, otherwise false
+     */
+
     public boolean AllowExtraBuildBeforeMove() {
 
         switch(godType)
@@ -238,6 +248,11 @@ public class GodCard {
                 return false;
         }
     }
+
+    /**
+     * Method to call in order to knwo if a godcard allows an extra build after the move
+     * @return true if ti allows it, otherwise false
+     */
 
     public boolean AllowExtraBuildAfterMove() {
 

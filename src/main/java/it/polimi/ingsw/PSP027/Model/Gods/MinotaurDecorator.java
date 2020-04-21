@@ -24,22 +24,33 @@ public class MinotaurDecorator extends GodPowerDecorator {
 
     @Override
     public void evalCandidateCells() {
-        Cell startingCell = this.getDecoratedPhase().getWorker().getWorkerPosition();
-        for (Cell candidateCell : this.getDecoratedPhase().getGameBoard().getNeighbouringCells(startingCell)) {
-            if (!this.getDecoratedPhase().getCandidateCells().contains(candidateCell)) {
-                if ((candidateCell.getLevel() <= startingCell.getLevel() + 1) &&
-                        (!candidateCell.checkDome())) {
-                    if (!candidateCell.isOccupiedByWorker())
-                        this.getDecoratedPhase().getCandidateCells().add(candidateCell);
-                    else {
 
-                        if (candidateCell.isOccupiedByOpponentWorker(this.getDecoratedPhase().getWorker().getWorkerOwner())) {
+        // call nested phase evalCandidateCells
+        super.evalCandidateCells();
 
-                            Cell potentialTargetCellForOpponentWorker = this.getDecoratedPhase().getGameBoard().getNextCellAlongThePath(startingCell, candidateCell);
+        // Minotaur override only move phase
+        if(IsAMovePhase()) {
 
+            Cell startingCell = this.getWorker().getWorkerPosition();
+
+            for (Cell candidateCell : this.getGameBoard().getNeighbouringCells(startingCell)) {
+                if (!this.getCandidateCells().contains(candidateCell)) {
+
+                    if ((candidateCell.getLevel() <= startingCell.getLevel() + 1) && (!candidateCell.checkDome()))
+                    {
+                        // free cells must be already present within the list
+                        // Minotaur add occupied cells if occupying opponent worker can be kicked forward
+                        if (candidateCell.isOccupiedByOpponentWorker(this.getWorker().getWorkerOwner())) {
+                            Cell potentialTargetCellForOpponentWorker = this.getGameBoard().getNextCellAlongThePath(startingCell, candidateCell);
                             if (potentialTargetCellForOpponentWorker != null) {
-                                if (!potentialTargetCellForOpponentWorker.checkDome() && !potentialTargetCellForOpponentWorker.isOccupiedByWorker())
-                                    this.getDecoratedPhase().getCandidateCells().add(candidateCell);
+                                if (!potentialTargetCellForOpponentWorker.checkDome() && !potentialTargetCellForOpponentWorker.isOccupiedByWorker()) {
+                                    System.out.println("MINOTAUR: evalCandidateCells inserting cell " + candidateCell.getCellIndex());
+                                    this.getCandidateCells().add(candidateCell);
+                                }
+                                else {
+                                    System.out.println("MINOTAUR: evalCandidateCells discarding cell " + candidateCell.getCellIndex() + " (l=" +
+                                            candidateCell.getLevel() + ", w=" + candidateCell.isOccupiedByWorker() + ", d=" + candidateCell.checkDome());
+                                }
                             }
                         }
                     }
@@ -55,18 +66,16 @@ public class MinotaurDecorator extends GodPowerDecorator {
 
     @Override
     public void performActionOnCell(Cell chosenCell) {
-//        MovePhase movePhase = (MovePhase) this.getDecoratedPhase();     //using movePhase to get startChosenWorkerLvl
-//        Worker myWorker = this.getDecoratedPhase().getWorker();
-//
-//        if (chosenCell.isOccupiedByOpponentWorker(myWorker.getWorkerOwner())) {
-//            Worker opponentWorker = chosenCell.getOccupyingWorker();
-//
-//            opponentWorker.changePosition(this.getDecoratedPhase().getGameBoard().getNextCellAlongThePath(myWorker.getWorkerPosition(),chosenCell));
-//        }
-//        myWorker.changePosition(chosenCell);
-//        if(movePhase.getStartChosenWorkerLvl()==2 && myWorker.getWorkerPosition().getLevel()==3){    //check if the win conditions are verified
-//            this.getWorker().getWorkerOwner().setHasWon(true);
-//        }
+        // Minotaur can move in an opponent's space forcing it to move
+        if(IsAMovePhase()) {
+            if (chosenCell.isOccupiedByOpponentWorker(getWorker().getWorkerOwner())) {
+
+                Worker opponentWorker = chosenCell.getOccupyingWorker();
+
+                opponentWorker.changePosition(getGameBoard().getNextCellAlongThePath(getWorker().getWorkerPosition(),chosenCell));
+            }
+        }
+        super.performActionOnCell(chosenCell);
     }
 }
 

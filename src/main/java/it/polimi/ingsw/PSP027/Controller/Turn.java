@@ -97,7 +97,7 @@ public class Turn {
      * Method that updates the board with the new position of the worker
      *
      * @param chosenCellIndex cell where the worker is moving onto
-     * @TODO create build phase
+     * @TODO create another move or go on and create a build phase
      */
     public void MoveWorker(int chosenCellIndex) {
 
