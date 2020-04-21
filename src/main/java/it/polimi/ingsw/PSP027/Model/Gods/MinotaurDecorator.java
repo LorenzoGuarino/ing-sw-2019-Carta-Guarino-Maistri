@@ -2,7 +2,7 @@ package it.polimi.ingsw.PSP027.Model.Gods;
 
 import it.polimi.ingsw.PSP027.Model.Game.Cell;
 import it.polimi.ingsw.PSP027.Model.Game.Worker;
-import it.polimi.ingsw.PSP027.Controller.ConcretePhase;
+import it.polimi.ingsw.PSP027.Controller.Phase;
 import it.polimi.ingsw.PSP027.Controller.MovePhase;
 
 /**
@@ -12,8 +12,9 @@ import it.polimi.ingsw.PSP027.Controller.MovePhase;
 
 public class MinotaurDecorator extends GodPowerDecorator {
 
-    public MinotaurDecorator(ConcretePhase decoratedPhase) {
-        super(decoratedPhase);
+    public MinotaurDecorator(Phase decoratedPhase, boolean bActAsOpponentGod) {
+
+        super(decoratedPhase, bActAsOpponentGod);
     }
 
     /**
@@ -22,8 +23,8 @@ public class MinotaurDecorator extends GodPowerDecorator {
      */
 
     @Override
-    public void changeCandidateCells() {
-        Cell startingCell = this.getDecoratedPhase().getChosenWorker().getWorkerPosition();
+    public void evalCandidateCells() {
+        Cell startingCell = this.getDecoratedPhase().getWorker().getWorkerPosition();
         for (Cell candidateCell : this.getDecoratedPhase().getGameBoard().getNeighbouringCells(startingCell)) {
             if (!this.getDecoratedPhase().getCandidateCells().contains(candidateCell)) {
                 if ((candidateCell.getLevel() <= startingCell.getLevel() + 1) &&
@@ -32,7 +33,7 @@ public class MinotaurDecorator extends GodPowerDecorator {
                         this.getDecoratedPhase().getCandidateCells().add(candidateCell);
                     else {
 
-                        if (candidateCell.isOccupiedByOpponentWorker(this.getDecoratedPhase().getChosenWorker().getWorkerOwner())) {
+                        if (candidateCell.isOccupiedByOpponentWorker(this.getDecoratedPhase().getWorker().getWorkerOwner())) {
 
                             Cell potentialTargetCellForOpponentWorker = this.getDecoratedPhase().getGameBoard().getNextCellAlongThePath(startingCell, candidateCell);
 
@@ -53,19 +54,19 @@ public class MinotaurDecorator extends GodPowerDecorator {
      */
 
     @Override
-    public void updateBoard(Cell chosenCell) {
-        MovePhase movePhase = (MovePhase) this.getDecoratedPhase();     //using movePhase to get startChosenWorkerLvl
-        Worker myWorker = this.getDecoratedPhase().getChosenWorker();
-
-        if (chosenCell.isOccupiedByOpponentWorker(myWorker.getWorkerOwner())) {
-            Worker opponentWorker = chosenCell.getOccupyingWorker();
-
-            opponentWorker.changePosition(this.getDecoratedPhase().getGameBoard().getNextCellAlongThePath(myWorker.getWorkerPosition(),chosenCell));
-        }
-        myWorker.changePosition(chosenCell);
-        if(movePhase.getStartChosenWorkerLvl()==2 && myWorker.getWorkerPosition().getLevel()==3){    //check if the win conditions are verified
-            this.getChosenWorker().getWorkerOwner().setHasWon(true);
-        }
+    public void performActionOnCell(Cell chosenCell) {
+//        MovePhase movePhase = (MovePhase) this.getDecoratedPhase();     //using movePhase to get startChosenWorkerLvl
+//        Worker myWorker = this.getDecoratedPhase().getWorker();
+//
+//        if (chosenCell.isOccupiedByOpponentWorker(myWorker.getWorkerOwner())) {
+//            Worker opponentWorker = chosenCell.getOccupyingWorker();
+//
+//            opponentWorker.changePosition(this.getDecoratedPhase().getGameBoard().getNextCellAlongThePath(myWorker.getWorkerPosition(),chosenCell));
+//        }
+//        myWorker.changePosition(chosenCell);
+//        if(movePhase.getStartChosenWorkerLvl()==2 && myWorker.getWorkerPosition().getLevel()==3){    //check if the win conditions are verified
+//            this.getWorker().getWorkerOwner().setHasWon(true);
+//        }
     }
 }
 

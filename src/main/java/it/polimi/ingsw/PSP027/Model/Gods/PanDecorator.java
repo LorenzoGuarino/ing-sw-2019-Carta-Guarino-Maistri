@@ -1,17 +1,18 @@
 package it.polimi.ingsw.PSP027.Model.Gods;
 
 import it.polimi.ingsw.PSP027.Model.Game.Cell;
-import it.polimi.ingsw.PSP027.Controller.ConcretePhase;
+import it.polimi.ingsw.PSP027.Controller.Phase;
 import it.polimi.ingsw.PSP027.Controller.MovePhase;
 
 public class PanDecorator extends GodPowerDecorator {
 
-    public PanDecorator(ConcretePhase decoratedPhase) {
-        super(decoratedPhase);
+    public PanDecorator(Phase decoratedPhase, boolean bActAsOpponentGod) {
+
+        super(decoratedPhase, bActAsOpponentGod);
     }
 
     @Override
-    public void changeCandidateCells() {
+    public void evalCandidateCells() {
 
     }
 
@@ -20,13 +21,13 @@ public class PanDecorator extends GodPowerDecorator {
      * @param chosenCell cell where to move
      */
     @Override
-    public void updateBoard(Cell chosenCell) {
-        MovePhase movePhase = (MovePhase) this.getDecoratedPhase();     //using movePhase to get startChosenWorkerLvl
-        this.getDecoratedPhase().getChosenWorker().changePosition(chosenCell);
-        if(movePhase.getStartChosenWorkerLvl()==2 && this.getChosenWorker().getWorkerPosition().getLevel()==3){     //check standard win conditions
-            this.getChosenWorker().getWorkerOwner().setHasWon(true);
-        }else if(movePhase.getStartChosenWorkerLvl()-this.getChosenWorker().getWorkerPosition().getLevel()>=2){     //check Pan win conditions
-            this.getChosenWorker().getWorkerOwner().setHasWon(true);
-        }
+    public void performActionOnCell(Cell chosenCell) {
+//        MovePhase movePhase = (MovePhase) this.getDecoratedPhase();     //using movePhase to get startChosenWorkerLvl
+//        this.getDecoratedPhase().getWorker().changePosition(chosenCell);
+//        if(movePhase.getStartChosenWorkerLvl()==2 && this.getWorker().getWorkerPosition().getLevel()==3){     //check standard win conditions
+//            this.getWorker().getWorkerOwner().setHasWon(true);
+//        }else if(movePhase.getStartChosenWorkerLvl()-this.getWorker().getWorkerPosition().getLevel()>=2){     //check Pan win conditions
+//            this.getWorker().getWorkerOwner().setHasWon(true);
+//        }
     }
 }

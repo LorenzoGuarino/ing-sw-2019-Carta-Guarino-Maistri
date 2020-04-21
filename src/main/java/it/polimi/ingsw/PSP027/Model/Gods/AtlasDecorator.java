@@ -1,7 +1,7 @@
 package it.polimi.ingsw.PSP027.Model.Gods;
 
 import it.polimi.ingsw.PSP027.Model.Game.Cell;
-import it.polimi.ingsw.PSP027.Controller.ConcretePhase;
+import it.polimi.ingsw.PSP027.Controller.Phase;
 
 /**
  * @author Elisa Maistri
@@ -9,8 +9,9 @@ import it.polimi.ingsw.PSP027.Controller.ConcretePhase;
 
 public class AtlasDecorator extends GodPowerDecorator {
 
-    public AtlasDecorator(ConcretePhase decoratedPhase) {
-        super(decoratedPhase);
+    public AtlasDecorator(Phase decoratedPhase, boolean bActAsOpponentGod) {
+
+        super(decoratedPhase, bActAsOpponentGod);
     }
 
     /**
@@ -20,7 +21,7 @@ public class AtlasDecorator extends GodPowerDecorator {
      */
 
     @Override
-    public void changeCandidateCells() { }
+    public void evalCandidateCells() { }
 
     /**
      * Method used by Atlas to add a dome regardless of the level preexisting on the cell if the player checked yes to
@@ -29,7 +30,7 @@ public class AtlasDecorator extends GodPowerDecorator {
      */
 
     @Override
-    public void updateBoard(Cell chosenCell) {
+    public void performActionOnCell(Cell chosenCell) {
         chosenCell.addDome();
     }
 }

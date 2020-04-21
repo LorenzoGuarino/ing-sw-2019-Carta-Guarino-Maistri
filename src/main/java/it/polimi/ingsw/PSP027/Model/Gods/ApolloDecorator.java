@@ -1,9 +1,8 @@
 package it.polimi.ingsw.PSP027.Model.Gods;
 
+import it.polimi.ingsw.PSP027.Controller.Phase;
 import it.polimi.ingsw.PSP027.Model.Game.Cell;
 import it.polimi.ingsw.PSP027.Model.Game.Worker;
-import it.polimi.ingsw.PSP027.Controller.ConcretePhase;
-import it.polimi.ingsw.PSP027.Controller.MovePhase;
 
 /**
  * @author danielecarta
@@ -11,8 +10,8 @@ import it.polimi.ingsw.PSP027.Controller.MovePhase;
  * */
 public class ApolloDecorator extends GodPowerDecorator {
 
-    public ApolloDecorator(ConcretePhase decoratedPhase) {
-        super(decoratedPhase);
+    public ApolloDecorator(Phase decoratedPhase, boolean bActAsOpponentGod) {
+        super(decoratedPhase, bActAsOpponentGod);
     }
 
     /**
@@ -21,22 +20,30 @@ public class ApolloDecorator extends GodPowerDecorator {
      */
 
     @Override
-    public void changeCandidateCells() {
-        Cell startingCell = this.getDecoratedPhase().getChosenWorker().getWorkerPosition();
+    public void evalCandidateCells() {
 
-        for(int i = 0; i < this.getDecoratedPhase().getGameBoard().getBoard().size(); i++) {
-            if(this.getDecoratedPhase().getGameBoard().getCell(i).isOccupiedByWorker()) {
-                if(this.getDecoratedPhase().getGameBoard().getCell(i).getOccupyingWorker().getWorkerOwner() != this.getDecoratedPhase().getPlayingPlayer()) {
-                    this.getDecoratedPhase().getCandidateCells().add(this.getDecoratedPhase().getGameBoard().getCell(i));
-                }
-            }
-        }
+        // call nested phase evalCandidateCells
+        super.evalCandidateCells();
 
-        for (Cell candidateCell : this.getDecoratedPhase().getGameBoard().getNeighbouringCells(startingCell)) {
-            if ((candidateCell.getLevel() <= startingCell.getLevel() + 1) &&
-                    (!candidateCell.checkDome()) && !this.getDecoratedPhase().getCandidateCells().contains(candidateCell)) {
-                if (!candidateCell.isOccupiedByWorker() || candidateCell.isOccupiedByOpponentWorker(this.getDecoratedPhase().getChosenWorker().getWorkerOwner())) {
-                    this.getDecoratedPhase().getCandidateCells().add(candidateCell);
+        // Apollo override only move phase
+        if(getDecoratedPhase().IsAMovePhase()) {
+
+            // Apollo adds cells to the current CandidateCells list, including the ones that are occupied
+            // by other workers
+
+            Cell startingCell = this.getWorker().getWorkerPosition();
+
+            for (Cell candidateCell : this.getGameBoard().getNeighbouringCells(startingCell)) {
+
+                if(this.getCandidateCells().indexOf(candidateCell) == -1) {                 //for each candidate cell in neighbouringCells not already within the list , if
+                    if ((candidateCell.getLevel() <= startingCell.getLevel() + 1) &&        //the lv i want to get to is higher less than one
+                            (!candidateCell.checkDome())) {                                 //it is not occupied by a dome
+                        System.out.println("APOLLO: evalCandidateCells inserting cell " + candidateCell.getCellIndex());
+                        this.getCandidateCells().add(candidateCell);                        //then add the cell to candidateCells
+                    } else {
+                        System.out.println("APOLLO: evalCandidateCells discarding cell " + candidateCell.getCellIndex() + " (l=" +
+                                candidateCell.getLevel() + ", w=" + candidateCell.isOccupiedByWorker() + ", d=" + candidateCell.checkDome());
+                    }
                 }
             }
         }
@@ -48,17 +55,21 @@ public class ApolloDecorator extends GodPowerDecorator {
      */
 
     @Override
-    public void updateBoard(Cell chosenCell) {
-        MovePhase movePhase = (MovePhase) this.getDecoratedPhase();     //using movePhase to get startChosenWorkerLvl
-        if (chosenCell.isOccupiedByOpponentWorker(this.getDecoratedPhase().getChosenWorker().getWorkerOwner())) {
-            Worker opponentWorker = chosenCell.getOccupyingWorker();
-            opponentWorker.changePosition(this.getDecoratedPhase().getChosenWorker().getWorkerPosition());
+    public void performActionOnCell(Cell chosenCell) {
+
+        // apollo can swap workers within move phase
+        if(getDecoratedPhase().IsAMovePhase()) {
+
+            if (chosenCell.isOccupiedByOpponentWorker(this.getDecoratedPhase().getWorker().getWorkerOwner())) {
+
+                Cell oldCell = getDecoratedPhase().getWorker().getWorkerPosition();
+
+                chosenCell.getOccupyingWorker().changePosition(oldCell);
+            }
+
         }
 
-        this.getDecoratedPhase().getChosenWorker().changePosition(chosenCell);
-        if(movePhase.getStartChosenWorkerLvl()==2 && this.getChosenWorker().getWorkerPosition().getLevel()==3){     //check if the win conditions are verified
-            this.getChosenWorker().getWorkerOwner().setHasWon(true);
-        }
+        super.performActionOnCell(chosenCell);
     }
 
 }

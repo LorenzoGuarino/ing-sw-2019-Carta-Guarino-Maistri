@@ -31,11 +31,11 @@ public class AthenaOppDecoratorTest {
     }
 
     /**
-     * changeCandidateCells on a phase that has not been decorated yet,it asserts that any move that allowed me to go
+     * evalCandidateCells on a phase that has not been decorated yet,it asserts that any move that allowed me to go
      * 1 lv higher is no longer in the candidateCells list
      */
     @Test
-    public void changeCandidateCells_onAPhaseUnmodified() {
+    public void evalCandidateCells_onAPhaseUnmodified() {
         Cell x11 = gameBoard.getCell(0);//myPos
         worker11.changePosition(x11);
         Cell x21 = gameBoard.getCell(1);//opponentWorkerPos
@@ -43,17 +43,18 @@ public class AthenaOppDecoratorTest {
         Cell x12 = gameBoard.getCell(5);//stdCell
         Cell x22 = gameBoard.getCell(6);//lv1 cell, i cant move there
         x22.addLevel();
-        MovePhase movePhase= new MovePhase(worker11,gameBoard);
+        MovePhase movePhase= new MovePhase();
+        movePhase.Init(worker11,gameBoard);
         athenaOppDecoratedPhase = new AthenaOppDecorator(movePhase);
-        athenaOppDecoratedPhase.changeCandidateCells();
+        athenaOppDecoratedPhase.evalCandidateCells();
     }
 
     /**
-     * changeCandidateCells on a phase that has been decorated by an apollo decorator,it asserts that i get the candidate cells list
+     * evalCandidateCells on a phase that has been decorated by an apollo decorator,it asserts that i get the candidate cells list
      * according both to athena and apollo s decorators, in the case im able to swap position with an enemy worker
      */
     @Test
-    public void changeCandidateCells_onAPhaseModifiedByApolloThatIsAbleToUseHisPower() {
+    public void evalCandidateCells_onAPhaseModifiedByApolloThatIsAbleToUseHisPower() {
         Cell x11 = gameBoard.getCell(0);//myPos
         worker11.changePosition(x11);
         Cell x21 = gameBoard.getCell(1);//opponentWorkerPosBut i have apollo
@@ -61,11 +62,12 @@ public class AthenaOppDecoratorTest {
         Cell x12 = gameBoard.getCell(5);//stdCell
         Cell x22 = gameBoard.getCell(6);//lv1 cell, i cant move there
         x22.addLevel();
-        MovePhase movePhase= new MovePhase(worker11,gameBoard);
+        MovePhase movePhase= new MovePhase();
+        movePhase.Init(worker11,gameBoard);
         apolloDecoratedPhase = new ApolloDecorator(movePhase);
-        apolloDecoratedPhase.changeCandidateCells();
+        apolloDecoratedPhase.evalCandidateCells();
         athenaOppDecoratedPhase = new AthenaOppDecorator(movePhase);
-        athenaOppDecoratedPhase.changeCandidateCells();
+        athenaOppDecoratedPhase.evalCandidateCells();
         ArrayList<Cell> expectedList= new ArrayList<Cell>();
         expectedList.add(x12);
         expectedList.add(x21);
@@ -73,12 +75,12 @@ public class AthenaOppDecoratorTest {
     }
 
     /**
-     * changeCandidateCells on a phase that has been decorated by an apollo decorator,it asserts that i get the candidate cells list
+     * evalCandidateCells on a phase that has been decorated by an apollo decorator,it asserts that i get the candidate cells list
      * according both to athena and apollo s decorators, in the case im able to swap position with an enemy worker but im not able to
      * because he's 1 lv higher
      */
     @Test
-    public void changeCandidateCells_onAPhaseModifiedByApolloThatsUnableToUseHisPower() {
+    public void evalCandidateCells_onAPhaseModifiedByApolloThatsUnableToUseHisPower() {
         Cell x11 = gameBoard.getCell(0);//myPos
         worker11.changePosition(x11);
         Cell x21 = gameBoard.getCell(1);//opponentWorkerPosBut i have apollo but Athena stops me anyway
@@ -87,11 +89,12 @@ public class AthenaOppDecoratorTest {
         Cell x12 = gameBoard.getCell(5);//stdCell
         Cell x22 = gameBoard.getCell(6);//lv1 cell, i cant move there
         x22.addLevel();
-        MovePhase movePhase= new MovePhase(worker11,gameBoard);
+        MovePhase movePhase= new MovePhase();
+        movePhase.Init(worker11,gameBoard);
         apolloDecoratedPhase = new ApolloDecorator(movePhase);
-        apolloDecoratedPhase.changeCandidateCells();
+        apolloDecoratedPhase.evalCandidateCells();
         athenaOppDecoratedPhase = new AthenaOppDecorator(movePhase);
-        athenaOppDecoratedPhase.changeCandidateCells();
+        athenaOppDecoratedPhase.evalCandidateCells();
         ArrayList<Cell> expectedList= new ArrayList<Cell>();
         expectedList.add(x12);
         assertTrue(expectedList.containsAll(movePhase.getCandidateCells())&&movePhase.getCandidateCells().containsAll(expectedList));
@@ -107,12 +110,13 @@ public class AthenaOppDecoratorTest {
         Cell x12 = gameBoard.getCell(5);//stdCell
         Cell x22 = gameBoard.getCell(6);//lv1 cell, i cant move there
         x22.addLevel();
-        MovePhase movePhase= new MovePhase(worker11,gameBoard);
+        MovePhase movePhase= new MovePhase();
+        movePhase.Init(worker11,gameBoard);
         apolloDecoratedPhase = new ApolloDecorator(movePhase);
-        apolloDecoratedPhase.changeCandidateCells();
+        apolloDecoratedPhase.evalCandidateCells();
         athenaOppDecoratedPhase = new AthenaOppDecorator(movePhase);
-        movePhase.updateBoard(x12);
-        apolloDecoratedPhase.updateBoard(x12);
+        movePhase.performActionOnCell(x12);
+        apolloDecoratedPhase.performActionOnCell(x12);
         assertTrue(worker11.getWorkerPosition().equals(x12));
     }
 

@@ -33,7 +33,7 @@ public class ApolloDecoratorTest {
     }
 
     /**
-     * Test performed in order to see if the  minotaur decorated movePhase overridden changeCandidateCells
+     * Test performed in order to see if the  minotaur decorated movePhase overridden evalCandidateCells
      * works properly
      */
 
@@ -44,9 +44,10 @@ public class ApolloDecoratorTest {
         Cell x12 = gameBoard.getCell(5);
         Cell x22 = gameBoard.getCell(6);
         x22.addLevel();x22.addLevel();
-        MovePhase movePhase= new MovePhase(worker11,gameBoard);
+        MovePhase movePhase= new MovePhase();
+        movePhase.Init(worker11,gameBoard);
         apolloDecoratedPhase =new ApolloDecorator(movePhase);
-        apolloDecoratedPhase.changeCandidateCells();
+        apolloDecoratedPhase.evalCandidateCells();
         ArrayList<Cell> expectedList= new ArrayList<Cell>();
         expectedList.add(x12);
         expectedList.add(x21);
@@ -64,10 +65,11 @@ public class ApolloDecoratorTest {
         worker21.changePosition(gameBoard.getCell(1));
         Cell x11 = gameBoard.getCell(0);
 
-        MovePhase movePhase= new MovePhase(worker11,gameBoard);
-        apolloDecoratedPhase =new ApolloDecorator(movePhase);
-        apolloDecoratedPhase =new ApolloDecorator(movePhase);
-        apolloDecoratedPhase.updateBoard(x21);
+        MovePhase movePhase= new MovePhase();
+        movePhase.Init(worker11,gameBoard);
+        apolloDecoratedPhase = new ApolloDecorator(movePhase);
+        apolloDecoratedPhase = new ApolloDecorator(movePhase);
+        apolloDecoratedPhase.performActionOnCell(x21);
         assertTrue(x11.isOccupiedByWorker());
         assertTrue(x21.isOccupiedByWorker());
         assertEquals(worker11.getWorkerPosition(), x21);

@@ -7,12 +7,12 @@ public interface PhaseInterface {
      * Modifies the list of candidateCells utility for each kind of Phase
      */
 
-    public void changeCandidateCells();
+    public void evalCandidateCells();
 
     /**
      * Given a chosen cell, it updates the board according to the action taken in the specific Phase
      * @param chosenCell
      */
 
-    public void updateBoard(Cell chosenCell);
+    public void performActionOnCell(Cell chosenCell);
 }

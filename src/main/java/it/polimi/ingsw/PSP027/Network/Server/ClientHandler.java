@@ -160,8 +160,8 @@ public class ClientHandler implements Runnable
                                     break;
                                 case clt_AnswerApplyOrNotGod:
                                     owner.onChosenAnswerForApplyingGod(cmdData);
-                                case clt_CandidateMove:
-                                    owner.onCandidateMove(cmdData);
+                                case clt_Move:
+                                    owner.onMove(cmdData);
                                     break;
                             }
                         }
@@ -640,9 +640,9 @@ public class ClientHandler implements Runnable
      * It triggers a method in the lobby that sets the chosen cell in the turn that is being played in the correspondent match
      * @param data xml of the chosen cell received from the client
      */
-    private void onCandidateMove(Node data) {
+    private void onMove(Node data) {
 
-        System.out.println("Received onCandidateMove from " + nickname);
+        System.out.println("Received onMove from " + nickname);
         String chosenCell="";
         Node node;
 
@@ -656,7 +656,7 @@ public class ClientHandler implements Runnable
                     chosenCell = node.getTextContent();
                 }
             }
-            lobby.SetCandidateMove(this, chosenCell);
+            lobby.MoveWorkerOnGivenCell(this, chosenCell);
         }
     }
 

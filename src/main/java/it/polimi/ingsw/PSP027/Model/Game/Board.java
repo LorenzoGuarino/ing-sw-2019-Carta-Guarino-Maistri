@@ -187,5 +187,29 @@ public class Board {
         return NeighbouringCells;
     }
 
+    public String boardToXMLString() {
+
+        String xmlBoard = "<board>";
+
+        for(int i = 0; i < Board.size(); i++) {
+            xmlBoard += "<cell id=\"" + Integer.toString(i) +
+                    "\" level=\"" + Integer.toString(getCell(i).getLevel()) +
+                    "\" dome=\"" + Boolean.toString(getCell(i).checkDome());
+
+
+            if(getCell(i).isOccupiedByWorker()) {
+                xmlBoard += "\" nickname=\"" + getCell(i).getOccupyingWorker().getWorkerOwner().getNickname();
+            }
+            else {
+                xmlBoard += "\" nickname=\"";
+            }
+
+            xmlBoard += "\" />";
+        }
+
+        xmlBoard += "</board>";
+
+        return xmlBoard;
+    }
 
 }

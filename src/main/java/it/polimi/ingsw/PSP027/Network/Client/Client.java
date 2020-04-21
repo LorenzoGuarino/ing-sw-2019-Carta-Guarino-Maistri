@@ -363,7 +363,7 @@ public class Client implements Runnable, ServerObserver
 
             if (regStatus == RegistrationStatus.Registered) {
 
-                String cmd = "<cmd><id>" + ProtocolTypes.protocolCommand.clt_CandidateMove.toString() + "</id><data><cell>" + chosenCell + "</cell></data></cmd>";
+                String cmd = "<cmd><id>" + ProtocolTypes.protocolCommand.clt_Move.toString() + "</id><data><cell>" + chosenCell + "</cell></data></cmd>";
 
                 serverHandler.SendCommand(cmd);
                 return true;

@@ -13,7 +13,7 @@ public class ConcretePhase extends Phase {
      */
 
     @Override
-    public void changeCandidateCells() {
+    public void evalCandidateCells() {
 
     }
 
@@ -23,7 +23,7 @@ public class ConcretePhase extends Phase {
      */
 
     @Override
-    public void updateBoard(Cell chosenCell) {
+    public void performActionOnCell(Cell chosenCell) {
 
     }
 }

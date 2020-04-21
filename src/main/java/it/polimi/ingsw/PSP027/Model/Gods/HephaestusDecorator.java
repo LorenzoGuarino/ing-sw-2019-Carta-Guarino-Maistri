@@ -1,12 +1,13 @@
 package it.polimi.ingsw.PSP027.Model.Gods;
 
 import it.polimi.ingsw.PSP027.Model.Game.Cell;
-import it.polimi.ingsw.PSP027.Controller.ConcretePhase;
+import it.polimi.ingsw.PSP027.Controller.Phase;
 
 public class HephaestusDecorator extends GodPowerDecorator {
 
-    public HephaestusDecorator(ConcretePhase decoratedPhase) {
-        super(decoratedPhase);
+    public HephaestusDecorator(Phase decoratedPhase, boolean bActAsOpponentGod) {
+
+        super(decoratedPhase, bActAsOpponentGod);
     }
 
     /**
@@ -15,7 +16,7 @@ public class HephaestusDecorator extends GodPowerDecorator {
      * and has not already a dome
      */
     @Override
-    public void changeCandidateCells() {
+    public void evalCandidateCells() {
     }
 
     /**
@@ -26,7 +27,7 @@ public class HephaestusDecorator extends GodPowerDecorator {
      * @param chosenCell cell chosen by the player on which it wants to build
      */
     @Override
-    public void updateBoard(Cell chosenCell) {
+    public void performActionOnCell(Cell chosenCell) {
         if (chosenCell.getLevel() < 2) {
             chosenCell.addLevel();
             chosenCell.addLevel();

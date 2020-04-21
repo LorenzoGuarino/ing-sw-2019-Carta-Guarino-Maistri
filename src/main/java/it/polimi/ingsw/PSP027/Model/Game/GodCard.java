@@ -17,35 +17,35 @@ public class GodCard {
         Minotaur,
         Pan,
         Prometheus,
-        AthenaOpp
+
+        // choose 5 among the next gods
+        Zeus,
+        Triton,
+        Hera,
+        Limus,
+        Hestia,
+        Chronos,
+        Medusa
     }
 
     public enum WhereToApply {
-        AskBeforeMove,
-        ApplyBeforeMove,
-        AskAfterMove,
-        ApplyAfterMove,
-        AskBeforeBuild,
-        ApplyBeforeBuild,
-        AskAfterBuild,
-        ApplyAfterBuild,
-        AskBeforeEnd,
-        ApplyBeforeEnd,
+        StartTurn,
+        Move,
+        ExtraMove,
+        Build,
+        ExtraBuild,
+        EndTurn,
+        WinCondition
     }
 
-    public enum WhereToApplyWhenOpponent {
-        ApplyBeforeMove,
-        ApplyAfterMove,
-        ApplyBeforeBuild,
-        ApplyAfterBuild,
-        ApplyBeforeEnd,
-        Undefined
+    public enum ToWhomIsApplied {
+        Owner,
+        Opponent
     }
 
     private GodsType godType;
-    private String description;
     private WhereToApply whereToApply;
-    private WhereToApplyWhenOpponent oppWhereToApply;
+    private ToWhomIsApplied toWhomIsApplied;
 
     public static final String APOLLO_D     = "Your Move: Your Worker may move into an opponent Worker's space by forcing their Worker to the space yours just vacated.";
     public static final String ARTEMIS_D    = "Your Move: Your Worker may move one additional time, but not back to its initial space.";
@@ -56,6 +56,13 @@ public class GodCard {
     public static final String MINOTAUR_D   = "Your Move: Your Worker may move into an opponent Worker's space, if their Worker can be forced one space straight backwards to an unoccupied space at any level.";
     public static final String PAN_D        = "Win Condition: You also win if your Worker moves down two or more levels.";
     public static final String PROMETHEUS_D = "Your Turn: If your Worker does not move up, it may build both before and after moving.";
+    public static final String ZEUS_D       = "";
+    public static final String TRITON_D     = "";
+    public static final String HERA_D       = "";
+    public static final String LIMUS_D      = "";
+    public static final String HESTIA_D     = "";
+    public static final String CHRONOS_D    = "";
+    public static final String MEDUSA_D     = "";
 
     public static final String APOLLO      = "Apollo";
     public static final String ARTEMIS     = "Artemis";
@@ -66,18 +73,23 @@ public class GodCard {
     public static final String MINOTAUR    = "Minotaur";
     public static final String PAN         = "Pan";
     public static final String PROMETHEUS  = "Prometheus";
+    public static final String ZEUS        = "Zeus";
+    public static final String TRITON      = "Triton";
+    public static final String HERA        = "Hera";
+    public static final String LIMUS       = "Limus";
+    public static final String HESTIA      = "Hestia";
+    public static final String CHRONOS     = "Chronos";
+    public static final String MEDUSA      = "Medusa";
 
     /**
      * Constructor: create a god with its name, description and id
      * @param godType name of the god of the card
-     * @param description description of this god ability
      */
 
-    public GodCard(GodsType godType, String description, WhereToApply whereToApply, WhereToApplyWhenOpponent oppWhereToApply) {
+    public GodCard(GodsType godType, WhereToApply whereToApply, ToWhomIsApplied toWhomIsApplied) {
         this.godType = godType;
-        this.description = description;
         this.whereToApply = whereToApply;
-        this.oppWhereToApply = oppWhereToApply;
+        this.toWhomIsApplied = toWhomIsApplied;
     }
 
     /**
@@ -116,6 +128,22 @@ public class GodCard {
                 return PAN;
             case Prometheus:
                 return PROMETHEUS;
+
+// choose 5 among the next gods
+            case Zeus:
+                return ZEUS;
+            case Triton:
+                return TRITON;
+            case Hera:
+                return HERA;
+            case Limus:
+                return LIMUS;
+            case Hestia:
+                return HESTIA;
+            case Chronos:
+                return CHRONOS;
+            case Medusa:
+                return MEDUSA;
             default:
                 return "";
         }
@@ -127,21 +155,60 @@ public class GodCard {
      * */
 
     public String getDescription() {
-        return description;
+
+        switch(godType)
+        {
+            case Apollo:
+                return APOLLO_D;
+            case Artemis:
+                return ARTEMIS_D;
+            case Athena:
+                return ATHENA_D;
+            case Atlas:
+                return ATLAS_D;
+            case Demeter:
+                return DEMETER_D;
+            case Hephaestus:
+                return HEPHAESTUS_D;
+            case Minotaur:
+                return MINOTAUR_D;
+            case Pan:
+                return PAN_D;
+            case Prometheus:
+                return PROMETHEUS_D;
+
+// choose 5 among the next gods
+
+            case Zeus:
+                return ZEUS_D;
+            case Triton:
+                return TRITON_D;
+            case Hera:
+                return HERA_D;
+            case Limus:
+                return LIMUS_D;
+            case Hestia:
+                return HESTIA_D;
+            case Chronos:
+                return CHRONOS_D;
+            case Medusa:
+                return MEDUSA_D;
+            default:
+                return "";
+        }
     }
 
     /**
-     * Method to query when the info about where the opponent god card must be applied is needed
-     * @return where it must be applied form an enum
-     * It can be Undefined if the god card doesn't affect an opponent's turn and therefore will never be added to a player's opponent god card
+     * Method to know if the God card must be applied on card owner or opponent
+     * @return to whom it must be applied
      */
 
-    public WhereToApplyWhenOpponent getOppWhereToApply() {
-        return oppWhereToApply;
+    public ToWhomIsApplied getToWhomIsApplied() {
+        return toWhomIsApplied;
     }
 
     /**
-     * Method to query when the info about where the god card must be applied/ must be asked is needed
+     * Method to query when the god card must be applied
      * @return where it must be applied or asked form an enum
      */
 
@@ -149,4 +216,39 @@ public class GodCard {
         return whereToApply;
     }
 
+    public boolean AllowExtraMove() {
+
+        switch(godType)
+        {
+            case Artemis:
+            case Triton:
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    public boolean AllowExtraBuildBeforeMove() {
+
+        switch(godType)
+        {
+            case Prometheus:
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    public boolean AllowExtraBuildAfterMove() {
+
+        switch(godType)
+        {
+            case Demeter:
+            case Hephaestus:
+            case Hestia:
+                return true;
+            default:
+                return false;
+        }
+    }
 }

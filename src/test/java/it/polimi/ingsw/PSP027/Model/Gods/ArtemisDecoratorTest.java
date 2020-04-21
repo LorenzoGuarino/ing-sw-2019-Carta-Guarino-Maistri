@@ -37,7 +37,7 @@ public class ArtemisDecoratorTest {
      * asserts that the player gets a standard candidate cells list to move
      */
     @Test
-    public void changeCandidateCells_standard(){
+    public void evalCandidateCells_standard(){
         Cell x11 = gameBoard.getCell(0);
         worker11.changePosition(x11);
         Cell x21 = gameBoard.getCell(1);
@@ -45,9 +45,10 @@ public class ArtemisDecoratorTest {
         Cell x12 = gameBoard.getCell(5);
         Cell x22 = gameBoard.getCell(6);
         x22.addLevel();x22.addLevel();
-        MovePhase movePhase= new MovePhase(worker11,gameBoard);
+        MovePhase movePhase= new MovePhase();
+        movePhase.Init(worker11,gameBoard);
         artemisDecoratedPhase =new ArtemisDecorator(movePhase);
-        artemisDecoratedPhase.changeCandidateCells();
+        artemisDecoratedPhase.evalCandidateCells();
         ArrayList<Cell> expectedList= new ArrayList<Cell>();
         expectedList.add(x12);
         assertTrue(expectedList.containsAll(movePhase.getCandidateCells())&&movePhase.getCandidateCells().containsAll(expectedList));
@@ -65,10 +66,11 @@ public class ArtemisDecoratorTest {
         Cell x12 = gameBoard.getCell(5);
         Cell x22 = gameBoard.getCell(6);
         x22.addLevel();x22.addLevel();
-        MovePhase movePhase= new MovePhase(worker11,gameBoard);
+        MovePhase movePhase= new MovePhase();
+        movePhase.Init(worker11,gameBoard);
         artemisDecoratedPhase =new ArtemisDecorator(movePhase);
-        artemisDecoratedPhase.changeCandidateCells();
-        artemisDecoratedPhase.updateBoard(x12);
+        artemisDecoratedPhase.evalCandidateCells();
+        artemisDecoratedPhase.performActionOnCell(x12);
         assertTrue(worker11.getWorkerPosition().equals(x12));
     }
 
@@ -76,7 +78,7 @@ public class ArtemisDecoratorTest {
      * asserts that after the first move my candidate cells list updates according to my move,allowing to make another one
      */
     @Test
-    public void changeCandidateCells_afterFirstUpdate(){
+    public void evalCandidateCells_afterFirstUpdate(){
         Cell x11 = gameBoard.getCell(0);
         worker11.changePosition(x11);
         Cell x21 = gameBoard.getCell(1);
@@ -87,10 +89,11 @@ public class ArtemisDecoratorTest {
         Cell x13 = gameBoard.getCell(10);
         Cell x23 = gameBoard.getCell(11);
 
-        MovePhase movePhase= new MovePhase(worker11,gameBoard);
+        MovePhase movePhase= new MovePhase();
+        movePhase.Init(worker11,gameBoard);
         artemisDecoratedPhase =new ArtemisDecorator(movePhase);
-        artemisDecoratedPhase.changeCandidateCells();
-        artemisDecoratedPhase.updateBoard(x12);
+        artemisDecoratedPhase.evalCandidateCells();
+        artemisDecoratedPhase.performActionOnCell(x12);
         ArrayList<Cell> expectedList= new ArrayList<Cell>();
         expectedList.add(x13);
         expectedList.add(x23);

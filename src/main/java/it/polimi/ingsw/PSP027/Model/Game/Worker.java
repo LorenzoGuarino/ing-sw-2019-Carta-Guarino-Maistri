@@ -7,7 +7,8 @@ package it.polimi.ingsw.PSP027.Model.Game;
 public class Worker {
 
     private int index;
-    private Cell position;
+    private Cell oldPosition;
+    private Cell currentPosition;
     private Player owner;
 
     /**
@@ -20,7 +21,18 @@ public class Worker {
     public Worker(Player owner, int index) {
         this.owner = owner;
         this.index = index;
-        position = null;
+        oldPosition = null;
+        currentPosition = null;
+    }
+
+    /**
+     * Method used to get the previous position of the worker on the board, before the last call to changePosition
+     *
+     * @return the cell that the worker is occupying
+     */
+
+    public Cell getWorkerPrevPosition() {
+        return oldPosition;
     }
 
     /**
@@ -30,7 +42,7 @@ public class Worker {
      */
 
     public Cell getWorkerPosition() {
-        return position;
+        return currentPosition;
     }
 
     /**
@@ -58,21 +70,17 @@ public class Worker {
      * @param position
      */
     public void changePosition(Cell position) {
-        if((this.position != null) && this.position.getOccupyingWorker().equals(this)){
-            this.position.setWorkerOccupying(null);
+
+        oldPosition = currentPosition;
+
+        if((this.currentPosition != null) && this.currentPosition.getOccupyingWorker().equals(this)){
+            this.currentPosition.setWorkerOccupying(null);
         }
-        this.position = position;
-        if(position != null)
-            position.setWorkerOccupying(this);
-    }
 
-    /**
-     * Method that sets the worker's first position
-     * @param position position to set
-     */
+        this.currentPosition = position;
 
-    public void setPosition(Cell position) {
-        this.position = position;
+        if(this.currentPosition != null)
+            this.currentPosition.setWorkerOccupying(this);
     }
 }
 

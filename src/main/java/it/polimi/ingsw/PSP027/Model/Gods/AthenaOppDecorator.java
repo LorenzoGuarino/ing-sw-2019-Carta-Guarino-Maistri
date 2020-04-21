@@ -1,7 +1,7 @@
 package it.polimi.ingsw.PSP027.Model.Gods;
 
 import it.polimi.ingsw.PSP027.Model.Game.Cell;
-import it.polimi.ingsw.PSP027.Controller.ConcretePhase;
+import it.polimi.ingsw.PSP027.Controller.Phase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,16 +12,17 @@ import java.util.List;
 
 public class AthenaOppDecorator extends GodPowerDecorator {
 
-    public AthenaOppDecorator(ConcretePhase decoratedPhase) {
-        super(decoratedPhase);
+    public AthenaOppDecorator(Phase decoratedPhase, boolean bActAsOpponentGod)
+    {
+        super(decoratedPhase, bActAsOpponentGod);
     }
 
     /**
      * it removes from a movePhase candidate cells list any cell that is higher than the starting level's chosenCell
      */
     @Override
-    public void changeCandidateCells() {
-        Cell startingCell = this.getDecoratedPhase().getChosenWorker().getWorkerPosition();
+    public void evalCandidateCells() {
+        Cell startingCell = this.getDecoratedPhase().getWorker().getWorkerPosition();
         List<Cell> candidateRemovesList = new ArrayList<>();
         for(Cell candidateCell : this.getDecoratedPhase().getCandidateCells()){
             if(candidateCell.getLevel() > startingCell.getLevel()){
@@ -36,6 +37,6 @@ public class AthenaOppDecorator extends GodPowerDecorator {
      * @param chosenCell the chosenCell i'm moving onto
      */
     @Override
-    public void updateBoard(Cell chosenCell) { this.getChosenWorker().changePosition(chosenCell); }
+    public void performActionOnCell(Cell chosenCell) { this.getWorker().changePosition(chosenCell); }
 
 }

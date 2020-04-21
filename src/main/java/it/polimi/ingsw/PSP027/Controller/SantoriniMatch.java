@@ -68,15 +68,25 @@ public class SantoriniMatch implements Runnable{
         // state which passes the control over to the turn.
         turnState = TurnState.WaitForBeingReadyToPlayTurns;
 
-        godCardsList.add(new GodCard(GodCard.GodsType.Apollo, GodCard.APOLLO_D, GodCard.WhereToApply.ApplyBeforeMove, GodCard.WhereToApplyWhenOpponent.Undefined));
-        godCardsList.add(new GodCard(GodCard.GodsType.Artemis, GodCard.ARTEMIS_D, GodCard.WhereToApply.AskAfterMove, GodCard.WhereToApplyWhenOpponent.Undefined));
-        godCardsList.add(new GodCard(GodCard.GodsType.Athena, GodCard.ATHENA_D, GodCard.WhereToApply.ApplyAfterMove, GodCard.WhereToApplyWhenOpponent.ApplyBeforeMove));
-        godCardsList.add(new GodCard(GodCard.GodsType.Atlas, GodCard.ATLAS_D, GodCard.WhereToApply.AskBeforeBuild, GodCard.WhereToApplyWhenOpponent.Undefined));
-        godCardsList.add(new GodCard(GodCard.GodsType.Demeter, GodCard.DEMETER_D, GodCard.WhereToApply.AskAfterBuild, GodCard.WhereToApplyWhenOpponent.Undefined));
-        godCardsList.add(new GodCard(GodCard.GodsType.Hephaestus, GodCard.HEPHAESTUS_D, GodCard.WhereToApply.AskAfterBuild, GodCard.WhereToApplyWhenOpponent.Undefined));
-        godCardsList.add(new GodCard(GodCard.GodsType.Minotaur, GodCard.MINOTAUR_D, GodCard.WhereToApply.ApplyBeforeMove, GodCard.WhereToApplyWhenOpponent.Undefined));
-        godCardsList.add(new GodCard(GodCard.GodsType.Pan, GodCard.PAN_D, GodCard.WhereToApply.ApplyAfterMove, GodCard.WhereToApplyWhenOpponent.Undefined));
-        godCardsList.add(new GodCard(GodCard.GodsType.Prometheus, GodCard.PROMETHEUS_D, GodCard.WhereToApply.AskBeforeMove, GodCard.WhereToApplyWhenOpponent.Undefined));
+        // base gods
+        godCardsList.add(new GodCard(GodCard.GodsType.Apollo, GodCard.WhereToApply.Move, GodCard.ToWhomIsApplied.Owner));
+        godCardsList.add(new GodCard(GodCard.GodsType.Artemis, GodCard.WhereToApply.ExtraMove, GodCard.ToWhomIsApplied.Owner));
+        godCardsList.add(new GodCard(GodCard.GodsType.Athena,  GodCard.WhereToApply.Move, GodCard.ToWhomIsApplied.Opponent));
+        godCardsList.add(new GodCard(GodCard.GodsType.Atlas,  GodCard.WhereToApply.Build, GodCard.ToWhomIsApplied.Owner));
+        godCardsList.add(new GodCard(GodCard.GodsType.Demeter,  GodCard.WhereToApply.ExtraBuild, GodCard.ToWhomIsApplied.Owner));
+        godCardsList.add(new GodCard(GodCard.GodsType.Hephaestus, GodCard.WhereToApply.ExtraBuild, GodCard.ToWhomIsApplied.Owner));
+        godCardsList.add(new GodCard(GodCard.GodsType.Minotaur,  GodCard.WhereToApply.Move, GodCard.ToWhomIsApplied.Owner));
+        godCardsList.add(new GodCard(GodCard.GodsType.Pan, GodCard.WhereToApply.WinCondition, GodCard.ToWhomIsApplied.Owner));
+        godCardsList.add(new GodCard(GodCard.GodsType.Prometheus, GodCard.WhereToApply.Move, GodCard.ToWhomIsApplied.Owner));
+
+        // advanced gods
+        godCardsList.add(new GodCard(GodCard.GodsType.Zeus, GodCard.WhereToApply.Build, GodCard.ToWhomIsApplied.Owner));
+        godCardsList.add(new GodCard(GodCard.GodsType.Triton, GodCard.WhereToApply.Move, GodCard.ToWhomIsApplied.Owner));
+        godCardsList.add(new GodCard(GodCard.GodsType.Hera, GodCard.WhereToApply.WinCondition, GodCard.ToWhomIsApplied.Opponent));
+        godCardsList.add(new GodCard(GodCard.GodsType.Hestia, GodCard.WhereToApply.ExtraBuild, GodCard.ToWhomIsApplied.Owner));
+        godCardsList.add(new GodCard(GodCard.GodsType.Limus, GodCard.WhereToApply.Build, GodCard.ToWhomIsApplied.Opponent));
+        godCardsList.add(new GodCard(GodCard.GodsType.Chronos, GodCard.WhereToApply.WinCondition, GodCard.ToWhomIsApplied.Owner));
+        godCardsList.add(new GodCard(GodCard.GodsType.Medusa, GodCard.WhereToApply.EndTurn, GodCard.ToWhomIsApplied.Owner));
     }
 
     /**
@@ -543,10 +553,9 @@ public class SantoriniMatch implements Runnable{
 
             int chosencellindex;
 
-            chosencellindex = (chosenpositions.get(i).charAt(0) - 'A') * 5 + (chosenpositions.get(i).charAt(1) - '1');
+            chosencellindex = Integer.parseInt(chosenpositions.get(i));
 
-            player.getPlayerWorkers().get(i).setPosition(gameBoard.getCell(chosencellindex));
-            gameBoard.getCell(chosencellindex).setWorkerOccupying(player.getPlayerWorkers().get(i));
+            player.getPlayerWorkers().get(i).changePosition(gameBoard.getCell(chosencellindex));
         }
 
         rotatePlayers();
@@ -584,7 +593,9 @@ public class SantoriniMatch implements Runnable{
 
         chosencellindex = Integer.parseInt(worker);
         Worker tempWorker = getGameBoard().getCell(chosencellindex).getOccupyingWorker();
-        turn.setChosenWorker(tempWorker);
+
+        if(turn != null)
+            turn.setChosenWorker(tempWorker);
     }
 
     /**
@@ -594,6 +605,7 @@ public class SantoriniMatch implements Runnable{
      */
 
     public void setAnswer(String answer) {
+
         turn.setAnswer(answer);
     }
 
@@ -601,11 +613,11 @@ public class SantoriniMatch implements Runnable{
      * Method that receives the chosen cell from the client and passes it to the turn that will set the new position for the worker with the method setCandidateMove
      * @param chosenCell int representing the id of the chosen cell
      */
-    public void setCandidateMove(String chosenCell){
+    public void MoveWorker(String chosenCell){
         int chosenCellIndex;
         chosenCellIndex = Integer.parseInt(chosenCell);
 
-        turn.setCandidateMove(chosenCellIndex);
+        turn.MoveWorker(chosenCellIndex);
     }
 
 
@@ -619,25 +631,9 @@ public class SantoriniMatch implements Runnable{
 
     public String boardToXMLString() {
 
-        String xmlBoard = "<board>";
+        String xmlBoard = gameBoard.boardToXMLString();
 
-        for(int i = 0; i < gameBoard.getBoard().size(); i++) {
-            xmlBoard += "<cell id=\"" + Integer.toString(i) +
-                    "\" level=\"" + Integer.toString(gameBoard.getCell(i).getLevel()) +
-                    "\" dome=\"" + Boolean.toString(gameBoard.getCell(i).checkDome());
-
-
-            if(gameBoard.getCell(i).isOccupiedByWorker()) {
-                xmlBoard += "\" nickname=\"" + gameBoard.getCell(i).getOccupyingWorker().getWorkerOwner().getNickname();
-            }
-            else {
-                xmlBoard += "\" nickname=\"";
-            }
-
-            xmlBoard += "\" />";
-        }
-
-        xmlBoard += "</board><players>";
+        xmlBoard += "<players>";
 
         for (int i = 0; i < players.size(); i++) {
             xmlBoard += "<player nickname=\"" + players.get(i).getNickname() + "\" god=\"" + players.get(i).getPlayerGod().getGodName() + "\" />";

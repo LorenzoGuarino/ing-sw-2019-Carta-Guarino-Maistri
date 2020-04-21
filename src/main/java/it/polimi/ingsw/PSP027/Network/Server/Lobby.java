@@ -642,7 +642,7 @@ public class Lobby{
      * @param client identifying the player that chose the cell
      * @param chosenCell id of the chosen cell
      */
-    public void SetCandidateMove(ClientHandler client, String chosenCell) {
+    public void MoveWorkerOnGivenCell(ClientHandler client, String chosenCell) {
         try {
             while (true) {
 
@@ -661,7 +661,7 @@ public class Lobby{
 
                                     for(Player player : matchPlayers) {
                                         if(player.getNickname().equals(gamerInLobby.client.getNickname())) {
-                                            match.setCandidateMove(chosenCell);
+                                            match.MoveWorker(chosenCell);
                                             break;
                                         }
                                     }

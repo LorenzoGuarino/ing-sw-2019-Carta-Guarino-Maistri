@@ -1,5 +1,6 @@
 package it.polimi.ingsw.PSP027.Controller;
 
+import it.polimi.ingsw.PSP027.Model.Game.Cell;
 import it.polimi.ingsw.PSP027.Model.Game.GodCard;
 import it.polimi.ingsw.PSP027.Model.Game.Player;
 import it.polimi.ingsw.PSP027.Model.Game.Worker;
@@ -20,7 +21,6 @@ public class Turn {
     private Player playingPlayer;
     private SantoriniMatch santoriniMatch;
     private boolean bCompleted;
-    private MovePhase movephase;
     private boolean applyPower;
 
     /**
@@ -39,15 +39,17 @@ public class Turn {
         this.bCompleted = false;
 
         //First communication with the client done by the Turn, asking to choose a worker to play the turn with.
+        ChooseWorker();
+    }
 
+    public void ChooseWorker()
+    {
         String cmd = "<cmd><id>" + ProtocolTypes.protocolCommand.srv_ChooseWorker.toString() + "</id><data>";
         cmd += this.santoriniMatch.boardToXMLString();
         cmd += "</data></cmd>";
 
         playingPlayer.SendCommand(cmd);
-
     }
-
     /* ********************************* UTILITY METHODS OF THE TURN ************************************ */
 
     /**
@@ -124,7 +126,7 @@ public class Turn {
 
 
     /* ***************************************************************************************************************
-     *                METHODS THAT RECEIVE THE CLIENT RESPONSE AND TRIGGER AN ACTION OF THE TURN                     *
+     *                METHODS THAT RECEIVE THE CLIENT RESPONSE AND TRIGGER AN ACTION ON THE TURN                     *
      *                          RESULTING IN ANOTHER COMMUNICATION WITH THE CLIENT                                   *
      * ***************************************************************************************************************/
 
@@ -135,44 +137,77 @@ public class Turn {
      */
 
     public void setChosenWorker(Worker chosenWorker) {
+
         this.chosenWorker = chosenWorker;
-        //there stops the cmd call by cli
 
-        // Check if the player's god will be applied to the move phase and then if it needs to be applied by default or it must be asked to the player
+        if(getPlayingPlayer().getPlayerGod().getToWhomIsApplied() == GodCard.ToWhomIsApplied.Owner)
+        {
+            // prometheus case
+            if(getPlayingPlayer().getPlayerGod().AllowExtraBuildBeforeMove())
+            {
+                // ask player if wanna build before moving (this will decorate the move subsequent !!!)
 
-        // qui bisogna controllare alcune cose:
-        // se il decorator viene applicato alla move
-        //    se il decorator non va chiesto all'utente -> si procede come è già scritto creando la movephase normale
-        //    se il decorator deve essere chiesto all'utente bisogna mandare il messaggio "Do you want to use your god card? [Yes/No]"
-        //         se risponde no -> si procede come è già scritto creando la movephase normale
-        //         se risponde si -> si crea una move phase decorata
-
-        // Lo stesso ragionamento andrà fatto quando il turno avrà finito la move e dovrà creare la build (quindi nel metodo setCandidateMove, e poi la end
-
-
-        movephase = new MovePhase(this.chosenWorker, this.santoriniMatch.getGameBoard());
-        this.phaseList.add(movephase);
-
-        MovePhase decoratedPhase = null;
-
-        if (playingPlayer.getPlayerGod().getWhereToApply() == GodCard.WhereToApply.AskBeforeMove) {
-
-            //ask whether to apply god power or not
-            //expects yes or no as an answer
-            askToUSeGodPower();
-
-            if(applyPower) {
-                applyDecorator(movephase);
-                movephase.startMovePhase();
-            }
-            else {
-                movephase.startMovePhase();
+                // and leave function.
+                return;
             }
         }
-        else if (playingPlayer.getPlayerGod().getWhereToApply() == GodCard.WhereToApply.ApplyBeforeMove) {
-            decoratedPhase = applyDecorator(movephase);
-            decoratedPhase.startMovePhase();
+
+        CreateMovePhase();
+    }
+
+    public void CreateMovePhase()
+    {
+        // create move phase and apply decorator to it.
+        // the decorated resulting phase is the one that is stored on the phase list
+        MovePhase phase = new MovePhase();
+        phase.Init(this.chosenWorker, this.santoriniMatch.getGameBoard());
+
+        // start applying player own god
+        Phase pl = applyDecorator(phase, playingPlayer.getPlayerGod().getGodType(), false);
+
+        // and then apply opponent gods
+        if(getPlayingPlayer().getOpponentsGodCards().size()>0)
+        {
+            Phase po1 = applyDecorator(pl, getPlayingPlayer().getOpponentsGodCards().get(0).getGodType(), true);
+            if(getPlayingPlayer().getOpponentsGodCards().size()>1)
+            {
+                Phase po2 = applyDecorator(po1, getPlayingPlayer().getOpponentsGodCards().get(1).getGodType(), true);
+                phaseList.add(po2);
+            }
+            else
+                phaseList.add(po1);
         }
+        else
+            phaseList.add(pl);
+
+        phaseList.get(phaseList.size()-1).startPhase();
+    }
+
+    public void CreateBuildPhase()
+    {
+        // create move phase and apply decorator to it.
+        // the decorated resulting phase is the one that is stored on the phase list
+        BuildPhase phase = new BuildPhase();
+        phase.Init(this.chosenWorker, this.santoriniMatch.getGameBoard());
+
+        Phase pl = applyDecorator(phase, playingPlayer.getPlayerGod().getGodType(), false);
+
+        // and then apply opponent gods
+        if(getPlayingPlayer().getOpponentsGodCards().size()>0)
+        {
+            Phase po1 = applyDecorator(pl, getPlayingPlayer().getOpponentsGodCards().get(0).getGodType(), true);
+            if(getPlayingPlayer().getOpponentsGodCards().size()>1)
+            {
+                Phase po2 = applyDecorator(po1, getPlayingPlayer().getOpponentsGodCards().get(1).getGodType(), true);
+                phaseList.add(po2);
+            }
+            else
+                phaseList.add(po1);
+        }
+        else
+            phaseList.add(pl);
+
+        phaseList.get(phaseList.size()-1).startPhase();
     }
 
     /**
@@ -180,6 +215,7 @@ public class Turn {
      * @param answer string containing yes or no
      */
     public void setAnswer(String answer) {
+
         applyPower = answer.equals("Yes");
     }
 
@@ -189,8 +225,19 @@ public class Turn {
      * @param chosenCellIndex cell where the worker is moving onto
      * @TODO create build phase
      */
-    public void setCandidateMove(int chosenCellIndex) {
-        this.movephase.setCandidateMove(chosenCellIndex);
+    public void MoveWorker(int chosenCellIndex) {
+
+        Cell cell = santoriniMatch.getGameBoard().getCell(chosenCellIndex);
+
+        if(phaseList.size()>0)
+        {
+            phaseList.get(phaseList.size()-1).performActionOnCell(cell);
+
+            if(phaseList.get(phaseList.size()-1).PlayerHasWon())
+            {
+
+            }
+        }
     }
 
 
@@ -204,30 +251,30 @@ public class Turn {
         playingPlayer.SendCommand(cmd);
     }
 
-    public Phase applyDecorator(ConcretePhase phasetodecorate) {
-        if (playingPlayer.getPlayerGod().getGodName().equals("Apollo")) {
-            return new ApolloDecorator(phasetodecorate);
+    public Phase applyDecorator(Phase phasetodecorate, GodCard.GodsType godType, boolean bActAsOpponentGod) {
+        if (godType == GodCard.GodsType.Apollo) {
+            return new ApolloDecorator(phasetodecorate, bActAsOpponentGod);
         }
-        if (playingPlayer.getPlayerGod().getGodName().equals("Artemis")) {
-            return new ArtemisDecorator(phasetodecorate);
+        if (godType == GodCard.GodsType.Artemis) {
+            return new ArtemisDecorator(phasetodecorate, bActAsOpponentGod);
         }
-        if (playingPlayer.getPlayerGod().getGodName().equals("Atlas")) {
-            return new AtlasDecorator(phasetodecorate);
+        if (godType == GodCard.GodsType.Atlas) {
+            return new AtlasDecorator(phasetodecorate, bActAsOpponentGod);
         }
-        if (playingPlayer.getPlayerGod().getGodName().equals("Demeter")) {
-            return new DemeterDecorator(phasetodecorate);
+        if (godType == GodCard.GodsType.Demeter) {
+            return new DemeterDecorator(phasetodecorate, bActAsOpponentGod);
         }
-        if (playingPlayer.getPlayerGod().getGodName().equals("Hephaestus")) {
-            return new HephaestusDecorator(phasetodecorate);
+        if (godType == GodCard.GodsType.Hephaestus) {
+            return new HephaestusDecorator(phasetodecorate, bActAsOpponentGod);
         }
-        if (playingPlayer.getPlayerGod().getGodName().equals("Minotaur")) {
-            return new MinotaurDecorator(phasetodecorate);
+        if (godType == GodCard.GodsType.Minotaur) {
+            return new MinotaurDecorator(phasetodecorate, bActAsOpponentGod);
         }
-        if (playingPlayer.getPlayerGod().getGodName().equals("Pan")) {
-            return new PanDecorator(phasetodecorate);
+        if (godType == GodCard.GodsType.Pan) {
+            return new PanDecorator(phasetodecorate, bActAsOpponentGod);
         }
-        if (playingPlayer.getPlayerGod().getGodName().equals("Prometheus")) {
-            return new PrometheusDecorator(phasetodecorate);
+        if (godType == GodCard.GodsType.Prometheus) {
+            return new PrometheusDecorator(phasetodecorate, bActAsOpponentGod);
         }
 
         return phasetodecorate;

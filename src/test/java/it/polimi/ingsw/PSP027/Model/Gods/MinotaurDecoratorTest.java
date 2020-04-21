@@ -33,7 +33,7 @@ public class MinotaurDecoratorTest {
     }
 
     /**
-     * Test performed in order to see if the  minotaur decorated movePhase overridden changeCandidateCells
+     * Test performed in order to see if the  minotaur decorated movePhase overridden evalCandidateCells
      * works properly
      */
 
@@ -44,9 +44,10 @@ public class MinotaurDecoratorTest {
         Cell x12 = gameBoard.getCell(5);
         Cell x22 = gameBoard.getCell(6);
         x22.addLevel();x22.addLevel();
-        MovePhase movePhase= new MovePhase(worker11,gameBoard);
+        MovePhase movePhase = new MovePhase();
+        movePhase.Init(worker11,gameBoard);
         minotaurDecoratedPhase =new MinotaurDecorator(movePhase);
-        minotaurDecoratedPhase.changeCandidateCells();
+        minotaurDecoratedPhase.evalCandidateCells();
         ArrayList<Cell> expectedList= new ArrayList<Cell>();
         expectedList.add(x12);
         expectedList.add(x21);
@@ -67,9 +68,10 @@ public class MinotaurDecoratorTest {
         x31.addLevel();x31.addLevel();
         Cell x11 = gameBoard.getCell(0);
 
-        MovePhase movePhase= new MovePhase(worker11,gameBoard);
+        MovePhase movePhase= new MovePhase();
+        movePhase.Init(worker11,gameBoard);
         minotaurDecoratedPhase =new MinotaurDecorator(movePhase);
-        minotaurDecoratedPhase.updateBoard(x21);
+        minotaurDecoratedPhase.performActionOnCell(x21);
         assertFalse(x11.isOccupiedByWorker());
         assertEquals(worker11.getWorkerPosition(), x21);
         assertEquals(worker21.getWorkerPosition(), x31);

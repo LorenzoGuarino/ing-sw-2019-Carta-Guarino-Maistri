@@ -11,19 +11,10 @@ import java.util.ArrayList;
  * @author danielecarta
  */
 
-public class BuildPhase extends ConcretePhase {
+public class BuildPhase extends Phase {
 
-    /**
-     * Constructor, builds a standard BuildPhase with a standard candidateBuildingCells list starting from the
-     * chosenWorker moved in the MovePhase and the board of the current turn
-     * @param chosenWorker worker that the player is playing the turn with
-     */
-
-    public BuildPhase(Worker chosenWorker, Board gameBoard) {
-        this.setGameBoard(gameBoard);
-        this.setChosenWorker(chosenWorker);
-        this.setCandidateCells(new ArrayList<Cell>());
-        changeCandidateCells();
+    public BuildPhase() {
+        SetType(PhaseType.Build);
     }
 
     /**
@@ -31,11 +22,18 @@ public class BuildPhase extends ConcretePhase {
      * is not occupied by any worker and has not a dome
      */
 
-    public void changeCandidateCells(){
-        Cell CurrentUpdatedWorkerPosition = this.getChosenWorker().getWorkerPosition();
+    @Override
+    public void evalCandidateCells(){
+        Cell CurrentUpdatedWorkerPosition = this.getWorker().getWorkerPosition();
         for(Cell candidateCell : this.getGameBoard().getNeighbouringCells(CurrentUpdatedWorkerPosition)) {
             if((!candidateCell.isOccupiedByWorker()) && (!candidateCell.checkDome())) {
-                this.getCandidateCells().add(candidateCell);
+                System.out.println("BUILD: evalCandidateCells inserting cell " + candidateCell.getCellIndex());
+                this.getCandidateCells().add(candidateCell);                                    //then add the cell to candidateCells
+            }
+            else
+            {
+                System.out.println("BUILD: changeCandidateCells discarding cell " + candidateCell.getCellIndex() + " (l=" +
+                        candidateCell.getLevel() + ", w=" + candidateCell.isOccupiedByWorker() + ", d=" + candidateCell.checkDome());
             }
         }
     }
@@ -46,7 +44,7 @@ public class BuildPhase extends ConcretePhase {
      */
 
     @Override
-    public void updateBoard(Cell chosenCell) {
+    public void performActionOnCell(Cell chosenCell) {
         if(chosenCell.getLevel() < 3){
             chosenCell.addLevel();
         }

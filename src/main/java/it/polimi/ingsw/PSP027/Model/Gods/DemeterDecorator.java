@@ -1,7 +1,7 @@
 package it.polimi.ingsw.PSP027.Model.Gods;
 
 import it.polimi.ingsw.PSP027.Model.Game.Cell;
-import it.polimi.ingsw.PSP027.Controller.ConcretePhase;
+import it.polimi.ingsw.PSP027.Controller.Phase;
 
 /**
  * @author danielecarta
@@ -11,8 +11,9 @@ public class DemeterDecorator extends GodPowerDecorator {
 
     private boolean powerUsed = false;
 
-    public DemeterDecorator(ConcretePhase decoratedPhase) {
-        super(decoratedPhase);
+    public DemeterDecorator(Phase decoratedPhase, boolean bActAsOpponentGod) {
+
+        super(decoratedPhase, bActAsOpponentGod);
     }
 
     /**
@@ -20,7 +21,7 @@ public class DemeterDecorator extends GodPowerDecorator {
      */
 
     @Override
-    public void changeCandidateCells() {
+    public void evalCandidateCells() {
 
     }
 
@@ -31,7 +32,7 @@ public class DemeterDecorator extends GodPowerDecorator {
      * @param chosenCell the Cell the worker wants to build onto
      */
     @Override
-    public void updateBoard(Cell chosenCell) {
+    public void performActionOnCell(Cell chosenCell) {
         if (this.getDecoratedPhase().getCandidateCells().contains(chosenCell)) {
             if (!powerUsed) {
                 if (chosenCell.getLevel() < 3) {

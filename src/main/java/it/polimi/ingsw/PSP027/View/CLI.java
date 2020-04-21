@@ -27,6 +27,7 @@ public class CLI implements Runnable, ClientObserver {
     private List<Integer> indexcandidatecells = new ArrayList<Integer>(); //used for move and build and is overwritten every time
     private String[] cellsToPrint = new String[25];
     private Map<String, String> NicknameColorMap = new HashMap<String, String>(); //maps the nickname to its assigned color for its workers on the board
+    private Map<String, String> NicknameHighlightMap = new HashMap<String, String>();
     private Map<String, String> NicknameGodMap = new HashMap<String, String>();
     private String playersAndGods;
 
@@ -69,6 +70,9 @@ public class CLI implements Runnable, ClientObserver {
     public static final String COLOR_PLAYER_1 = "\033[38;5;198m";
     public static final String COLOR_PLAYER_2 = "\033[38;5;48m";
     public static final String COLOR_PLAYER_3 = "\033[38;5;45m";
+    public static final String HIGHLIGHT_COLOR_PLAYER_1 = "\033[0;38;5;232;48;5;198m";
+    public static final String HIGHLIGHT_COLOR_PLAYER_2 = "\033[0;38;5;232;48;5;48m";
+    public static final String HIGHLIGHT_COLOR_PLAYER_3 = "\033[0;38;5;232;48;5;45m";
     public static final String ERROR_TEXT = "\033[0;38;5;196;48;5;232m";
 
     public void clearScreen() {
@@ -548,7 +552,7 @@ public class CLI implements Runnable, ClientObserver {
                         case cli_ManagePlacingFirstWorker: {
                             System.out.println("\nPlease place your first worker on the board.\n" + DEFAULT_ITALIC + DEFAULT_BOLD +
                                     "Remember:" + RESET + DEFAULT_ITALIC + " You cannot put your workers in already occupied cells, which can be distinguished by" +
-                                    "\ntheir different color corresponding to the color assigned to the player who owns those workers\n\n" + RESET +
+                                    "\ntheir different color corresponding to the color assigned to the player who owns those workers\n" + RESET +
                                     "Syntax to indicate the cells on which you want to place your worker: \"LetterNumber\"");
 
                             WaitForUserInput();
@@ -565,7 +569,7 @@ public class CLI implements Runnable, ClientObserver {
 
                                         //control that the position chosen was not occupied by another worker and is valid
                                         if(getNicknameOfCellNode(getCellNodeGivenTheID(chosencellindex)).isEmpty()) {
-                                            chosenposition[0] = position;
+                                            chosenposition[0] = Integer.toString(chosencellindex);
                                             gamestate = CLIGameState.cli_ManagePlacingSecondWorker;
                                         }
                                     }
@@ -577,7 +581,7 @@ public class CLI implements Runnable, ClientObserver {
                         case cli_ManagePlacingSecondWorker: {
                             System.out.println("\nPlease place your second worker on the board.\n" + DEFAULT_ITALIC + DEFAULT_BOLD +
                                     "Remember:" + RESET + DEFAULT_ITALIC + " You cannot put your workers in already occupied cells, which can be distinguished by" +
-                                    "\ntheir different color corresponding to the color assigned to the player who owns those workers\n\n" + RESET +
+                                    "\ntheir different color corresponding to the color assigned to the player who owns those workers\n" + RESET +
                                     "Syntax to indicate the cells on which you want to place your worker: \"LetterNumber\"");
 
                             WaitForUserInput();
@@ -595,7 +599,7 @@ public class CLI implements Runnable, ClientObserver {
 
                                         //control that the position chosen was not occupied by another worker and is valid
                                         if(getNicknameOfCellNode(getCellNodeGivenTheID(chosencellindex)).isEmpty() && !chosenposition[0].equals(position)) {
-                                            chosenposition[1] = position;
+                                            chosenposition[1] = Integer.toString(chosencellindex);
 
                                             cmdLine = WORKERSPOSITION_COMMAND + " " + chosenposition[0] + " " + chosenposition[1];
 
@@ -672,9 +676,8 @@ public class CLI implements Runnable, ClientObserver {
 
                             printBoard();
                             System.out.println("\nPlease select the cell you want to move on.\n" + DEFAULT_ITALIC + DEFAULT_BOLD +
-                                    "Remember:" + RESET + DEFAULT_ITALIC + " You can only select cells near your selected worker, marked by your " + NicknameColorMap.get(client.getNickname()) + "color" +
-                                    "\n" + RESET +
-                                    "Syntax to indicate the cell you want to select: \"LetterNumber\"");
+                                    "Remember:" + RESET + DEFAULT_ITALIC + " You can only select the " + SANTORINI_HIGHLIGHT + " highlighted " + RESET +
+                                    " cells\n" + "Syntax to indicate the cell you want to select: \"LetterNumber\"");
 
                             WaitForUserInput();
 
@@ -935,12 +938,15 @@ public class CLI implements Runnable, ClientObserver {
         for (int i = 0; i < players.size(); i++) {
             if (i == 0) {
                 NicknameColorMap.put(players.get(i), COLOR_PLAYER_1);
+                NicknameHighlightMap.put(players.get(i), HIGHLIGHT_COLOR_PLAYER_1);
                 System.out.println(TRIANGLE + " " + COLOR_PLAYER_1 + players.get(i) + RESET);
             } else if (i == 1) {
                 NicknameColorMap.put(players.get(i), COLOR_PLAYER_2);
+                NicknameHighlightMap.put(players.get(i), HIGHLIGHT_COLOR_PLAYER_2);
                 System.out.println(TRIANGLE + " " + COLOR_PLAYER_2 + players.get(i) + RESET);
             } else if (i == 2) {
                 NicknameColorMap.put(players.get(i), COLOR_PLAYER_3);
+                NicknameHighlightMap.put(players.get(i), HIGHLIGHT_COLOR_PLAYER_3);
                 System.out.println(TRIANGLE + " " + COLOR_PLAYER_3 + players.get(i) + RESET);
             }
 
@@ -1230,7 +1236,13 @@ public class CLI implements Runnable, ClientObserver {
                     if(!indexcandidatecells.isEmpty()) {
                         for(int j = 0; j < indexcandidatecells.size(); j++) {
                             if(indexcandidatecells.get(j) == id) {
-                                cellsToPrint[id] += SANTORINI_HIGHLIGHT;
+                                if(cell.getAttributes().getNamedItem("nickname").getTextContent().equals("")) {
+                                    cellsToPrint[id] += SANTORINI_HIGHLIGHT;
+                                }
+                                else {
+                                    cellsToPrint[id] += NicknameHighlightMap.get(cell.getAttributes().getNamedItem("nickname").getTextContent());
+                                }
+
                                 bCandidate = true;
                                 break;
                             }

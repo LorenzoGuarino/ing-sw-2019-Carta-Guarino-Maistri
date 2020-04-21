@@ -35,12 +35,12 @@ public class PrometheusDecoratorTest {
     }
 
     /**
-     * asserts that the first changeCandidateCells call gives a candidateCells list of candidateBuildingCells
+     * asserts that the first evalCandidateCells call gives a candidateCells list of candidateBuildingCells
      * even if that's a movePhase
      */
 
     @Test
-    public void changeCandidateCells_firstIterationGivesBuildingCandidates() {
+    public void evalCandidateCells_firstIterationGivesBuildingCandidates() {
         Cell x15 = gameBoard.getCell(20);
         Cell x14 = gameBoard.getCell(15);//lv2
         x14.addLevel();x14.addLevel();
@@ -55,9 +55,10 @@ public class PrometheusDecoratorTest {
         expectedList.add(x15);
         expectedList.add(x14);
         expectedList.add(x34);
-        MovePhase movephase = new MovePhase(worker11,gameBoard);
+        MovePhase movephase = new MovePhase();
+        movephase.Init(worker11,gameBoard);
         prometheusDecoratedPhase = new PrometheusDecorator(movephase);
-        prometheusDecoratedPhase.changeCandidateCells();
+        prometheusDecoratedPhase.evalCandidateCells();
         assertTrue(expectedList.containsAll(movephase.getCandidateCells()) && movephase.getCandidateCells().containsAll(expectedList));
     }
 
@@ -71,19 +72,20 @@ public class PrometheusDecoratorTest {
         x14.addLevel();x14.addLevel();
         Cell x25 = gameBoard.getCell(21);//workerPos
         worker11.changePosition(x25);
-        MovePhase movephase = new MovePhase(worker11,gameBoard);
+        MovePhase movephase = new MovePhase();
+        movephase.Init(worker11,gameBoard);
         prometheusDecoratedPhase = new PrometheusDecorator(movephase);
-        prometheusDecoratedPhase.changeCandidateCells();
-        prometheusDecoratedPhase.updateBoard(x14);
+        prometheusDecoratedPhase.evalCandidateCells();
+        prometheusDecoratedPhase.performActionOnCell(x14);
         assertEquals(3, x14.getLevel());
     }
 
     /**
-     * asserts that the second changeCandidateCells call gives a candidateCells list of candidateMoveCells
+     * asserts that the second evalCandidateCells call gives a candidateCells list of candidateMoveCells
      */
 
     @Test
-    public void changeCandidateCells_secondIterationGivesMoveCandidates() {
+    public void evalCandidateCells_secondIterationGivesMoveCandidates() {
         Cell x15 = gameBoard.getCell(20);
         Cell x14 = gameBoard.getCell(15);//lv0 im building onto, i cant move there
         Cell x25 = gameBoard.getCell(21);//workerPos
@@ -96,11 +98,12 @@ public class PrometheusDecoratorTest {
         ArrayList<Cell> expectedList = new ArrayList<>();
         expectedList.add(x15);
         expectedList.add(x34);
-        MovePhase movephase = new MovePhase(worker11,gameBoard);
+        MovePhase movephase = new MovePhase();
+        movephase.Init(worker11,gameBoard);
         prometheusDecoratedPhase = new PrometheusDecorator(movephase);
-        prometheusDecoratedPhase.changeCandidateCells();
-        prometheusDecoratedPhase.updateBoard(x14);
-        prometheusDecoratedPhase.changeCandidateCells();
+        prometheusDecoratedPhase.evalCandidateCells();
+        prometheusDecoratedPhase.performActionOnCell(x14);
+        prometheusDecoratedPhase.evalCandidateCells();
         assertTrue(expectedList.containsAll(movephase.getCandidateCells()) && movephase.getCandidateCells().containsAll(expectedList));
     }
 
@@ -115,12 +118,13 @@ public class PrometheusDecoratorTest {
         Cell x25 = gameBoard.getCell(21);//workerPos
         Cell x15 = gameBoard.getCell(20);
         worker11.changePosition(x25);
-        MovePhase movephase = new MovePhase(worker11,gameBoard);
+        MovePhase movephase = new MovePhase();
+        movephase.Init(worker11,gameBoard);
         prometheusDecoratedPhase = new PrometheusDecorator(movephase);
-        prometheusDecoratedPhase.changeCandidateCells();
-        prometheusDecoratedPhase.updateBoard(x14);
-        prometheusDecoratedPhase.changeCandidateCells();
-        prometheusDecoratedPhase.updateBoard(x15);
+        prometheusDecoratedPhase.evalCandidateCells();
+        prometheusDecoratedPhase.performActionOnCell(x14);
+        prometheusDecoratedPhase.evalCandidateCells();
+        prometheusDecoratedPhase.performActionOnCell(x15);
         assertEquals(3, x14.getLevel());
         assertTrue(x15.getOccupyingWorker().equals(worker11));
     }

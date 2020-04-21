@@ -1,7 +1,7 @@
 package it.polimi.ingsw.PSP027.Model.Gods;
 
 import it.polimi.ingsw.PSP027.Model.Game.Cell;
-import it.polimi.ingsw.PSP027.Controller.ConcretePhase;
+import it.polimi.ingsw.PSP027.Controller.Phase;
 import it.polimi.ingsw.PSP027.Controller.MovePhase;
 
 /**
@@ -11,18 +11,19 @@ public class ArtemisDecorator extends GodPowerDecorator {
 
     private boolean powerUsed = false;
 
-    public ArtemisDecorator(ConcretePhase decoratedPhase) {
-        super(decoratedPhase);
+    public ArtemisDecorator(Phase decoratedPhase, boolean bActAsOpponentGod) {
+
+        super(decoratedPhase, bActAsOpponentGod);
     }
 
     /**
      * used to get a new candidate cells list after the first move is performed
      */
     @Override
-    public void changeCandidateCells() {
+    public void evalCandidateCells() {
         if(powerUsed){
             this.getCandidateCells().clear();
-            Cell startingCell = this.getDecoratedPhase().getChosenWorker().getWorkerPosition();
+            Cell startingCell = this.getDecoratedPhase().getWorker().getWorkerPosition();
             for(Cell candidateCell : this.getGameBoard().getNeighbouringCells(startingCell)){
                 if((candidateCell.getLevel() <= startingCell.getLevel() + 1) && (!candidateCell.isOccupiedByWorker()) && (!candidateCell.checkDome())){
                     this.getCandidateCells().add(candidateCell);
@@ -37,25 +38,25 @@ public class ArtemisDecorator extends GodPowerDecorator {
      */
 
     @Override
-    public void updateBoard(Cell chosenCell) {
-        if(powerUsed){
-            MovePhase movePhase = (MovePhase) this.getDecoratedPhase();     //using movePhase to get startChosenWorkerLvl
-            this.getChosenWorker().changePosition(chosenCell);
-            if(movePhase.getStartChosenWorkerLvl()==2 && this.getChosenWorker().getWorkerPosition().getLevel()==3){
-                this.getChosenWorker().getWorkerOwner().setHasWon(true);
-            }
-        }
-        if (!powerUsed) {
-            MovePhase movePhase = (MovePhase) this.getDecoratedPhase();     //using movePhase to get startChosenWorkerLvl
-            Cell startingCell=this.getChosenWorker().getWorkerPosition();
-            this.getChosenWorker().changePosition(chosenCell);
-            if(movePhase.getStartChosenWorkerLvl()==2 && this.getChosenWorker().getWorkerPosition().getLevel()==3){    //check if the win conditions are verified
-                this.getChosenWorker().getWorkerOwner().setHasWon(true);
-            }
-            this.setPowerUsed(true);
-            this.changeCandidateCells();
-            this.getCandidateCells().remove(startingCell);
-        }
+    public void performActionOnCell(Cell chosenCell) {
+//        if(powerUsed){
+//            MovePhase movePhase = (MovePhase) this.getDecoratedPhase();     //using movePhase to get startChosenWorkerLvl
+//            this.getWorker().changePosition(chosenCell);
+//            if(movePhase.getStartChosenWorkerLvl()==2 && this.getWorker().getWorkerPosition().getLevel()==3){
+//                this.getWorker().getWorkerOwner().setHasWon(true);
+//            }
+//        }
+//        if (!powerUsed) {
+//            MovePhase movePhase = (MovePhase) this.getDecoratedPhase();     //using movePhase to get startChosenWorkerLvl
+//            Cell startingCell=this.getWorker().getWorkerPosition();
+//            this.getWorker().changePosition(chosenCell);
+//            if(movePhase.getStartChosenWorkerLvl()==2 && this.getWorker().getWorkerPosition().getLevel()==3){    //check if the win conditions are verified
+//                this.getWorker().getWorkerOwner().setHasWon(true);
+//            }
+//            this.setPowerUsed(true);
+//            this.changeCandidateCells();
+//            this.getCandidateCells().remove(startingCell);
+//        }
     }
 
     public void setPowerUsed(boolean powerUsed) {
