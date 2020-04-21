@@ -10,6 +10,8 @@ public class Worker {
     private Cell oldPosition;
     private Cell currentPosition;
     private Player owner;
+    private int movecount;
+    private int buildcount;
 
     /**
      * Constructor: creates a new worker, storing who is its owner and its index, setting its position to null
@@ -23,6 +25,34 @@ public class Worker {
         this.index = index;
         oldPosition = null;
         currentPosition = null;
+        movecount = 0;
+        buildcount = 0;
+    }
+
+    public void ResetWorkerCounters()
+    {
+        movecount = 0;
+        buildcount = 0;
+    }
+
+    public void IncrementMoveCounter()
+    {
+        movecount++;
+    }
+
+    public void IncrementBuildCounter()
+    {
+        buildcount++;
+    }
+
+    public int getMoveCounter()
+    {
+        return movecount;
+    }
+
+    public int getBuildCounter()
+    {
+        return buildcount;
     }
 
     /**

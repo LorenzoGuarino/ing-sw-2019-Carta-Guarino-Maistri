@@ -5,11 +5,9 @@ import it.polimi.ingsw.PSP027.Controller.Phase;
 import it.polimi.ingsw.PSP027.Controller.MovePhase;
 
 /**
- * @author danielecarta
+ * @author Elisa Maistri
  */
 public class ArtemisDecorator extends GodPowerDecorator {
-
-    private boolean powerUsed = false;
 
     public ArtemisDecorator(Phase decoratedPhase, boolean bActAsOpponentGod) {
 
@@ -19,49 +17,41 @@ public class ArtemisDecorator extends GodPowerDecorator {
     /**
      * used to get a new candidate cells list after the first move is performed
      */
+
     @Override
     public void evalCandidateCells() {
-        if(powerUsed){
-            this.getCandidateCells().clear();
-            Cell startingCell = this.getDecoratedPhase().getWorker().getWorkerPosition();
-            for(Cell candidateCell : this.getGameBoard().getNeighbouringCells(startingCell)){
-                if((candidateCell.getLevel() <= startingCell.getLevel() + 1) && (!candidateCell.isOccupiedByWorker()) && (!candidateCell.checkDome())){
-                    this.getCandidateCells().add(candidateCell);
+
+        // call nested phase evalCandidateCells
+        super.evalCandidateCells();
+
+        if(this.getWorker().getMoveCounter() == 1) {
+            // Artemis overrides only (second) move phase
+            if(IsAMovePhase()) {
+
+                // Artemis excludes the cell it started from from the new candidate moves
+
+                Cell startingCell = this.getWorker().getWorkerPosition();
+
+                for (Cell candidateCell : this.getGameBoard().getNeighbouringCells(startingCell)) {
+
+                    if(this.getWorker().getWorkerPrevPosition().getCellIndex() == candidateCell.getCellIndex()) {
+                        System.out.println("ARTEMIS: evalCandidateCells discarding cell " + candidateCell.getCellIndex() + " (l=" +
+                                candidateCell.getLevel() + ", w=" + candidateCell.isOccupiedByWorker() + ", d=" + candidateCell.checkDome());
+                        this.getCandidateCells().remove(candidateCell.getCellIndex());
+                    }
                 }
             }
         }
     }
 
     /**
-     * allow the player to move again but not on the same cell he s moved from the first time
-     * @param chosenCell the cell im performing the action
+     * Perform the move
+     * @param chosenCell the cell to move to
      */
 
     @Override
     public void performActionOnCell(Cell chosenCell) {
-//        if(powerUsed){
-//            MovePhase movePhase = (MovePhase) this.getDecoratedPhase();     //using movePhase to get startChosenWorkerLvl
-//            this.getWorker().changePosition(chosenCell);
-//            if(movePhase.getStartChosenWorkerLvl()==2 && this.getWorker().getWorkerPosition().getLevel()==3){
-//                this.getWorker().getWorkerOwner().setHasWon(true);
-//            }
-//        }
-//        if (!powerUsed) {
-//            MovePhase movePhase = (MovePhase) this.getDecoratedPhase();     //using movePhase to get startChosenWorkerLvl
-//            Cell startingCell=this.getWorker().getWorkerPosition();
-//            this.getWorker().changePosition(chosenCell);
-//            if(movePhase.getStartChosenWorkerLvl()==2 && this.getWorker().getWorkerPosition().getLevel()==3){    //check if the win conditions are verified
-//                this.getWorker().getWorkerOwner().setHasWon(true);
-//            }
-//            this.setPowerUsed(true);
-//            this.changeCandidateCells();
-//            this.getCandidateCells().remove(startingCell);
-//        }
+        super.performActionOnCell(chosenCell);
     }
-
-    public void setPowerUsed(boolean powerUsed) {
-        this.powerUsed = powerUsed;
-    }
-
 
 }

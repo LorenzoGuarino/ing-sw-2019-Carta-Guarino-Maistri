@@ -51,5 +51,8 @@ public class BuildPhase extends Phase {
         else{
             chosenCell.addDome();
         }
+
+        this.getWorker().IncrementBuildCounter();
+
     }
 }

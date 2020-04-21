@@ -49,5 +49,7 @@ public class MovePhase extends Phase {
     @Override
     public void performActionOnCell(Cell chosenCell){
         this.getWorker().changePosition(chosenCell);
+        this.getWorker().IncrementMoveCounter();
+
     }
 }

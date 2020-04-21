@@ -677,7 +677,7 @@ public class CLI implements Runnable, ClientObserver {
                             printBoard();
                             System.out.println("\nPlease select the cell you want to move on.\n" + DEFAULT_ITALIC + DEFAULT_BOLD +
                                     "Remember:" + RESET + DEFAULT_ITALIC + " You can only select the " + SANTORINI_HIGHLIGHT + " highlighted " + RESET +
-                                    " cells\n" + "Syntax to indicate the cell you want to select: \"LetterNumber\"");
+                                    " cells, which, if your god allows you to move in a cell occupied by one of your opponent's workers, are highlighted with your opponent's color.\n" + "Syntax to indicate the cell you want to select: \"LetterNumber\"");
 
                             WaitForUserInput();
 

@@ -12,6 +12,7 @@ public class AtlasDecorator extends GodPowerDecorator {
     public AtlasDecorator(Phase decoratedPhase, boolean bActAsOpponentGod) {
 
         super(decoratedPhase, bActAsOpponentGod);
+
     }
 
     /**
