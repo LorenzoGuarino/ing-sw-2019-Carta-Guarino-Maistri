@@ -6,7 +6,6 @@ import it.polimi.ingsw.PSP027.Model.Game.Player;
 import it.polimi.ingsw.PSP027.Model.Game.Worker;
 import it.polimi.ingsw.PSP027.Model.Gods.*;
 import it.polimi.ingsw.PSP027.Network.ProtocolTypes;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,6 +41,10 @@ public class Turn {
         ChooseWorker();
     }
 
+    /**
+     * Method that prepares the command to send to the client when asking it to choose the worker to play the turn with and actually sends the command
+     */
+
     public void ChooseWorker()
     {
         String cmd = "<cmd><id>" + ProtocolTypes.protocolCommand.srv_ChooseWorker.toString() + "</id><data>";
@@ -50,7 +53,69 @@ public class Turn {
 
         playingPlayer.SendCommand(cmd);
     }
-    /* ********************************* UTILITY METHODS OF THE TURN ************************************ */
+
+    /* ***************************************************************************************************************
+     *                METHODS THAT RECEIVE THE CLIENT RESPONSE AND TRIGGER AN ACTION ON THE TURN                     *
+     *                          RESULTING IN ANOTHER COMMUNICATION WITH THE CLIENT                                   *
+     * ***************************************************************************************************************/
+
+    /**
+     * Method that sets the chosen worker by the user that will play the turn and instantiates the move phase
+     *
+     * @param chosenWorker worker chosen by the user
+     */
+
+    public void setChosenWorker(Worker chosenWorker) {
+
+        this.chosenWorker = chosenWorker;
+
+        if(getPlayingPlayer().getPlayerGod().getToWhomIsApplied() == GodCard.ToWhomIsApplied.Owner)
+        {
+            // prometheus case
+            if(getPlayingPlayer().getPlayerGod().AllowExtraBuildBeforeMove())
+            {
+                // ask player if wanna build before moving (this will decorate the move subsequent !!!)
+
+                // and leave function.
+                return;
+            }
+        }
+
+        CreateMovePhase();
+    }
+
+    /**
+     * Method that gets the answer of the client on whether it wants to apply the god's power or not
+     * @param answer string containing yes or no
+     */
+    public void setAnswer(String answer) {
+
+        applyPower = answer.equals("Yes");
+    }
+
+    /**
+     * Method that updates the board with the new position of the worker
+     *
+     * @param chosenCellIndex cell where the worker is moving onto
+     * @TODO create build phase
+     */
+    public void MoveWorker(int chosenCellIndex) {
+
+        Cell cell = santoriniMatch.getGameBoard().getCell(chosenCellIndex);
+
+        if(phaseList.size()>0)
+        {
+            phaseList.get(phaseList.size()-1).performActionOnCell(cell);
+
+            if(phaseList.get(phaseList.size()-1).PlayerHasWon())
+            {
+
+            }
+        }
+    }
+
+
+    /* ******************************************** UTILITY METHODS OF THE TURN ****************************************** */
 
     /**
      * Method to get the player that is playing the turn
@@ -125,35 +190,19 @@ public class Turn {
     }
 
 
-    /* ***************************************************************************************************************
-     *                METHODS THAT RECEIVE THE CLIENT RESPONSE AND TRIGGER AN ACTION ON THE TURN                     *
-     *                          RESULTING IN ANOTHER COMMUNICATION WITH THE CLIENT                                   *
-     * ***************************************************************************************************************/
+    /**
+     * Method that prepares the command when asking the client to choose whether to use the god power or not and actually sends the command
+     */
+    public void askToUSeGodPower() {
+        String cmd = "<cmd><id>" + ProtocolTypes.protocolCommand.srv_AskBeforeApplyingGod.toString()  + "</id><data>";
+        cmd += this.santoriniMatch.boardToXMLString();
+        cmd += "</data></cmd>";
+        playingPlayer.SendCommand(cmd);
+    }
 
     /**
-     * Method that sets the chosen worker by the user that will play the turn and instantiates the move phase
-     *
-     * @param chosenWorker worker chosen by the user
+     * Method that creates a move phase, applying the right decorator to it
      */
-
-    public void setChosenWorker(Worker chosenWorker) {
-
-        this.chosenWorker = chosenWorker;
-
-        if(getPlayingPlayer().getPlayerGod().getToWhomIsApplied() == GodCard.ToWhomIsApplied.Owner)
-        {
-            // prometheus case
-            if(getPlayingPlayer().getPlayerGod().AllowExtraBuildBeforeMove())
-            {
-                // ask player if wanna build before moving (this will decorate the move subsequent !!!)
-
-                // and leave function.
-                return;
-            }
-        }
-
-        CreateMovePhase();
-    }
 
     public void CreateMovePhase()
     {
@@ -162,94 +211,65 @@ public class Turn {
         MovePhase phase = new MovePhase();
         phase.Init(this.chosenWorker, this.santoriniMatch.getGameBoard());
 
-        // start applying player own god
-        Phase pl = applyDecorator(phase, playingPlayer.getPlayerGod().getGodType(), false);
+        // start applying player's own god
+        Phase playergodphase = applyDecorator(phase, playingPlayer.getPlayerGod().getGodType(), false);
 
-        // and then apply opponent gods
-        if(getPlayingPlayer().getOpponentsGodCards().size()>0)
+        // and then apply opponent gods to the already decorated phase by the player's own god card
+        if(getPlayingPlayer().getOpponentsGodCards().size() > 0)
         {
-            Phase po1 = applyDecorator(pl, getPlayingPlayer().getOpponentsGodCards().get(0).getGodType(), true);
+            Phase opponentgodphase1 = applyDecorator(playergodphase, getPlayingPlayer().getOpponentsGodCards().get(0).getGodType(), true);
             if(getPlayingPlayer().getOpponentsGodCards().size()>1)
             {
-                Phase po2 = applyDecorator(po1, getPlayingPlayer().getOpponentsGodCards().get(1).getGodType(), true);
-                phaseList.add(po2);
+                Phase opponentgodphase2 = applyDecorator(opponentgodphase1, getPlayingPlayer().getOpponentsGodCards().get(1).getGodType(), true);
+                phaseList.add(opponentgodphase2);
             }
             else
-                phaseList.add(po1);
+                phaseList.add(opponentgodphase1);
         }
         else
-            phaseList.add(pl);
+            phaseList.add(playergodphase);
 
         phaseList.get(phaseList.size()-1).startPhase();
     }
 
+    /**
+     * Method that creates a build phase, applying the right decorator to it
+     */
+
     public void CreateBuildPhase()
     {
-        // create move phase and apply decorator to it.
+        // create build phase and apply decorator to it.
         // the decorated resulting phase is the one that is stored on the phase list
         BuildPhase phase = new BuildPhase();
         phase.Init(this.chosenWorker, this.santoriniMatch.getGameBoard());
 
-        Phase pl = applyDecorator(phase, playingPlayer.getPlayerGod().getGodType(), false);
+        Phase playergodphase = applyDecorator(phase, playingPlayer.getPlayerGod().getGodType(), false);
 
         // and then apply opponent gods
         if(getPlayingPlayer().getOpponentsGodCards().size()>0)
         {
-            Phase po1 = applyDecorator(pl, getPlayingPlayer().getOpponentsGodCards().get(0).getGodType(), true);
+            Phase opponentgodphase1 = applyDecorator(playergodphase, getPlayingPlayer().getOpponentsGodCards().get(0).getGodType(), true);
             if(getPlayingPlayer().getOpponentsGodCards().size()>1)
             {
-                Phase po2 = applyDecorator(po1, getPlayingPlayer().getOpponentsGodCards().get(1).getGodType(), true);
-                phaseList.add(po2);
+                Phase opponentgodphase2 = applyDecorator(opponentgodphase1, getPlayingPlayer().getOpponentsGodCards().get(1).getGodType(), true);
+                phaseList.add(opponentgodphase2);
             }
             else
-                phaseList.add(po1);
+                phaseList.add(opponentgodphase1);
         }
         else
-            phaseList.add(pl);
+            phaseList.add(playergodphase);
 
-        phaseList.get(phaseList.size()-1).startPhase();
+        phaseList.get(phaseList.size()-1).startPhase(); //actually calls the method startPhase of the player's own decorator
     }
 
     /**
-     * Method that gets the answer of the client on whether it wants to apply the god's power or not
-     * @param answer string containing yes or no
+     * Method to call when applying a decorator
+     * @param phasetodecorate phase to decorate
+     * @param godType god with which to decorate the phase
+     * @param bActAsOpponentGod boolean that indicates if the decorator is applied by an opponent
+     * @return the decorated phase
      */
-    public void setAnswer(String answer) {
-
-        applyPower = answer.equals("Yes");
-    }
-
-    /**
-     * Method that updates the board with the new position of the worker
-     *
-     * @param chosenCellIndex cell where the worker is moving onto
-     * @TODO create build phase
-     */
-    public void MoveWorker(int chosenCellIndex) {
-
-        Cell cell = santoriniMatch.getGameBoard().getCell(chosenCellIndex);
-
-        if(phaseList.size()>0)
-        {
-            phaseList.get(phaseList.size()-1).performActionOnCell(cell);
-
-            if(phaseList.get(phaseList.size()-1).PlayerHasWon())
-            {
-
-            }
-        }
-    }
-
-
-
-    /* ********************************************** UTILITY METHOD FOR TURN **************************************** */
-
-    public void askToUSeGodPower() {
-        String cmd = "<cmd><id>" + ProtocolTypes.protocolCommand.srv_AskBeforeApplyingGod.toString()  + "</id><data>";
-        cmd += this.santoriniMatch.boardToXMLString();
-        cmd += "</data></cmd>";
-        playingPlayer.SendCommand(cmd);
-    }
 
     public Phase applyDecorator(Phase phasetodecorate, GodCard.GodsType godType, boolean bActAsOpponentGod) {
         if (godType == GodCard.GodsType.Apollo) {

@@ -55,7 +55,7 @@ public class HephaestusDecoratorTest {
         expectedList.add(x34);
         BuildPhase buildPhase = new BuildPhase();
         buildPhase.Init(worker11,gameBoard);
-        hephaestusDecoratedPhase = new HephaestusDecorator(buildPhase);
+        hephaestusDecoratedPhase = new HephaestusDecorator(buildPhase, false);
         hephaestusDecoratedPhase.evalCandidateCells();
         assertTrue(expectedList.containsAll(buildPhase.getCandidateCells()) && buildPhase.getCandidateCells().containsAll(expectedList));
     }
@@ -78,7 +78,7 @@ public class HephaestusDecoratorTest {
         worker21.changePosition(x35);
         BuildPhase buildPhase = new BuildPhase();
         buildPhase.Init(worker11,gameBoard);
-        hephaestusDecoratedPhase = new HephaestusDecorator(buildPhase);
+        hephaestusDecoratedPhase = new HephaestusDecorator(buildPhase, false);
         hephaestusDecoratedPhase.performActionOnCell(x14);
         assertTrue(x14.getLevel()==3 && !x14.checkDome());
     }
@@ -101,7 +101,7 @@ public class HephaestusDecoratorTest {
         worker21.changePosition(x35);
         BuildPhase buildPhase = new BuildPhase();
         buildPhase.Init(worker11,gameBoard);
-        hephaestusDecoratedPhase = new HephaestusDecorator(buildPhase);
+        hephaestusDecoratedPhase = new HephaestusDecorator(buildPhase, false);
         hephaestusDecoratedPhase.performActionOnCell(x14);
         assertTrue(x14.getLevel()==3 && !x14.checkDome());
     }
@@ -124,7 +124,7 @@ public class HephaestusDecoratorTest {
         worker21.changePosition(x35);
         BuildPhase buildPhase = new BuildPhase();
         buildPhase.Init(worker11,gameBoard);
-        hephaestusDecoratedPhase = new HephaestusDecorator(buildPhase);
+        hephaestusDecoratedPhase = new HephaestusDecorator(buildPhase, false);
         hephaestusDecoratedPhase.performActionOnCell(x14);
         assertTrue(x14.getLevel()==3 && x14.checkDome());
     }

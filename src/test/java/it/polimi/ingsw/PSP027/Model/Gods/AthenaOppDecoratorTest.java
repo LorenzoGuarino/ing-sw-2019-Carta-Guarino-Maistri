@@ -45,7 +45,7 @@ public class AthenaOppDecoratorTest {
         x22.addLevel();
         MovePhase movePhase= new MovePhase();
         movePhase.Init(worker11,gameBoard);
-        athenaOppDecoratedPhase = new AthenaOppDecorator(movePhase);
+        athenaOppDecoratedPhase = new AthenaOppDecorator(movePhase, true);
         athenaOppDecoratedPhase.evalCandidateCells();
     }
 
@@ -64,9 +64,9 @@ public class AthenaOppDecoratorTest {
         x22.addLevel();
         MovePhase movePhase= new MovePhase();
         movePhase.Init(worker11,gameBoard);
-        apolloDecoratedPhase = new ApolloDecorator(movePhase);
+        apolloDecoratedPhase = new ApolloDecorator(movePhase, true);
         apolloDecoratedPhase.evalCandidateCells();
-        athenaOppDecoratedPhase = new AthenaOppDecorator(movePhase);
+        athenaOppDecoratedPhase = new AthenaOppDecorator(movePhase, true);
         athenaOppDecoratedPhase.evalCandidateCells();
         ArrayList<Cell> expectedList= new ArrayList<Cell>();
         expectedList.add(x12);
@@ -91,9 +91,9 @@ public class AthenaOppDecoratorTest {
         x22.addLevel();
         MovePhase movePhase= new MovePhase();
         movePhase.Init(worker11,gameBoard);
-        apolloDecoratedPhase = new ApolloDecorator(movePhase);
+        apolloDecoratedPhase = new ApolloDecorator(movePhase, true);
         apolloDecoratedPhase.evalCandidateCells();
-        athenaOppDecoratedPhase = new AthenaOppDecorator(movePhase);
+        athenaOppDecoratedPhase = new AthenaOppDecorator(movePhase, true);
         athenaOppDecoratedPhase.evalCandidateCells();
         ArrayList<Cell> expectedList= new ArrayList<Cell>();
         expectedList.add(x12);
@@ -112,9 +112,9 @@ public class AthenaOppDecoratorTest {
         x22.addLevel();
         MovePhase movePhase= new MovePhase();
         movePhase.Init(worker11,gameBoard);
-        apolloDecoratedPhase = new ApolloDecorator(movePhase);
+        apolloDecoratedPhase = new ApolloDecorator(movePhase, true);
         apolloDecoratedPhase.evalCandidateCells();
-        athenaOppDecoratedPhase = new AthenaOppDecorator(movePhase);
+        athenaOppDecoratedPhase = new AthenaOppDecorator(movePhase, true);
         movePhase.performActionOnCell(x12);
         apolloDecoratedPhase.performActionOnCell(x12);
         assertTrue(worker11.getWorkerPosition().equals(x12));

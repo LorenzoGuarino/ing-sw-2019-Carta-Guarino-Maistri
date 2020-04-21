@@ -57,7 +57,7 @@ public class PrometheusDecoratorTest {
         expectedList.add(x34);
         MovePhase movephase = new MovePhase();
         movephase.Init(worker11,gameBoard);
-        prometheusDecoratedPhase = new PrometheusDecorator(movephase);
+        prometheusDecoratedPhase = new PrometheusDecorator(movephase, false);
         prometheusDecoratedPhase.evalCandidateCells();
         assertTrue(expectedList.containsAll(movephase.getCandidateCells()) && movephase.getCandidateCells().containsAll(expectedList));
     }
@@ -74,7 +74,7 @@ public class PrometheusDecoratorTest {
         worker11.changePosition(x25);
         MovePhase movephase = new MovePhase();
         movephase.Init(worker11,gameBoard);
-        prometheusDecoratedPhase = new PrometheusDecorator(movephase);
+        prometheusDecoratedPhase = new PrometheusDecorator(movephase, false);
         prometheusDecoratedPhase.evalCandidateCells();
         prometheusDecoratedPhase.performActionOnCell(x14);
         assertEquals(3, x14.getLevel());
@@ -100,7 +100,7 @@ public class PrometheusDecoratorTest {
         expectedList.add(x34);
         MovePhase movephase = new MovePhase();
         movephase.Init(worker11,gameBoard);
-        prometheusDecoratedPhase = new PrometheusDecorator(movephase);
+        prometheusDecoratedPhase = new PrometheusDecorator(movephase,false);
         prometheusDecoratedPhase.evalCandidateCells();
         prometheusDecoratedPhase.performActionOnCell(x14);
         prometheusDecoratedPhase.evalCandidateCells();
@@ -120,7 +120,7 @@ public class PrometheusDecoratorTest {
         worker11.changePosition(x25);
         MovePhase movephase = new MovePhase();
         movephase.Init(worker11,gameBoard);
-        prometheusDecoratedPhase = new PrometheusDecorator(movephase);
+        prometheusDecoratedPhase = new PrometheusDecorator(movephase, false);
         prometheusDecoratedPhase.evalCandidateCells();
         prometheusDecoratedPhase.performActionOnCell(x14);
         prometheusDecoratedPhase.evalCandidateCells();

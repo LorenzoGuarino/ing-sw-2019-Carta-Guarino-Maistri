@@ -10,6 +10,12 @@ import it.polimi.ingsw.PSP027.Model.Game.Worker;
  * */
 public class ApolloDecorator extends GodPowerDecorator {
 
+    /**
+     * Constructor : sets the phase the decorator is decorating and a boolean that if it is set as true tells
+     * that the decorator acts when it is played by an opponent of the god card's owner
+     * @param decoratedPhase pahse the decorator is going to decorate
+     * @param bActAsOpponentGod true if the god card will act only when it is being played as an opponent god card, otherwise it is false
+     */
     public ApolloDecorator(Phase decoratedPhase, boolean bActAsOpponentGod) {
         super(decoratedPhase, bActAsOpponentGod);
     }
@@ -50,7 +56,7 @@ public class ApolloDecorator extends GodPowerDecorator {
     }
 
     /**
-     * This method is called in a movePhase in order to update the board according to the decorator,in case it modifies the board itself
+     * This method is called in a decorated movePhase in order to update the board according to the decorator
      * @param chosenCell the cell it is stepping onto
      */
 

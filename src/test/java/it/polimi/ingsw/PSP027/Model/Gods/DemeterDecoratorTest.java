@@ -55,7 +55,7 @@ public class DemeterDecoratorTest {
         expectedList.add(x34);
         BuildPhase buildPhase = new BuildPhase();
         buildPhase.Init(worker11,gameBoard);
-        demeterDecoratedPhase = new DemeterDecorator(buildPhase);
+        demeterDecoratedPhase = new DemeterDecorator(buildPhase, false);
         demeterDecoratedPhase.evalCandidateCells();
         assertTrue(expectedList.containsAll(buildPhase.getCandidateCells()) && buildPhase.getCandidateCells().containsAll(expectedList));
     }
@@ -78,7 +78,7 @@ public class DemeterDecoratorTest {
         worker21.changePosition(x35);
         BuildPhase buildPhase = new BuildPhase();
         buildPhase.Init(worker11,gameBoard);
-        demeterDecoratedPhase = new DemeterDecorator(buildPhase);
+        demeterDecoratedPhase = new DemeterDecorator(buildPhase, false);
         demeterDecoratedPhase.performActionOnCell(x14);
         assertTrue(x14.getLevel()==3);
     }
@@ -102,7 +102,7 @@ public class DemeterDecoratorTest {
         worker21.changePosition(x35);
         BuildPhase buildPhase = new BuildPhase();
         buildPhase.Init(worker11,gameBoard);
-        demeterDecoratedPhase = new DemeterDecorator(buildPhase);
+        demeterDecoratedPhase = new DemeterDecorator(buildPhase, false);
         demeterDecoratedPhase.performActionOnCell(x14);
         demeterDecoratedPhase.performActionOnCell(x14);
         assertTrue(x14.getLevel()==3 && !x14.checkDome());
@@ -126,7 +126,7 @@ public class DemeterDecoratorTest {
         worker21.changePosition(x35);
         BuildPhase buildPhase = new BuildPhase();
         buildPhase.Init(worker11,gameBoard);
-        demeterDecoratedPhase = new DemeterDecorator(buildPhase);
+        demeterDecoratedPhase = new DemeterDecorator(buildPhase, false);
         demeterDecoratedPhase.performActionOnCell(x34);
         demeterDecoratedPhase.performActionOnCell(x14);
         assertTrue(x14.getLevel()==3 && x34.getLevel()==1);

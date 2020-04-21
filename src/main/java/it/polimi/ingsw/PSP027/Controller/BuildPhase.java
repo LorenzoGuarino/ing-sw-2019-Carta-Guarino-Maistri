@@ -1,10 +1,6 @@
 package it.polimi.ingsw.PSP027.Controller;
 
-import it.polimi.ingsw.PSP027.Model.Game.Board;
 import it.polimi.ingsw.PSP027.Model.Game.Cell;
-import it.polimi.ingsw.PSP027.Model.Game.Worker;
-
-import java.util.ArrayList;
 
 /**
  * @author Elisa Maistri
@@ -12,6 +8,10 @@ import java.util.ArrayList;
  */
 
 public class BuildPhase extends Phase {
+
+    /**
+     * Constructor: when creating the build phase it sets the phase's type as phase type "Build"
+     */
 
     public BuildPhase() {
         SetType(PhaseType.Build);

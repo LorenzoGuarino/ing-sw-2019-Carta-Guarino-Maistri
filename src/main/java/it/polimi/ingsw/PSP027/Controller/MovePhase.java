@@ -1,12 +1,6 @@
 package it.polimi.ingsw.PSP027.Controller;
 
-import it.polimi.ingsw.PSP027.Model.Game.Board;
 import it.polimi.ingsw.PSP027.Model.Game.Cell;
-import it.polimi.ingsw.PSP027.Model.Game.Player;
-import it.polimi.ingsw.PSP027.Model.Game.Worker;
-import it.polimi.ingsw.PSP027.Network.ProtocolTypes;
-
-import java.util.ArrayList;
 
 /**
  * @author danielecarta
@@ -15,6 +9,10 @@ import java.util.ArrayList;
  */
 
 public class MovePhase extends Phase {
+
+    /**
+     * Constructor: when creating the move phase it sets the phase's type as phase type "Move"
+     */
 
     public MovePhase() {
         SetType(PhaseType.Move);

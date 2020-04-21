@@ -47,7 +47,7 @@ public class ArtemisDecoratorTest {
         x22.addLevel();x22.addLevel();
         MovePhase movePhase= new MovePhase();
         movePhase.Init(worker11,gameBoard);
-        artemisDecoratedPhase =new ArtemisDecorator(movePhase);
+        artemisDecoratedPhase = new ArtemisDecorator(movePhase, false);
         artemisDecoratedPhase.evalCandidateCells();
         ArrayList<Cell> expectedList= new ArrayList<Cell>();
         expectedList.add(x12);
@@ -68,7 +68,7 @@ public class ArtemisDecoratorTest {
         x22.addLevel();x22.addLevel();
         MovePhase movePhase= new MovePhase();
         movePhase.Init(worker11,gameBoard);
-        artemisDecoratedPhase =new ArtemisDecorator(movePhase);
+        artemisDecoratedPhase = new ArtemisDecorator(movePhase, false);
         artemisDecoratedPhase.evalCandidateCells();
         artemisDecoratedPhase.performActionOnCell(x12);
         assertTrue(worker11.getWorkerPosition().equals(x12));
@@ -91,7 +91,7 @@ public class ArtemisDecoratorTest {
 
         MovePhase movePhase= new MovePhase();
         movePhase.Init(worker11,gameBoard);
-        artemisDecoratedPhase =new ArtemisDecorator(movePhase);
+        artemisDecoratedPhase = new ArtemisDecorator(movePhase, false);
         artemisDecoratedPhase.evalCandidateCells();
         artemisDecoratedPhase.performActionOnCell(x12);
         ArrayList<Cell> expectedList= new ArrayList<Cell>();

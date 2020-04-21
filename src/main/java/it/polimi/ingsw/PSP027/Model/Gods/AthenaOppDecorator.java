@@ -10,6 +10,8 @@ import java.util.List;
  * @author danielecarta
  */
 
+//@TODO transfer this in Athena Decorator as it is not necessary
+
 public class AthenaOppDecorator extends GodPowerDecorator {
 
     public AthenaOppDecorator(Phase decoratedPhase, boolean bActAsOpponentGod)

@@ -5,7 +5,6 @@ import it.polimi.ingsw.PSP027.Model.Game.Cell;
 import it.polimi.ingsw.PSP027.Model.Game.Player;
 import it.polimi.ingsw.PSP027.Model.Game.Worker;
 import it.polimi.ingsw.PSP027.Network.ProtocolTypes;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,8 +15,10 @@ import java.util.List;
 
 public class Phase {
 
-    public enum PhaseType {
+    // enum that indicates the type of phase the decorated actual phase will be
+    //@TODO might need to add "End"
 
+    public enum PhaseType {
         Undefined,
         Move,
         Build
@@ -28,14 +29,34 @@ public class Phase {
     private Board gameBoard = null;
     private PhaseType phaseType = PhaseType.Undefined;
 
+
+    /**
+     * Constructor
+     */
+
     public Phase(){
 
     }
+
+    /**
+     * Method that sets the phase's type as the one it is given. Call this method in order to change the
+     * type of the phase from Undefined (set when the phase is created) to Build or Move
+     * @param phaseType phase type to set as this phase type
+     */
 
     public void SetType(PhaseType phaseType)
     {
         this.phaseType = phaseType;
     }
+
+
+    /**
+     * Method to call when creating a phase. It creates an empty list of candidate cells that will then be filled at the right moment,
+     * it sets the phase type as undefined for the time being, until it will be changed to the right type, it sets the chosen worker
+     * and the game board that will be used for the phase
+     * @param chosenWorker worker chosen to play the turn (so the phase) with
+     * @param gameBoard the currently updated board on which the player has to play the phase
+     */
 
     public void Init(Worker chosenWorker, Board gameBoard)
     {
@@ -45,30 +66,70 @@ public class Phase {
         this.gameBoard = gameBoard;
     }
 
+    /**
+     * Method to call when creating a phase, defined in the god power decorator as when the decorated phase will call the start phase
+     * the action will be executed by the decorator who extends the phase and therefore will override this method
+     */
+
+    public void startPhase() {
+        // method that is overridden by the god power decorator that extends the phase
+        // in order to create a decorated phase that will be the one to play the turn with
+    }
+
+    /**
+     * Method that tells if this phase is a build
+     * @return true if it is, otherwise false
+     */
+
     public boolean IsABuildPhase() {
 
         return (phaseType == PhaseType.Build);
     }
+
+    /**
+     * Method that tells if this phase is a move
+     * @return true if it is, otherwise false
+     */
 
     public boolean IsAMovePhase() {
 
         return (phaseType == PhaseType.Move);
     }
 
+    /**
+     * Method to get the phase's candidate cells
+     * @return the list of candidate cells
+     */
+
     public List<Cell> getCandidateCells() {
 
         return candidateCells;
     }
+
+    /**
+     * Method to get the game board on which the phase is being played
+     * @return the game board
+     */
 
     public Board getGameBoard() {
 
         return gameBoard;
     }
 
+    /**
+     * Method to get the player who is playing the phase
+     * @return the chosenworker's if it's not null, otherwise null
+     */
+
     public Player getPlayingPlayer() {
 
         return (chosenWorker != null) ? chosenWorker.getWorkerOwner() : null;
     }
+
+    /**
+     * Mehtod to get the chosen worker tha player is playing the phase with
+     * @return the chosenworker
+     */
 
     public Worker getWorker() {
 
@@ -83,10 +144,16 @@ public class Phase {
 
     /**
      * Updates the the board of each phase according to its type and the action performed on the given cell
-     * @param chosenCell
+     * @param chosenCell chosen cell on which to perform the action
      */
 
     public void performActionOnCell(Cell chosenCell) {}
+
+
+    /**
+     * Method that checks if a player has won, if so it sets the boolean stating so in the player info, and then return true, otherwise false
+     * @return true if the player has won, otherwise false
+     */
 
     public boolean PlayerHasWon()
     {
@@ -101,12 +168,13 @@ public class Phase {
         return false;
     }
 
-    /**
-     * Method to call when creating the move phase in order to trigger the start of the phase and the communication with the client
-     */
 
-    public void startPhase() {
-    }
+    /* ********************************************* PHASE UTILITY METHODS ****************************************** */
+
+    /**
+     * Method used to send the board with teh candidate cells to the client by the phase
+     * @param command protocol command to send with the board and the candidate cells
+     */
 
     public void SendCandidateCells(ProtocolTypes.protocolCommand command){
 

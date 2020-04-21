@@ -33,42 +33,42 @@ public class ApolloDecoratorTest {
     }
 
     /**
-     * Test performed in order to see if the  minotaur decorated movePhase overridden evalCandidateCells
-     * works properly
+     * Test performed in order to see if the apollo decorated movePhase overridden
+     * evalCandidateCells works properly
      */
 
     @Test
-    public void changeCandidateMoves_withAnOpponentWorkerNeighboring(){
-        Cell x21 = gameBoard.getCell(1);//opponentWorkerInNeighboringCell,i should be able to move there
+    public void evalCandidateCells_withAnOpponentWorkerNeighboring(){
+        Cell x21 = gameBoard.getCell(1); //opponentWorkerInNeighboringCell, player with Apollo should be able to move there
         worker21.changePosition(gameBoard.getCell(1));
         Cell x12 = gameBoard.getCell(5);
         Cell x22 = gameBoard.getCell(6);
-        x22.addLevel();x22.addLevel();
-        MovePhase movePhase= new MovePhase();
+        x22.addLevel();
+        x22.addLevel();
+        MovePhase movePhase = new MovePhase();
         movePhase.Init(worker11,gameBoard);
-        apolloDecoratedPhase =new ApolloDecorator(movePhase);
+        apolloDecoratedPhase = new ApolloDecorator(movePhase, false);
         apolloDecoratedPhase.evalCandidateCells();
-        ArrayList<Cell> expectedList= new ArrayList<Cell>();
+        ArrayList<Cell> expectedList = new ArrayList<Cell>();
         expectedList.add(x12);
         expectedList.add(x21);
-        assertTrue(expectedList.containsAll(movePhase.getCandidateCells())&&movePhase.getCandidateCells().containsAll(expectedList));
+        assertTrue(expectedList.containsAll(movePhase.getCandidateCells()) && movePhase.getCandidateCells().containsAll(expectedList));
     }
 
     /**
-     * Test performed in order to see if the  apollo decorated movePhase overridden updateBoard
-     * works properly
+     * Test performed in order to see if the apollo decorated movePhase overridden
+     * performActionOnCell works properly
      */
 
     @Test
-    public void updateBoard_swappingPositionWithNeighbor(){
-        Cell x21 = gameBoard.getCell(1);//opponentWorkerInNeighboringCell,i should be able to move there
+    public void performActionOnCell_swappingPositionWithNeighbor(){
+        Cell x21 = gameBoard.getCell(1); //opponentWorkerInNeighboringCell,i should be able to move there
         worker21.changePosition(gameBoard.getCell(1));
         Cell x11 = gameBoard.getCell(0);
-
         MovePhase movePhase= new MovePhase();
         movePhase.Init(worker11,gameBoard);
-        apolloDecoratedPhase = new ApolloDecorator(movePhase);
-        apolloDecoratedPhase = new ApolloDecorator(movePhase);
+        apolloDecoratedPhase = new ApolloDecorator(movePhase, false);
+        apolloDecoratedPhase = new ApolloDecorator(movePhase, false);
         apolloDecoratedPhase.performActionOnCell(x21);
         assertTrue(x11.isOccupiedByWorker());
         assertTrue(x21.isOccupiedByWorker());
