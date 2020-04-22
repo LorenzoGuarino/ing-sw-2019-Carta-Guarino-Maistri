@@ -30,4 +30,9 @@ public interface ClientObserver {
     void OnChooseWorker(Node board);
     void OnAskBeforeApplyingGod(Node board);
     void OnCandidateCellsForMove(NodeList nodes);
+    void OnCandidateCellsForOptMove(NodeList nodes);
+    void OnCandidateCellsForBuild(NodeList nodes);
+    void OnCandidateCellsForOptBuild(NodeList nodes);
+    void OnCandidateCellsForEnd(NodeList nodes);
+    void OnCandidateCellsForOptEnd(NodeList nodes);
 }

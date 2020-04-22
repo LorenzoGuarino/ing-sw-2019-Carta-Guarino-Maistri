@@ -28,6 +28,7 @@ public class Phase {
     private Worker chosenWorker = null;
     private Board gameBoard = null;
     private PhaseType phaseType = PhaseType.Undefined;
+    private boolean bMandatory;
 
 
     /**
@@ -58,11 +59,12 @@ public class Phase {
      * @param gameBoard the currently updated board on which the player has to play the phase
      */
 
-    public void Init(Worker chosenWorker, Board gameBoard)
+    public void Init(Worker chosenWorker, Board gameBoard, boolean bMandatory)
     {
         candidateCells = new ArrayList<Cell>();
         this.chosenWorker = chosenWorker;
         this.gameBoard = gameBoard;
+        this.bMandatory = bMandatory;
     }
 
     /**
@@ -104,6 +106,15 @@ public class Phase {
     public boolean IsAnEndPhase() {
 
         return (phaseType == PhaseType.End);
+    }
+
+    /**
+     * Method that tells if the phase is mandatory or optional
+     * @return true if it's mandatory, false if it's optional
+     */
+
+    public boolean IsMandatory() {
+        return bMandatory;
     }
 
     /**
@@ -177,6 +188,7 @@ public class Phase {
 
         return false;
     }
+
 
 
     /* ********************************************* PHASE UTILITY METHODS ****************************************** */

@@ -97,6 +97,7 @@ public class CLI implements Runnable, ClientObserver {
     private static String CHOSENWORKER_COMMAND = "workerchosen";
     private static String APPLYGODANSWER_COMMAND = "answerapplygod";
     private static String CANDIDATECELLFORMOVE_COMMAND = "candidatecellchosen";
+    private static String PASSMOVE_COMMAND = "movepassed";
 
     /* ******************************************************** LABELS ***************************************************** */
 
@@ -138,6 +139,11 @@ public class CLI implements Runnable, ClientObserver {
         cli_ChoosingWorker,
         cli_ChoosingToApplyGod,
         cli_CandidateCellsForMove,
+        cli_CandidateCellsForOptMove,
+        cli_CandidateCellsForBuild,
+        cli_CandidateCellsForOptBuild,
+        cli_CandidateCellsForEnd,
+        cli_CandidateCellsForOptEnd,
         cli_WaitForSomethingToHappen
     }
 
@@ -709,6 +715,212 @@ public class CLI implements Runnable, ClientObserver {
                             }
                         }
                         break;
+                        case cli_CandidateCellsForOptMove: {
+                            clearScreen();
+
+                            setCellsToPrint();
+
+                            printBoard();
+
+                            System.out.println("\n" + DEFAULT_BOLD + "Your god allows you to move again." + RESET + "Please select the cell you want to move on, or if you don't want to move again enter \"PASS\"\n" + DEFAULT_ITALIC + DEFAULT_BOLD +
+                                    "Remember:" + RESET + DEFAULT_ITALIC + " You can only select the " + SANTORINI_HIGHLIGHT + " highlighted " + RESET +
+                                    " cells, which, if your god allows you to move in a cell occupied by one of your opponent's workers, are highlighted with your opponent's color.\n" + "Syntax to indicate the cell you want to select: \"LetterNumber\"");
+
+                            WaitForUserInput();
+
+                            String position = cmdLine.trim();
+
+                            if (position.length() == 2) {
+                                if (position.charAt(0) == 'A' || position.charAt(0) == 'B' || position.charAt(0) == 'C' || position.charAt(0) == 'D' || position.charAt(0) == 'E') {
+                                    if (position.charAt(1) == '1' || position.charAt(1) == '2' || position.charAt(1) == '3' || position.charAt(1) == '4' || position.charAt(1) == '5') {
+
+                                        int chosenCellIndex;
+
+                                        chosenCellIndex = (position.charAt(0) - 'A') * 5 + (position.charAt(1) - '1');
+
+                                        //control that the cell chosen is one of the candidate cells
+
+                                        for (int i = 0; i < indexcandidatecells.size(); i++) {
+                                            if (indexcandidatecells.get(i) == chosenCellIndex) {
+
+                                                cmdLine = CANDIDATECELLFORMOVE_COMMAND + " " + chosenCellIndex;
+
+                                                gamestate = CLIGameState.cli_WaitForSomethingToHappen;
+
+                                                restoreCandidateCells();
+                                                break;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            else if(position.length() == 4 && position.equals("PASS")) {
+                                cmdLine = PASSMOVE_COMMAND;
+                                gamestate = CLIGameState.cli_WaitForSomethingToHappen;
+                            }
+                        }
+                        break;
+                        case cli_CandidateCellsForBuild: {
+                            clearScreen();
+
+                            setCellsToPrint();
+
+                            printBoard();
+                            System.out.println("\nPlease select the cell you want to build on.\n" + DEFAULT_ITALIC + DEFAULT_BOLD +
+                                    "Remember:" + RESET + DEFAULT_ITALIC + " You can only select the " + SANTORINI_HIGHLIGHT + " highlighted " + RESET +
+                                    " cells, including the ones hilighted with a player's color if your god allows to build where there's a player's worker on.\n" + "Syntax to indicate the cell you want to select: \"LetterNumber\"");
+
+                            WaitForUserInput();
+
+                            String position = cmdLine.trim();
+
+                            if (position.length() == 2) {
+                                if (position.charAt(0) == 'A' || position.charAt(0) == 'B' || position.charAt(0) == 'C' || position.charAt(0) == 'D' || position.charAt(0) == 'E') {
+                                    if (position.charAt(1) == '1' || position.charAt(1) == '2' || position.charAt(1) == '3' || position.charAt(1) == '4' || position.charAt(1) == '5') {
+
+                                        int chosenCellIndex;
+
+                                        chosenCellIndex = (position.charAt(0) - 'A') * 5 + (position.charAt(1) - '1');
+
+                                        //control that the cell chosen is one of the candidate cells
+
+                                        for (int i = 0; i < indexcandidatecells.size(); i++) {
+                                            if (indexcandidatecells.get(i) == chosenCellIndex) {
+
+                                                //@TODO send build cell
+                                                cmdLine = CANDIDATECELLFORMOVE_COMMAND + " " + chosenCellIndex;
+
+                                                gamestate = CLIGameState.cli_WaitForSomethingToHappen;
+
+                                                restoreCandidateCells();
+                                                break;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        break;
+                        case cli_CandidateCellsForOptBuild: {
+                            clearScreen();
+
+                            setCellsToPrint();
+
+                            printBoard();
+                            System.out.println("\nPlease  on.\n" + DEFAULT_ITALIC + DEFAULT_BOLD +
+                                    "Remember:" + RESET + DEFAULT_ITALIC + " You can only select the " + SANTORINI_HIGHLIGHT + " highlighted " + RESET +
+                                    " cells, which, if your god allows you to move in a cell occupied by one of your opponent's workers, are highlighted with your opponent's color.\n" + "Syntax to indicate the cell you want to select: \"LetterNumber\"");
+
+                            WaitForUserInput();
+
+                            String position = cmdLine.trim();
+
+                            if (position.length() == 2) {
+                                if (position.charAt(0) == 'A' || position.charAt(0) == 'B' || position.charAt(0) == 'C' || position.charAt(0) == 'D' || position.charAt(0) == 'E') {
+                                    if (position.charAt(1) == '1' || position.charAt(1) == '2' || position.charAt(1) == '3' || position.charAt(1) == '4' || position.charAt(1) == '5') {
+
+                                        int chosenCellIndex;
+
+                                        chosenCellIndex = (position.charAt(0) - 'A') * 5 + (position.charAt(1) - '1');
+
+                                        //control that the cell chosen is one of the candidate cells
+
+                                        for (int i = 0; i < indexcandidatecells.size(); i++) {
+                                            if (indexcandidatecells.get(i) == chosenCellIndex) {
+
+                                                cmdLine = CANDIDATECELLFORMOVE_COMMAND + " " + chosenCellIndex;
+
+                                                gamestate = CLIGameState.cli_WaitForSomethingToHappen;
+
+                                                restoreCandidateCells();
+                                                break;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        break;
+                        case cli_CandidateCellsForEnd: {
+                            clearScreen();
+
+                            setCellsToPrint();
+
+                            printBoard();
+                            System.out.println("\nPlease \n" + DEFAULT_ITALIC + DEFAULT_BOLD +
+                                    "Remember:" + RESET + DEFAULT_ITALIC + " You can only select the " + SANTORINI_HIGHLIGHT + " highlighted " + RESET +
+                                    " cells, which, if your god allows you to move in a cell occupied by one of your opponent's workers, are highlighted with your opponent's color.\n" + "Syntax to indicate the cell you want to select: \"LetterNumber\"");
+
+                            WaitForUserInput();
+
+                            String position = cmdLine.trim();
+
+                            if (position.length() == 2) {
+                                if (position.charAt(0) == 'A' || position.charAt(0) == 'B' || position.charAt(0) == 'C' || position.charAt(0) == 'D' || position.charAt(0) == 'E') {
+                                    if (position.charAt(1) == '1' || position.charAt(1) == '2' || position.charAt(1) == '3' || position.charAt(1) == '4' || position.charAt(1) == '5') {
+
+                                        int chosenCellIndex;
+
+                                        chosenCellIndex = (position.charAt(0) - 'A') * 5 + (position.charAt(1) - '1');
+
+                                        //control that the cell chosen is one of the candidate cells
+
+                                        for (int i = 0; i < indexcandidatecells.size(); i++) {
+                                            if (indexcandidatecells.get(i) == chosenCellIndex) {
+
+                                                cmdLine = CANDIDATECELLFORMOVE_COMMAND + " " + chosenCellIndex;
+
+                                                gamestate = CLIGameState.cli_WaitForSomethingToHappen;
+
+                                                restoreCandidateCells();
+                                                break;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        break;
+                        case cli_CandidateCellsForOptEnd: {
+                            clearScreen();
+
+                            setCellsToPrint();
+
+                            printBoard();
+                            System.out.println("\nPlease select the cell you want to move on.\n" + DEFAULT_ITALIC + DEFAULT_BOLD +
+                                    "Remember:" + RESET + DEFAULT_ITALIC + " You can only select the " + SANTORINI_HIGHLIGHT + " highlighted " + RESET +
+                                    " cells, which, if your god allows you to move in a cell occupied by one of your opponent's workers, are highlighted with your opponent's color.\n" + "Syntax to indicate the cell you want to select: \"LetterNumber\"");
+
+                            WaitForUserInput();
+
+                            String position = cmdLine.trim();
+
+                            if (position.length() == 2) {
+                                if (position.charAt(0) == 'A' || position.charAt(0) == 'B' || position.charAt(0) == 'C' || position.charAt(0) == 'D' || position.charAt(0) == 'E') {
+                                    if (position.charAt(1) == '1' || position.charAt(1) == '2' || position.charAt(1) == '3' || position.charAt(1) == '4' || position.charAt(1) == '5') {
+
+                                        int chosenCellIndex;
+
+                                        chosenCellIndex = (position.charAt(0) - 'A') * 5 + (position.charAt(1) - '1');
+
+                                        //control that the cell chosen is one of the candidate cells
+
+                                        for (int i = 0; i < indexcandidatecells.size(); i++) {
+                                            if (indexcandidatecells.get(i) == chosenCellIndex) {
+
+                                                cmdLine = CANDIDATECELLFORMOVE_COMMAND + " " + chosenCellIndex;
+
+                                                gamestate = CLIGameState.cli_WaitForSomethingToHappen;
+
+                                                restoreCandidateCells();
+                                                break;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        break;
                         case cli_WaitForSomethingToHappen: {
                             // in this state user is allowed to enter commands on commandline
                             // which will be processed on switch exit
@@ -795,6 +1007,11 @@ public class CLI implements Runnable, ClientObserver {
                             if (cmdlineParts.length == 2) {
                                 gamestate = CLIGameState.cli_WaitForSomethingToHappen;
                                 client.CandidateMove(cmdlineParts[1]);
+                            }
+                        } else if(cmdlineParts[0].equals(PASSMOVE_COMMAND)) {
+                            if (cmdlineParts.length == 1) {
+                                gamestate = CLIGameState.cli_WaitForSomethingToHappen;
+                                client.passMove();
                             }
                         }
                         cmdLine = "";
@@ -1097,6 +1314,180 @@ public class CLI implements Runnable, ClientObserver {
         }
     }
 
+    /**
+     * Method of the ClientObserver interface that is fired by the client when choosing the cell to move the worker onto
+     * @param nodes cells where is possible to move the worker in xml format that needs to be processed by the CLI
+     */
+    @Override
+    public void OnCandidateCellsForOptMove(NodeList nodes) {
+        abortUserInput = true;
+        gamestate = CLIGameState.cli_CandidateCellsForOptMove;
+
+        Node node;
+        for (int i = 0; i < nodes.getLength(); i++) {
+            node = nodes.item(i);
+
+            if (node.getNodeName().equals("board")) {
+                this.nodeboard = node;
+            }
+            else if (node.getNodeName().equals("candidates")) {
+
+                Node cell;
+                if (node.hasChildNodes()) {
+                    NodeList cells = node.getChildNodes();
+
+                    for (int j = 0; j < cells.getLength(); j++) {
+                        cell = cells.item(j);
+
+                        if (cell.getNodeName().equals("cell")) {
+                            int id = getIdOfCellNode(cell);
+                            indexcandidatecells.add(id);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Method of the ClientObserver interface that is fired by the client when choosing the cell to move the worker onto
+     * @param nodes cells where is possible to move the worker in xml format that needs to be processed by the CLI
+     */
+    @Override
+    public void OnCandidateCellsForBuild(NodeList nodes) {
+        abortUserInput = true;
+        gamestate = CLIGameState.cli_CandidateCellsForBuild;
+
+        Node node;
+        for (int i = 0; i < nodes.getLength(); i++) {
+            node = nodes.item(i);
+
+            if (node.getNodeName().equals("board")) {
+                this.nodeboard = node;
+            }
+            else if (node.getNodeName().equals("candidates")) {
+
+                Node cell;
+                if (node.hasChildNodes()) {
+                    NodeList cells = node.getChildNodes();
+
+                    for (int j = 0; j < cells.getLength(); j++) {
+                        cell = cells.item(j);
+
+                        if (cell.getNodeName().equals("cell")) {
+                            int id = getIdOfCellNode(cell);
+                            indexcandidatecells.add(id);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Method of the ClientObserver interface that is fired by the client when choosing the cell to move the worker onto
+     * @param nodes cells where is possible to move the worker in xml format that needs to be processed by the CLI
+     */
+    @Override
+    public void OnCandidateCellsForOptBuild(NodeList nodes) {
+        abortUserInput = true;
+        gamestate = CLIGameState.cli_CandidateCellsForOptBuild;
+
+        Node node;
+        for (int i = 0; i < nodes.getLength(); i++) {
+            node = nodes.item(i);
+
+            if (node.getNodeName().equals("board")) {
+                this.nodeboard = node;
+            }
+            else if (node.getNodeName().equals("candidates")) {
+
+                Node cell;
+                if (node.hasChildNodes()) {
+                    NodeList cells = node.getChildNodes();
+
+                    for (int j = 0; j < cells.getLength(); j++) {
+                        cell = cells.item(j);
+
+                        if (cell.getNodeName().equals("cell")) {
+                            int id = getIdOfCellNode(cell);
+                            indexcandidatecells.add(id);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Method of the ClientObserver interface that is fired by the client when choosing the cell to move the worker onto
+     * @param nodes cells where is possible to move the worker in xml format that needs to be processed by the CLI
+     */
+    @Override
+    public void OnCandidateCellsForEnd(NodeList nodes) {
+        abortUserInput = true;
+        gamestate = CLIGameState.cli_CandidateCellsForEnd;
+
+        Node node;
+        for (int i = 0; i < nodes.getLength(); i++) {
+            node = nodes.item(i);
+
+            if (node.getNodeName().equals("board")) {
+                this.nodeboard = node;
+            }
+            else if (node.getNodeName().equals("candidates")) {
+
+                Node cell;
+                if (node.hasChildNodes()) {
+                    NodeList cells = node.getChildNodes();
+
+                    for (int j = 0; j < cells.getLength(); j++) {
+                        cell = cells.item(j);
+
+                        if (cell.getNodeName().equals("cell")) {
+                            int id = getIdOfCellNode(cell);
+                            indexcandidatecells.add(id);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Method of the ClientObserver interface that is fired by the client when choosing the cell to move the worker onto
+     * @param nodes cells where is possible to move the worker in xml format that needs to be processed by the CLI
+     */
+    @Override
+    public void OnCandidateCellsForOptEnd(NodeList nodes) {
+        abortUserInput = true;
+        gamestate = CLIGameState.cli_CandidateCellsForOptEnd;
+
+        Node node;
+        for (int i = 0; i < nodes.getLength(); i++) {
+            node = nodes.item(i);
+
+            if (node.getNodeName().equals("board")) {
+                this.nodeboard = node;
+            }
+            else if (node.getNodeName().equals("candidates")) {
+
+                Node cell;
+                if (node.hasChildNodes()) {
+                    NodeList cells = node.getChildNodes();
+
+                    for (int j = 0; j < cells.getLength(); j++) {
+                        cell = cells.item(j);
+
+                        if (cell.getNodeName().equals("cell")) {
+                            int id = getIdOfCellNode(cell);
+                            indexcandidatecells.add(id);
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     /**
      * Method of the ClientObserver interface that is fired by the client when there's a winner

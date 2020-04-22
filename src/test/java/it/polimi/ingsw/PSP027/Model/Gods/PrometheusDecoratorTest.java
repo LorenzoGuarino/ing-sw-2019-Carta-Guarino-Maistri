@@ -56,7 +56,7 @@ public class PrometheusDecoratorTest {
         expectedList.add(x14);
         expectedList.add(x34);
         MovePhase movephase = new MovePhase();
-        movephase.Init(worker11,gameBoard);
+        movephase.Init(worker11,gameBoard, true);
         prometheusDecoratedPhase = new PrometheusDecorator(movephase, false);
         prometheusDecoratedPhase.evalCandidateCells();
         assertTrue(expectedList.containsAll(movephase.getCandidateCells()) && movephase.getCandidateCells().containsAll(expectedList));
@@ -73,7 +73,7 @@ public class PrometheusDecoratorTest {
         Cell x25 = gameBoard.getCell(21);//workerPos
         worker11.changePosition(x25);
         MovePhase movephase = new MovePhase();
-        movephase.Init(worker11,gameBoard);
+        movephase.Init(worker11,gameBoard, true);
         prometheusDecoratedPhase = new PrometheusDecorator(movephase, false);
         prometheusDecoratedPhase.evalCandidateCells();
         prometheusDecoratedPhase.performActionOnCell(x14);
@@ -99,7 +99,7 @@ public class PrometheusDecoratorTest {
         expectedList.add(x15);
         expectedList.add(x34);
         MovePhase movephase = new MovePhase();
-        movephase.Init(worker11,gameBoard);
+        movephase.Init(worker11,gameBoard, true);
         prometheusDecoratedPhase = new PrometheusDecorator(movephase,false);
         prometheusDecoratedPhase.evalCandidateCells();
         prometheusDecoratedPhase.performActionOnCell(x14);
@@ -119,7 +119,7 @@ public class PrometheusDecoratorTest {
         Cell x15 = gameBoard.getCell(20);
         worker11.changePosition(x25);
         MovePhase movephase = new MovePhase();
-        movephase.Init(worker11,gameBoard);
+        movephase.Init(worker11,gameBoard, true);
         prometheusDecoratedPhase = new PrometheusDecorator(movephase, false);
         prometheusDecoratedPhase.evalCandidateCells();
         prometheusDecoratedPhase.performActionOnCell(x14);

@@ -123,7 +123,8 @@ public class SantoriniMatch implements Runnable{
                                 }
                                 else if(turn.CurrentPlayerHasLost())
                                 {
-
+                                    //removePlayer(turn.getPlayingPlayer());
+                                    //turnState = TurnState.CreateTurn;
                                 }
                                 else {
                                     turnState = TurnState.CreateTurn;
@@ -616,7 +617,7 @@ public class SantoriniMatch implements Runnable{
     }
 
     /**
-     * Method that receives the chosen cell from the client and passes it to the turn that will set the new position for the worker with the method setCandidateMove
+     * Method that receives the chosen cell from the client and passes it to the turn that will set the new position for the worker with the method MoveWorker
      * @param chosenCell int representing the id of the chosen cell
      */
     public void MoveWorker(String chosenCell){
@@ -626,6 +627,13 @@ public class SantoriniMatch implements Runnable{
         turn.MoveWorker(chosenCellIndex);
     }
 
+    /**
+     * Method that receives the chosen cell from the client and passes it to the turn that will set the new position for the worker with the method MoveWorker
+     */
+    public void passMove(){
+
+        turn.passMove();
+    }
 
 
 

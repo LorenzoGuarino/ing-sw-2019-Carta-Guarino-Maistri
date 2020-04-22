@@ -50,7 +50,7 @@ public class AtlasDecoratorTest {
         expectedList.add(x14);
         expectedList.add(x34);
         BuildPhase buildPhase = new BuildPhase();
-        buildPhase.Init(worker11,gameBoard);
+        buildPhase.Init(worker11,gameBoard, true);
         atlasDecoratedPhase = new AtlasDecorator(buildPhase, false);
         atlasDecoratedPhase.evalCandidateCells();
         assertTrue(expectedList.containsAll(buildPhase.getCandidateCells()) && buildPhase.getCandidateCells().containsAll(expectedList));
@@ -67,7 +67,7 @@ public class AtlasDecoratorTest {
         worker11.changePosition(x25);
 
         BuildPhase buildPhase = new BuildPhase();
-        buildPhase.Init(worker11,gameBoard);
+        buildPhase.Init(worker11,gameBoard, true);
         atlasDecoratedPhase = new AtlasDecorator(buildPhase, false);
         atlasDecoratedPhase.performActionOnCell(x14);
         assertTrue(x14.getLevel()==2 && x14.checkDome());
@@ -84,7 +84,7 @@ public class AtlasDecoratorTest {
         worker11.changePosition(x25);
 
         BuildPhase buildPhase = new BuildPhase();
-        buildPhase.Init(worker11,gameBoard);
+        buildPhase.Init(worker11,gameBoard, true);
         atlasDecoratedPhase = new AtlasDecorator(buildPhase, false);
         atlasDecoratedPhase.performActionOnCell(x14);
         assertTrue(x14.getLevel()==1 && x14.checkDome());
@@ -100,7 +100,7 @@ public class AtlasDecoratorTest {
         worker11.changePosition(x25);
 
         BuildPhase buildPhase = new BuildPhase();
-        buildPhase.Init(worker11,gameBoard);
+        buildPhase.Init(worker11,gameBoard, true);
         atlasDecoratedPhase = new AtlasDecorator(buildPhase, false);
         atlasDecoratedPhase.performActionOnCell(x14);
         assertTrue(x14.getLevel()==0 && x14.checkDome());

@@ -255,6 +255,21 @@ public class ServerHandler implements Runnable
                                 case srv_CandidateCellsForMove:
                                     FireOnCandidateCellsForMove(cmdData);
                                     break;
+                                case srv_CandidateCellsForOptMove:
+                                    FireOnCandidateCellsForOptMove(cmdData);
+                                    break;
+                                case srv_CandidateCellsForBuild:
+                                    FireOnCandidateCellsForBuild(cmdData);
+                                    break;
+                                case srv_CandidateCellsForOptBuild:
+                                    FireOnCandidateCellsForOptBuild(cmdData);
+                                    break;
+                                case srv_CandidateCellsForEnd:
+                                    FireOnCandidateCellsForEnd(cmdData);
+                                    break;
+                                case srv_CandidateCellsForOptEnd:
+                                    FireOnCandidateCellsForOptEnd(cmdData);
+                                    break;
                             }
                         }
                     }
@@ -905,7 +920,170 @@ public class ServerHandler implements Runnable
         }
     }
 
+    /**
+     * Method that fires the OnCandidateCellsForMove method in the client, processing the command received from the server
+     * @param data xml to process and then pass on to onCandidateCellsForMove
+     */
+    private void FireOnCandidateCellsForOptMove(Node data){
+        /* data value (example)
+         * <data>
+         *     <board>
+         *         <cell id="0" level="2" dome="false" nickname="Elisa" />
+         *         ...
+         *         <cell id="24" level="0" dome ="false" nickname="" />
+         *     </board>
+         *     <candidates>
+         *         <cell id="0"/>
+         *         ...
+         *         <cell id="8"/>
+         *     </candidates>
+         * </data>
+         */
 
+        if (data.hasChildNodes()) {
+            NodeList nodes = data.getChildNodes();
+
+            List<ServerObserver> observersCpy;
+            synchronized (observers) {
+                observersCpy = new ArrayList<ServerObserver>(observers);
+            }
+            for (ServerObserver observer : observersCpy) {
+                observer.onCandidateCellsForOptMove(nodes);
+            }
+        }
+    }
+
+    /**
+     * Method that fires the OnCandidateCellsForMove method in the client, processing the command received from the server
+     * @param data xml to process and then pass on to onCandidateCellsForMove
+     */
+    private void FireOnCandidateCellsForBuild(Node data){
+        /* data value (example)
+         * <data>
+         *     <board>
+         *         <cell id="0" level="2" dome="false" nickname="Elisa" />
+         *         ...
+         *         <cell id="24" level="0" dome ="false" nickname="" />
+         *     </board>
+         *     <candidates>
+         *         <cell id="0"/>
+         *         ...
+         *         <cell id="8"/>
+         *     </candidates>
+         * </data>
+         */
+
+        if (data.hasChildNodes()) {
+            NodeList nodes = data.getChildNodes();
+
+            List<ServerObserver> observersCpy;
+            synchronized (observers) {
+                observersCpy = new ArrayList<ServerObserver>(observers);
+            }
+            for (ServerObserver observer : observersCpy) {
+                observer.onCandidateCellsForBuild(nodes);
+            }
+        }
+    }
+
+    /**
+     * Method that fires the OnCandidateCellsForMove method in the client, processing the command received from the server
+     * @param data xml to process and then pass on to onCandidateCellsForMove
+     */
+    private void FireOnCandidateCellsForOptBuild(Node data){
+        /* data value (example)
+         * <data>
+         *     <board>
+         *         <cell id="0" level="2" dome="false" nickname="Elisa" />
+         *         ...
+         *         <cell id="24" level="0" dome ="false" nickname="" />
+         *     </board>
+         *     <candidates>
+         *         <cell id="0"/>
+         *         ...
+         *         <cell id="8"/>
+         *     </candidates>
+         * </data>
+         */
+
+        if (data.hasChildNodes()) {
+            NodeList nodes = data.getChildNodes();
+
+            List<ServerObserver> observersCpy;
+            synchronized (observers) {
+                observersCpy = new ArrayList<ServerObserver>(observers);
+            }
+            for (ServerObserver observer : observersCpy) {
+                observer.onCandidateCellsForOptBuild(nodes);
+            }
+        }
+    }
+
+    /**
+     * Method that fires the OnCandidateCellsForMove method in the client, processing the command received from the server
+     * @param data xml to process and then pass on to onCandidateCellsForMove
+     */
+    private void FireOnCandidateCellsForEnd(Node data){
+        /* data value (example)
+         * <data>
+         *     <board>
+         *         <cell id="0" level="2" dome="false" nickname="Elisa" />
+         *         ...
+         *         <cell id="24" level="0" dome ="false" nickname="" />
+         *     </board>
+         *     <candidates>
+         *         <cell id="0"/>
+         *         ...
+         *         <cell id="8"/>
+         *     </candidates>
+         * </data>
+         */
+
+        if (data.hasChildNodes()) {
+            NodeList nodes = data.getChildNodes();
+
+            List<ServerObserver> observersCpy;
+            synchronized (observers) {
+                observersCpy = new ArrayList<ServerObserver>(observers);
+            }
+            for (ServerObserver observer : observersCpy) {
+                observer.onCandidateCellsForEnd(nodes);
+            }
+        }
+    }
+
+    /**
+     * Method that fires the OnCandidateCellsForMove method in the client, processing the command received from the server
+     * @param data xml to process and then pass on to onCandidateCellsForMove
+     */
+    private void FireOnCandidateCellsForOptEnd(Node data){
+        /* data value (example)
+         * <data>
+         *     <board>
+         *         <cell id="0" level="2" dome="false" nickname="Elisa" />
+         *         ...
+         *         <cell id="24" level="0" dome ="false" nickname="" />
+         *     </board>
+         *     <candidates>
+         *         <cell id="0"/>
+         *         ...
+         *         <cell id="8"/>
+         *     </candidates>
+         * </data>
+         */
+
+        if (data.hasChildNodes()) {
+            NodeList nodes = data.getChildNodes();
+
+            List<ServerObserver> observersCpy;
+            synchronized (observers) {
+                observersCpy = new ArrayList<ServerObserver>(observers);
+            }
+            for (ServerObserver observer : observersCpy) {
+                observer.onCandidateCellsForOptEnd(nodes);
+            }
+        }
+    }
 
     /**
      * Method that fires the OnLoser() method in the client, processing the command received from the server

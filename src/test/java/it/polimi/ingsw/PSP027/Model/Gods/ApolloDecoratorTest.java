@@ -48,7 +48,7 @@ public class ApolloDecoratorTest {
         x22.addLevel();
         x22.addLevel();
         MovePhase movePhase = new MovePhase();
-        movePhase.Init(worker11,gameBoard);
+        movePhase.Init(worker11,gameBoard, true);
         apolloDecoratedPhase = new ApolloDecorator(movePhase, false);
         apolloDecoratedPhase.evalCandidateCells();
         ArrayList<Cell> expectedList = new ArrayList<Cell>();
@@ -67,7 +67,7 @@ public class ApolloDecoratorTest {
         worker21.changePosition(gameBoard.getCell(1));
         Cell x11 = gameBoard.getCell(0);
         MovePhase movePhase= new MovePhase();
-        movePhase.Init(worker11,gameBoard);
+        movePhase.Init(worker11,gameBoard, true);
         apolloDecoratedPhase = new ApolloDecorator(movePhase, false);
         apolloDecoratedPhase = new ApolloDecorator(movePhase, false);
         apolloDecoratedPhase.performActionOnCell(x21);

@@ -163,6 +163,9 @@ public class ClientHandler implements Runnable
                                 case clt_Move:
                                     owner.onMove(cmdData);
                                     break;
+                                case clt_MovePassed:
+                                    owner.onMovePassed();
+                                    break;
                             }
                         }
                     }
@@ -660,4 +663,16 @@ public class ClientHandler implements Runnable
         }
     }
 
+    /**
+     * Method that process the candidate cell written in the command in xml format received from the client.
+     * It triggers a method in the lobby that sets the chosen cell in the turn that is being played in the correspondent match
+     */
+    private void onMovePassed() {
+
+        System.out.println("Received onMovePassed from " + nickname);
+        String chosenCell = "";
+        Node node;
+
+        lobby.passMove(this);
+    }
 }

@@ -54,7 +54,7 @@ public class HephaestusDecoratorTest {
         expectedList.add(x14);
         expectedList.add(x34);
         BuildPhase buildPhase = new BuildPhase();
-        buildPhase.Init(worker11,gameBoard);
+        buildPhase.Init(worker11,gameBoard, true);
         hephaestusDecoratedPhase = new HephaestusDecorator(buildPhase, false);
         hephaestusDecoratedPhase.evalCandidateCells();
         assertTrue(expectedList.containsAll(buildPhase.getCandidateCells()) && buildPhase.getCandidateCells().containsAll(expectedList));
@@ -77,7 +77,7 @@ public class HephaestusDecoratorTest {
         Cell x35 = gameBoard.getCell(22);//enemyWorker
         worker21.changePosition(x35);
         BuildPhase buildPhase = new BuildPhase();
-        buildPhase.Init(worker11,gameBoard);
+        buildPhase.Init(worker11,gameBoard, true);
         hephaestusDecoratedPhase = new HephaestusDecorator(buildPhase, false);
         hephaestusDecoratedPhase.performActionOnCell(x14);
         assertTrue(x14.getLevel()==3 && !x14.checkDome());
@@ -100,7 +100,7 @@ public class HephaestusDecoratorTest {
         Cell x35 = gameBoard.getCell(22);//enemyWorker
         worker21.changePosition(x35);
         BuildPhase buildPhase = new BuildPhase();
-        buildPhase.Init(worker11,gameBoard);
+        buildPhase.Init(worker11,gameBoard, true);
         hephaestusDecoratedPhase = new HephaestusDecorator(buildPhase, false);
         hephaestusDecoratedPhase.performActionOnCell(x14);
         assertTrue(x14.getLevel()==3 && !x14.checkDome());
@@ -123,7 +123,7 @@ public class HephaestusDecoratorTest {
         Cell x35 = gameBoard.getCell(22);//enemyWorker
         worker21.changePosition(x35);
         BuildPhase buildPhase = new BuildPhase();
-        buildPhase.Init(worker11,gameBoard);
+        buildPhase.Init(worker11,gameBoard, true);
         hephaestusDecoratedPhase = new HephaestusDecorator(buildPhase, false);
         hephaestusDecoratedPhase.performActionOnCell(x14);
         assertTrue(x14.getLevel()==3 && x14.checkDome());

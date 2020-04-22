@@ -372,6 +372,26 @@ public class Client implements Runnable, ServerObserver
 
         return false;
     }
+
+    /**
+     * Method that sends a command to the server with the data required
+     * @return true if operation successful, false otherwise
+     */
+    public synchronized boolean passMove() {
+        if(connStatus == ConnectionStatus.KeepConnected) {
+
+            if (regStatus == RegistrationStatus.Registered) {
+
+                String cmd = "<cmd><id>" + ProtocolTypes.protocolCommand.clt_MovePassed.toString() + "</id><data></data></cmd>";
+
+                serverHandler.SendCommand(cmd);
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     /**
      * Method that creates a socket to connect with the server, and if successful
      * create the adapter with a separate thread that will communicate with the server
@@ -777,6 +797,86 @@ public class Client implements Runnable, ServerObserver
     }
 
     /**
+     * Method that fires the OnCandidateCellsForMove() method of the observer (client instance)
+     * @param nodes cells where the worker selected can move onto
+     */
+    private void FireOnCandidateCellsForOptMove(NodeList nodes) {
+        List<ClientObserver> observersCpy;
+        synchronized (observers) {
+            observersCpy = new ArrayList<>(observers);
+        }
+
+        /* notify the observers that we got the string */
+        for (ClientObserver observer: observersCpy) {
+            observer.OnCandidateCellsForOptMove(nodes);
+        }
+    }
+
+    /**
+     * Method that fires the OnCandidateCellsForMove() method of the observer (client instance)
+     * @param nodes cells where the worker selected can move onto
+     */
+    private void FireOnCandidateCellsForBuild(NodeList nodes) {
+        List<ClientObserver> observersCpy;
+        synchronized (observers) {
+            observersCpy = new ArrayList<>(observers);
+        }
+
+        /* notify the observers that we got the string */
+        for (ClientObserver observer: observersCpy) {
+            observer.OnCandidateCellsForBuild(nodes);
+        }
+    }
+
+    /**
+     * Method that fires the OnCandidateCellsForMove() method of the observer (client instance)
+     * @param nodes cells where the worker selected can move onto
+     */
+    private void FireOnCandidateCellsForOptBuild(NodeList nodes) {
+        List<ClientObserver> observersCpy;
+        synchronized (observers) {
+            observersCpy = new ArrayList<>(observers);
+        }
+
+        /* notify the observers that we got the string */
+        for (ClientObserver observer: observersCpy) {
+            observer.OnCandidateCellsForOptBuild(nodes);
+        }
+    }
+
+    /**
+     * Method that fires the OnCandidateCellsForMove() method of the observer (client instance)
+     * @param nodes cells where the worker selected can move onto
+     */
+    private void FireOnCandidateCellsForEnd(NodeList nodes) {
+        List<ClientObserver> observersCpy;
+        synchronized (observers) {
+            observersCpy = new ArrayList<>(observers);
+        }
+
+        /* notify the observers that we got the string */
+        for (ClientObserver observer: observersCpy) {
+            observer.OnCandidateCellsForEnd(nodes);
+        }
+    }
+
+    /**
+     * Method that fires the OnCandidateCellsForMove() method of the observer (client instance)
+     * @param nodes cells where the worker selected can move onto
+     */
+    private void FireOnCandidateCellsForOptEnd(NodeList nodes) {
+        List<ClientObserver> observersCpy;
+        synchronized (observers) {
+            observersCpy = new ArrayList<>(observers);
+        }
+
+        /* notify the observers that we got the string */
+        for (ClientObserver observer: observersCpy) {
+            observer.OnCandidateCellsForOptEnd(nodes);
+        }
+    }
+
+    /**
      * Method that fires the OnWinner() method of the observer (client instance)
      */
 
@@ -1032,6 +1132,66 @@ public class Client implements Runnable, ServerObserver
     public synchronized void onCandidateCellsForMove(NodeList nodes) {
         lastHelloTime = new Date();
         FireOnCandidateCellsForMove(nodes);
+        notifyAll();
+    }
+
+    /**
+     * Method that fires the OnCandidateCellsForMove method of the observer (client instance)
+     * @param nodes xml not yet processed containing the board and the candidate cells for the move
+     */
+
+    @Override
+    public synchronized void onCandidateCellsForOptMove(NodeList nodes) {
+        lastHelloTime = new Date();
+        FireOnCandidateCellsForOptMove(nodes);
+        notifyAll();
+    }
+
+    /**
+     * Method that fires the OnCandidateCellsForMove method of the observer (client instance)
+     * @param nodes xml not yet processed containing the board and the candidate cells for the move
+     */
+
+    @Override
+    public synchronized void onCandidateCellsForBuild(NodeList nodes) {
+        lastHelloTime = new Date();
+        FireOnCandidateCellsForBuild(nodes);
+        notifyAll();
+    }
+
+    /**
+     * Method that fires the OnCandidateCellsForMove method of the observer (client instance)
+     * @param nodes xml not yet processed containing the board and the candidate cells for the move
+     */
+
+    @Override
+    public synchronized void onCandidateCellsForOptBuild(NodeList nodes) {
+        lastHelloTime = new Date();
+        FireOnCandidateCellsForOptBuild(nodes);
+        notifyAll();
+    }
+
+    /**
+     * Method that fires the OnCandidateCellsForMove method of the observer (client instance)
+     * @param nodes xml not yet processed containing the board and the candidate cells for the move
+     */
+
+    @Override
+    public synchronized void onCandidateCellsForEnd(NodeList nodes) {
+        lastHelloTime = new Date();
+        FireOnCandidateCellsForEnd(nodes);
+        notifyAll();
+    }
+
+    /**
+     * Method that fires the OnCandidateCellsForMove method of the observer (client instance)
+     * @param nodes xml not yet processed containing the board and the candidate cells for the move
+     */
+
+    @Override
+    public synchronized void onCandidateCellsForOptEnd(NodeList nodes) {
+        lastHelloTime = new Date();
+        FireOnCandidateCellsForOptEnd(nodes);
         notifyAll();
     }
 

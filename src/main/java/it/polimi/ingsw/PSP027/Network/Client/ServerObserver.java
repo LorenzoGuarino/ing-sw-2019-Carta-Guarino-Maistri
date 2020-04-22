@@ -30,6 +30,11 @@ public interface ServerObserver
     void onChooseWorker(Node node);
     void onAskBeforeApplyingGod(Node node);
     void onCandidateCellsForMove(NodeList nodes);
+    void onCandidateCellsForOptMove(NodeList nodes);
+    void onCandidateCellsForBuild(NodeList nodes);
+    void onCandidateCellsForOptBuild(NodeList nodes);
+    void onCandidateCellsForEnd(NodeList nodes);
+    void onCandidateCellsForOptEnd(NodeList nodes);
     void onMoveWorker();
     void onBuild();
     void onUseGodPower();

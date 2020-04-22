@@ -26,6 +26,8 @@ public class AresDecorator extends GodPowerDecorator {
 
             getCandidateCells().clear();
 
+            //@TODO check that the player has 2 workers
+
             Worker worker = null;
             if (getWorker().getWorkerIndex() == 0)
                 worker = getWorker().getWorkerOwner().getPlayerWorkers().get(1);

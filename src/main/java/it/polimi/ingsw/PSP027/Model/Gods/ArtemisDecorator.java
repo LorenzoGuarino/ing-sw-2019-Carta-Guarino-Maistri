@@ -20,6 +20,7 @@ public class ArtemisDecorator extends GodPowerDecorator {
     @Override
     public void evalCandidateCells() {
 
+        this.getCandidateCells().clear();
         // call nested phase evalCandidateCells
         super.evalCandidateCells();
 
@@ -37,7 +38,7 @@ public class ArtemisDecorator extends GodPowerDecorator {
                     if(this.getWorker().getWorkerPrevPosition().getCellIndex() == candidateCell.getCellIndex()) {
                         System.out.println("ARTEMIS: evalCandidateCells discarding cell " + candidateCell.getCellIndex() + " (l=" +
                                 candidateCell.getLevel() + ", w=" + candidateCell.isOccupiedByWorker() + ", d=" + candidateCell.checkDome());
-                        this.getCandidateCells().remove(candidateCell.getCellIndex());
+                        this.getCandidateCells().remove(candidateCell);
                     }
                 }
             }

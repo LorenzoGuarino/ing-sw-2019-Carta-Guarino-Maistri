@@ -35,7 +35,7 @@ public class AthenaDecoratorTest {
         Cell x22 = gameBoard.getCell(6);
 
         MovePhase movePhase = new MovePhase();
-        movePhase.Init(worker11,gameBoard);
+        movePhase.Init(worker11,gameBoard, true);
         AthenaDecorator athenaDecoratedPhase = new AthenaDecorator(movePhase, true);
         athenaDecoratedPhase.performActionOnCell(x22);
         assertTrue(worker11.getWorkerPosition().equals(x22) && x12.getOccupyingWorker()==null);
@@ -55,7 +55,7 @@ public class AthenaDecoratorTest {
         Cell x22 = gameBoard.getCell(6);x22.addLevel();
 
         MovePhase movePhase = new MovePhase();
-        movePhase.Init(worker11,gameBoard);
+        movePhase.Init(worker11,gameBoard, true);
         AthenaDecorator athenaDecoratedPhase = new AthenaDecorator(movePhase, true);
         athenaDecoratedPhase.performActionOnCell(x22);
         //assertTrue(player2.getOpponentsGodCards().get(0).getGodType().equals(GodCard.GodsType.AthenaOpp));
@@ -76,7 +76,7 @@ public class AthenaDecoratorTest {
         Cell x22 = gameBoard.getCell(6);
 
         MovePhase movePhase = new MovePhase();
-        movePhase.Init(worker11,gameBoard);
+        movePhase.Init(worker11,gameBoard, true);
         AthenaDecorator athenaDecoratedPhase = new AthenaDecorator(movePhase, true);
         athenaDecoratedPhase.performActionOnCell(x22);
         assertEquals(0, player2.getOpponentsGodCards().size());

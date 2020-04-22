@@ -94,7 +94,6 @@ public class Turn {
 
     /**
      * Method that updates the board with the new position of the worker
-     *
      * @param chosenCellIndex cell where the worker is moving onto
      * @TODO create another move or go on and create a build phase
      */
@@ -106,15 +105,26 @@ public class Turn {
         {
             phaseList.get(phaseList.size()-1).performActionOnCell(cell);
 
-            if(phaseList.get(phaseList.size()-1).PlayerHasWon())
-            {
+//            if(phaseList.get(phaseList.size()-1).PlayerHasWon())
+//            {
+//
+//            }
+        }
 
-            }
+        if(playingPlayer.getPlayerGod().AllowExtraMove() && cell.getOccupyingWorker().getMoveCounter() == 1) {
+            CreateMovePhase(false);
+        }
+        else {
+            CreateBuildPhase(true);
         }
     }
 
+    public void passMove() {
+        CreateBuildPhase(true);
+    }
 
-    /* ******************************************** UTILITY METHODS OF THE TURN ****************************************** */
+
+    /* ************************************************* UTILITY METHODS OF THE TURN ************************************************* */
 
     /**
      * Method to get the player that is playing the turn
@@ -188,6 +198,11 @@ public class Turn {
         return playingPlayer.HasWon();
     }
 
+    /**
+     * Method that checks if the current player has lost
+     * @return true if it has lost, otherwise false
+     */
+
     public boolean CurrentPlayerHasLost(){
 
         return playingPlayer.HasLost();
@@ -204,7 +219,10 @@ public class Turn {
 //    }
 
     /**
-     * Method that creates a move phase, applying the right decorator to it
+     * Method that creates a move phase, applying the right decorator to it (also the opponent ones, applied to the already decorated
+     * phase by the player's own god)
+     * @param bMandatory this tells the phase if it's a mandatory phase or an optional one, deciding therefore whether the player
+     *                   loses the game when not able not perform the phase
      */
 
     public void CreateMovePhase(boolean bMandatory)
@@ -212,7 +230,7 @@ public class Turn {
         // create move phase and apply decorator to it.
         // the decorated resulting phase is the one that is stored on the phase list
         MovePhase phase = new MovePhase();
-        phase.Init(this.chosenWorker, this.santoriniMatch.getGameBoard());
+        phase.Init(this.chosenWorker, this.santoriniMatch.getGameBoard(), bMandatory);
 
         // start applying player's own god
         Phase playergodphase = applyDecorator(phase, playingPlayer.getPlayerGod().getGodType(), false);
@@ -234,6 +252,7 @@ public class Turn {
 
         boolean bCanPerformPhase = phaseList.get(phaseList.size()-1).startPhase();
 
+        //if the player cannot perform the phase and it is a mandatory phase the player loses and the turn is completed
         if(!bCanPerformPhase && bMandatory){
             // player has lost !!!
             getPlayingPlayer().setHasLost(true);
@@ -242,7 +261,10 @@ public class Turn {
     }
 
     /**
-     * Method that creates a build phase, applying the right decorator to it
+     * Method that creates a build phase, applying the right decorator to it (also the opponent ones, applied to the already decorated
+     * phase by the player's own god)
+     * @param bMandatory this tells the phase if it's a mandatory phase or an optional one, deciding therefore whether the player
+     *                   loses the game when not able not perform the phase
      */
 
     public void CreateBuildPhase(boolean bMandatory)
@@ -250,7 +272,7 @@ public class Turn {
         // create build phase and apply decorator to it.
         // the decorated resulting phase is the one that is stored on the phase list
         BuildPhase phase = new BuildPhase();
-        phase.Init(this.chosenWorker, this.santoriniMatch.getGameBoard());
+        phase.Init(this.chosenWorker, this.santoriniMatch.getGameBoard(), bMandatory);
 
         Phase playergodphase = applyDecorator(phase, playingPlayer.getPlayerGod().getGodType(), false);
 
@@ -290,8 +312,14 @@ public class Turn {
         if (godType == GodCard.GodsType.Apollo) {
             return new ApolloDecorator(phasetodecorate, bActAsOpponentGod);
         }
+        if (godType == GodCard.GodsType.Ares) {
+            return new AresDecorator(phasetodecorate, bActAsOpponentGod);
+        }
         if (godType == GodCard.GodsType.Artemis) {
             return new ArtemisDecorator(phasetodecorate, bActAsOpponentGod);
+        }
+        if (godType == GodCard.GodsType.Athena) {
+            return new AthenaDecorator(phasetodecorate, bActAsOpponentGod);
         }
         if (godType == GodCard.GodsType.Atlas) {
             return new AtlasDecorator(phasetodecorate, bActAsOpponentGod);
@@ -302,14 +330,26 @@ public class Turn {
         if (godType == GodCard.GodsType.Hephaestus) {
             return new HephaestusDecorator(phasetodecorate, bActAsOpponentGod);
         }
+        if (godType == GodCard.GodsType.Hestia) {
+            return new HestiaDecorator(phasetodecorate, bActAsOpponentGod);
+        }
+        if (godType == GodCard.GodsType.Medusa) {
+            return new MedusaDecorator(phasetodecorate, bActAsOpponentGod);
+        }
         if (godType == GodCard.GodsType.Minotaur) {
             return new MinotaurDecorator(phasetodecorate, bActAsOpponentGod);
         }
         if (godType == GodCard.GodsType.Pan) {
             return new PanDecorator(phasetodecorate, bActAsOpponentGod);
         }
+        if (godType == GodCard.GodsType.Poseidon) {
+            return new PoseidonDecorator(phasetodecorate, bActAsOpponentGod);
+        }
         if (godType == GodCard.GodsType.Prometheus) {
             return new PrometheusDecorator(phasetodecorate, bActAsOpponentGod);
+        }
+        if (godType == GodCard.GodsType.Zeus) {
+            return new ZeusDecorator(phasetodecorate, bActAsOpponentGod);
         }
 
         return phasetodecorate;

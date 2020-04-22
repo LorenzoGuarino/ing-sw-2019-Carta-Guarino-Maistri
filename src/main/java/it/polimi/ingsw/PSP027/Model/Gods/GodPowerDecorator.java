@@ -65,12 +65,13 @@ public abstract class GodPowerDecorator extends Phase {
      * setting the phase's type as Undefined (that will have to be changed)
      * @param chosenWorker worker chosen to play the turn (so the phase) with
      * @param gameBoard the currently updated board on which the player has to play the phase
+     * @param bMandatory boolean that tells if the phase is mandatory or optional
      */
 
     @Override
-    public void Init(Worker chosenWorker, Board gameBoard) {
+    public void Init(Worker chosenWorker, Board gameBoard, boolean bMandatory) {
 
-        decoratedPhase.Init(chosenWorker, gameBoard);
+        decoratedPhase.Init(chosenWorker, gameBoard, bMandatory);
     }
 
     /**
@@ -132,7 +133,6 @@ public abstract class GodPowerDecorator extends Phase {
      * @return the player
      */
 
-
     @Override
     public Player getPlayingPlayer() {
 
@@ -141,6 +141,7 @@ public abstract class GodPowerDecorator extends Phase {
 
     /**
      * Method to call when creating the phase in order to trigger the start of the phase and the communication with the client
+     * @return true if the phase can be performed, otherwise false
      */
 
     @Override
@@ -151,22 +152,37 @@ public abstract class GodPowerDecorator extends Phase {
         ProtocolTypes.protocolCommand cmd = ProtocolTypes.protocolCommand.undefined;
 
         // if there are no candidate cells
-        if(getCandidateCells().size()>0) {
+        if(this.getDecoratedPhase().getCandidateCells().size()>0) {
 
-            if (decoratedPhase.IsAMovePhase())
-                cmd = ProtocolTypes.protocolCommand.srv_CandidateCellsForMove;
-            else if (decoratedPhase.IsABuildPhase())
-                cmd = ProtocolTypes.protocolCommand.srv_CandidateCellsForBuild;
-            else if (decoratedPhase.IsAnEndPhase())
-                cmd = ProtocolTypes.protocolCommand.srv_CandidateCellsForEnd;
-
+            if (decoratedPhase.IsAMovePhase()) {
+                if(decoratedPhase.IsMandatory()) {
+                    cmd = ProtocolTypes.protocolCommand.srv_CandidateCellsForMove;
+                }
+                else {
+                    cmd = ProtocolTypes.protocolCommand.srv_CandidateCellsForOptMove;
+                }
+            }
+            else if (decoratedPhase.IsABuildPhase()) {
+                if(decoratedPhase.IsMandatory()) {
+                    cmd = ProtocolTypes.protocolCommand.srv_CandidateCellsForBuild;
+                }
+                else {
+                    cmd = ProtocolTypes.protocolCommand.srv_CandidateCellsForOptBuild;
+                }
+            }
+            else if (decoratedPhase.IsAnEndPhase()) {
+                if(decoratedPhase.IsMandatory()) {
+                    cmd = ProtocolTypes.protocolCommand.srv_CandidateCellsForEnd;
+                }
+                else {
+                    cmd = ProtocolTypes.protocolCommand.srv_CandidateCellsForOptEnd;
+                } }
             if (cmd != ProtocolTypes.protocolCommand.undefined)
             {
                 decoratedPhase.SendCandidateCells(cmd);
                 return true;
             }
         }
-
         return false;
     }
 

@@ -45,7 +45,7 @@ public class MinotaurDecoratorTest {
         Cell x22 = gameBoard.getCell(6);
         x22.addLevel();x22.addLevel();
         MovePhase movePhase = new MovePhase();
-        movePhase.Init(worker11,gameBoard);
+        movePhase.Init(worker11,gameBoard, true);
         minotaurDecoratedPhase =new MinotaurDecorator(movePhase, false);
         minotaurDecoratedPhase.evalCandidateCells();
         ArrayList<Cell> expectedList= new ArrayList<Cell>();
@@ -69,7 +69,7 @@ public class MinotaurDecoratorTest {
         Cell x11 = gameBoard.getCell(0);
 
         MovePhase movePhase= new MovePhase();
-        movePhase.Init(worker11,gameBoard);
+        movePhase.Init(worker11,gameBoard, true);
         minotaurDecoratedPhase =new MinotaurDecorator(movePhase, false);
         minotaurDecoratedPhase.performActionOnCell(x21);
         assertFalse(x11.isOccupiedByWorker());
