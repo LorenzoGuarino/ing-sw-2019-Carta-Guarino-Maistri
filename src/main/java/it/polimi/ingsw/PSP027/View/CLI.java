@@ -583,7 +583,7 @@ public class CLI implements Runnable, ClientObserver {
                             }
                         }
                         break;
-
+                        
                         case cli_ManagePlacingSecondWorker: {
                             System.out.println("\nPlease place your second worker on the board.\n" + DEFAULT_ITALIC + DEFAULT_BOLD +
                                     "Remember:" + RESET + DEFAULT_ITALIC + " You cannot put your workers in already occupied cells, which can be distinguished by" +
