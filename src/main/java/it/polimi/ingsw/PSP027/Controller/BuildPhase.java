@@ -51,7 +51,7 @@ public class BuildPhase extends Phase {
         else{
             chosenCell.addDome();
         }
-
+        this.getWorker().setOldBuiltCell(chosenCell);
         this.getWorker().IncrementBuildCounter();
 
     }

@@ -97,7 +97,9 @@ public class CLI implements Runnable, ClientObserver {
     private static String CHOSENWORKER_COMMAND = "workerchosen";
     private static String APPLYGODANSWER_COMMAND = "answerapplygod";
     private static String CANDIDATECELLFORMOVE_COMMAND = "candidatecellchosen";
+    private static String CANDIDATECELLFORBUILD_COMMAND = "candidatebuildcell";
     private static String PASSMOVE_COMMAND = "movepassed";
+    private static String PASSBUILD_COMMAND = "buildpassed";
 
     /* ******************************************************** LABELS ***************************************************** */
 
@@ -768,7 +770,7 @@ public class CLI implements Runnable, ClientObserver {
                             printBoard();
                             System.out.println("\nPlease select the cell you want to build on.\n" + DEFAULT_ITALIC + DEFAULT_BOLD +
                                     "Remember:" + RESET + DEFAULT_ITALIC + " You can only select the " + SANTORINI_HIGHLIGHT + " highlighted " + RESET +
-                                    " cells, including the ones hilighted with a player's color if your god allows to build where there's a player's worker on.\n" + "Syntax to indicate the cell you want to select: \"LetterNumber\"");
+                                    " cells, including the ones highlighted with a player's color if your god allows to build where there's a player's worker on.\n" + "Syntax to indicate the cell you want to select: \"LetterNumber\"");
 
                             WaitForUserInput();
 
@@ -787,8 +789,7 @@ public class CLI implements Runnable, ClientObserver {
                                         for (int i = 0; i < indexcandidatecells.size(); i++) {
                                             if (indexcandidatecells.get(i) == chosenCellIndex) {
 
-                                                //@TODO send build cell
-                                                cmdLine = CANDIDATECELLFORMOVE_COMMAND + " " + chosenCellIndex;
+                                                cmdLine = CANDIDATECELLFORBUILD_COMMAND + " " + chosenCellIndex;
 
                                                 gamestate = CLIGameState.cli_WaitForSomethingToHappen;
 
@@ -807,9 +808,10 @@ public class CLI implements Runnable, ClientObserver {
                             setCellsToPrint();
 
                             printBoard();
-                            System.out.println("\nPlease  on.\n" + DEFAULT_ITALIC + DEFAULT_BOLD +
+
+                            System.out.println("\n" + DEFAULT_BOLD + "Your god allows you to build again." + RESET + "Please select the cell you want to build on, or if you don't want to build again enter \"PASS\"\n" + DEFAULT_ITALIC + DEFAULT_BOLD +
                                     "Remember:" + RESET + DEFAULT_ITALIC + " You can only select the " + SANTORINI_HIGHLIGHT + " highlighted " + RESET +
-                                    " cells, which, if your god allows you to move in a cell occupied by one of your opponent's workers, are highlighted with your opponent's color.\n" + "Syntax to indicate the cell you want to select: \"LetterNumber\"");
+                                    " cells, which, if your god allows you to build on a cell occupied by one of your opponent's workers, are highlighted with your opponent's color.\n" + "Syntax to indicate the cell you want to select: \"LetterNumber\"");
 
                             WaitForUserInput();
 
@@ -828,7 +830,7 @@ public class CLI implements Runnable, ClientObserver {
                                         for (int i = 0; i < indexcandidatecells.size(); i++) {
                                             if (indexcandidatecells.get(i) == chosenCellIndex) {
 
-                                                cmdLine = CANDIDATECELLFORMOVE_COMMAND + " " + chosenCellIndex;
+                                                cmdLine = CANDIDATECELLFORBUILD_COMMAND + " " + chosenCellIndex;
 
                                                 gamestate = CLIGameState.cli_WaitForSomethingToHappen;
 
@@ -838,6 +840,10 @@ public class CLI implements Runnable, ClientObserver {
                                         }
                                     }
                                 }
+                            }
+                            else if(position.length() == 4 && position.equals("PASS")) {
+                                cmdLine = PASSBUILD_COMMAND;
+                                gamestate = CLIGameState.cli_WaitForSomethingToHappen;
                             }
                         }
                         break;
@@ -1012,6 +1018,16 @@ public class CLI implements Runnable, ClientObserver {
                             if (cmdlineParts.length == 1) {
                                 gamestate = CLIGameState.cli_WaitForSomethingToHappen;
                                 client.passMove();
+                            }
+                        }else if(cmdlineParts[0].equals(CANDIDATECELLFORBUILD_COMMAND)) {
+                            if (cmdlineParts.length == 2) {
+                                gamestate = CLIGameState.cli_WaitForSomethingToHappen;
+                                client.CandidateBuild(cmdlineParts[1]);
+                            }
+                        }else if(cmdlineParts[0].equals(PASSBUILD_COMMAND)) {
+                            if (cmdlineParts.length == 1) {
+                                gamestate = CLIGameState.cli_WaitForSomethingToHappen;
+                                client.passBuild();
                             }
                         }
                         cmdLine = "";

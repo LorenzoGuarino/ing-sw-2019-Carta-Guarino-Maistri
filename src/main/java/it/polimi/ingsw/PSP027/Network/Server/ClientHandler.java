@@ -166,6 +166,12 @@ public class ClientHandler implements Runnable
                                 case clt_MovePassed:
                                     owner.onMovePassed();
                                     break;
+                                case clt_Build:
+                                    owner.onBuild(cmdData);
+                                    break;
+                                case clt_BuildPassed:
+                                    owner.onBuildPassed();
+                                    break;
                             }
                         }
                     }
@@ -674,5 +680,41 @@ public class ClientHandler implements Runnable
         Node node;
 
         lobby.passMove(this);
+    }
+    /**
+     * Method that process the candidate cell written in the command in xml format received from the client.
+     * It triggers a method in the lobby that sets the chosen cell in the turn that is being played in the correspondent match
+     * @param data xml of the chosen cell received from the client
+     */
+    private void onBuild(Node data) {
+
+        System.out.println("Received onBuild from " + nickname);
+        String chosenCell="";
+        Node node;
+
+        if (data.hasChildNodes()) {
+            NodeList nodes = data.getChildNodes();
+
+            for (int i = 0; i < nodes.getLength(); i++) {
+                node = nodes.item(i);
+
+                if (node.getNodeName().equals("cell")) {
+                    chosenCell = node.getTextContent();
+                }
+            }
+            lobby.BuildOnGivenCell(this, chosenCell);
+        }
+    }
+    /**
+     * Method that process the candidate cell written in the command in xml format received from the client.
+     * It triggers a method in the lobby that sets the chosen cell in the turn that is being played in the correspondent match
+     */
+    private void onBuildPassed() {
+
+        System.out.println("Received onBuildPassed from " + nickname);
+        String chosenCell = "";
+        Node node;
+
+        lobby.passBuild(this);
     }
 }

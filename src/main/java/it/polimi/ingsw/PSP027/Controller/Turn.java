@@ -95,7 +95,6 @@ public class Turn {
     /**
      * Method that updates the board with the new position of the worker
      * @param chosenCellIndex cell where the worker is moving onto
-     * @TODO create another move or go on and create a build phase
      */
     public void MoveWorker(int chosenCellIndex) {
 
@@ -119,8 +118,39 @@ public class Turn {
         }
     }
 
+    /**
+     * Method that creates the next Build Phase
+     */
     public void passMove() {
         CreateBuildPhase(true);
+    }
+
+    /**
+     * Method that updates the board with the new build done
+     * @param chosenCellIndex cell where the worker is building
+     */
+    public void Build(int chosenCellIndex) {
+
+        Cell cell = santoriniMatch.getGameBoard().getCell(chosenCellIndex);
+
+        if(phaseList.size()>0)
+        {
+            phaseList.get(phaseList.size()-1).performActionOnCell(cell);
+        }
+
+        if(playingPlayer.getPlayerGod().AllowExtraBuildAfterMove() && this.chosenWorker.getBuildCounter() == 1) {
+            CreateBuildPhase(false);
+        }
+        else {
+            CreateEndPhase(true);
+        }
+    }
+
+    /**
+     * Method that create the next End phase
+     */
+    public void passBuild() {
+        CreateEndPhase(true);
     }
 
 
@@ -298,6 +328,45 @@ public class Turn {
             getPlayingPlayer().setHasLost(true);
             bCompleted = true;
         }
+    }
+    /**
+     * Method that creates a build phase, applying the right decorator to it (also the opponent ones, applied to the already decorated
+     * phase by the player's own god)
+     * @param bMandatory this tells the phase if it's a mandatory phase or an optional one, deciding therefore whether the player
+     *                   loses the game when not able not perform the phase
+     */
+
+    public void CreateEndPhase(boolean bMandatory)
+    {
+//        // create build phase and apply decorator to it.
+//        // the decorated resulting phase is the one that is stored on the phase list
+//        EndPhase phase = new EndPhase();
+//        phase.Init(this.chosenWorker, this.santoriniMatch.getGameBoard(), bMandatory);
+//
+//        Phase playergodphase = applyDecorator(phase, playingPlayer.getPlayerGod().getGodType(), false);
+//
+//        // and then apply opponent gods
+//        if(getPlayingPlayer().getOpponentsGodCards().size()>0)
+//        {
+//            Phase opponentgodphase1 = applyDecorator(playergodphase, getPlayingPlayer().getOpponentsGodCards().get(0).getGodType(), true);
+//            if(getPlayingPlayer().getOpponentsGodCards().size()>1)
+//            {
+//                Phase opponentgodphase2 = applyDecorator(opponentgodphase1, getPlayingPlayer().getOpponentsGodCards().get(1).getGodType(), true);
+//                phaseList.add(opponentgodphase2);
+//            }
+//            else
+//                phaseList.add(opponentgodphase1);
+//        }
+//        else
+//            phaseList.add(playergodphase);
+//
+//        boolean bCanPerformPhase = phaseList.get(phaseList.size()-1).startPhase(); //actually calls the method startPhase of the player's own decorator
+//
+//        if(!bCanPerformPhase && bMandatory){
+//            // player has lost !!!
+//            getPlayingPlayer().setHasLost(true);
+//            bCompleted = true;
+//        }
     }
 
     /**

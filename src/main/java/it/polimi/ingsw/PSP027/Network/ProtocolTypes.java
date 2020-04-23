@@ -40,6 +40,7 @@ public class ProtocolTypes {
         srv_CandidateCellsForBuild,
         srv_CandidateCellsForOptBuild,
         clt_Build,
+        clt_BuildPassed,
         srv_CandidateCellsForEnd,
         srv_CandidateCellsForOptEnd,
         srv_UseGodPower,

@@ -737,5 +737,105 @@ public class Lobby{
             GamersLock.unlock();
         }
     }
+    /**
+     * Method that gets the chosen cell id and propagates it to the match of the player that has made the choice
+     * @param client identifying the player that chose the cell
+     * @param chosenCell id of the chosen cell
+     */
+    public void BuildOnGivenCell(ClientHandler client, String chosenCell) {
+        try {
+            while (true) {
+
+                if (GamersLock.tryLock(2L, TimeUnit.SECONDS)) {
+
+                    for (Gamer gamerInLobby : lobbyGamers) {
+
+                        if ((gamerInLobby.client.getNickname().equals(client.getNickname())) &&
+                                (gamerInLobby.client.getAddress().equals(client.getAddress()))
+                        ) {
+
+                            for (SantoriniMatch match : Matches) {
+                                if (match.getMatchId() == gamerInLobby.matchAssociated) {
+
+                                    List<Player> matchPlayers = match.getPlayers();
+
+                                    for(Player player : matchPlayers) {
+                                        if(player.getNickname().equals(gamerInLobby.client.getNickname())) {
+                                            match.Build(chosenCell);
+                                            break;
+                                        }
+                                    }
+                                    break;
+                                }
+                            }
+
+                            break;
+                        }
+                    }
+
+                    break;
+                }
+                else {
+                    TimeUnit.MILLISECONDS.sleep(200);
+                }
+            }
+        }
+        catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        finally {
+            GamersLock.unlock();
+        }
+    }
+    /**
+     * Method that gets the chosen cell id and propagates it to the match of the player that has made the choice
+     * @param client identifying the player that chose the cell
+     */
+    public void passBuild(ClientHandler client) {
+        try {
+            while (true) {
+
+                if (GamersLock.tryLock(2L, TimeUnit.SECONDS)) {
+
+                    for (Gamer gamerInLobby : lobbyGamers) {
+
+                        if ((gamerInLobby.client.getNickname().equals(client.getNickname())) &&
+                                (gamerInLobby.client.getAddress().equals(client.getAddress()))
+                        ) {
+
+                            for (SantoriniMatch match : Matches) {
+                                if (match.getMatchId() == gamerInLobby.matchAssociated) {
+
+                                    List<Player> matchPlayers = match.getPlayers();
+
+                                    for(Player player : matchPlayers) {
+                                        if(player.getNickname().equals(gamerInLobby.client.getNickname())) {
+                                            match.passBuild();
+                                            break;
+                                        }
+                                    }
+                                    break;
+                                }
+                            }
+
+                            break;
+                        }
+                    }
+
+                    break;
+                }
+                else {
+                    TimeUnit.MILLISECONDS.sleep(200);
+                }
+            }
+        }
+        catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        finally {
+            GamersLock.unlock();
+        }
+    }
+
 }
 

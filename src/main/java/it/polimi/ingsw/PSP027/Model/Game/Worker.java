@@ -8,6 +8,9 @@ public class Worker {
 
     private int index;
     private Cell oldPosition;
+
+
+
     private Cell oldBuiltCell;
     private Cell currentPosition;
     private Player owner;
@@ -51,6 +54,9 @@ public class Worker {
         return oldBuiltCell;
     }
 
+    public void setOldBuiltCell(Cell oldBuiltCell) {
+        this.oldBuiltCell = oldBuiltCell;
+    }
     public void IncrementMoveCounter()
     {
         movecount++;

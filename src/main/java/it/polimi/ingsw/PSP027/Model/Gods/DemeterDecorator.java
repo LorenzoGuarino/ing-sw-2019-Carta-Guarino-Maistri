@@ -39,7 +39,7 @@ public class DemeterDecorator extends GodPowerDecorator {
                     if(this.getWorker().getLastBuiltCell().getCellIndex() == candidateCell.getCellIndex()) {
                         System.out.println("DEMETER: evalCandidateCells discarding cell " + candidateCell.getCellIndex() + " (l=" +
                                 candidateCell.getLevel() + ", w=" + candidateCell.isOccupiedByWorker() + ", d=" + candidateCell.checkDome());
-                        this.getCandidateCells().remove(candidateCell.getCellIndex());
+                        this.getCandidateCells().remove(candidateCell);
                     }
                 }
             }
