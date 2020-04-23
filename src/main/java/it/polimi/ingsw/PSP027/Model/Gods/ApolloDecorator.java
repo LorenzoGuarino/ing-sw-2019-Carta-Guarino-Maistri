@@ -43,7 +43,8 @@ public class ApolloDecorator extends GodPowerDecorator {
 
                     if(this.getCandidateCells().indexOf(candidateCell) == -1) {                 //for each candidate cell in neighbouringCells not already within the list , if
                         if ((candidateCell.getLevel() <= startingCell.getLevel() + 1) &&        //the lv i want to get to is higher less than one
-                                (!candidateCell.checkDome())) {                                 //it is not occupied by a dome
+                                (!candidateCell.checkDome())&&
+                                candidateCell.isOccupiedByOpponentWorker(this.getPlayingPlayer())) {                                 //it is not occupied by a dome
                             System.out.println("APOLLO: evalCandidateCells inserting cell " + candidateCell.getCellIndex());
                             this.getCandidateCells().add(candidateCell);                        //then add the cell to candidateCells
                         } else {
