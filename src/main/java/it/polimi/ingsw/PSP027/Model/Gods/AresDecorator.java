@@ -24,11 +24,11 @@ public class AresDecorator extends GodPowerDecorator {
 
         // Ares can remove a building block not occupied by a worker neighbouring his unmoved worker
 
-        if (this.getDecoratedPhase().IsAnEndPhase()) {
+        if (IsAnEndPhase()) {
 
             getCandidateCells().clear();
 
-            if(this.getDecoratedPhase().getPlayingPlayer().getPlayerWorkers().size()>1) {
+            if(getPlayingPlayer().getPlayerWorkers().size()>1) {
 
                 Worker worker = null;
                 if (getWorker().getWorkerIndex() == 0)
@@ -38,7 +38,7 @@ public class AresDecorator extends GodPowerDecorator {
 
                 Cell startingCell = worker.getWorkerPosition();
 
-                for (Cell candidateCell : this.getGameBoard().getNeighbouringCells(startingCell)) {
+                for (Cell candidateCell : getGameBoard().getNeighbouringCells(startingCell)) {
 
                     if (candidateCell.canALevelBeRemoved())
                         getCandidateCells().add(candidateCell);
@@ -51,7 +51,7 @@ public class AresDecorator extends GodPowerDecorator {
     @Override
     public void performActionOnCell(Cell chosenCell) {
 
-        if (this.getDecoratedPhase().IsAnEndPhase() && (chosenCell != null)) {
+        if (IsAnEndPhase() && (chosenCell != null)) {
             chosenCell.removeLevel();
         }
 

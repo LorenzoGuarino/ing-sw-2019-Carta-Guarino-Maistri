@@ -17,7 +17,6 @@ public class EndPhase extends Phase {
 
     @Override
     public void evalCandidateCells(){
-
     }
 
     /**

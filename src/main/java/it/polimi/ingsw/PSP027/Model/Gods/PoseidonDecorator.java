@@ -16,25 +16,29 @@ public class PoseidonDecorator extends GodPowerDecorator {
         // call nested phase evalCandidateCells
         super.evalCandidateCells();
 
-        // Ares can remove a building block not occupied by a worker neighbouring his unmoved worker
+        // Poseidon can build up to 3 times with his unmoved worker
+
         if (IsAnEndPhase()) {
 
             getCandidateCells().clear();
 
-            Worker worker = null;
-            if (getWorker().getWorkerIndex() == 0)
-                worker = getWorker().getWorkerOwner().getPlayerWorkers().get(1);
-            else
-                worker = getWorker().getWorkerOwner().getPlayerWorkers().get(0);
+            if(getPlayingPlayer().getPlayerWorkers().size()>1) {
 
-            if(worker.getBuildCounter()<3) {
-                Cell startingCell = worker.getWorkerPosition();
+                Worker worker = null;
+                if (getWorker().getWorkerIndex() == 0)
+                    worker = getWorker().getWorkerOwner().getPlayerWorkers().get(1);
+                else
+                    worker = getWorker().getWorkerOwner().getPlayerWorkers().get(0);
 
-                if (startingCell.getLevel() == 0) {
-                    for (Cell candidateCell : this.getGameBoard().getNeighbouringCells(startingCell)) {
+                if (worker.getBuildCounter() < 3) {
+                    Cell startingCell = worker.getWorkerPosition();
 
-                        if (candidateCell.canALevelBeAdded())
-                            getCandidateCells().add(candidateCell);
+                    if (startingCell.getLevel() == 0) {
+                        for (Cell candidateCell : getGameBoard().getNeighbouringCells(startingCell)) {
+
+                            if (candidateCell.canALevelBeAdded())
+                                getCandidateCells().add(candidateCell);
+                        }
                     }
                 }
             }

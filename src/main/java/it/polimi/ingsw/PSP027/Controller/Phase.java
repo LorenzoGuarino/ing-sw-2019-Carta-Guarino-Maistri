@@ -28,7 +28,7 @@ public class Phase {
     private Worker chosenWorker = null;
     private Board gameBoard = null;
     private PhaseType phaseType = PhaseType.Undefined;
-    private boolean bMandatory;
+    private boolean bMandatory = false;
 
 
     /**

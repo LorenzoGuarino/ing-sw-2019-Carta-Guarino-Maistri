@@ -71,7 +71,7 @@ public abstract class GodPowerDecorator extends Phase {
     @Override
     public void Init(Worker chosenWorker, Board gameBoard, boolean bMandatory) {
 
-        decoratedPhase.Init(chosenWorker, gameBoard, bMandatory);
+        // this should do nothing to not alter base phase
     }
 
     /**
@@ -103,7 +103,7 @@ public abstract class GodPowerDecorator extends Phase {
     @Override
     public Board getGameBoard() {
 
-        return this.decoratedPhase.getGameBoard();
+        return decoratedPhase.getGameBoard();
     }
 
     /**
@@ -129,6 +129,29 @@ public abstract class GodPowerDecorator extends Phase {
     }
 
     /**
+     * Method that tells if the decorated phase is an end phase
+     * @return true if it is, otherwise false
+     */
+
+    @Override
+    public boolean IsAnEndPhase() {
+
+        return decoratedPhase.IsAnEndPhase();
+    }
+
+    /**
+     * Method that tells if the phase is mandatory or optional
+     * @return true if it's mandatory, false if it's optional
+     */
+
+    @Override
+    public boolean IsMandatory() {
+
+        return decoratedPhase.IsMandatory() ;
+    }
+
+
+    /**
      * Method to get the player who is playing the decorated phase
      * @return the player
      */
@@ -151,8 +174,8 @@ public abstract class GodPowerDecorator extends Phase {
 
         ProtocolTypes.protocolCommand cmd = ProtocolTypes.protocolCommand.undefined;
 
-        // if there are no candidate cells
-        if(this.getDecoratedPhase().getCandidateCells().size()>0||this.getDecoratedPhase().IsAnEndPhase()) {
+        // if there are candidate cells
+        if(decoratedPhase.getCandidateCells().size()>0) {
 
             if (decoratedPhase.IsAMovePhase()) {
                 if(decoratedPhase.IsMandatory()) {
@@ -171,18 +194,20 @@ public abstract class GodPowerDecorator extends Phase {
                 }
             }
             else if (decoratedPhase.IsAnEndPhase()) {
-                if(decoratedPhase.IsMandatory()) {//@TODO useless?
+                if(decoratedPhase.IsMandatory()) {
                     cmd = ProtocolTypes.protocolCommand.srv_CandidateCellsForEnd;
                 }
                 else {
                     cmd = ProtocolTypes.protocolCommand.srv_CandidateCellsForOptEnd;
-                } }
+                }
+            }
             if (cmd != ProtocolTypes.protocolCommand.undefined)
             {
                 decoratedPhase.SendCandidateCells(cmd);
                 return true;
             }
         }
+
         return false;
     }
 

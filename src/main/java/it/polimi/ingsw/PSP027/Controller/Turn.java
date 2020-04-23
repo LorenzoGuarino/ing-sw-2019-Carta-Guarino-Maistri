@@ -129,7 +129,7 @@ public class Turn {
      * Method that updates the board with the new build done
      * @param chosenCellIndex cell where the worker is building
      */
-    public void Build(int chosenCellIndex) {
+    public void doBuild(int chosenCellIndex) {
 
         Cell cell = santoriniMatch.getGameBoard().getCell(chosenCellIndex);
 
@@ -153,6 +153,7 @@ public class Turn {
         CreateEndPhase(false);
     }
 
+
     public void endAction(int chosenCellIndex) {
 
         Cell cell = santoriniMatch.getGameBoard().getCell(chosenCellIndex);
@@ -162,11 +163,20 @@ public class Turn {
             phaseList.get(phaseList.size()-1).performActionOnCell(cell);
         }
 
-        //@TODO end turn
+        if(playingPlayer.getPlayerGod().AllowExtraEnd() && this.chosenWorker.getBuildCounter() == 1) {
+            CreateEndPhase(false);
+        }
+        else {
+            //@TODO end turn
+            bCompleted = true;
+        }
+
     }
 
-    public void passEnd() {//@TODO starts next players turn
+    public void passEnd() {
+        //@TODO starts next players turn
         System.out.println("End of player "+this.playingPlayer+" turn");
+        bCompleted = true;
     }
 
 
@@ -346,7 +356,7 @@ public class Turn {
         }
     }
     /**
-     * Method that creates a build phase, applying the right decorator to it (also the opponent ones, applied to the already decorated
+     * Method that creates an end phase, applying the right decorator to it (also the opponent ones, applied to the already decorated
      * phase by the player's own god)
      * @param bMandatory this tells the phase if it's a mandatory phase or an optional one, deciding therefore whether the player
      *                   loses the game when not able not perform the phase
@@ -354,7 +364,7 @@ public class Turn {
 
     public void CreateEndPhase(boolean bMandatory)
     {
-          //create build phase and apply decorator to it.
+        //create build phase and apply decorator to it.
         // the decorated resulting phase is the one that is stored on the phase list
         EndPhase phase = new EndPhase();
         phase.Init(this.chosenWorker, this.santoriniMatch.getGameBoard(), bMandatory);
@@ -378,12 +388,12 @@ public class Turn {
 
         //removing opponentGodsCards
         phase.getPlayingPlayer().removeOpponentGodCards();
+        System.out.println("Cleared opponents gods");
 
         boolean bCanPerformPhase = phaseList.get(phaseList.size()-1).startPhase(); //actually calls the method startPhase of the player's own decorator
 
-        if(!bCanPerformPhase && bMandatory){
-            // player has lost !!!
-            getPlayingPlayer().setHasLost(true);
+        if(!bCanPerformPhase){
+            //player doesn't have a god that acts in the end phase, so its turn can end.
             bCompleted = true;
         }
     }

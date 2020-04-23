@@ -230,7 +230,7 @@ public class GodCard {
     }
 
     /**
-     * Method to call in order to knwo if a godcard allows an extra build after the move
+     * Method to call in order to know if a godcard allows an extra build after the move
      * @return true if ti allows it, otherwise false
      */
 
@@ -241,6 +241,22 @@ public class GodCard {
             case Demeter:
             case Hephaestus:
             case Hestia:
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    /**
+     * Method to call in order to know if a godcard allows an extra end
+     * @return true if ti allows it, otherwise false
+     */
+
+    public boolean AllowExtraEnd() {
+
+        switch(godType)
+        {
+            case Poseidon:
                 return true;
             default:
                 return false;

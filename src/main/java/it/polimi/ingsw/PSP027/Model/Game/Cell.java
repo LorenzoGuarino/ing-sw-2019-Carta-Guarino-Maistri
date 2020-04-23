@@ -91,7 +91,7 @@ public class Cell {
 
     public boolean canALevelBeAdded()
     {
-        return ((level != 3) && !isOccupiedByWorker());
+        return ((level <= 3) && !isOccupiedByWorker() && !dome);
     }
 
     /**
@@ -161,13 +161,6 @@ public class Cell {
      */
 
     public boolean checkDome() { return dome; }
-
-    /**
-     * Method that checks if on this cell can be added a dome
-     * @return true if a dome can be added to a tower, otherwise false
-     */
-
-    public boolean canADomeBeAdded() { return (level == 3) && (!dome); }
 
     /**
      * Method that adds a dome to the cell
