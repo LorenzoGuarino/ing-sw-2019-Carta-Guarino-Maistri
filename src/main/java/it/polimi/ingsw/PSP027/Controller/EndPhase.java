@@ -2,34 +2,30 @@ package it.polimi.ingsw.PSP027.Controller;
 
 import it.polimi.ingsw.PSP027.Model.Game.Cell;
 
-
-
 public class EndPhase extends Phase {
     /**
      * Constructor: when creating the move phase it sets the phase's type as phase type "End"
      */
 
     public EndPhase() {
-        SetType(Phase.PhaseType.End);
+        SetType(PhaseType.End);
     }
 
     /**
-     * Standard candidate cells list for any EndPhase of any player and worker.
+     * That's not a standard phase, so it does not evaluate cells
      */
 
     @Override
     public void evalCandidateCells(){
+
     }
 
     /**
-     * Standard update for a standard EndPhase action.
-     * @param chosenCell
-     * @TODO FIX
+     * That's not a standard phase, so it does not perform a standard action on cell
      */
 
     @Override
     public void performActionOnCell(Cell chosenCell){
-        this.getWorker().getWorkerOwner().removeOpponentGodCards();
-    }
 
+    }
 }

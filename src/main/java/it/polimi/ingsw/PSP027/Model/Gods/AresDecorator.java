@@ -3,10 +3,6 @@ import it.polimi.ingsw.PSP027.Controller.Phase;
 import it.polimi.ingsw.PSP027.Model.Game.Cell;
 import it.polimi.ingsw.PSP027.Model.Game.Worker;
 
-/**
- * @author Elisa Maistri
- */
-
 public class AresDecorator extends GodPowerDecorator {
 
     public AresDecorator(Phase decoratedPhase, boolean bActAsOpponentGod) {
@@ -26,9 +22,11 @@ public class AresDecorator extends GodPowerDecorator {
         super.evalCandidateCells();
 
         // Ares can remove a building block not occupied by a worker neighbouring his unmoved worker
-        if (IsAnEndPhase() && getPlayingPlayer().getPlayerWorkers().size() == 2) {
+        if (IsAnEndPhase()) {
 
             getCandidateCells().clear();
+
+            //@TODO check that the player has 2 workers
 
             Worker worker = null;
             if (getWorker().getWorkerIndex() == 0)

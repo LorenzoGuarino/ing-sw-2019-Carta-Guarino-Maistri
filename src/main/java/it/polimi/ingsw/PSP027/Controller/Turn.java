@@ -84,6 +84,15 @@ public class Turn {
     }
 
     /**
+     * Method that gets the answer of the client on whether it wants to apply the god's power or not
+     * @param answer string containing yes or no
+     */
+    public void setAnswer(String answer) {
+
+
+    }
+
+    /**
      * Method that updates the board with the new position of the worker
      * @param chosenCellIndex cell where the worker is moving onto
      */
@@ -138,7 +147,7 @@ public class Turn {
     }
 
     /**
-     * Method that create the next End phase when the player doen's want to use its god power that allows to make an extra build
+     * Method that create the next End phase
      */
     public void passBuild() {
         CreateEndPhase(true);
@@ -228,6 +237,16 @@ public class Turn {
 
         return playingPlayer.HasLost();
     }
+
+//    /**
+//     * Method that prepares the command when asking the client to choose whether to use the god power or not and actually sends the command
+//     */
+//    public void askToUSeGodPower() {
+//        String cmd = "<cmd><id>" + ProtocolTypes.protocolCommand.srv_AskBeforeApplyingGod.toString()  + "</id><data>";
+//        cmd += this.santoriniMatch.boardToXMLString();
+//        cmd += "</data></cmd>";
+//        playingPlayer.SendCommand(cmd);
+//    }
 
     /**
      * Method that creates a move phase, applying the right decorator to it (also the opponent ones, applied to the already decorated
@@ -319,35 +338,35 @@ public class Turn {
 
     public void CreateEndPhase(boolean bMandatory)
     {
-//        // create build phase and apply decorator to it.
-//        // the decorated resulting phase is the one that is stored on the phase list
-//        EndPhase phase = new EndPhase();
-//        phase.Init(this.chosenWorker, this.santoriniMatch.getGameBoard(), bMandatory);
-//
-//        Phase playergodphase = applyDecorator(phase, playingPlayer.getPlayerGod().getGodType(), false);
-//
-//        // and then apply opponent gods
-//        if(getPlayingPlayer().getOpponentsGodCards().size()>0)
-//        {
-//            Phase opponentgodphase1 = applyDecorator(playergodphase, getPlayingPlayer().getOpponentsGodCards().get(0).getGodType(), true);
-//            if(getPlayingPlayer().getOpponentsGodCards().size()>1)
-//            {
-//                Phase opponentgodphase2 = applyDecorator(opponentgodphase1, getPlayingPlayer().getOpponentsGodCards().get(1).getGodType(), true);
-//                phaseList.add(opponentgodphase2);
-//            }
-//            else
-//                phaseList.add(opponentgodphase1);
-//        }
-//        else
-//            phaseList.add(playergodphase);
-//
-//        boolean bCanPerformPhase = phaseList.get(phaseList.size()-1).startPhase(); //actually calls the method startPhase of the player's own decorator
-//
-//        if(!bCanPerformPhase && bMandatory){
-//            // player has lost !!!
-//            getPlayingPlayer().setHasLost(true);
-//            bCompleted = true;
-//        }
+          //create build phase and apply decorator to it.
+        // the decorated resulting phase is the one that is stored on the phase list
+        EndPhase phase = new EndPhase();
+        phase.Init(this.chosenWorker, this.santoriniMatch.getGameBoard(), bMandatory);
+
+        Phase playergodphase = applyDecorator(phase, playingPlayer.getPlayerGod().getGodType(), false);
+
+        // and then apply opponent gods
+        if(getPlayingPlayer().getOpponentsGodCards().size()>0)
+        {
+            Phase opponentgodphase1 = applyDecorator(playergodphase, getPlayingPlayer().getOpponentsGodCards().get(0).getGodType(), true);
+            if(getPlayingPlayer().getOpponentsGodCards().size()>1)
+            {
+                Phase opponentgodphase2 = applyDecorator(opponentgodphase1, getPlayingPlayer().getOpponentsGodCards().get(1).getGodType(), true);
+                phaseList.add(opponentgodphase2);
+            }
+            else
+                phaseList.add(opponentgodphase1);
+        }
+        else
+            phaseList.add(playergodphase);
+
+        boolean bCanPerformPhase = phaseList.get(phaseList.size()-1).startPhase(); //actually calls the method startPhase of the player's own decorator
+
+        if(!bCanPerformPhase && bMandatory){
+            // player has lost !!!
+            getPlayingPlayer().setHasLost(true);
+            bCompleted = true;
+        }
     }
 
     /**
