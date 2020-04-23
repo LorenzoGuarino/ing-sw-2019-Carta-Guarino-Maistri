@@ -429,6 +429,40 @@ public class Client implements Runnable, ServerObserver
         return false;
     }
 
+    public synchronized boolean CandidateEnd(String chosenCell) {
+        if(connStatus == ConnectionStatus.KeepConnected) {
+
+            if (regStatus == RegistrationStatus.Registered) {
+
+                String cmd = "<cmd><id>" + ProtocolTypes.protocolCommand.clt_EndAction.toString() + "</id><data><cell>" + chosenCell + "</cell></data></cmd>";
+
+                serverHandler.SendCommand(cmd);
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Method that sends a command to the server with the data required
+     * @return true if operation successful, false otherwise
+     */
+    public synchronized boolean passEnd() {
+        if(connStatus == ConnectionStatus.KeepConnected) {
+
+            if (regStatus == RegistrationStatus.Registered) {
+
+                String cmd = "<cmd><id>" + ProtocolTypes.protocolCommand.clt_EndPassed.toString() + "</id><data></data></cmd>";
+
+                serverHandler.SendCommand(cmd);
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     /**
      * Method that creates a socket to connect with the server, and if successful
      * create the adapter with a separate thread that will communicate with the server

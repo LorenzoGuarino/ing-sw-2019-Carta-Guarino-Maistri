@@ -152,7 +152,7 @@ public abstract class GodPowerDecorator extends Phase {
         ProtocolTypes.protocolCommand cmd = ProtocolTypes.protocolCommand.undefined;
 
         // if there are no candidate cells
-        if(this.getDecoratedPhase().getCandidateCells().size()>0) {
+        if(this.getDecoratedPhase().getCandidateCells().size()>0||this.getDecoratedPhase().IsAnEndPhase()) {
 
             if (decoratedPhase.IsAMovePhase()) {
                 if(decoratedPhase.IsMandatory()) {
@@ -171,7 +171,7 @@ public abstract class GodPowerDecorator extends Phase {
                 }
             }
             else if (decoratedPhase.IsAnEndPhase()) {
-                if(decoratedPhase.IsMandatory()) {
+                if(decoratedPhase.IsMandatory()) {//@TODO useless?
                     cmd = ProtocolTypes.protocolCommand.srv_CandidateCellsForEnd;
                 }
                 else {

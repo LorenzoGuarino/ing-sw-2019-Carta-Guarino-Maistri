@@ -26,6 +26,5 @@ public class EndPhase extends Phase {
 
     @Override
     public void performActionOnCell(Cell chosenCell){
-
     }
 }

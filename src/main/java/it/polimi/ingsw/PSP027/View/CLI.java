@@ -98,8 +98,10 @@ public class CLI implements Runnable, ClientObserver {
     private static String APPLYGODANSWER_COMMAND = "answerapplygod";
     private static String CANDIDATECELLFORMOVE_COMMAND = "candidatecellchosen";
     private static String CANDIDATECELLFORBUILD_COMMAND = "candidatebuildcell";
+    private static String CANDIDATECELLFOREND_COMMAND = "candidateendcell";
     private static String PASSMOVE_COMMAND = "movepassed";
     private static String PASSBUILD_COMMAND = "buildpassed";
+    private static String PASSEND_COMMAND = "endpassed";
 
     /* ******************************************************** LABELS ***************************************************** */
 
@@ -874,7 +876,7 @@ public class CLI implements Runnable, ClientObserver {
                                         for (int i = 0; i < indexcandidatecells.size(); i++) {
                                             if (indexcandidatecells.get(i) == chosenCellIndex) {
 
-                                                cmdLine = CANDIDATECELLFORMOVE_COMMAND + " " + chosenCellIndex;
+                                                cmdLine = CANDIDATECELLFOREND_COMMAND + " " + chosenCellIndex;
 
                                                 gamestate = CLIGameState.cli_WaitForSomethingToHappen;
 
@@ -893,9 +895,9 @@ public class CLI implements Runnable, ClientObserver {
                             setCellsToPrint();
 
                             printBoard();
-                            System.out.println("\nPlease select the cell you want to move on.\n" + DEFAULT_ITALIC + DEFAULT_BOLD +
+                            System.out.println("\nPlease select the cell you want to perform your endPhase action on,or if you don't want to, type \"PASS\".\n" + DEFAULT_ITALIC + DEFAULT_BOLD +
                                     "Remember:" + RESET + DEFAULT_ITALIC + " You can only select the " + SANTORINI_HIGHLIGHT + " highlighted " + RESET +
-                                    " cells, which, if your god allows you to move in a cell occupied by one of your opponent's workers, are highlighted with your opponent's color.\n" + "Syntax to indicate the cell you want to select: \"LetterNumber\"");
+                                    "\n" + "Syntax to indicate the cell you want to select: \"LetterNumber\"");
 
                             WaitForUserInput();
 
@@ -914,7 +916,7 @@ public class CLI implements Runnable, ClientObserver {
                                         for (int i = 0; i < indexcandidatecells.size(); i++) {
                                             if (indexcandidatecells.get(i) == chosenCellIndex) {
 
-                                                cmdLine = CANDIDATECELLFORMOVE_COMMAND + " " + chosenCellIndex;
+                                                cmdLine = CANDIDATECELLFOREND_COMMAND + " " + chosenCellIndex;
 
                                                 gamestate = CLIGameState.cli_WaitForSomethingToHappen;
 
@@ -924,6 +926,10 @@ public class CLI implements Runnable, ClientObserver {
                                         }
                                     }
                                 }
+                            }
+                            else if(position.length() == 4 && position.equals("PASS")) {
+                                cmdLine = PASSEND_COMMAND;
+                                gamestate = CLIGameState.cli_WaitForSomethingToHappen;
                             }
                         }
                         break;
@@ -1019,15 +1025,25 @@ public class CLI implements Runnable, ClientObserver {
                                 gamestate = CLIGameState.cli_WaitForSomethingToHappen;
                                 client.passMove();
                             }
-                        }else if(cmdlineParts[0].equals(CANDIDATECELLFORBUILD_COMMAND)) {
+                        } else if(cmdlineParts[0].equals(CANDIDATECELLFORBUILD_COMMAND)) {
                             if (cmdlineParts.length == 2) {
                                 gamestate = CLIGameState.cli_WaitForSomethingToHappen;
                                 client.CandidateBuild(cmdlineParts[1]);
                             }
-                        }else if(cmdlineParts[0].equals(PASSBUILD_COMMAND)) {
+                        } else if(cmdlineParts[0].equals(PASSBUILD_COMMAND)) {
                             if (cmdlineParts.length == 1) {
                                 gamestate = CLIGameState.cli_WaitForSomethingToHappen;
                                 client.passBuild();
+                            }
+                        } else if(cmdlineParts[0].equals(CANDIDATECELLFOREND_COMMAND)) {
+                            if (cmdlineParts.length == 2) {
+                                gamestate = CLIGameState.cli_WaitForSomethingToHappen;
+                                client.CandidateEnd(cmdlineParts[1]);
+                            }
+                        } else if(cmdlineParts[0].equals(PASSEND_COMMAND)) {
+                            if (cmdlineParts.length == 1) {
+                                gamestate = CLIGameState.cli_WaitForSomethingToHappen;
+                                client.passEnd();
                             }
                         }
                         cmdLine = "";

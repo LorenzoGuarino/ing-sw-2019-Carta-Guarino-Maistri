@@ -142,7 +142,7 @@ public class Turn {
             CreateBuildPhase(false);
         }
         else {
-            CreateEndPhase(true);
+            CreateEndPhase(false);
         }
     }
 
@@ -150,7 +150,23 @@ public class Turn {
      * Method that create the next End phase
      */
     public void passBuild() {
-        CreateEndPhase(true);
+        CreateEndPhase(false);
+    }
+
+    public void endAction(int chosenCellIndex) {
+
+        Cell cell = santoriniMatch.getGameBoard().getCell(chosenCellIndex);
+
+        if(phaseList.size()>0)
+        {
+            phaseList.get(phaseList.size()-1).performActionOnCell(cell);
+        }
+
+        //@TODO end turn
+    }
+
+    public void passEnd() {//@TODO starts next players turn
+        System.out.println("End of player "+this.playingPlayer+" turn");
     }
 
 
@@ -360,6 +376,9 @@ public class Turn {
         else
             phaseList.add(playergodphase);
 
+        //removing opponentGodsCards
+        phase.getPlayingPlayer().removeOpponentGodCards();
+
         boolean bCanPerformPhase = phaseList.get(phaseList.size()-1).startPhase(); //actually calls the method startPhase of the player's own decorator
 
         if(!bCanPerformPhase && bMandatory){
@@ -423,5 +442,4 @@ public class Turn {
 
         return phasetodecorate;
     }
-
 }

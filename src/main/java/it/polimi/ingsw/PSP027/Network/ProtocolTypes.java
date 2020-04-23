@@ -47,6 +47,8 @@ public class ProtocolTypes {
         clt_UseGodPower,
         srv_BoardUpdated,
         srv_Loser,
-        srv_Winner
+        srv_Winner,
+        clt_EndPassed,
+        clt_EndAction
     }
 }

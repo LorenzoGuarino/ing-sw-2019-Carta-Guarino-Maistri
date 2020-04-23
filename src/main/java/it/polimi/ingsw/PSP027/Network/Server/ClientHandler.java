@@ -172,6 +172,10 @@ public class ClientHandler implements Runnable
                                 case clt_BuildPassed:
                                     owner.onBuildPassed();
                                     break;
+                                case clt_EndAction:
+                                    owner.onEndAction(cmdData);
+                                case clt_EndPassed:
+                                    owner.onEndPassed();
                             }
                         }
                     }
@@ -716,5 +720,30 @@ public class ClientHandler implements Runnable
         Node node;
 
         lobby.passBuild(this);
+    }
+
+    private void onEndAction(Node data) {
+
+        System.out.println("Received onEnd from " + nickname);
+        String chosenCell="";
+        Node node;
+
+        if (data.hasChildNodes()) {
+            NodeList nodes = data.getChildNodes();
+
+            for (int i = 0; i < nodes.getLength(); i++) {
+                node = nodes.item(i);
+
+                if (node.getNodeName().equals("cell")) {
+                    chosenCell = node.getTextContent();
+                }
+            }
+            lobby.doEndActionOnGivenCell(this, chosenCell);
+        }
+    }
+
+    private void onEndPassed() {
+        System.out.println("Received onEndPassed from " + nickname);
+        lobby.passEnd(this);
     }
 }

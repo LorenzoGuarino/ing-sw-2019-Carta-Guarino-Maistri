@@ -651,8 +651,16 @@ public class SantoriniMatch implements Runnable{
 
         turn.passBuild();
     }
+    public void endAction(String chosenCell) {
+        int chosenCellIndex;
+        chosenCellIndex = Integer.parseInt(chosenCell);
 
+        turn.endAction(chosenCellIndex);
+    }
 
+    public void passEnd() {
+        turn.passEnd();
+    }
 
 
 
