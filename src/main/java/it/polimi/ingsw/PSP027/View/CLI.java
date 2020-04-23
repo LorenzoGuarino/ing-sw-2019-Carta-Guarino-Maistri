@@ -95,7 +95,6 @@ public class CLI implements Runnable, ClientObserver {
     private static String PLAY_COMMAND = "play";
     private static String WORKERSPOSITION_COMMAND = "workerspositionchosen";
     private static String CHOSENWORKER_COMMAND = "workerchosen";
-    private static String APPLYGODANSWER_COMMAND = "answerapplygod";
     private static String CANDIDATECELLFORMOVE_COMMAND = "candidatecellchosen";
     private static String CANDIDATECELLFORBUILD_COMMAND = "candidatebuildcell";
     private static String PASSMOVE_COMMAND = "movepassed";
@@ -139,7 +138,6 @@ public class CLI implements Runnable, ClientObserver {
         cli_ManagePlacingFirstWorker,
         cli_ManagePlacingSecondWorker,
         cli_ChoosingWorker,
-        cli_ChoosingToApplyGod,
         cli_CandidateCellsForMove,
         cli_CandidateCellsForOptMove,
         cli_CandidateCellsForBuild,
@@ -417,13 +415,13 @@ public class CLI implements Runnable, ClientObserver {
                                                     break;
                                                 }
                                             }
-                                            if (bFound == false) {
+                                            if (!bFound) {
                                                 break;
                                             }
 
                                         }
 
-                                        if (bFound == true) {
+                                        if (bFound) {
                                             // create an emulated command with proper syntax for
                                             // processing entered command section
                                             cmdLine = CHOSENGODS_COMMAND + " ";
@@ -494,11 +492,11 @@ public class CLI implements Runnable, ClientObserver {
                                                 break;
                                             }
                                         }
-                                        if (bFound == false) {
+                                        if (!bFound) {
                                             break;
                                         }
 
-                                        if (bFound == true) {
+                                        if (bFound) {
                                             // create an emulated command with proper syntax for
                                             // processing entered command section
                                             cmdLine = CHOSENGOD_COMMAND + " " + chosengod;
@@ -656,27 +654,6 @@ public class CLI implements Runnable, ClientObserver {
                             }
                         }
                         break;
-                        case cli_ChoosingToApplyGod:  {
-
-                            clearScreen();
-
-                            setCellsToPrint();
-
-                            printBoard();
-
-                            System.out.println(DEFAULT_BOLD + "\nDo you want to apply your GodCard's power? [Yes/No]\n" + RESET);
-
-                            WaitForUserInput();
-
-                            String answer = cmdLine.trim();
-
-                            if (answer.equals("Yes") || answer.equals("No")) {
-                                cmdLine = APPLYGODANSWER_COMMAND + " " + answer;
-
-                                gamestate = CLIGameState.cli_WaitForSomethingToHappen;
-                            }
-                        }
-                        break;
                         case cli_CandidateCellsForMove: {
                             clearScreen();
 
@@ -724,7 +701,7 @@ public class CLI implements Runnable, ClientObserver {
 
                             printBoard();
 
-                            System.out.println("\n" + DEFAULT_BOLD + "Your god allows you to move again." + RESET + "Please select the cell you want to move on, or if you don't want to move again enter \"PASS\"\n" + DEFAULT_ITALIC + DEFAULT_BOLD +
+                            System.out.println("\n" + DEFAULT_BOLD + "Your god allows you to move again." + RESET + " Please select the cell you want to move on, or if you don't want to move again enter \"PASS\"\n" + DEFAULT_ITALIC + DEFAULT_BOLD +
                                     "Remember:" + RESET + DEFAULT_ITALIC + " You can only select the " + SANTORINI_HIGHLIGHT + " highlighted " + RESET +
                                     " cells, which, if your god allows you to move in a cell occupied by one of your opponent's workers, are highlighted with your opponent's color.\n" + "Syntax to indicate the cell you want to select: \"LetterNumber\"");
 
@@ -809,7 +786,7 @@ public class CLI implements Runnable, ClientObserver {
 
                             printBoard();
 
-                            System.out.println("\n" + DEFAULT_BOLD + "Your god allows you to build again." + RESET + "Please select the cell you want to build on, or if you don't want to build again enter \"PASS\"\n" + DEFAULT_ITALIC + DEFAULT_BOLD +
+                            System.out.println("\n" + DEFAULT_BOLD + "Your god allows you to build again." + RESET + " Please select the cell you want to build on, or if you don't want to build again enter \"PASS\"\n" + DEFAULT_ITALIC + DEFAULT_BOLD +
                                     "Remember:" + RESET + DEFAULT_ITALIC + " You can only select the " + SANTORINI_HIGHLIGHT + " highlighted " + RESET +
                                     " cells, which, if your god allows you to build on a cell occupied by one of your opponent's workers, are highlighted with your opponent's color.\n" + "Syntax to indicate the cell you want to select: \"LetterNumber\"");
 
@@ -893,7 +870,7 @@ public class CLI implements Runnable, ClientObserver {
                             setCellsToPrint();
 
                             printBoard();
-                            System.out.println("\nPlease select the cell you want to move on.\n" + DEFAULT_ITALIC + DEFAULT_BOLD +
+                            System.out.println("\nPlease select the cell..........\n" + DEFAULT_ITALIC + DEFAULT_BOLD +
                                     "Remember:" + RESET + DEFAULT_ITALIC + " You can only select the " + SANTORINI_HIGHLIGHT + " highlighted " + RESET +
                                     " cells, which, if your god allows you to move in a cell occupied by one of your opponent's workers, are highlighted with your opponent's color.\n" + "Syntax to indicate the cell you want to select: \"LetterNumber\"");
 
@@ -1003,11 +980,6 @@ public class CLI implements Runnable, ClientObserver {
                             if (cmdlineParts.length == 2) {
                                 gamestate = CLIGameState.cli_WaitForSomethingToHappen;
                                 client.ChosenWorker(cmdlineParts[1]);
-                            }
-                        } else if (cmdlineParts[0].equals(APPLYGODANSWER_COMMAND)) {
-                            if (cmdlineParts.length == 2) {
-                                gamestate = CLIGameState.cli_WaitForSomethingToHappen;
-                                client.ChosenAnswerForApplyingGod(cmdlineParts[1]);
                             }
                         } else if(cmdlineParts[0].equals(CANDIDATECELLFORMOVE_COMMAND)){
                             if (cmdlineParts.length == 2) {
@@ -1284,18 +1256,6 @@ public class CLI implements Runnable, ClientObserver {
     }
 
     /**
-     * Method of the ClientObserver interface that is fired by the client when choosing wheteher to use the god power or not
-     * @param board board in xml format that needs to be processed by the CLI when it prints the board
-     */
-
-    @Override
-    public void OnAskBeforeApplyingGod(Node board) {
-        abortUserInput = true;
-        gamestate = CLIGameState.cli_ChoosingToApplyGod;
-        this.nodeboard = board;
-    }
-
-    /**
      * Method of the ClientObserver interface that is fired by the client when choosing the cell to move the worker onto
      * @param nodes cells where is possible to move the worker in xml format that needs to be processed by the CLI
      */
@@ -1331,8 +1291,8 @@ public class CLI implements Runnable, ClientObserver {
     }
 
     /**
-     * Method of the ClientObserver interface that is fired by the client when choosing the cell to move the worker onto
-     * @param nodes cells where is possible to move the worker in xml format that needs to be processed by the CLI
+     * Method of the ClientObserver interface that is fired by the client when choosing the cell to move the worker onto for the oprtional move
+     * @param nodes cells where is possible to move (optionally) the worker in xml format that needs to be processed by the CLI
      */
     @Override
     public void OnCandidateCellsForOptMove(NodeList nodes) {
@@ -1366,8 +1326,8 @@ public class CLI implements Runnable, ClientObserver {
     }
 
     /**
-     * Method of the ClientObserver interface that is fired by the client when choosing the cell to move the worker onto
-     * @param nodes cells where is possible to move the worker in xml format that needs to be processed by the CLI
+     * Method of the ClientObserver interface that is fired by the client when choosing the cell to build onto
+     * @param nodes cells where is possible to build in xml format that needs to be processed by the CLI
      */
     @Override
     public void OnCandidateCellsForBuild(NodeList nodes) {
@@ -1401,8 +1361,8 @@ public class CLI implements Runnable, ClientObserver {
     }
 
     /**
-     * Method of the ClientObserver interface that is fired by the client when choosing the cell to move the worker onto
-     * @param nodes cells where is possible to move the worker in xml format that needs to be processed by the CLI
+     * Method of the ClientObserver interface that is fired by the client when choosing the cell to build onto for the optional build
+     * @param nodes cells where is possible to build (optionally) in xml format that needs to be processed by the CLI
      */
     @Override
     public void OnCandidateCellsForOptBuild(NodeList nodes) {
@@ -1436,8 +1396,8 @@ public class CLI implements Runnable, ClientObserver {
     }
 
     /**
-     * Method of the ClientObserver interface that is fired by the client when choosing the cell to move the worker onto
-     * @param nodes cells where is possible to move the worker in xml format that needs to be processed by the CLI
+     * Method of the ClientObserver interface that is fired by the client playing the end phase
+     * @param nodes cells where is possible to perform the action for the end phase in xml format that needs to be processed by the CLI
      */
     @Override
     public void OnCandidateCellsForEnd(NodeList nodes) {
@@ -1471,8 +1431,8 @@ public class CLI implements Runnable, ClientObserver {
     }
 
     /**
-     * Method of the ClientObserver interface that is fired by the client when choosing the cell to move the worker onto
-     * @param nodes cells where is possible to move the worker in xml format that needs to be processed by the CLI
+     * Method of the ClientObserver interface that is fired by the client when playing the optional end phase
+     * @param nodes cells where is possible to perform the action for the optional end phase in xml format that needs to be processed by the CLI
      */
     @Override
     public void OnCandidateCellsForOptEnd(NodeList nodes) {

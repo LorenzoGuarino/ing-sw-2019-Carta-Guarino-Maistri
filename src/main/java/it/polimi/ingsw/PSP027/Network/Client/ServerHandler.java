@@ -249,9 +249,6 @@ public class ServerHandler implements Runnable
                                 case srv_ChooseWorker:
                                     FireOnChooseWorker(cmdData);
                                     break;
-                                case srv_AskBeforeApplyingGod:
-                                    FireOnAskBeforeApplyingGod(cmdData);
-                                    break;
                                 case srv_CandidateCellsForMove:
                                     FireOnCandidateCellsForMove(cmdData);
                                     break;
@@ -853,41 +850,6 @@ public class ServerHandler implements Runnable
     }
 
     /**
-     * Method that fires the onAskBeforeApplyingGod method in the client, processing the command received from the server
-     * @param data xml to process and then pass on to onAskBeforeApplyingGod
-     */
-    private void FireOnAskBeforeApplyingGod(Node data) {
-        /* data value (example)
-         * <data>
-         *     <board>
-         *         <cell id="0" level="2" dome="false" nickname="Elisa" />
-         *         ...
-         *         <cell id="24" level="0" dome ="false" nickname="" />
-         *     </board>
-         * </data>
-         */
-
-        Node node;
-        if (data.hasChildNodes()) {
-            NodeList nodes = data.getChildNodes();
-
-            for (int i = 0; i < nodes.getLength(); i++) {
-                node = nodes.item(i);
-
-                if (node.getNodeName().equals("board")) {
-                    List<ServerObserver> observersCpy;
-                    synchronized (observers) {
-                        observersCpy = new ArrayList<ServerObserver>(observers);
-                    }
-                    for (ServerObserver observer : observersCpy) {
-                        observer.onAskBeforeApplyingGod(node);
-                    }
-                }
-            }
-        }
-    }
-
-    /**
      * Method that fires the OnCandidateCellsForMove method in the client, processing the command received from the server
      * @param data xml to process and then pass on to onCandidateCellsForMove
      */
@@ -921,8 +883,8 @@ public class ServerHandler implements Runnable
     }
 
     /**
-     * Method that fires the OnCandidateCellsForMove method in the client, processing the command received from the server
-     * @param data xml to process and then pass on to onCandidateCellsForMove
+     * Method that fires the OnCandidateCellsForOptMove method in the client, processing the command received from the server
+     * @param data xml to process and then pass on to onCandidateCellsForOptMove
      */
     private void FireOnCandidateCellsForOptMove(Node data){
         /* data value (example)
@@ -954,8 +916,8 @@ public class ServerHandler implements Runnable
     }
 
     /**
-     * Method that fires the OnCandidateCellsForMove method in the client, processing the command received from the server
-     * @param data xml to process and then pass on to onCandidateCellsForMove
+     * Method that fires the OnCandidateCellsForBuild method in the client, processing the command received from the server
+     * @param data xml to process and then pass on to onCandidateCellsForBuild
      */
     private void FireOnCandidateCellsForBuild(Node data){
         /* data value (example)
@@ -987,8 +949,8 @@ public class ServerHandler implements Runnable
     }
 
     /**
-     * Method that fires the OnCandidateCellsForMove method in the client, processing the command received from the server
-     * @param data xml to process and then pass on to onCandidateCellsForMove
+     * Method that fires the OnCandidateCellsForOptBuild method in the client, processing the command received from the server
+     * @param data xml to process and then pass on to onCandidateCellsForOptBuild
      */
     private void FireOnCandidateCellsForOptBuild(Node data){
         /* data value (example)
@@ -1020,8 +982,8 @@ public class ServerHandler implements Runnable
     }
 
     /**
-     * Method that fires the OnCandidateCellsForMove method in the client, processing the command received from the server
-     * @param data xml to process and then pass on to onCandidateCellsForMove
+     * Method that fires the OnCandidateCellsForEnd method in the client, processing the command received from the server
+     * @param data xml to process and then pass on to onCandidateCellsForEnd
      */
     private void FireOnCandidateCellsForEnd(Node data){
         /* data value (example)

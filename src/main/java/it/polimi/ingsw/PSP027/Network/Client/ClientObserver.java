@@ -28,7 +28,6 @@ public interface ClientObserver {
     void OnWinner(String nickname);
     void OnLoser();
     void OnChooseWorker(Node board);
-    void OnAskBeforeApplyingGod(Node board);
     void OnCandidateCellsForMove(NodeList nodes);
     void OnCandidateCellsForOptMove(NodeList nodes);
     void OnCandidateCellsForBuild(NodeList nodes);

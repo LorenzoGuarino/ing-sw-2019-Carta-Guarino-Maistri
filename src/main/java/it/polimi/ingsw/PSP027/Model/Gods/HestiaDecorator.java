@@ -2,6 +2,10 @@ package it.polimi.ingsw.PSP027.Model.Gods;
 import it.polimi.ingsw.PSP027.Controller.Phase;
 import it.polimi.ingsw.PSP027.Model.Game.Cell;
 
+/**
+ * @author Elisa Maistri
+ */
+
 public class HestiaDecorator extends GodPowerDecorator {
 
     public HestiaDecorator(Phase decoratedPhase, boolean bActAsOpponentGod) {

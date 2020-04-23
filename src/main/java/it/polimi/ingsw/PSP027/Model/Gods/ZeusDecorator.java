@@ -2,6 +2,10 @@ package it.polimi.ingsw.PSP027.Model.Gods;
 import it.polimi.ingsw.PSP027.Controller.Phase;
 import it.polimi.ingsw.PSP027.Model.Game.Cell;
 
+/**
+ * @author Elisa Maistri
+ */
+
 public class ZeusDecorator extends GodPowerDecorator {
 
     public ZeusDecorator(Phase decoratedPhase, boolean bActAsOpponentGod) {

@@ -606,17 +606,6 @@ public class SantoriniMatch implements Runnable{
     }
 
     /**
-     * Method that receives the answer on the matter of applying the god's power or not from the client and passes it to the turn
-     * that will take a different action if the answer is yes or no
-     * @param answer string containing yes or no
-     */
-
-    public void setAnswer(String answer) {
-
-        turn.setAnswer(answer);
-    }
-
-    /**
      * Method that receives the chosen cell from the client and passes it to the turn that will set the new position for the worker with the method MoveWorker
      * @param chosenCell int representing the id of the chosen cell
      */
@@ -628,14 +617,14 @@ public class SantoriniMatch implements Runnable{
     }
 
     /**
-     * Method that receives the chosen cell from the client and passes it to the turn that will set the new position for the worker with the method MoveWorker
+     * Method that receives the chosen cell from the client and passes it to the turn that will skip the optional move and move to the build phase
      */
     public void passMove(){
 
         turn.passMove();
     }
     /**
-     * Method that receives the chosen cell from the client and passes it to the turn that will set the new position for the worker with the method MoveWorker
+     * Method that receives the chosen cell from the client and passes it to the turn that will set the position where the Build will be done
      * @param chosenCell int representing the id of the chosen cell
      */
     public void Build(String chosenCell){
@@ -645,7 +634,7 @@ public class SantoriniMatch implements Runnable{
         turn.Build(chosenCellIndex);
     }
     /**
-     * Method that receives the chosen cell from the client and passes it to the turn that will set the new position for the worker with the method MoveWorker
+     * Method that receives the chosen cell from the client and passes it to the turn that will skip th eoprtional build and move to the end phase
      */
     public void passBuild(){
 

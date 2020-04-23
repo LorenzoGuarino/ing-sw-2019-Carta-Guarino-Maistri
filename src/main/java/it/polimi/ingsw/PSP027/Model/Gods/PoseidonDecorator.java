@@ -3,6 +3,10 @@ import it.polimi.ingsw.PSP027.Controller.Phase;
 import it.polimi.ingsw.PSP027.Model.Game.Cell;
 import it.polimi.ingsw.PSP027.Model.Game.Worker;
 
+/**
+ * @author Elisa Maistri
+ */
+
 public class PoseidonDecorator extends GodPowerDecorator {
 
     public PoseidonDecorator(Phase decoratedPhase, boolean bActAsOpponentGod) {

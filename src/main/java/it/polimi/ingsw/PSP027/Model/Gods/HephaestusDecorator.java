@@ -3,6 +3,10 @@ package it.polimi.ingsw.PSP027.Model.Gods;
 import it.polimi.ingsw.PSP027.Model.Game.Cell;
 import it.polimi.ingsw.PSP027.Controller.Phase;
 
+/**
+ * @author Elisa Maistri
+ */
+
 public class HephaestusDecorator extends GodPowerDecorator {
 
     public HephaestusDecorator(Phase decoratedPhase, boolean bActAsOpponentGod) {

@@ -84,15 +84,6 @@ public class Turn {
     }
 
     /**
-     * Method that gets the answer of the client on whether it wants to apply the god's power or not
-     * @param answer string containing yes or no
-     */
-    public void setAnswer(String answer) {
-
-
-    }
-
-    /**
      * Method that updates the board with the new position of the worker
      * @param chosenCellIndex cell where the worker is moving onto
      */
@@ -147,7 +138,7 @@ public class Turn {
     }
 
     /**
-     * Method that create the next End phase
+     * Method that create the next End phase when the player doen's want to use its god power that allows to make an extra build
      */
     public void passBuild() {
         CreateEndPhase(true);
@@ -237,16 +228,6 @@ public class Turn {
 
         return playingPlayer.HasLost();
     }
-
-//    /**
-//     * Method that prepares the command when asking the client to choose whether to use the god power or not and actually sends the command
-//     */
-//    public void askToUSeGodPower() {
-//        String cmd = "<cmd><id>" + ProtocolTypes.protocolCommand.srv_AskBeforeApplyingGod.toString()  + "</id><data>";
-//        cmd += this.santoriniMatch.boardToXMLString();
-//        cmd += "</data></cmd>";
-//        playingPlayer.SendCommand(cmd);
-//    }
 
     /**
      * Method that creates a move phase, applying the right decorator to it (also the opponent ones, applied to the already decorated
