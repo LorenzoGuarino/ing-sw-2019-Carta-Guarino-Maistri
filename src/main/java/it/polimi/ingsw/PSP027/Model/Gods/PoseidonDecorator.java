@@ -3,6 +3,10 @@ import it.polimi.ingsw.PSP027.Controller.Phase;
 import it.polimi.ingsw.PSP027.Model.Game.Cell;
 import it.polimi.ingsw.PSP027.Model.Game.Worker;
 
+/**
+ * @author Elisa Maistri
+ */
+
 public class PoseidonDecorator extends GodPowerDecorator {
 
     public PoseidonDecorator(Phase decoratedPhase, boolean bActAsOpponentGod) {
@@ -49,7 +53,14 @@ public class PoseidonDecorator extends GodPowerDecorator {
     public void performActionOnCell(Cell chosenCell) {
 
         if (IsAnEndPhase() && (chosenCell != null)) {
-            chosenCell.addLevel();
+            if(chosenCell.getLevel() < 3){
+                chosenCell.addLevel();
+            }
+            else{
+                chosenCell.addDome();
+            }
+            this.getWorker().setOldBuiltCell(chosenCell);
+            this.getWorker().IncrementBuildCounter();
         }
 
         super.performActionOnCell(chosenCell);

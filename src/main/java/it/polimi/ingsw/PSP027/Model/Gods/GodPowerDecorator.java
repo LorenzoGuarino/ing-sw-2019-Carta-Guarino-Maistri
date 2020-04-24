@@ -194,10 +194,7 @@ public abstract class GodPowerDecorator extends Phase {
                 }
             }
             else if (decoratedPhase.IsAnEndPhase()) {
-                if(decoratedPhase.IsMandatory()) {
-                    cmd = ProtocolTypes.protocolCommand.srv_CandidateCellsForEnd;
-                }
-                else {
+                if(!decoratedPhase.IsMandatory()) {
                     cmd = ProtocolTypes.protocolCommand.srv_CandidateCellsForOptEnd;
                 }
             }

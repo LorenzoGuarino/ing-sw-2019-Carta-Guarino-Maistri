@@ -111,12 +111,25 @@ public class SantoriniMatch implements Runnable{
                         {
                             turn = newTurn();
                             turnState = TurnState.WaitForTurnTerminated;
+                            // debugging purposes
+                            System.out.println("**************************************************");
+                            System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++");
+                            System.out.println("Starting turn for player " + turn.getPlayingPlayer().getNickname());
+                            // debugging purposes
                         }
                             break;
                         case WaitForTurnTerminated:
                         {
                             if(turn.IsCompleted())
                             {
+                                // debugging purposes
+                                System.out.println(gameBoard.boardToXMLString());
+
+                                System.out.println("Ended player " + turn.getPlayingPlayer().getNickname() + " turn");
+                                System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++");
+                                System.out.println("**************************************************");
+                                // debugging purposes
+
                                 if(turn.CurrentPlayerHasWon())
                                 {
                                     endGame(turn.getPlayingPlayer());
@@ -603,17 +616,6 @@ public class SantoriniMatch implements Runnable{
             tempWorker.ResetWorkerTurnVars();
             turn.setChosenWorker(tempWorker);
         }
-    }
-
-    /**
-     * Method that receives the answer on the matter of applying the god's power or not from the client and passes it to the turn
-     * that will take a different action if the answer is yes or no
-     * @param answer string containing yes or no
-     */
-
-    public void setAnswer(String answer) {
-
-        turn.setAnswer(answer);
     }
 
     /**

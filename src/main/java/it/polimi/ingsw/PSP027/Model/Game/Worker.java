@@ -57,6 +57,7 @@ public class Worker {
     public void setOldBuiltCell(Cell oldBuiltCell) {
         this.oldBuiltCell = oldBuiltCell;
     }
+
     public void IncrementMoveCounter()
     {
         movecount++;

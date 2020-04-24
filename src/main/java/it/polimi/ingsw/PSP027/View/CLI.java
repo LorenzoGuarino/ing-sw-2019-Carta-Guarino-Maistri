@@ -64,7 +64,7 @@ public class CLI implements Runnable, ClientObserver {
     public static final String SANTORINI_BOLD = "\033[1;38;5;111;48;5;232m";
     public static final String DEFAULT_BOLD = "\033[1;97m";
     public static final String DEFAULT_ITALIC = "\033[3;97m";
-    public static final String LINE = SANTORINI_UNDERLINE + "                                                                                                                    " + RESET;
+    public static final String LINE = SANTORINI_UNDERLINE + "                                                                                                                                   " + RESET;
     public static final String WELCOME = SANTORINI_WELCOME + "Welcome to Santorini Game !" + RESET;
     public static final String AVAILABLECOMMANDS = "\n" + SANTORINI_HIGHLIGHT + " Available commands: " + RESET;
     public static final String COLOR_PLAYER_1 = "\033[38;5;198m";
@@ -95,7 +95,6 @@ public class CLI implements Runnable, ClientObserver {
     private static String PLAY_COMMAND = "play";
     private static String WORKERSPOSITION_COMMAND = "workerspositionchosen";
     private static String CHOSENWORKER_COMMAND = "workerchosen";
-    private static String APPLYGODANSWER_COMMAND = "answerapplygod";
     private static String CANDIDATECELLFORMOVE_COMMAND = "candidatecellchosen";
     private static String CANDIDATECELLFORBUILD_COMMAND = "candidatebuildcell";
     private static String CANDIDATECELLFOREND_COMMAND = "candidateendcell";
@@ -141,12 +140,10 @@ public class CLI implements Runnable, ClientObserver {
         cli_ManagePlacingFirstWorker,
         cli_ManagePlacingSecondWorker,
         cli_ChoosingWorker,
-        cli_ChoosingToApplyGod,
         cli_CandidateCellsForMove,
         cli_CandidateCellsForOptMove,
         cli_CandidateCellsForBuild,
         cli_CandidateCellsForOptBuild,
-        cli_CandidateCellsForEnd,
         cli_CandidateCellsForOptEnd,
         cli_WaitForSomethingToHappen
     }
@@ -400,6 +397,21 @@ public class CLI implements Runnable, ClientObserver {
                                             case GodCard.PROMETHEUS:
                                                 System.out.println(GodCard.PROMETHEUS_D);
                                                 break;
+                                            case GodCard.ZEUS:
+                                                System.out.println(GodCard.ZEUS_D);
+                                                break;
+                                            case GodCard.HESTIA:
+                                                System.out.println(GodCard.HESTIA_D);
+                                                break;
+                                            case GodCard.MEDUSA:
+                                                System.out.println(GodCard.MEDUSA_D);
+                                                break;
+                                            case GodCard.ARES:
+                                                System.out.println(GodCard.ARES_D);
+                                                break;
+                                            case GodCard.POSEIDON:
+                                                System.out.println(GodCard.POSEIDON_D);
+                                                break;
                                         }
                                         System.out.println("\n\n");
                                     }
@@ -481,6 +493,21 @@ public class CLI implements Runnable, ClientObserver {
                                                     break;
                                                 case GodCard.PROMETHEUS:
                                                     System.out.println(GodCard.PROMETHEUS_D);
+                                                    break;
+                                                case GodCard.ZEUS:
+                                                    System.out.println(GodCard.ZEUS_D);
+                                                    break;
+                                                case GodCard.HESTIA:
+                                                    System.out.println(GodCard.HESTIA_D);
+                                                    break;
+                                                case GodCard.MEDUSA:
+                                                    System.out.println(GodCard.MEDUSA_D);
+                                                    break;
+                                                case GodCard.ARES:
+                                                    System.out.println(GodCard.ARES_D);
+                                                    break;
+                                                case GodCard.POSEIDON:
+                                                    System.out.println(GodCard.POSEIDON_D);
                                                     break;
                                             }
                                             System.out.println("\n\n");
@@ -627,8 +654,9 @@ public class CLI implements Runnable, ClientObserver {
 
                             setCellsToPrint();
 
+                            System.out.println("\n\n");
+                            System.out.println(LINE);
                             printBoard();
-
                             System.out.println("\nPlease select the cell occupied by the worker you want to play with.\n" + DEFAULT_ITALIC + DEFAULT_BOLD +
                                     "Remember:" + RESET + DEFAULT_ITALIC + " You can only select workers of your own property, marked by your " + NicknameColorMap.get(client.getNickname()) + "color" +
                                     "\n" + RESET +
@@ -658,27 +686,7 @@ public class CLI implements Runnable, ClientObserver {
                             }
                         }
                         break;
-                        case cli_ChoosingToApplyGod:  {
 
-                            clearScreen();
-
-                            setCellsToPrint();
-
-                            printBoard();
-
-                            System.out.println(DEFAULT_BOLD + "\nDo you want to apply your GodCard's power? [Yes/No]\n" + RESET);
-
-                            WaitForUserInput();
-
-                            String answer = cmdLine.trim();
-
-                            if (answer.equals("Yes") || answer.equals("No")) {
-                                cmdLine = APPLYGODANSWER_COMMAND + " " + answer;
-
-                                gamestate = CLIGameState.cli_WaitForSomethingToHappen;
-                            }
-                        }
-                        break;
                         case cli_CandidateCellsForMove: {
                             clearScreen();
 
@@ -849,53 +857,14 @@ public class CLI implements Runnable, ClientObserver {
                             }
                         }
                         break;
-                        case cli_CandidateCellsForEnd: {
-                            clearScreen();
 
-                            setCellsToPrint();
-
-                            printBoard();
-                            System.out.println("\nPlease \n" + DEFAULT_ITALIC + DEFAULT_BOLD +
-                                    "Remember:" + RESET + DEFAULT_ITALIC + " You can only select the " + SANTORINI_HIGHLIGHT + " highlighted " + RESET +
-                                    " cells, which, if your god allows you to move in a cell occupied by one of your opponent's workers, are highlighted with your opponent's color.\n" + "Syntax to indicate the cell you want to select: \"LetterNumber\"");
-
-                            WaitForUserInput();
-
-                            String position = cmdLine.trim();
-
-                            if (position.length() == 2) {
-                                if (position.charAt(0) == 'A' || position.charAt(0) == 'B' || position.charAt(0) == 'C' || position.charAt(0) == 'D' || position.charAt(0) == 'E') {
-                                    if (position.charAt(1) == '1' || position.charAt(1) == '2' || position.charAt(1) == '3' || position.charAt(1) == '4' || position.charAt(1) == '5') {
-
-                                        int chosenCellIndex;
-
-                                        chosenCellIndex = (position.charAt(0) - 'A') * 5 + (position.charAt(1) - '1');
-
-                                        //control that the cell chosen is one of the candidate cells
-
-                                        for (int i = 0; i < indexcandidatecells.size(); i++) {
-                                            if (indexcandidatecells.get(i) == chosenCellIndex) {
-
-                                                cmdLine = CANDIDATECELLFOREND_COMMAND + " " + chosenCellIndex;
-
-                                                gamestate = CLIGameState.cli_WaitForSomethingToHappen;
-
-                                                restoreCandidateCells();
-                                                break;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        break;
                         case cli_CandidateCellsForOptEnd: {
                             clearScreen();
 
                             setCellsToPrint();
 
                             printBoard();
-                            System.out.println("\nPlease select the cell you want to perform your endPhase action on,or if you don't want to, type \"PASS\".\n" + DEFAULT_ITALIC + DEFAULT_BOLD +
+                            System.out.println("\nPlease select the cell you want to perform your \"end of your turn\" action on, or if you don't want to, type \"PASS\".\n" + DEFAULT_ITALIC + DEFAULT_BOLD +
                                     "Remember:" + RESET + DEFAULT_ITALIC + " You can only select the " + SANTORINI_HIGHLIGHT + " highlighted " + RESET +
                                     "\n" + "Syntax to indicate the cell you want to select: \"LetterNumber\"");
 
@@ -933,6 +902,7 @@ public class CLI implements Runnable, ClientObserver {
                             }
                         }
                         break;
+
                         case cli_WaitForSomethingToHappen: {
                             // in this state user is allowed to enter commands on commandline
                             // which will be processed on switch exit
@@ -1009,11 +979,6 @@ public class CLI implements Runnable, ClientObserver {
                             if (cmdlineParts.length == 2) {
                                 gamestate = CLIGameState.cli_WaitForSomethingToHappen;
                                 client.ChosenWorker(cmdlineParts[1]);
-                            }
-                        } else if (cmdlineParts[0].equals(APPLYGODANSWER_COMMAND)) {
-                            if (cmdlineParts.length == 2) {
-                                gamestate = CLIGameState.cli_WaitForSomethingToHappen;
-                                client.ChosenAnswerForApplyingGod(cmdlineParts[1]);
                             }
                         } else if(cmdlineParts[0].equals(CANDIDATECELLFORMOVE_COMMAND)){
                             if (cmdlineParts.length == 2) {
@@ -1300,18 +1265,6 @@ public class CLI implements Runnable, ClientObserver {
     }
 
     /**
-     * Method of the ClientObserver interface that is fired by the client when choosing wheteher to use the god power or not
-     * @param board board in xml format that needs to be processed by the CLI when it prints the board
-     */
-
-    @Override
-    public void OnAskBeforeApplyingGod(Node board) {
-        abortUserInput = true;
-        gamestate = CLIGameState.cli_ChoosingToApplyGod;
-        this.nodeboard = board;
-    }
-
-    /**
      * Method of the ClientObserver interface that is fired by the client when choosing the cell to move the worker onto
      * @param nodes cells where is possible to move the worker in xml format that needs to be processed by the CLI
      */
@@ -1320,6 +1273,7 @@ public class CLI implements Runnable, ClientObserver {
         abortUserInput = true;
         gamestate = CLIGameState.cli_CandidateCellsForMove;
 
+        indexcandidatecells.clear();
         Node node;
         for (int i = 0; i < nodes.getLength(); i++) {
             node = nodes.item(i);
@@ -1355,6 +1309,7 @@ public class CLI implements Runnable, ClientObserver {
         abortUserInput = true;
         gamestate = CLIGameState.cli_CandidateCellsForOptMove;
 
+        indexcandidatecells.clear();
         Node node;
         for (int i = 0; i < nodes.getLength(); i++) {
             node = nodes.item(i);
@@ -1390,6 +1345,7 @@ public class CLI implements Runnable, ClientObserver {
         abortUserInput = true;
         gamestate = CLIGameState.cli_CandidateCellsForBuild;
 
+        indexcandidatecells.clear();
         Node node;
         for (int i = 0; i < nodes.getLength(); i++) {
             node = nodes.item(i);
@@ -1425,41 +1381,7 @@ public class CLI implements Runnable, ClientObserver {
         abortUserInput = true;
         gamestate = CLIGameState.cli_CandidateCellsForOptBuild;
 
-        Node node;
-        for (int i = 0; i < nodes.getLength(); i++) {
-            node = nodes.item(i);
-
-            if (node.getNodeName().equals("board")) {
-                this.nodeboard = node;
-            }
-            else if (node.getNodeName().equals("candidates")) {
-
-                Node cell;
-                if (node.hasChildNodes()) {
-                    NodeList cells = node.getChildNodes();
-
-                    for (int j = 0; j < cells.getLength(); j++) {
-                        cell = cells.item(j);
-
-                        if (cell.getNodeName().equals("cell")) {
-                            int id = getIdOfCellNode(cell);
-                            indexcandidatecells.add(id);
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    /**
-     * Method of the ClientObserver interface that is fired by the client when choosing the cell to move the worker onto
-     * @param nodes cells where is possible to move the worker in xml format that needs to be processed by the CLI
-     */
-    @Override
-    public void OnCandidateCellsForEnd(NodeList nodes) {
-        abortUserInput = true;
-        gamestate = CLIGameState.cli_CandidateCellsForEnd;
-
+        indexcandidatecells.clear();
         Node node;
         for (int i = 0; i < nodes.getLength(); i++) {
             node = nodes.item(i);
@@ -1495,6 +1417,7 @@ public class CLI implements Runnable, ClientObserver {
         abortUserInput = true;
         gamestate = CLIGameState.cli_CandidateCellsForOptEnd;
 
+        indexcandidatecells.clear();
         Node node;
         for (int i = 0; i < nodes.getLength(); i++) {
             node = nodes.item(i);

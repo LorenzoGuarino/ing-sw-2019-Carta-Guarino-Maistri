@@ -836,22 +836,6 @@ public class Client implements Runnable, ServerObserver
     }
 
     /**
-     * Method that fires the OnAskBeforeApplyingGod() method of the observer (client instance)
-     * @param board current board of the game
-     */
-    private void FireOnAskBeforeApplyingGod(Node board) {
-        List<ClientObserver> observersCpy;
-        synchronized (observers) {
-            observersCpy = new ArrayList<>(observers);
-        }
-
-        /* notify the observers that we got the string */
-        for (ClientObserver observer: observersCpy) {
-            observer.OnAskBeforeApplyingGod(board);
-        }
-    }
-
-    /**
      * Method that fires the OnCandidateCellsForMove() method of the observer (client instance)
      * @param nodes cells where the worker selected can move onto
      */
@@ -912,22 +896,6 @@ public class Client implements Runnable, ServerObserver
         /* notify the observers that we got the string */
         for (ClientObserver observer: observersCpy) {
             observer.OnCandidateCellsForOptBuild(nodes);
-        }
-    }
-
-    /**
-     * Method that fires the OnCandidateCellsForMove() method of the observer (client instance)
-     * @param nodes cells where the worker selected can move onto
-     */
-    private void FireOnCandidateCellsForEnd(NodeList nodes) {
-        List<ClientObserver> observersCpy;
-        synchronized (observers) {
-            observersCpy = new ArrayList<>(observers);
-        }
-
-        /* notify the observers that we got the string */
-        for (ClientObserver observer: observersCpy) {
-            observer.OnCandidateCellsForEnd(nodes);
         }
     }
 
@@ -1183,18 +1151,6 @@ public class Client implements Runnable, ServerObserver
     }
 
     /**
-     * Method that fires the OnChooseWorker method of the observer (client instance)
-     * @param board board to print in the user interface when a player has to choose the worker to play the turn with
-     */
-
-    @Override
-    public synchronized void onAskBeforeApplyingGod(Node board) {
-        lastHelloTime = new Date();
-        FireOnAskBeforeApplyingGod(board);
-        notifyAll();
-    }
-
-    /**
      * Method that fires the OnCandidateCellsForMove method of the observer (client instance)
      * @param nodes xml not yet processed containing the board and the candidate cells for the move
      */
@@ -1239,18 +1195,6 @@ public class Client implements Runnable, ServerObserver
     public synchronized void onCandidateCellsForOptBuild(NodeList nodes) {
         lastHelloTime = new Date();
         FireOnCandidateCellsForOptBuild(nodes);
-        notifyAll();
-    }
-
-    /**
-     * Method that fires the OnCandidateCellsForMove method of the observer (client instance)
-     * @param nodes xml not yet processed containing the board and the candidate cells for the move
-     */
-
-    @Override
-    public synchronized void onCandidateCellsForEnd(NodeList nodes) {
-        lastHelloTime = new Date();
-        FireOnCandidateCellsForEnd(nodes);
         notifyAll();
     }
 

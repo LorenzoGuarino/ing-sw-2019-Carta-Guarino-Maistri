@@ -83,14 +83,6 @@ public class Turn {
         CreateMovePhase(true);
     }
 
-    /**
-     * Method that gets the answer of the client on whether it wants to apply the god's power or not
-     * @param answer string containing yes or no
-     */
-    public void setAnswer(String answer) {
-
-
-    }
 
     /**
      * Method that updates the board with the new position of the worker
@@ -163,19 +155,23 @@ public class Turn {
             phaseList.get(phaseList.size()-1).performActionOnCell(cell);
         }
 
-        if(playingPlayer.getPlayerGod().AllowExtraEnd() && this.chosenWorker.getBuildCounter() == 1) {
+        if(playingPlayer.getPlayerGod().AllowExtraEnd() && this.chosenWorker.getBuildCounter() <= 3) {
             CreateEndPhase(false);
         }
         else {
             //@TODO end turn
+            //removing opponentGodsCards
+            getPlayingPlayer().removeOpponentGodCards();
+            System.out.println("Cleared opponents gods");
             bCompleted = true;
         }
-
     }
 
     public void passEnd() {
         //@TODO starts next players turn
-        System.out.println("End of player "+this.playingPlayer+" turn");
+        //removing opponentGodsCards
+        getPlayingPlayer().removeOpponentGodCards();
+        System.out.println("Cleared opponents gods");
         bCompleted = true;
     }
 
@@ -386,14 +382,14 @@ public class Turn {
         else
             phaseList.add(playergodphase);
 
-        //removing opponentGodsCards
-        phase.getPlayingPlayer().removeOpponentGodCards();
-        System.out.println("Cleared opponents gods");
-
         boolean bCanPerformPhase = phaseList.get(phaseList.size()-1).startPhase(); //actually calls the method startPhase of the player's own decorator
 
         if(!bCanPerformPhase){
             //player doesn't have a god that acts in the end phase, so its turn can end.
+            //removing opponentGodsCards
+            getPlayingPlayer().removeOpponentGodCards();
+            System.out.println("Cleared opponents gods");
+
             bCompleted = true;
         }
     }

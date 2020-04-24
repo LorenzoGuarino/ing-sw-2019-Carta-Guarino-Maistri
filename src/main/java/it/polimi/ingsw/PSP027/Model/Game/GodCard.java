@@ -57,8 +57,8 @@ public class GodCard {
     public static final String ZEUS_D       = "Your Build: Your Worker may build under itself in its current space, forcing it up one level. You do not win by forcing yourself up to the third level.";
     public static final String HESTIA_D     = "Your Build: Your Worker may build one additional time. The additional build cannot be on a perimeter space";
     public static final String MEDUSA_D     = "End of Your Turn: If any of your opponent's Workers occupy lower neighbouring spaces, replace them all with blocks and remove them from the game";
-    public static final String ARES_D       = "";
-    public static final String POSEIDON_D   = "";
+    public static final String ARES_D       = "End Of Your Turn: You may remove an unoccupied block (not dome) neighbouring your unmoved Worker.";
+    public static final String POSEIDON_D   = "End Of Your Turn: If your unmoved Worker is on the ground level, it may build up to three times in neighbouring spaces.";
 
     public static final String APOLLO      = "Apollo";
     public static final String ARTEMIS     = "Artemis";
