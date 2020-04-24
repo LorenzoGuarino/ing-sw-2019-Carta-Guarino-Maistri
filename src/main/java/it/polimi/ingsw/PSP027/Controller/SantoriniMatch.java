@@ -136,8 +136,8 @@ public class SantoriniMatch implements Runnable{
                                 }
                                 else if(turn.CurrentPlayerHasLost())
                                 {
-                                    //removePlayer(turn.getPlayingPlayer());
-                                    //turnState = TurnState.CreateTurn;
+                                    removePlayer(turn.getPlayingPlayer());
+                                    turnState = TurnState.CreateTurn;
                                 }
                                 else {
                                     turnState = TurnState.CreateTurn;
@@ -688,9 +688,6 @@ public class SantoriniMatch implements Runnable{
 
         return xmlBoard;
     }
-
-
-
 
 
 

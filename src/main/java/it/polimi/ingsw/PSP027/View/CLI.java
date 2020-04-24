@@ -115,7 +115,7 @@ public class CLI implements Runnable, ClientObserver {
     private static String DISCONNECTED_LABEL = "You are not actually connected to server.\n";
     private static String QUIT_GAME_LABEL = "Thank you for having played" + DEFAULT_BOLD + "Santorini" + RESET + "game.\n\nSee you soon!";
     private static String CHOOSE_MATCH_TYPE_LABEL = "\nPlease, enter the number of opponent players you wanna play with (choose between " + DEFAULT_BOLD + "1" + RESET + " or " + DEFAULT_BOLD + "2" + RESET + ")";
-    private static String SEARCHING_MATCH_LABEL = DEFAULT_ITALIC + "Searching match ... please wait ..." + RESET;
+    private static String SEARCHING_MATCH_LABEL = DEFAULT_ITALIC + "\nSearching match ... please wait ..." + RESET;
 
 
     /* *********************************************************************************************************************** */
@@ -533,9 +533,11 @@ public class CLI implements Runnable, ClientObserver {
                                             // processing entered command section
                                             cmdLine = CHOSENGOD_COMMAND + " " + chosengod;
                                         }
+
+                                        System.out.println(DEFAULT_BOLD + "\nPlease wait while the others pick their gods." + RESET);
                                     }
                                 } else {
-                                    System.out.println("Your god is: " + gods.get(0));
+                                    System.out.println("\nYour god is: " + gods.get(0));
                                     cmdLine = CHOSENGOD_COMMAND + " " + gods.get(0);
                                 }
                             }
@@ -568,6 +570,9 @@ public class CLI implements Runnable, ClientObserver {
                                 } else {
                                     // create an emulated command with proper syntax for
                                     // processing entered command section
+                                    if(!cmdLine.equals(client.getNickname())){
+                                        System.out.println(DEFAULT_BOLD + "\nPlease wait while the other players place their workers on the board" + RESET);
+                                    }
                                     cmdLine = CHOSENFIRSTPLAYER_COMMAND + " " + chosenplayer;
                                 }
 
@@ -640,6 +645,8 @@ public class CLI implements Runnable, ClientObserver {
                                             chosenposition[1] = Integer.toString(chosencellindex);
 
                                             cmdLine = WORKERSPOSITION_COMMAND + " " + chosenposition[0] + " " + chosenposition[1];
+
+                                            System.out.println(DEFAULT_BOLD + "\nPlease wait for your turn to start.");
 
                                             gamestate = CLIGameState.cli_WaitForSomethingToHappen;
                                         }
@@ -960,7 +967,7 @@ public class CLI implements Runnable, ClientObserver {
                                     chosengods.add(cmdlineParts[i]);
                                 }
                                 client.ChosenGods(chosengods);
-                                System.out.println(DEFAULT_ITALIC + "Please wait while the other players choose their gods among the ones you picked..." + RESET);
+                                System.out.println(DEFAULT_BOLD + "\nPlease wait while the other players choose their gods among the ones you picked..." + RESET);
                             }
                         } else if (cmdlineParts[0].equals(CHOSENGOD_COMMAND)) {
                             if (cmdlineParts.length == 2) {
@@ -1140,7 +1147,7 @@ public class CLI implements Runnable, ClientObserver {
             System.out.println(TRIANGLE + " " + player);
         }
 
-        System.out.println(DEFAULT_ITALIC + "Waiting for other players to join match" + RESET);
+        System.out.println(DEFAULT_ITALIC + "\nWaiting for other players to join match" + RESET);
     }
 
     /**
@@ -1151,6 +1158,7 @@ public class CLI implements Runnable, ClientObserver {
     public void OnEnteredMatch(List<String> players) {
         System.out.println("\n\nEntered match. Current players (with the assigned color that will be used to distinguish the workers' owner on the board):");
 
+        boolean bMessage = false;
         for (int i = 0; i < players.size(); i++) {
             if (i == 0) {
                 NicknameColorMap.put(players.get(i), COLOR_PLAYER_1);
@@ -1160,13 +1168,25 @@ public class CLI implements Runnable, ClientObserver {
                 NicknameColorMap.put(players.get(i), COLOR_PLAYER_2);
                 NicknameHighlightMap.put(players.get(i), HIGHLIGHT_COLOR_PLAYER_2);
                 System.out.println(TRIANGLE + " " + COLOR_PLAYER_2 + players.get(i) + RESET);
+                if(players.get(i).equals(client.getNickname())) {
+                    bMessage = true;
+                }
             } else if (i == 2) {
                 NicknameColorMap.put(players.get(i), COLOR_PLAYER_3);
                 NicknameHighlightMap.put(players.get(i), HIGHLIGHT_COLOR_PLAYER_3);
                 System.out.println(TRIANGLE + " " + COLOR_PLAYER_3 + players.get(i) + RESET);
+                if(players.get(i).equals(client.getNickname())) {
+                    bMessage = true;
+                }
             }
 
         }
+
+        if(bMessage) {
+            System.out.println("\n" + DEFAULT_BOLD + "Wait while the master player (" + COLOR_PLAYER_1 + players.get(0) + RESET + DEFAULT_BOLD + ") chooses the gods you will play with." + RESET);
+        }
+
+
     }
 
     /**
