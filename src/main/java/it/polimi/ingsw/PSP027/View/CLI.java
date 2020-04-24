@@ -67,6 +67,7 @@ public class CLI implements Runnable, ClientObserver {
     public static final String LINE = SANTORINI_UNDERLINE + "                                                                                                                                   " + RESET;
     public static final String WELCOME = SANTORINI_WELCOME + "Welcome to Santorini Game !" + RESET;
     public static final String AVAILABLECOMMANDS = "\n" + SANTORINI_HIGHLIGHT + " Available commands: " + RESET;
+    public static final String COLOR_DOME = "\033[1;38;5;21;48;5;232m";
     public static final String COLOR_PLAYER_1 = "\033[38;5;198m";
     public static final String COLOR_PLAYER_2 = "\033[38;5;48m";
     public static final String COLOR_PLAYER_3 = "\033[38;5;45m";
@@ -898,6 +899,7 @@ public class CLI implements Runnable, ClientObserver {
                             }
                             else if(position.length() == 4 && position.equals("PASS")) {
                                 cmdLine = PASSEND_COMMAND;
+                                restoreCandidateCells();
                                 gamestate = CLIGameState.cli_WaitForSomethingToHappen;
                             }
                         }
@@ -1573,8 +1575,9 @@ public class CLI implements Runnable, ClientObserver {
                     boolean bNick = false; //used to determine if the cell is occupied by a worker
                     boolean bCandidate = false; //used to determine if the cell is a candidate cell
 
-                    if (!cell.getAttributes().getNamedItem("nickname").getTextContent().equals("")) {
-                        String nickname = getNicknameOfCellNode(cell);
+                    String nickname = getNicknameOfCellNode(cell);
+
+                    if (!nickname.isEmpty()) {
                         cellsToPrint[id] += NicknameColorMap.get(nickname);
                         bNick = true;
                     }
@@ -1582,11 +1585,12 @@ public class CLI implements Runnable, ClientObserver {
                     if(!indexcandidatecells.isEmpty()) {
                         for(int j = 0; j < indexcandidatecells.size(); j++) {
                             if(indexcandidatecells.get(j) == id) {
-                                if(cell.getAttributes().getNamedItem("nickname").getTextContent().equals("")) {
+
+                                if(nickname.isEmpty()) {
                                     cellsToPrint[id] += SANTORINI_HIGHLIGHT;
                                 }
                                 else {
-                                    cellsToPrint[id] += NicknameHighlightMap.get(cell.getAttributes().getNamedItem("nickname").getTextContent());
+                                    cellsToPrint[id] += NicknameHighlightMap.get(nickname);
                                 }
 
                                 bCandidate = true;
@@ -1596,8 +1600,7 @@ public class CLI implements Runnable, ClientObserver {
                     }
 
                     if (dome) {
-                        cellsToPrint[id] += " D ";
-                        break;
+                        cellsToPrint[id] += COLOR_DOME + " D ";
                     } else {
                         if (level == 0) {
                             cellsToPrint[id] += " 0 ";
@@ -1610,7 +1613,7 @@ public class CLI implements Runnable, ClientObserver {
                         }
                     }
 
-                    if (bNick || bCandidate) {
+                    if (bNick || bCandidate || dome) {
                         cellsToPrint[id] += RESET;
                     }
                 }

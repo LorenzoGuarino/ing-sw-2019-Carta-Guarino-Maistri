@@ -112,8 +112,6 @@ public class ClientHandler implements Runnable
 
                     if (command != null) {
 
-                        System.out.println("Processing command: " + command.getTextContent());
-
                         if (command.hasChildNodes()) {
                             NodeList nodes = command.getChildNodes();
                             Node node;
@@ -127,6 +125,7 @@ public class ClientHandler implements Runnable
 
                                 if (node.getNodeName().equals("id")) {
                                     cmdID = ProtocolTypes.protocolCommand.valueOf(node.getTextContent());
+                                    System.out.println("Processing command: " + cmdID);
                                 } else if (node.getNodeName().equals("data")) {
                                     cmdData = node;
                                 }

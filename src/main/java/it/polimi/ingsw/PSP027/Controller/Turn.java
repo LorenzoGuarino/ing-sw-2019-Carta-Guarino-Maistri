@@ -96,17 +96,19 @@ public class Turn {
         {
             phaseList.get(phaseList.size()-1).performActionOnCell(cell);
 
-//            if(phaseList.get(phaseList.size()-1).PlayerHasWon())
-//            {
-//
-//            }
+            if(phaseList.get(phaseList.size()-1).PlayerHasWon())
+            {
+                System.out.println(getPlayingPlayer().getNickname() + " has won !!");
+                bCompleted = true;
+            }
         }
 
-        if(playingPlayer.getPlayerGod().AllowExtraMove() && cell.getOccupyingWorker().getMoveCounter() == 1) {
-            CreateMovePhase(false);
-        }
-        else {
-            CreateBuildPhase(true);
+        if(!bCompleted) {
+            if (playingPlayer.getPlayerGod().AllowExtraMove() && cell.getOccupyingWorker().getMoveCounter() == 1) {
+                CreateMovePhase(false);
+            } else {
+                CreateBuildPhase(true);
+            }
         }
     }
 

@@ -11,23 +11,27 @@ public class PanDecorator extends GodPowerDecorator {
         super(decoratedPhase, bActAsOpponentGod);
     }
 
-    @Override
-    public void evalCandidateCells() {
-
-    }
-
     /**
-     * Method that update the board and check at the same time if the Pan win conditions are verified
-     * @param chosenCell cell where to move
+     * Method that tells if the player who is playing the phase has won
+     * @return true if the player has won, otherwise false
      */
+
     @Override
-    public void performActionOnCell(Cell chosenCell) {
-//        MovePhase movePhase = (MovePhase) this.getDecoratedPhase();     //using movePhase to get startChosenWorkerLvl
-//        this.getDecoratedPhase().getWorker().changePosition(chosenCell);
-//        if(movePhase.getStartChosenWorkerLvl()==2 && this.getWorker().getWorkerPosition().getLevel()==3){     //check standard win conditions
-//            this.getWorker().getWorkerOwner().setHasWon(true);
-//        }else if(movePhase.getStartChosenWorkerLvl()-this.getWorker().getWorkerPosition().getLevel()>=2){     //check Pan win conditions
-//            this.getWorker().getWorkerOwner().setHasWon(true);
-//        }
+    public boolean PlayerHasWon(){
+
+        if(!super.PlayerHasWon())
+        {
+            int oldlevel = getWorker().getWorkerPrevPosition().getLevel();
+            int newlevel = getWorker().getWorkerPosition().getLevel();
+
+            if((oldlevel-newlevel)>=2){
+                getWorker().getWorkerOwner().setHasWon(true);
+                return true;
+            }
+
+            return false;
+        }
+        else
+            return true;
     }
 }
