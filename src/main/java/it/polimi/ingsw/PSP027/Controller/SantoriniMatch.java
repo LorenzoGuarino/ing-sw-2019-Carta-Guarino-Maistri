@@ -142,6 +142,7 @@ public class SantoriniMatch implements Runnable{
                                 else {
                                     turnState = TurnState.CreateTurn;
                                     rotatePlayers();
+                                    sendUpdatedBoard(players.get(0).getNickname());
                                 }
                             }
                             else
@@ -687,6 +688,26 @@ public class SantoriniMatch implements Runnable{
         xmlBoard += "</players>";
 
         return xmlBoard;
+    }
+
+    /**
+     * Method that sends the updated board to each player that is not currently playing its turn, in order to give
+     * each thepossibility to watch the progression of the game also when they'r not playing their turn
+     * @param nicknamePlayingPlayer player who is playing its turn, the one who will not be sent the board as it will
+     *                              already be able to see it while playing
+     */
+
+    public void sendUpdatedBoard(String nicknamePlayingPlayer) {
+
+        String cmd = "<cmd><id>" + ProtocolTypes.protocolCommand.srv_BoardUpdated.toString() + "</id><data>";
+        cmd += boardToXMLString();
+        cmd += "<playingPlayer nickname=\"" + nicknamePlayingPlayer + "\" />";
+        cmd += "</data></cmd>";
+
+        for (int i = 1; i < players.size(); i++) {
+            players.get(i).SendCommand(cmd);
+        }
+
     }
 
 

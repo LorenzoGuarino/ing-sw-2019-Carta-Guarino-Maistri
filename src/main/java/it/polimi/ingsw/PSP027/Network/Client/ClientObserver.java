@@ -33,4 +33,5 @@ public interface ClientObserver {
     void OnCandidateCellsForBuild(NodeList nodes);
     void OnCandidateCellsForOptBuild(NodeList nodes);
     void OnCandidateCellsForOptEnd(NodeList nodes);
+    void OnPrintUpdatedBoard(NodeList nodes);
 }

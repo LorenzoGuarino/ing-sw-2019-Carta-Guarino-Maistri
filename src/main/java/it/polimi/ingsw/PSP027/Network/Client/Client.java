@@ -947,6 +947,22 @@ public class Client implements Runnable, ServerObserver
         }
     }
 
+    /**
+     * Method that fires the OnPrintUpdatedBoard() method of the observer (client instance)
+     */
+
+    private void FireOnPrintUpdatedBoard(NodeList nodes) {
+        List<ClientObserver> observersCpy;
+        synchronized (observers) {
+            observersCpy = new ArrayList<>(observers);
+        }
+
+        /* notify the observers that we got the string */
+        for (ClientObserver observer: observersCpy) {
+            observer.OnPrintUpdatedBoard(nodes);
+        }
+    }
+
 
 
 
@@ -1234,6 +1250,17 @@ public class Client implements Runnable, ServerObserver
         notifyAll();
     }
 
+    /**
+     * Method that calls the method that fires the OnPrintUpdatedBoard method of the observer (client instance)
+     */
+
+    @Override
+    public synchronized void onPrintUpdatedBoard(NodeList nodes) {
+        lastHelloTime = new Date();
+        FireOnPrintUpdatedBoard(nodes);
+        notifyAll();
+    }
+
 
 
     /* ***************************************************************************************************************** */
@@ -1249,8 +1276,4 @@ public class Client implements Runnable, ServerObserver
         lastHelloTime = new Date();
     }
 
-    @Override
-    public synchronized void onUseGodPower() {
-        lastHelloTime = new Date();
-    }
 }

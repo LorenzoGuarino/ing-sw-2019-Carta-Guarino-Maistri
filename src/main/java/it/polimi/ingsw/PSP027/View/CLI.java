@@ -30,6 +30,7 @@ public class CLI implements Runnable, ClientObserver {
     private Map<String, String> NicknameHighlightMap = new HashMap<String, String>();
     private Map<String, String> NicknameGodMap = new HashMap<String, String>();
     private String playersAndGods;
+    private String playingPlayerNickname;
 
     /* *********************************************************************************************************************
      * ************************************** UTILITY STRINGS FOR CLI RENDERING ****************************************** *
@@ -146,6 +147,7 @@ public class CLI implements Runnable, ClientObserver {
         cli_CandidateCellsForBuild,
         cli_CandidateCellsForOptBuild,
         cli_CandidateCellsForOptEnd,
+        cli_PrintingUpdatedBoard,
         cli_WaitForSomethingToHappen
     }
 
@@ -912,6 +914,17 @@ public class CLI implements Runnable, ClientObserver {
                         }
                         break;
 
+                        case cli_PrintingUpdatedBoard: {
+
+                            clearScreen();
+                            setCellsToPrint();
+                            printBoard();
+                            System.out.println("\n" + NicknameColorMap.get(playingPlayerNickname) + playingPlayerNickname + RESET + " is playing the turn, please wait.");
+
+                            gamestate = CLIGameState.cli_WaitForSomethingToHappen;
+                        }
+                        break;
+
                         case cli_WaitForSomethingToHappen: {
                             // in this state user is allowed to enter commands on commandline
                             // which will be processed on switch exit
@@ -1496,6 +1509,28 @@ public class CLI implements Runnable, ClientObserver {
     }
 
 
+    /**
+     * Method of the ClientObserver interface that is fired by the client when receiving the updated board when it's not playing
+     * @param nodes board cells updated and the playing player's nickname
+     */
+    @Override
+    public void OnPrintUpdatedBoard(NodeList nodes) {
+        abortUserInput = true;
+        gamestate = CLIGameState.cli_PrintingUpdatedBoard;
+
+        Node node;
+        for (int i = 0; i < nodes.getLength(); i++) {
+            node = nodes.item(i);
+
+            if (node.getNodeName().equals("board")) {
+                this.nodeboard = node;
+            }
+            else if (node.getNodeName().equals("playingPlayer")) {
+
+                this.playingPlayerNickname = node.getAttributes().getNamedItem("nickname").getTextContent();
+            }
+        }
+    }
 
 
 

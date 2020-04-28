@@ -264,6 +264,9 @@ public class ServerHandler implements Runnable
                                 case srv_CandidateCellsForOptEnd:
                                     FireOnCandidateCellsForOptEnd(cmdData);
                                     break;
+                                case srv_BoardUpdated:
+                                    FireOnPrintUpdatedBoard(cmdData);
+                                    break;
                             }
                         }
                     }
@@ -1073,6 +1076,39 @@ public class ServerHandler implements Runnable
             for (ServerObserver observer : observersCpy)
             {
                 observer.onWinner(nickname);
+            }
+        }
+    }
+
+
+    /**
+     * Method that fires the OnPrintUpdatedBoard() method in the client, processing the command received from the server
+     * @param data xml to process
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
+
+    private synchronized void FireOnPrintUpdatedBoard(Node data) throws IOException, ClassNotFoundException {
+        /* data value (example)
+         * <data>
+         *     <board>
+         *         <cell id="0" level="2" dome="false" nickname="Elisa" />
+         *         ...
+         *         <cell id="24" level="0" dome ="false" nickname="" />
+         *     </board>
+         *     <playingPlayer nickname="Elisa" />
+         * </data>
+         */
+
+        if (data.hasChildNodes()) {
+            NodeList nodes = data.getChildNodes();
+
+            List<ServerObserver> observersCpy;
+            synchronized (observers) {
+                observersCpy = new ArrayList<ServerObserver>(observers);
+            }
+            for (ServerObserver observer : observersCpy) {
+                observer.onPrintUpdatedBoard(nodes);
             }
         }
     }

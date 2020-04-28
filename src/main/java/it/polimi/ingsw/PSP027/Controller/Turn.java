@@ -109,6 +109,8 @@ public class Turn {
             } else {
                 CreateBuildPhase(true);
             }
+
+            santoriniMatch.sendUpdatedBoard(santoriniMatch.getPlayers().get(0).getNickname());
         }
     }
 
@@ -138,6 +140,8 @@ public class Turn {
         else {
             CreateEndPhase(false);
         }
+
+        santoriniMatch.sendUpdatedBoard(santoriniMatch.getPlayers().get(0).getNickname());
     }
 
     /**
@@ -161,16 +165,16 @@ public class Turn {
             CreateEndPhase(false);
         }
         else {
-            //@TODO end turn
             //removing opponentGodsCards
             getPlayingPlayer().removeOpponentGodCards();
             System.out.println("Cleared opponents gods");
             bCompleted = true;
         }
+
+        santoriniMatch.sendUpdatedBoard(santoriniMatch.getPlayers().get(0).getNickname());
     }
 
     public void passEnd() {
-        //@TODO starts next players turn
         //removing opponentGodsCards
         getPlayingPlayer().removeOpponentGodCards();
         System.out.println("Cleared opponents gods");
@@ -262,15 +266,6 @@ public class Turn {
         return playingPlayer.HasLost();
     }
 
-//    /**
-//     * Method that prepares the command when asking the client to choose whether to use the god power or not and actually sends the command
-//     */
-//    public void askToUSeGodPower() {
-//        String cmd = "<cmd><id>" + ProtocolTypes.protocolCommand.srv_AskBeforeApplyingGod.toString()  + "</id><data>";
-//        cmd += this.santoriniMatch.boardToXMLString();
-//        cmd += "</data></cmd>";
-//        playingPlayer.SendCommand(cmd);
-//    }
 
     /**
      * Method that creates a move phase, applying the right decorator to it (also the opponent ones, applied to the already decorated
