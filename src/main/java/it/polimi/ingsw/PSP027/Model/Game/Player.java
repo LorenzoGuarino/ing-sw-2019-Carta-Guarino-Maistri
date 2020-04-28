@@ -1,5 +1,7 @@
 package it.polimi.ingsw.PSP027.Model.Game;
 
+import it.polimi.ingsw.PSP027.Network.Server.Gamer;
+
 import java.util.ArrayList;
 import java.util.List;
 

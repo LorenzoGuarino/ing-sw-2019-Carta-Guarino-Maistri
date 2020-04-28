@@ -27,7 +27,6 @@ public class GodCard {
     }
 
     public enum WhereToApply {
-        StartTurn,
         Move,
         ExtraMove,
         Build,

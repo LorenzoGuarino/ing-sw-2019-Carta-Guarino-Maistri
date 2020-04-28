@@ -1,4 +1,4 @@
-package it.polimi.ingsw.PSP027.Model.Game;
+package it.polimi.ingsw.PSP027.Network.Server;
 
 import it.polimi.ingsw.PSP027.Network.Server.ClientHandler;
 import java.util.UUID;
