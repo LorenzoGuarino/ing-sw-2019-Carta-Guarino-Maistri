@@ -100,10 +100,10 @@ public class HephaestusDecoratorTest {
         Cell x35 = gameBoard.getCell(22);//enemyWorker
         worker21.changePosition(x35);
         BuildPhase buildPhase = new BuildPhase();
-        buildPhase.Init(worker11,gameBoard, true);
+        buildPhase.Init(worker11, gameBoard, true);
         hephaestusDecoratedPhase = new HephaestusDecorator(buildPhase, false);
         hephaestusDecoratedPhase.performActionOnCell(x14);
-        assertTrue(x14.getLevel()==3 && !x14.checkDome());
+        assertTrue(x14.getLevel()==2 && !x14.checkDome());
     }
 
     /**
