@@ -104,8 +104,9 @@ public class DemeterDecoratorTest {
         buildPhase.Init(worker11,gameBoard, true);
         demeterDecoratedPhase = new DemeterDecorator(buildPhase, false);
         demeterDecoratedPhase.performActionOnCell(x14);
-        demeterDecoratedPhase.performActionOnCell(x14);
-        assertTrue(x14.getLevel()==3 && !x14.checkDome());
+        demeterDecoratedPhase.evalCandidateCells();
+        System.out.println(worker11.getBuildCounter());
+        assertTrue(x14.getLevel()==3 && !demeterDecoratedPhase.getCandidateCells().contains(x14));
     }
 
     /**

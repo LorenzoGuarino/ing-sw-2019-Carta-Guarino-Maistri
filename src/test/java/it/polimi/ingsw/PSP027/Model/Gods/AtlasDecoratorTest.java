@@ -1,5 +1,6 @@
 package it.polimi.ingsw.PSP027.Model.Gods;
 
+import it.polimi.ingsw.PSP027.Controller.MovePhase;
 import it.polimi.ingsw.PSP027.Model.Game.Board;
 import it.polimi.ingsw.PSP027.Model.Game.Cell;
 import it.polimi.ingsw.PSP027.Model.Game.Player;
@@ -67,6 +68,8 @@ public class AtlasDecoratorTest {
         worker11.changePosition(x25);
 
         BuildPhase buildPhase = new BuildPhase();
+
+        worker11.setBuildDomeOnNextBuild(true);
         buildPhase.Init(worker11,gameBoard, true);
         atlasDecoratedPhase = new AtlasDecorator(buildPhase, false);
         atlasDecoratedPhase.performActionOnCell(x14);
@@ -84,6 +87,7 @@ public class AtlasDecoratorTest {
         worker11.changePosition(x25);
 
         BuildPhase buildPhase = new BuildPhase();
+        worker11.setBuildDomeOnNextBuild(true);
         buildPhase.Init(worker11,gameBoard, true);
         atlasDecoratedPhase = new AtlasDecorator(buildPhase, false);
         atlasDecoratedPhase.performActionOnCell(x14);
@@ -100,9 +104,37 @@ public class AtlasDecoratorTest {
         worker11.changePosition(x25);
 
         BuildPhase buildPhase = new BuildPhase();
+
+        worker11.setBuildDomeOnNextBuild(true);
         buildPhase.Init(worker11,gameBoard, true);
         atlasDecoratedPhase = new AtlasDecorator(buildPhase, false);
         atlasDecoratedPhase.performActionOnCell(x14);
         assertTrue(x14.getLevel()==0 && x14.checkDome());
+    }
+
+    @Test
+    public void performStandardBuild() {
+        Cell x14 = gameBoard.getCell(15);//lv0
+        Cell x25 = gameBoard.getCell(21);//workerPos
+        worker11.changePosition(x25);
+
+        BuildPhase buildPhase = new BuildPhase();
+        buildPhase.Init(worker11,gameBoard, true);
+        atlasDecoratedPhase = new AtlasDecorator(buildPhase, false);
+        atlasDecoratedPhase.performActionOnCell(x14);
+        assertTrue(x14.getLevel()==1);
+    }
+
+    @Test
+    public void performStandardMove() {
+        Cell x14 = gameBoard.getCell(15);//lv0
+        Cell x25 = gameBoard.getCell(21);//workerPos
+        worker11.changePosition(x25);
+
+        MovePhase movephase = new MovePhase();
+        movephase.Init(worker11,gameBoard, true);
+        atlasDecoratedPhase = new AtlasDecorator(movephase, false);
+        atlasDecoratedPhase.performActionOnCell(x14);
+        assertTrue(worker11.getWorkerPosition().equals(x14));
     }
 }

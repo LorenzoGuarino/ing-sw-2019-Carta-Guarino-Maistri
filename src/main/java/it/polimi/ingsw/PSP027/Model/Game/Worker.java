@@ -44,6 +44,10 @@ public class Worker {
         buildcount = 0;
     }
 
+    public void setBuildDomeOnNextBuild(boolean buildDomeOnNextBuild) {
+        this.buildDomeOnNextBuild = buildDomeOnNextBuild;
+    }
+
     public boolean HasToBuildADomeOnNextBuildPhase()
     {
         return buildDomeOnNextBuild;
