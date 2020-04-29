@@ -25,6 +25,10 @@ public class BoardTest {
     }
 
     @Test
+    public void getCell_wrongIndex() {
+        assertEquals(null,gameBoard.getCell(25));
+    }
+    @Test
     public void resetBoard_shouldResetTheBoard() {
         Board expectedBoard = gameBoard;
         gameBoard.getCell(0).addLevel();
@@ -44,11 +48,23 @@ public class BoardTest {
 
     @Test
     public void getNextCellAlongThePath_itExists() {
-        Cell x23FirstArgumentCell = gameBoard.getCell(11);
-        Cell x34SecondArgument = gameBoard.getCell(17);
-        Cell x45ExpectedCell = gameBoard.getCell(23);
-        Cell actualCell = gameBoard.getNextCellAlongThePath(x23FirstArgumentCell,x34SecondArgument);
-        assertEquals(x45ExpectedCell,actualCell);
+        //going n
+        assertEquals(gameBoard.getCell(22),gameBoard.getNextCellAlongThePath(gameBoard.getCell(12),gameBoard.getCell(17)));
+        //going ne
+        assertEquals(gameBoard.getCell(24),gameBoard.getNextCellAlongThePath(gameBoard.getCell(12),gameBoard.getCell(18)));
+        //going e
+        assertEquals(gameBoard.getCell(14),gameBoard.getNextCellAlongThePath(gameBoard.getCell(12),gameBoard.getCell(13)));
+        //going se
+        assertEquals(gameBoard.getCell(4),gameBoard.getNextCellAlongThePath(gameBoard.getCell(12),gameBoard.getCell(8)));
+        //going s
+        assertEquals(gameBoard.getCell(2),gameBoard.getNextCellAlongThePath(gameBoard.getCell(12),gameBoard.getCell(7)));
+        //going sw
+        assertEquals(gameBoard.getCell(0),gameBoard.getNextCellAlongThePath(gameBoard.getCell(12),gameBoard.getCell(6)));
+        //going w
+        assertEquals(gameBoard.getCell(10),gameBoard.getNextCellAlongThePath(gameBoard.getCell(12),gameBoard.getCell(11)));
+        //going nw
+        assertEquals(gameBoard.getCell(20),gameBoard.getNextCellAlongThePath(gameBoard.getCell(12),gameBoard.getCell(16)));
+
     }
 
     @Test

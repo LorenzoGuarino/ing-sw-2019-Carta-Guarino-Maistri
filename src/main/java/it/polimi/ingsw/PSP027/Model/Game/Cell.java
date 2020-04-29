@@ -69,16 +69,6 @@ public class Cell {
 
     public Worker getOccupyingWorker() { return workerOccupying; }
 
-    /**
-     * Method that checks if this cell has a complete tower on it
-     * @return true if in this cell there is a complete tower, otherwise false
-     */
-
-    public boolean isCompleteTower()
-    {
-        return ((level == 3) && dome);
-    }
-
     public boolean canALevelBeRemoved()
     {
         return ((level > 0) && !isOccupiedByWorker() && !dome);
@@ -91,30 +81,7 @@ public class Cell {
 
     public boolean canALevelBeAdded()
     {
-        return ((level <= 3) && !isOccupiedByWorker() && !dome);
-    }
-
-    /**
-     * This method checks if a worker can be moved to this cell
-     * @param WorkerToMove worker that needs to be moved
-     * @return true if a worker can be moved to this cell, otherwise false
-     */
-
-    public boolean canAWorkerBeMovedHere(Worker WorkerToMove)
-    {
-        if (!dome && !isOccupiedByWorker())
-        {
-            if (WorkerToMove.getWorkerPosition().level >= level)
-            {
-                return true;
-            }
-            else
-                return WorkerToMove.getWorkerPosition().level == (level - 1);
-         }
-        else
-        {
-            return false;
-        }
+        return ((level < 3) && !isOccupiedByWorker() && !dome);
     }
 
     public boolean removeLevel()

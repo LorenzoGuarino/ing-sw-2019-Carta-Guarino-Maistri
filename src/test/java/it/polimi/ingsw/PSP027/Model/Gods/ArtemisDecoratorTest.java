@@ -92,8 +92,10 @@ public class ArtemisDecoratorTest {
         MovePhase movePhase= new MovePhase();
         movePhase.Init(worker11,gameBoard, true);
         artemisDecoratedPhase = new ArtemisDecorator(movePhase, false);
+        worker11.getMoveCounter();
         artemisDecoratedPhase.evalCandidateCells();
         artemisDecoratedPhase.performActionOnCell(x12);
+        artemisDecoratedPhase.evalCandidateCells();
         ArrayList<Cell> expectedList= new ArrayList<Cell>();
         expectedList.add(x13);
         expectedList.add(x23);
