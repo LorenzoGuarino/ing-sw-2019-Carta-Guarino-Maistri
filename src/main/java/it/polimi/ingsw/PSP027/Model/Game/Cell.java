@@ -81,7 +81,12 @@ public class Cell {
 
     public boolean canALevelBeAdded()
     {
-        return ((level < 3) && !isOccupiedByWorker() && !dome);
+        return canALevelBeAdded(false);
+    }
+
+    public boolean canALevelBeAdded(boolean bIgnoreWorker)
+    {
+        return ((level < 3) && (!isOccupiedByWorker() || bIgnoreWorker) && !dome);
     }
 
     public boolean removeLevel()
@@ -104,7 +109,12 @@ public class Cell {
 
     public boolean addLevel()
     {
-        if (canALevelBeAdded())
+        return addLevel(false);
+    }
+
+    public boolean addLevel(boolean bIgnoreWorker)
+    {
+        if (canALevelBeAdded(bIgnoreWorker))
         {
             level++;
             return true;
