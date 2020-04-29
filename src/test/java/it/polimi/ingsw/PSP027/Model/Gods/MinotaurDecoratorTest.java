@@ -26,6 +26,7 @@ public class MinotaurDecoratorTest {
     public void setUp() throws Exception {
         player1= new Player();
         player2= new Player();
+        gameBoard = new Board();
         worker11= player1.getPlayerWorkers().get(0);
         worker11.changePosition(gameBoard.getCell(0));
         worker21= player2.getPlayerWorkers().get(0);
@@ -45,8 +46,8 @@ public class MinotaurDecoratorTest {
         Cell x22 = gameBoard.getCell(6);
         x22.addLevel();x22.addLevel();
         MovePhase movePhase = new MovePhase();
-        movePhase.Init(worker11,gameBoard, true);
-        minotaurDecoratedPhase =new MinotaurDecorator(movePhase, false);
+        movePhase.Init(worker11, gameBoard, true);
+        minotaurDecoratedPhase = new MinotaurDecorator(movePhase, false);
         minotaurDecoratedPhase.evalCandidateCells();
         ArrayList<Cell> expectedList= new ArrayList<Cell>();
         expectedList.add(x12);
