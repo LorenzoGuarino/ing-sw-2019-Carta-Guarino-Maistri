@@ -36,6 +36,11 @@ public class Worker {
         buildDomeOnNextBuild = false;
     }
 
+    public void removeWorker() {
+        this.changePosition(null);
+        this.getWorkerOwner().getPlayerWorkers().remove(this);
+    }
+
     public void ResetWorkerTurnVars()
     {
         buildDomeOnNextBuild = false;
