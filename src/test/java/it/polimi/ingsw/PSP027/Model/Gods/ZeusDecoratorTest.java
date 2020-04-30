@@ -32,6 +32,10 @@ public class ZeusDecoratorTest {
         worker2 = player.getPlayerWorkers().get(1);
     }
 
+    /**
+     * Test should assert that if the player's worker's cell has a level that is under 3 the cell will be in the candidate cells
+     */
+
     @Test
     public void evalCandidateCells_ShouldReturnAlsoTheCellOccupiedByZeusIfLevelIsUnder3() {
         Cell C3 = gameBoard.getCell(12); //Player with Zeus should be able to build there -> worker1 is on C3
@@ -56,8 +60,13 @@ public class ZeusDecoratorTest {
         assertTrue(expectedList.containsAll(buildPhase.getCandidateCells()) && buildPhase.getCandidateCells().containsAll(expectedList));
     }
 
+    /**
+     * Test should assert that among the candidate cells there is not the cell occupied by the player's worker
+     * if this is at level 3
+     */
+
     @Test
-    public void evalCandidateCells_ShouldNotReturnTheCellOccupiedByZeusIfLevelIs3OrDome() {
+    public void evalCandidateCells_ShouldNotReturnTheCellOccupiedByZeusIfLevelIs3() {
         Cell C3 = gameBoard.getCell(12); //Player with Zeus should be able to build there -> worker1 is on C3
         C3.addLevel();
         C3.addLevel();
@@ -81,6 +90,10 @@ public class ZeusDecoratorTest {
         assertTrue(expectedList.containsAll(buildPhase.getCandidateCells()) && buildPhase.getCandidateCells().containsAll(expectedList));
     }
 
+    /**
+     * Test should assert that the player having Zeus can build under its worker
+     */
+
     @Test
     public void performActionOnCellShouldBuildALevelUnderTheWorker() {
         Cell A3 = gameBoard.getCell(2);
@@ -92,4 +105,45 @@ public class ZeusDecoratorTest {
         int A3Level = A3.getLevel();
         assertEquals(1, A3Level);
     }
+
+    /**
+     * Test should assert that the player having Zeus makes a standard build of level when choosing a different
+     * cell from the one its worker is occupying
+     */
+
+    @Test
+    public void performActionOnCellShouldMakeAStandardBuildOfLevel() {
+        Cell A3 = gameBoard.getCell(2);
+        worker1.changePosition(A3);
+        Cell A4 = gameBoard.getCell(3);
+        A4.addLevel(true);
+        BuildPhase buildPhase = new BuildPhase();
+        buildPhase.Init(worker1, gameBoard, true);
+        zeusDecoratedPhase = new ZeusDecorator(buildPhase, false);
+        zeusDecoratedPhase.performActionOnCell(A4);
+        int A4Level = A4.getLevel();
+        assertEquals(2, A4Level);
+    }
+
+    /**
+     * Test should assert that the player having Zeus makes a standard build of dome when choosing a different
+     * cell from the one its player is occupying with level 3 already built
+     */
+
+    @Test
+    public void performActionOnCellShouldMakeAStandardBuildOfDome() {
+        Cell A3 = gameBoard.getCell(2);
+        worker1.changePosition(A3);
+        Cell A4 = gameBoard.getCell(3);
+        A4.addLevel(true);
+        A4.addLevel(true);
+        A4.addLevel(true);
+        BuildPhase buildPhase = new BuildPhase();
+        buildPhase.Init(worker1, gameBoard, true);
+        zeusDecoratedPhase = new ZeusDecorator(buildPhase, false);
+        zeusDecoratedPhase.performActionOnCell(A4);
+        boolean A4dome = A4.checkDome();
+        assertEquals(true, A4dome);
+    }
+
 }
