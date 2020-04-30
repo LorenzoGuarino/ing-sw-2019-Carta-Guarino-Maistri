@@ -37,8 +37,8 @@ public class Worker {
     }
 
     public void removeWorker() {
-        this.changePosition(null);
         this.getWorkerOwner().getPlayerWorkers().remove(this);
+        this.changePosition(null);
     }
 
     public void ResetWorkerTurnVars()

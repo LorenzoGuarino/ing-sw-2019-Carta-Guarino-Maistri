@@ -4,6 +4,10 @@ import it.polimi.ingsw.PSP027.Model.Game.Cell;
 import it.polimi.ingsw.PSP027.Model.Game.Player;
 import it.polimi.ingsw.PSP027.Model.Game.Worker;
 
+/**
+ * @author danielecarta
+ */
+
 public class MedusaDecorator extends GodPowerDecorator {
 
     public MedusaDecorator(Phase decoratedPhase, boolean bActAsOpponentGod) {
@@ -55,13 +59,6 @@ public class MedusaDecorator extends GodPowerDecorator {
                 }
             }
         }
-    }
-
-    @Override
-    public void performActionOnCell(Cell chosenCell) {
-        if (IsAnEndPhase()) {
-        }
-        super.performActionOnCell(chosenCell);
     }
 
     @Override
