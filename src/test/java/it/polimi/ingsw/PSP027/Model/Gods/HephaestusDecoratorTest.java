@@ -38,7 +38,7 @@ public class HephaestusDecoratorTest {
      */
 
     @Test
-    public void evalCandidateCells() {
+    public void evalCandidateCellsShouldPerformAStandardBuildTheFirstTime() {
         Cell x15 = gameBoard.getCell(20);
         Cell x14 = gameBoard.getCell(15);//lv2
         x14.addLevel();x14.addLevel();
@@ -58,6 +58,27 @@ public class HephaestusDecoratorTest {
         hephaestusDecoratedPhase = new HephaestusDecorator(buildPhase, false);
         hephaestusDecoratedPhase.evalCandidateCells();
         assertTrue(expectedList.containsAll(buildPhase.getCandidateCells()) && buildPhase.getCandidateCells().containsAll(expectedList));
+    }
+
+    /**
+     * Test should assert that hephaestus can only build where it built before if this is the second optional build
+     */
+    @Test
+    public void evalCandidateCellsShouldReturnOnlyThePreviousBuiltCell() {
+        Cell B3 = gameBoard.getCell(7);
+        Cell B4 = gameBoard.getCell(8);
+        worker11.changePosition(B3);
+        BuildPhase buildPhase1 = new BuildPhase();
+        buildPhase1.Init(worker11,gameBoard, true);
+        hephaestusDecoratedPhase = new HephaestusDecorator(buildPhase1, false);
+        hephaestusDecoratedPhase.performActionOnCell(B4);
+        BuildPhase buildPhase2 = new BuildPhase();
+        buildPhase2.Init(worker11,gameBoard, false);
+        hephaestusDecoratedPhase = new HephaestusDecorator(buildPhase2, false);
+        hephaestusDecoratedPhase.evalCandidateCells();
+        ArrayList<Cell> expectedList = new ArrayList<>();
+        expectedList.add(B4);
+        assertTrue(expectedList.containsAll(buildPhase2.getCandidateCells()) && buildPhase2.getCandidateCells().containsAll(expectedList));
     }
 
     /**
