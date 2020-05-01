@@ -4,6 +4,9 @@ import it.polimi.ingsw.PSP027.Model.Game.Cell;
 import it.polimi.ingsw.PSP027.Controller.Phase;
 import it.polimi.ingsw.PSP027.Controller.MovePhase;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author danielecarta
  */
@@ -36,13 +39,21 @@ public class PrometheusDecorator extends GodPowerDecorator {
 
             Cell startingCell = this.getWorker().getWorkerPosition();
 
-            for (Cell candidateCell : this.getCandidateCells()) {
-
-                if (candidateCell.getLevel() != startingCell.getLevel()) {
+            for(int i =0; i<getCandidateCells().size(); i++){
+                Cell candidateCell = getCandidateCells().get(i);
+                if(candidateCell.getLevel() != startingCell.getLevel()){
                     System.out.println("PROMETHEUS: evalCandidateCells discarding cell " + candidateCell.getCellIndex());
-                    this.getCandidateCells().remove(candidateCell);
+                    this.getCandidateCells().remove(i);
                 }
             }
+
+//            for (Cell candidateCell : this.getCandidateCells()) {
+//
+//                if (candidateCell.getLevel() != startingCell.getLevel()) {
+//                    System.out.println("PROMETHEUS: evalCandidateCells discarding cell " + candidateCell.getCellIndex());
+//                    this.getCandidateCells().remove(candidateCell);
+//                }
+//            }
         }
     }
 
