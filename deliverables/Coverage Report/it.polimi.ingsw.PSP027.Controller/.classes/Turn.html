@@ -1,0 +1,531 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: Turn</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.PSP027.Controller</a> ]
+</div>
+
+<h1>Coverage Summary for Class: Turn (it.polimi.ingsw.PSP027.Controller)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Turn</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 21)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 132)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.PSP027.Controller;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.PSP027.Model.Game.Cell;
+<i>4</i>&nbsp;import it.polimi.ingsw.PSP027.Model.Game.GodCard;
+<i>5</i>&nbsp;import it.polimi.ingsw.PSP027.Model.Game.Player;
+<i>6</i>&nbsp;import it.polimi.ingsw.PSP027.Model.Game.Worker;
+<i>7</i>&nbsp;import it.polimi.ingsw.PSP027.Model.Gods.*;
+<i>8</i>&nbsp;import it.polimi.ingsw.PSP027.Network.ProtocolTypes;
+<i>9</i>&nbsp;import java.util.ArrayList;
+<i>10</i>&nbsp;import java.util.List;
+<i>11</i>&nbsp;
+<i>12</i>&nbsp;/**
+<i>13</i>&nbsp; * @author danielecarta
+<i>14</i>&nbsp; *
+<i>15</i>&nbsp; */
+<i>16</i>&nbsp;
+<i>17</i>&nbsp;public class Turn {
+<i>18</i>&nbsp;    private List&lt;Phase&gt; phaseList;
+<i>19</i>&nbsp;    private Worker chosenWorker;
+<i>20</i>&nbsp;    private Player playingPlayer;
+<i>21</i>&nbsp;    private SantoriniMatch santoriniMatch;
+<i>22</i>&nbsp;    private boolean bCompleted;
+<i>23</i>&nbsp;
+<i>24</i>&nbsp;    /**
+<i>25</i>&nbsp;     * Constructor: it is called by santorini match when the setup of the game is done and the turn of the first player can start.
+<i>26</i>&nbsp;     * It is given the player who is going to play the turn and the santorini match that called it.
+<i>27</i>&nbsp;     * With the constructor begins question-answer cmmunication with the client that one by one triggers the instantiation of each phase with the data
+<i>28</i>&nbsp;     * received form the client
+<i>29</i>&nbsp;     *
+<i>30</i>&nbsp;     * @param playingPlayer player that plays this turn created by the match
+<i>31</i>&nbsp;     */
+<i>32</i>&nbsp;
+<b class="nc"><i>33</i>&nbsp;    public Turn(Player playingPlayer, SantoriniMatch santoriniMatch) {</b>
+<b class="nc"><i>34</i>&nbsp;        this.santoriniMatch = santoriniMatch;</b>
+<b class="nc"><i>35</i>&nbsp;        this.playingPlayer = playingPlayer;</b>
+<b class="nc"><i>36</i>&nbsp;        this.phaseList = new ArrayList&lt;&gt;();</b>
+<b class="nc"><i>37</i>&nbsp;        this.bCompleted = false;</b>
+<i>38</i>&nbsp;
+<i>39</i>&nbsp;        //First communication with the client done by the Turn, asking to choose a worker to play the turn with.
+<b class="nc"><i>40</i>&nbsp;        ChooseWorker();</b>
+<i>41</i>&nbsp;    }
+<i>42</i>&nbsp;
+<i>43</i>&nbsp;    /**
+<i>44</i>&nbsp;     * Method that prepares the command to send to the client when asking it to choose the worker to play the turn with and actually sends the command
+<i>45</i>&nbsp;     */
+<i>46</i>&nbsp;
+<i>47</i>&nbsp;    public void ChooseWorker()
+<i>48</i>&nbsp;    {
+<b class="nc"><i>49</i>&nbsp;        String cmd = &quot;&lt;cmd&gt;&lt;id&gt;&quot; + ProtocolTypes.protocolCommand.srv_ChooseWorker.toString() + &quot;&lt;/id&gt;&lt;data&gt;&quot;;</b>
+<b class="nc"><i>50</i>&nbsp;        cmd += this.santoriniMatch.boardToXMLString();</b>
+<b class="nc"><i>51</i>&nbsp;        cmd += &quot;&lt;/data&gt;&lt;/cmd&gt;&quot;;</b>
+<i>52</i>&nbsp;
+<b class="nc"><i>53</i>&nbsp;        playingPlayer.SendCommand(cmd);</b>
+<i>54</i>&nbsp;    }
+<i>55</i>&nbsp;
+<i>56</i>&nbsp;    /* ***************************************************************************************************************
+<i>57</i>&nbsp;     *                METHODS THAT RECEIVE THE CLIENT RESPONSE AND TRIGGER AN ACTION ON THE TURN                     *
+<i>58</i>&nbsp;     *                          RESULTING IN ANOTHER COMMUNICATION WITH THE CLIENT                                   *
+<i>59</i>&nbsp;     * ***************************************************************************************************************/
+<i>60</i>&nbsp;
+<i>61</i>&nbsp;    /**
+<i>62</i>&nbsp;     * Method that sets the chosen worker by the user that will play the turn and instantiates the move phase
+<i>63</i>&nbsp;     *
+<i>64</i>&nbsp;     * @param chosenWorker worker chosen by the user
+<i>65</i>&nbsp;     */
+<i>66</i>&nbsp;
+<i>67</i>&nbsp;    public void setChosenWorker(Worker chosenWorker) {
+<i>68</i>&nbsp;
+<b class="nc"><i>69</i>&nbsp;        this.chosenWorker = chosenWorker;</b>
+<i>70</i>&nbsp;
+<b class="nc"><i>71</i>&nbsp;        if(getPlayingPlayer().getPlayerGod().getToWhomIsApplied() == GodCard.ToWhomIsApplied.Owner)</b>
+<i>72</i>&nbsp;        {
+<i>73</i>&nbsp;            // prometheus case
+<b class="nc"><i>74</i>&nbsp;            if(getPlayingPlayer().getPlayerGod().AllowExtraBuildBeforeMove())</b>
+<i>75</i>&nbsp;            {
+<i>76</i>&nbsp;                // ask player if wanna build before moving (this will decorate the move subsequent !!!)
+<i>77</i>&nbsp;
+<i>78</i>&nbsp;                // and leave function.
+<i>79</i>&nbsp;                return;
+<i>80</i>&nbsp;            }
+<i>81</i>&nbsp;        }
+<i>82</i>&nbsp;
+<b class="nc"><i>83</i>&nbsp;        CreateMovePhase(true);</b>
+<i>84</i>&nbsp;    }
+<i>85</i>&nbsp;
+<i>86</i>&nbsp;
+<i>87</i>&nbsp;    /**
+<i>88</i>&nbsp;     * Method that updates the board with the new position of the worker
+<i>89</i>&nbsp;     * @param chosenCellIndex cell where the worker is moving onto
+<i>90</i>&nbsp;     */
+<i>91</i>&nbsp;    public void MoveWorker(int chosenCellIndex) {
+<i>92</i>&nbsp;
+<b class="nc"><i>93</i>&nbsp;        Cell cell = santoriniMatch.getGameBoard().getCell(chosenCellIndex);</b>
+<i>94</i>&nbsp;
+<b class="nc"><i>95</i>&nbsp;        if(phaseList.size()&gt;0)</b>
+<i>96</i>&nbsp;        {
+<b class="nc"><i>97</i>&nbsp;            phaseList.get(phaseList.size()-1).performActionOnCell(cell);</b>
+<i>98</i>&nbsp;
+<b class="nc"><i>99</i>&nbsp;            if(phaseList.get(phaseList.size()-1).PlayerHasWon())</b>
+<i>100</i>&nbsp;            {
+<b class="nc"><i>101</i>&nbsp;                System.out.println(getPlayingPlayer().getNickname() + &quot; has won !!&quot;);</b>
+<b class="nc"><i>102</i>&nbsp;                bCompleted = true;</b>
+<i>103</i>&nbsp;            }
+<i>104</i>&nbsp;        }
+<i>105</i>&nbsp;
+<b class="nc"><i>106</i>&nbsp;        if(!bCompleted) {</b>
+<b class="nc"><i>107</i>&nbsp;            if (playingPlayer.getPlayerGod().AllowExtraMove() &amp;&amp; cell.getOccupyingWorker().getMoveCounter() == 1) {</b>
+<b class="nc"><i>108</i>&nbsp;                CreateMovePhase(false);</b>
+<i>109</i>&nbsp;            } else {
+<b class="nc"><i>110</i>&nbsp;                CreateBuildPhase(true);</b>
+<i>111</i>&nbsp;            }
+<i>112</i>&nbsp;
+<b class="nc"><i>113</i>&nbsp;            santoriniMatch.sendUpdatedBoard(santoriniMatch.getPlayers().get(0).getNickname());</b>
+<i>114</i>&nbsp;        }
+<i>115</i>&nbsp;    }
+<i>116</i>&nbsp;
+<i>117</i>&nbsp;    /**
+<i>118</i>&nbsp;     * Method that creates the next Build Phase
+<i>119</i>&nbsp;     */
+<i>120</i>&nbsp;    public void passMove() {
+<b class="nc"><i>121</i>&nbsp;        CreateBuildPhase(true);</b>
+<i>122</i>&nbsp;    }
+<i>123</i>&nbsp;
+<i>124</i>&nbsp;    /**
+<i>125</i>&nbsp;     * Method that updates the board with the new build done
+<i>126</i>&nbsp;     * @param chosenCellIndex cell where the worker is building
+<i>127</i>&nbsp;     */
+<i>128</i>&nbsp;    public void doBuild(int chosenCellIndex) {
+<i>129</i>&nbsp;
+<b class="nc"><i>130</i>&nbsp;        Cell cell = santoriniMatch.getGameBoard().getCell(chosenCellIndex);</b>
+<i>131</i>&nbsp;
+<b class="nc"><i>132</i>&nbsp;        if(phaseList.size()&gt;0)</b>
+<i>133</i>&nbsp;        {
+<b class="nc"><i>134</i>&nbsp;            phaseList.get(phaseList.size()-1).performActionOnCell(cell);</b>
+<i>135</i>&nbsp;        }
+<i>136</i>&nbsp;
+<b class="nc"><i>137</i>&nbsp;        if(playingPlayer.getPlayerGod().AllowExtraBuildAfterMove() &amp;&amp; this.chosenWorker.getBuildCounter() == 1) {</b>
+<b class="nc"><i>138</i>&nbsp;            CreateBuildPhase(false);</b>
+<i>139</i>&nbsp;        }
+<i>140</i>&nbsp;        else {
+<b class="nc"><i>141</i>&nbsp;            CreateEndPhase(false);</b>
+<i>142</i>&nbsp;        }
+<i>143</i>&nbsp;
+<b class="nc"><i>144</i>&nbsp;        santoriniMatch.sendUpdatedBoard(santoriniMatch.getPlayers().get(0).getNickname());</b>
+<i>145</i>&nbsp;    }
+<i>146</i>&nbsp;
+<i>147</i>&nbsp;    /**
+<i>148</i>&nbsp;     * Method that create the next End phase
+<i>149</i>&nbsp;     */
+<i>150</i>&nbsp;    public void passBuild() {
+<b class="nc"><i>151</i>&nbsp;        CreateEndPhase(false);</b>
+<i>152</i>&nbsp;    }
+<i>153</i>&nbsp;
+<i>154</i>&nbsp;
+<i>155</i>&nbsp;    public void endAction(int chosenCellIndex) {
+<i>156</i>&nbsp;
+<b class="nc"><i>157</i>&nbsp;        Cell cell = santoriniMatch.getGameBoard().getCell(chosenCellIndex);</b>
+<i>158</i>&nbsp;
+<b class="nc"><i>159</i>&nbsp;        if(phaseList.size()&gt;0)</b>
+<i>160</i>&nbsp;        {
+<b class="nc"><i>161</i>&nbsp;            phaseList.get(phaseList.size()-1).performActionOnCell(cell);</b>
+<i>162</i>&nbsp;        }
+<i>163</i>&nbsp;
+<b class="nc"><i>164</i>&nbsp;        if(playingPlayer.getPlayerGod().AllowExtraEnd() &amp;&amp; this.chosenWorker.getBuildCounter() &lt;= 3) {</b>
+<b class="nc"><i>165</i>&nbsp;            CreateEndPhase(false);</b>
+<i>166</i>&nbsp;        }
+<i>167</i>&nbsp;        else {
+<i>168</i>&nbsp;            //removing opponentGodsCards
+<b class="nc"><i>169</i>&nbsp;            getPlayingPlayer().removeOpponentGodCards();</b>
+<b class="nc"><i>170</i>&nbsp;            System.out.println(&quot;Cleared opponents gods&quot;);</b>
+<b class="nc"><i>171</i>&nbsp;            bCompleted = true;</b>
+<i>172</i>&nbsp;        }
+<i>173</i>&nbsp;
+<b class="nc"><i>174</i>&nbsp;        santoriniMatch.sendUpdatedBoard(santoriniMatch.getPlayers().get(0).getNickname());</b>
+<i>175</i>&nbsp;    }
+<i>176</i>&nbsp;
+<i>177</i>&nbsp;    public void passEnd() {
+<i>178</i>&nbsp;        //removing opponentGodsCards
+<b class="nc"><i>179</i>&nbsp;        getPlayingPlayer().removeOpponentGodCards();</b>
+<b class="nc"><i>180</i>&nbsp;        System.out.println(&quot;Cleared opponents gods&quot;);</b>
+<b class="nc"><i>181</i>&nbsp;        bCompleted = true;</b>
+<i>182</i>&nbsp;    }
+<i>183</i>&nbsp;
+<i>184</i>&nbsp;
+<i>185</i>&nbsp;    /* ************************************************* UTILITY METHODS OF THE TURN ************************************************* */
+<i>186</i>&nbsp;
+<i>187</i>&nbsp;    /**
+<i>188</i>&nbsp;     * Method to get the player that is playing the turn
+<i>189</i>&nbsp;     *
+<i>190</i>&nbsp;     * @return the playing player
+<i>191</i>&nbsp;     */
+<i>192</i>&nbsp;
+<i>193</i>&nbsp;    public Player getPlayingPlayer() {
+<b class="nc"><i>194</i>&nbsp;        return playingPlayer;</b>
+<i>195</i>&nbsp;    }
+<i>196</i>&nbsp;
+<i>197</i>&nbsp;    /**
+<i>198</i>&nbsp;     * Method to get the worker chosen by the user at the instantiation of the turn
+<i>199</i>&nbsp;     *
+<i>200</i>&nbsp;     * @return the chosen worker
+<i>201</i>&nbsp;     */
+<i>202</i>&nbsp;
+<i>203</i>&nbsp;    public Worker getChosenWorker() {
+<b class="nc"><i>204</i>&nbsp;        return chosenWorker;</b>
+<i>205</i>&nbsp;    }
+<i>206</i>&nbsp;
+<i>207</i>&nbsp;    /**
+<i>208</i>&nbsp;     * Method to get the match who created the turn
+<i>209</i>&nbsp;     *
+<i>210</i>&nbsp;     * @return the match
+<i>211</i>&nbsp;     */
+<i>212</i>&nbsp;
+<i>213</i>&nbsp;    public SantoriniMatch getSantoriniMatch() {
+<b class="nc"><i>214</i>&nbsp;        return santoriniMatch;</b>
+<i>215</i>&nbsp;    }
+<i>216</i>&nbsp;
+<i>217</i>&nbsp;    /**
+<i>218</i>&nbsp;     * Method to get the phase list of the turn
+<i>219</i>&nbsp;     *
+<i>220</i>&nbsp;     * @return the phase list
+<i>221</i>&nbsp;     */
+<i>222</i>&nbsp;
+<i>223</i>&nbsp;    public List&lt;Phase&gt; getPhaseList() {
+<b class="nc"><i>224</i>&nbsp;        return phaseList;</b>
+<i>225</i>&nbsp;    }
+<i>226</i>&nbsp;
+<i>227</i>&nbsp;    /**
+<i>228</i>&nbsp;     * Method to set the turn&#39;s phase list with a phase list
+<i>229</i>&nbsp;     *
+<i>230</i>&nbsp;     * @param phaseList phase list to set as this turn&#39;s list
+<i>231</i>&nbsp;     */
+<i>232</i>&nbsp;
+<i>233</i>&nbsp;    public void setPhaseList(List&lt;Phase&gt; phaseList) {
+<b class="nc"><i>234</i>&nbsp;        this.phaseList = phaseList;</b>
+<i>235</i>&nbsp;    }
+<i>236</i>&nbsp;
+<i>237</i>&nbsp;    /**
+<i>238</i>&nbsp;     * Method to query in order to tell if the turn is completed
+<i>239</i>&nbsp;     *
+<i>240</i>&nbsp;     * @return true if it is completed, otherwise false
+<i>241</i>&nbsp;     */
+<i>242</i>&nbsp;
+<i>243</i>&nbsp;    public boolean IsCompleted() {
+<i>244</i>&nbsp;
+<b class="nc"><i>245</i>&nbsp;        return bCompleted;</b>
+<i>246</i>&nbsp;    }
+<i>247</i>&nbsp;
+<i>248</i>&nbsp;    /**
+<i>249</i>&nbsp;     * Method that checks if the player playing this turn has won
+<i>250</i>&nbsp;     *
+<i>251</i>&nbsp;     * @return true if it has won, otherwise false
+<i>252</i>&nbsp;     */
+<i>253</i>&nbsp;
+<i>254</i>&nbsp;    public boolean CurrentPlayerHasWon() {
+<i>255</i>&nbsp;
+<b class="nc"><i>256</i>&nbsp;        return playingPlayer.HasWon();</b>
+<i>257</i>&nbsp;    }
+<i>258</i>&nbsp;
+<i>259</i>&nbsp;    /**
+<i>260</i>&nbsp;     * Method that checks if the current player has lost
+<i>261</i>&nbsp;     * @return true if it has lost, otherwise false
+<i>262</i>&nbsp;     */
+<i>263</i>&nbsp;
+<i>264</i>&nbsp;    public boolean CurrentPlayerHasLost(){
+<i>265</i>&nbsp;
+<b class="nc"><i>266</i>&nbsp;        return playingPlayer.HasLost();</b>
+<i>267</i>&nbsp;    }
+<i>268</i>&nbsp;
+<i>269</i>&nbsp;
+<i>270</i>&nbsp;    /**
+<i>271</i>&nbsp;     * Method that creates a move phase, applying the right decorator to it (also the opponent ones, applied to the already decorated
+<i>272</i>&nbsp;     * phase by the player&#39;s own god)
+<i>273</i>&nbsp;     * @param bMandatory this tells the phase if it&#39;s a mandatory phase or an optional one, deciding therefore whether the player
+<i>274</i>&nbsp;     *                   loses the game when not able not perform the phase
+<i>275</i>&nbsp;     */
+<i>276</i>&nbsp;
+<i>277</i>&nbsp;    public void CreateMovePhase(boolean bMandatory)
+<i>278</i>&nbsp;    {
+<i>279</i>&nbsp;        // create move phase and apply decorator to it.
+<i>280</i>&nbsp;        // the decorated resulting phase is the one that is stored on the phase list
+<b class="nc"><i>281</i>&nbsp;        MovePhase phase = new MovePhase();</b>
+<b class="nc"><i>282</i>&nbsp;        phase.Init(this.chosenWorker, this.santoriniMatch.getGameBoard(), bMandatory);</b>
+<i>283</i>&nbsp;
+<i>284</i>&nbsp;        // start applying player&#39;s own god
+<b class="nc"><i>285</i>&nbsp;        Phase playergodphase = applyDecorator(phase, playingPlayer.getPlayerGod().getGodType(), false);</b>
+<i>286</i>&nbsp;
+<i>287</i>&nbsp;        // and then apply opponent gods to the already decorated phase by the player&#39;s own god card
+<b class="nc"><i>288</i>&nbsp;        if(getPlayingPlayer().getOpponentsGodCards().size() &gt; 0)</b>
+<i>289</i>&nbsp;        {
+<b class="nc"><i>290</i>&nbsp;            Phase opponentgodphase1 = applyDecorator(playergodphase, getPlayingPlayer().getOpponentsGodCards().get(0).getGodType(), true);</b>
+<b class="nc"><i>291</i>&nbsp;            if(getPlayingPlayer().getOpponentsGodCards().size()&gt;1)</b>
+<i>292</i>&nbsp;            {
+<b class="nc"><i>293</i>&nbsp;                Phase opponentgodphase2 = applyDecorator(opponentgodphase1, getPlayingPlayer().getOpponentsGodCards().get(1).getGodType(), true);</b>
+<b class="nc"><i>294</i>&nbsp;                phaseList.add(opponentgodphase2);</b>
+<b class="nc"><i>295</i>&nbsp;            }</b>
+<i>296</i>&nbsp;            else
+<b class="nc"><i>297</i>&nbsp;                phaseList.add(opponentgodphase1);</b>
+<b class="nc"><i>298</i>&nbsp;        }</b>
+<i>299</i>&nbsp;        else
+<b class="nc"><i>300</i>&nbsp;            phaseList.add(playergodphase);</b>
+<i>301</i>&nbsp;
+<b class="nc"><i>302</i>&nbsp;        boolean bCanPerformPhase = phaseList.get(phaseList.size()-1).startPhase();</b>
+<i>303</i>&nbsp;
+<i>304</i>&nbsp;        //if the player cannot perform the phase and it is a mandatory phase the player loses and the turn is completed
+<b class="nc"><i>305</i>&nbsp;        if(!bCanPerformPhase &amp;&amp; bMandatory){</b>
+<i>306</i>&nbsp;            // player has lost !!!
+<b class="nc"><i>307</i>&nbsp;            getPlayingPlayer().setHasLost(true);</b>
+<b class="nc"><i>308</i>&nbsp;            bCompleted = true;</b>
+<i>309</i>&nbsp;        }
+<i>310</i>&nbsp;    }
+<i>311</i>&nbsp;
+<i>312</i>&nbsp;    /**
+<i>313</i>&nbsp;     * Method that creates a build phase, applying the right decorator to it (also the opponent ones, applied to the already decorated
+<i>314</i>&nbsp;     * phase by the player&#39;s own god)
+<i>315</i>&nbsp;     * @param bMandatory this tells the phase if it&#39;s a mandatory phase or an optional one, deciding therefore whether the player
+<i>316</i>&nbsp;     *                   loses the game when not able not perform the phase
+<i>317</i>&nbsp;     */
+<i>318</i>&nbsp;
+<i>319</i>&nbsp;    public void CreateBuildPhase(boolean bMandatory)
+<i>320</i>&nbsp;    {
+<i>321</i>&nbsp;        // create build phase and apply decorator to it.
+<i>322</i>&nbsp;        // the decorated resulting phase is the one that is stored on the phase list
+<b class="nc"><i>323</i>&nbsp;        BuildPhase phase = new BuildPhase();</b>
+<b class="nc"><i>324</i>&nbsp;        phase.Init(this.chosenWorker, this.santoriniMatch.getGameBoard(), bMandatory);</b>
+<i>325</i>&nbsp;
+<b class="nc"><i>326</i>&nbsp;        Phase playergodphase = applyDecorator(phase, playingPlayer.getPlayerGod().getGodType(), false);</b>
+<i>327</i>&nbsp;
+<i>328</i>&nbsp;        // and then apply opponent gods
+<b class="nc"><i>329</i>&nbsp;        if(getPlayingPlayer().getOpponentsGodCards().size()&gt;0)</b>
+<i>330</i>&nbsp;        {
+<b class="nc"><i>331</i>&nbsp;            Phase opponentgodphase1 = applyDecorator(playergodphase, getPlayingPlayer().getOpponentsGodCards().get(0).getGodType(), true);</b>
+<b class="nc"><i>332</i>&nbsp;            if(getPlayingPlayer().getOpponentsGodCards().size()&gt;1)</b>
+<i>333</i>&nbsp;            {
+<b class="nc"><i>334</i>&nbsp;                Phase opponentgodphase2 = applyDecorator(opponentgodphase1, getPlayingPlayer().getOpponentsGodCards().get(1).getGodType(), true);</b>
+<b class="nc"><i>335</i>&nbsp;                phaseList.add(opponentgodphase2);</b>
+<b class="nc"><i>336</i>&nbsp;            }</b>
+<i>337</i>&nbsp;            else
+<b class="nc"><i>338</i>&nbsp;                phaseList.add(opponentgodphase1);</b>
+<b class="nc"><i>339</i>&nbsp;        }</b>
+<i>340</i>&nbsp;        else
+<b class="nc"><i>341</i>&nbsp;            phaseList.add(playergodphase);</b>
+<i>342</i>&nbsp;
+<b class="nc"><i>343</i>&nbsp;        boolean bCanPerformPhase = phaseList.get(phaseList.size()-1).startPhase(); //actually calls the method startPhase of the player&#39;s own decorator</b>
+<i>344</i>&nbsp;
+<b class="nc"><i>345</i>&nbsp;        if(!bCanPerformPhase &amp;&amp; bMandatory){</b>
+<i>346</i>&nbsp;            // player has lost !!!
+<b class="nc"><i>347</i>&nbsp;            getPlayingPlayer().setHasLost(true);</b>
+<b class="nc"><i>348</i>&nbsp;            bCompleted = true;</b>
+<i>349</i>&nbsp;        }
+<i>350</i>&nbsp;    }
+<i>351</i>&nbsp;    /**
+<i>352</i>&nbsp;     * Method that creates an end phase, applying the right decorator to it (also the opponent ones, applied to the already decorated
+<i>353</i>&nbsp;     * phase by the player&#39;s own god)
+<i>354</i>&nbsp;     * @param bMandatory this tells the phase if it&#39;s a mandatory phase or an optional one, deciding therefore whether the player
+<i>355</i>&nbsp;     *                   loses the game when not able not perform the phase
+<i>356</i>&nbsp;     */
+<i>357</i>&nbsp;
+<i>358</i>&nbsp;    public void CreateEndPhase(boolean bMandatory)
+<i>359</i>&nbsp;    {
+<i>360</i>&nbsp;        //create build phase and apply decorator to it.
+<i>361</i>&nbsp;        // the decorated resulting phase is the one that is stored on the phase list
+<b class="nc"><i>362</i>&nbsp;        EndPhase phase = new EndPhase();</b>
+<b class="nc"><i>363</i>&nbsp;        phase.Init(this.chosenWorker, this.santoriniMatch.getGameBoard(), bMandatory);</b>
+<i>364</i>&nbsp;
+<b class="nc"><i>365</i>&nbsp;        Phase playergodphase = applyDecorator(phase, playingPlayer.getPlayerGod().getGodType(), false);</b>
+<i>366</i>&nbsp;
+<i>367</i>&nbsp;        // and then apply opponent gods
+<b class="nc"><i>368</i>&nbsp;        if(getPlayingPlayer().getOpponentsGodCards().size()&gt;0)</b>
+<i>369</i>&nbsp;        {
+<b class="nc"><i>370</i>&nbsp;            Phase opponentgodphase1 = applyDecorator(playergodphase, getPlayingPlayer().getOpponentsGodCards().get(0).getGodType(), true);</b>
+<b class="nc"><i>371</i>&nbsp;            if(getPlayingPlayer().getOpponentsGodCards().size()&gt;1)</b>
+<i>372</i>&nbsp;            {
+<b class="nc"><i>373</i>&nbsp;                Phase opponentgodphase2 = applyDecorator(opponentgodphase1, getPlayingPlayer().getOpponentsGodCards().get(1).getGodType(), true);</b>
+<b class="nc"><i>374</i>&nbsp;                phaseList.add(opponentgodphase2);</b>
+<b class="nc"><i>375</i>&nbsp;            }</b>
+<i>376</i>&nbsp;            else
+<b class="nc"><i>377</i>&nbsp;                phaseList.add(opponentgodphase1);</b>
+<b class="nc"><i>378</i>&nbsp;        }</b>
+<i>379</i>&nbsp;        else
+<b class="nc"><i>380</i>&nbsp;            phaseList.add(playergodphase);</b>
+<i>381</i>&nbsp;
+<b class="nc"><i>382</i>&nbsp;        boolean bCanPerformPhase = phaseList.get(phaseList.size()-1).startPhase(); //actually calls the method startPhase of the player&#39;s own decorator</b>
+<i>383</i>&nbsp;
+<b class="nc"><i>384</i>&nbsp;        if(!bCanPerformPhase){</b>
+<i>385</i>&nbsp;            //player doesn&#39;t have a god that acts in the end phase, so its turn can end.
+<i>386</i>&nbsp;            //removing opponentGodsCards
+<b class="nc"><i>387</i>&nbsp;            getPlayingPlayer().removeOpponentGodCards();</b>
+<b class="nc"><i>388</i>&nbsp;            System.out.println(&quot;Cleared opponents gods&quot;);</b>
+<i>389</i>&nbsp;
+<b class="nc"><i>390</i>&nbsp;            bCompleted = true;</b>
+<i>391</i>&nbsp;        }
+<i>392</i>&nbsp;    }
+<i>393</i>&nbsp;
+<i>394</i>&nbsp;    /**
+<i>395</i>&nbsp;     * Method to call when applying a decorator
+<i>396</i>&nbsp;     * @param phasetodecorate phase to decorate
+<i>397</i>&nbsp;     * @param godType god with which to decorate the phase
+<i>398</i>&nbsp;     * @param bActAsOpponentGod boolean that indicates if the decorator is applied by an opponent
+<i>399</i>&nbsp;     * @return the decorated phase
+<i>400</i>&nbsp;     */
+<i>401</i>&nbsp;
+<i>402</i>&nbsp;    public Phase applyDecorator(Phase phasetodecorate, GodCard.GodsType godType, boolean bActAsOpponentGod) {
+<b class="nc"><i>403</i>&nbsp;        if (godType == GodCard.GodsType.Apollo) {</b>
+<b class="nc"><i>404</i>&nbsp;            return new ApolloDecorator(phasetodecorate, bActAsOpponentGod);</b>
+<i>405</i>&nbsp;        }
+<b class="nc"><i>406</i>&nbsp;        if (godType == GodCard.GodsType.Ares) {</b>
+<b class="nc"><i>407</i>&nbsp;            return new AresDecorator(phasetodecorate, bActAsOpponentGod);</b>
+<i>408</i>&nbsp;        }
+<b class="nc"><i>409</i>&nbsp;        if (godType == GodCard.GodsType.Artemis) {</b>
+<b class="nc"><i>410</i>&nbsp;            return new ArtemisDecorator(phasetodecorate, bActAsOpponentGod);</b>
+<i>411</i>&nbsp;        }
+<b class="nc"><i>412</i>&nbsp;        if (godType == GodCard.GodsType.Athena) {</b>
+<b class="nc"><i>413</i>&nbsp;            return new AthenaDecorator(phasetodecorate, bActAsOpponentGod);</b>
+<i>414</i>&nbsp;        }
+<b class="nc"><i>415</i>&nbsp;        if (godType == GodCard.GodsType.Atlas) {</b>
+<b class="nc"><i>416</i>&nbsp;            return new AtlasDecorator(phasetodecorate, bActAsOpponentGod);</b>
+<i>417</i>&nbsp;        }
+<b class="nc"><i>418</i>&nbsp;        if (godType == GodCard.GodsType.Demeter) {</b>
+<b class="nc"><i>419</i>&nbsp;            return new DemeterDecorator(phasetodecorate, bActAsOpponentGod);</b>
+<i>420</i>&nbsp;        }
+<b class="nc"><i>421</i>&nbsp;        if (godType == GodCard.GodsType.Hephaestus) {</b>
+<b class="nc"><i>422</i>&nbsp;            return new HephaestusDecorator(phasetodecorate, bActAsOpponentGod);</b>
+<i>423</i>&nbsp;        }
+<b class="nc"><i>424</i>&nbsp;        if (godType == GodCard.GodsType.Hestia) {</b>
+<b class="nc"><i>425</i>&nbsp;            return new HestiaDecorator(phasetodecorate, bActAsOpponentGod);</b>
+<i>426</i>&nbsp;        }
+<b class="nc"><i>427</i>&nbsp;        if (godType == GodCard.GodsType.Medusa) {</b>
+<b class="nc"><i>428</i>&nbsp;            return new MedusaDecorator(phasetodecorate, bActAsOpponentGod);</b>
+<i>429</i>&nbsp;        }
+<b class="nc"><i>430</i>&nbsp;        if (godType == GodCard.GodsType.Minotaur) {</b>
+<b class="nc"><i>431</i>&nbsp;            return new MinotaurDecorator(phasetodecorate, bActAsOpponentGod);</b>
+<i>432</i>&nbsp;        }
+<b class="nc"><i>433</i>&nbsp;        if (godType == GodCard.GodsType.Pan) {</b>
+<b class="nc"><i>434</i>&nbsp;            return new PanDecorator(phasetodecorate, bActAsOpponentGod);</b>
+<i>435</i>&nbsp;        }
+<b class="nc"><i>436</i>&nbsp;        if (godType == GodCard.GodsType.Poseidon) {</b>
+<b class="nc"><i>437</i>&nbsp;            return new PoseidonDecorator(phasetodecorate, bActAsOpponentGod);</b>
+<i>438</i>&nbsp;        }
+<b class="nc"><i>439</i>&nbsp;        if (godType == GodCard.GodsType.Prometheus) {</b>
+<b class="nc"><i>440</i>&nbsp;            return new PrometheusDecorator(phasetodecorate, bActAsOpponentGod);</b>
+<i>441</i>&nbsp;        }
+<b class="nc"><i>442</i>&nbsp;        if (godType == GodCard.GodsType.Zeus) {</b>
+<b class="nc"><i>443</i>&nbsp;            return new ZeusDecorator(phasetodecorate, bActAsOpponentGod);</b>
+<i>444</i>&nbsp;        }
+<i>445</i>&nbsp;
+<b class="nc"><i>446</i>&nbsp;        return phasetodecorate;</b>
+<i>447</i>&nbsp;    }
+<i>448</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-05-01 12:21</div>
+</div>
+</body>
+</html>

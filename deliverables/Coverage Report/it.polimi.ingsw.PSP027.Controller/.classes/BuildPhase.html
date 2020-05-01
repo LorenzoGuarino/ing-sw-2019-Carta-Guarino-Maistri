@@ -1,0 +1,141 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: BuildPhase</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.PSP027.Controller</a> ]
+</div>
+
+<h1>Coverage Summary for Class: BuildPhase (it.polimi.ingsw.PSP027.Controller)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">BuildPhase</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (3/ 3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (18/ 18)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.PSP027.Controller;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.PSP027.Model.Game.Cell;
+<i>4</i>&nbsp;
+<i>5</i>&nbsp;/**
+<i>6</i>&nbsp; * @author Elisa Maistri
+<i>7</i>&nbsp; * @author danielecarta
+<i>8</i>&nbsp; */
+<i>9</i>&nbsp;
+<i>10</i>&nbsp;public class BuildPhase extends Phase {
+<i>11</i>&nbsp;
+<i>12</i>&nbsp;    /**
+<i>13</i>&nbsp;     * Constructor: when creating the build phase it sets the phase&#39;s type as phase type &quot;Build&quot;
+<i>14</i>&nbsp;     */
+<i>15</i>&nbsp;
+<b class="fc"><i>16</i>&nbsp;    public BuildPhase() {</b>
+<b class="fc"><i>17</i>&nbsp;        SetType(PhaseType.Build);</b>
+<b class="fc"><i>18</i>&nbsp;    }</b>
+<i>19</i>&nbsp;
+<i>20</i>&nbsp;    /**
+<i>21</i>&nbsp;     * Updates the candidateBuildingCells in a standard way, that allows the chosen worker to build in any adjacent cell that
+<i>22</i>&nbsp;     * is not occupied by any worker and has not a dome
+<i>23</i>&nbsp;     */
+<i>24</i>&nbsp;
+<i>25</i>&nbsp;    @Override
+<i>26</i>&nbsp;    public void evalCandidateCells(){
+<b class="fc"><i>27</i>&nbsp;        Cell CurrentUpdatedWorkerPosition = this.getWorker().getWorkerPosition();</b>
+<b class="fc"><i>28</i>&nbsp;        for(Cell candidateCell : this.getGameBoard().getNeighbouringCells(CurrentUpdatedWorkerPosition)) {</b>
+<b class="fc"><i>29</i>&nbsp;            if((!candidateCell.isOccupiedByWorker()) &amp;&amp; (!candidateCell.checkDome())) {</b>
+<b class="fc"><i>30</i>&nbsp;                System.out.println(&quot;BUILD: evalCandidateCells inserting cell &quot; + candidateCell.getCellIndex());</b>
+<b class="fc"><i>31</i>&nbsp;                this.getCandidateCells().add(candidateCell);                                    //then add the cell to candidateCells</b>
+<i>32</i>&nbsp;            }
+<i>33</i>&nbsp;            else
+<i>34</i>&nbsp;            {
+<b class="fc"><i>35</i>&nbsp;                System.out.println(&quot;BUILD: changeCandidateCells discarding cell &quot; + candidateCell.getCellIndex() + &quot; (l=&quot; +</b>
+<b class="fc"><i>36</i>&nbsp;                        candidateCell.getLevel() + &quot;, w=&quot; + candidateCell.isOccupiedByWorker() + &quot;, d=&quot; + candidateCell.checkDome());</b>
+<i>37</i>&nbsp;            }
+<b class="fc"><i>38</i>&nbsp;        }</b>
+<b class="fc"><i>39</i>&nbsp;    }</b>
+<i>40</i>&nbsp;
+<i>41</i>&nbsp;    /**
+<i>42</i>&nbsp;     * Updates the board after a standard build has been performed onto the chosenCell
+<i>43</i>&nbsp;     * @param chosenCell cell chosen by the user on which the build will happen
+<i>44</i>&nbsp;     */
+<i>45</i>&nbsp;
+<i>46</i>&nbsp;    @Override
+<i>47</i>&nbsp;    public void performActionOnCell(Cell chosenCell) {
+<b class="fc"><i>48</i>&nbsp;        if(chosenCell.getLevel() &lt; 3){</b>
+<b class="fc"><i>49</i>&nbsp;            chosenCell.addLevel();</b>
+<i>50</i>&nbsp;        }
+<i>51</i>&nbsp;        else{
+<b class="fc"><i>52</i>&nbsp;            chosenCell.addDome();</b>
+<i>53</i>&nbsp;        }
+<b class="fc"><i>54</i>&nbsp;        this.getWorker().setOldBuiltCell(chosenCell);</b>
+<b class="fc"><i>55</i>&nbsp;        this.getWorker().IncrementBuildCounter();</b>
+<i>56</i>&nbsp;
+<b class="fc"><i>57</i>&nbsp;    }</b>
+<i>58</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-05-01 12:21</div>
+</div>
+</body>
+</html>

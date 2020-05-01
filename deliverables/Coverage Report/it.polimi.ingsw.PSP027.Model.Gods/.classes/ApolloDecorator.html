@@ -1,0 +1,167 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: ApolloDecorator</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.PSP027.Model.Gods</a> ]
+</div>
+
+<h1>Coverage Summary for Class: ApolloDecorator (it.polimi.ingsw.PSP027.Model.Gods)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ApolloDecorator</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (3/ 3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (22/ 22)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.PSP027.Model.Gods;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.PSP027.Controller.Phase;
+<i>4</i>&nbsp;import it.polimi.ingsw.PSP027.Model.Game.Cell;
+<i>5</i>&nbsp;import it.polimi.ingsw.PSP027.Model.Game.Worker;
+<i>6</i>&nbsp;
+<i>7</i>&nbsp;/**
+<i>8</i>&nbsp; * @author danielecarta
+<i>9</i>&nbsp; * @author Elisa Maistri
+<i>10</i>&nbsp; * */
+<i>11</i>&nbsp;public class ApolloDecorator extends GodPowerDecorator {
+<i>12</i>&nbsp;
+<i>13</i>&nbsp;    /**
+<i>14</i>&nbsp;     * Constructor : sets the phase the decorator is decorating and a boolean that if it is set as true tells
+<i>15</i>&nbsp;     * that the decorator acts when it is played by an opponent of the god card&#39;s owner
+<i>16</i>&nbsp;     * @param decoratedPhase pahse the decorator is going to decorate
+<i>17</i>&nbsp;     * @param bActAsOpponentGod true if the god card will act only when it is being played as an opponent god card, otherwise it is false
+<i>18</i>&nbsp;     */
+<i>19</i>&nbsp;    public ApolloDecorator(Phase decoratedPhase, boolean bActAsOpponentGod) {
+<b class="fc"><i>20</i>&nbsp;        super(decoratedPhase, bActAsOpponentGod);</b>
+<b class="fc"><i>21</i>&nbsp;    }</b>
+<i>22</i>&nbsp;
+<i>23</i>&nbsp;    /**
+<i>24</i>&nbsp;     * Method called by a decorated turn&#39;s movePhase, it makes it possible to move in an enemy occupied cell swapping places with that enemy worker
+<i>25</i>&nbsp;     * @return a list of cells which you can move onto
+<i>26</i>&nbsp;     */
+<i>27</i>&nbsp;
+<i>28</i>&nbsp;    @Override
+<i>29</i>&nbsp;    public void evalCandidateCells() {
+<i>30</i>&nbsp;
+<i>31</i>&nbsp;        // call nested phase evalCandidateCells
+<b class="fc"><i>32</i>&nbsp;        super.evalCandidateCells();</b>
+<i>33</i>&nbsp;
+<i>34</i>&nbsp;        // Apollo override only move phase
+<b class="fc"><i>35</i>&nbsp;        if(IsAMovePhase()) {</b>
+<i>36</i>&nbsp;
+<i>37</i>&nbsp;            // Apollo adds cells to the current CandidateCells list, including the ones that are occupied
+<i>38</i>&nbsp;            // by other workers
+<i>39</i>&nbsp;
+<b class="fc"><i>40</i>&nbsp;            Cell startingCell = this.getWorker().getWorkerPosition();</b>
+<i>41</i>&nbsp;
+<b class="fc"><i>42</i>&nbsp;            for (Cell candidateCell : this.getGameBoard().getNeighbouringCells(startingCell)) {</b>
+<i>43</i>&nbsp;
+<b class="fc"><i>44</i>&nbsp;                    if(this.getCandidateCells().indexOf(candidateCell) == -1) {                 //for each candidate cell in neighbouringCells not already within the list , if</b>
+<b class="fc"><i>45</i>&nbsp;                        if ((candidateCell.getLevel() &lt;= startingCell.getLevel() + 1) &amp;&amp;        //the lv i want to get to is higher less than one</b>
+<b class="fc"><i>46</i>&nbsp;                                (!candidateCell.checkDome())&amp;&amp;</b>
+<b class="fc"><i>47</i>&nbsp;                                candidateCell.isOccupiedByOpponentWorker(this.getPlayingPlayer())) {                                 //it is not occupied by a dome</b>
+<b class="fc"><i>48</i>&nbsp;                            System.out.println(&quot;APOLLO: evalCandidateCells inserting cell &quot; + candidateCell.getCellIndex());</b>
+<b class="fc"><i>49</i>&nbsp;                            this.getCandidateCells().add(candidateCell);                        //then add the cell to candidateCells</b>
+<i>50</i>&nbsp;                        } else {
+<b class="fc"><i>51</i>&nbsp;                            System.out.println(&quot;APOLLO: evalCandidateCells discarding cell &quot; + candidateCell.getCellIndex() + &quot; (l=&quot; +</b>
+<b class="fc"><i>52</i>&nbsp;                                    candidateCell.getLevel() + &quot;, w=&quot; + candidateCell.isOccupiedByWorker() + &quot;, d=&quot; + candidateCell.checkDome());</b>
+<i>53</i>&nbsp;                        }
+<i>54</i>&nbsp;
+<i>55</i>&nbsp;
+<i>56</i>&nbsp;                }
+<b class="fc"><i>57</i>&nbsp;            }</b>
+<i>58</i>&nbsp;        }
+<b class="fc"><i>59</i>&nbsp;    }</b>
+<i>60</i>&nbsp;
+<i>61</i>&nbsp;    /**
+<i>62</i>&nbsp;     * This method is called in a decorated movePhase in order to update the board according to the decorator
+<i>63</i>&nbsp;     * @param chosenCell the cell it is stepping onto
+<i>64</i>&nbsp;     */
+<i>65</i>&nbsp;
+<i>66</i>&nbsp;    @Override
+<i>67</i>&nbsp;    public void performActionOnCell(Cell chosenCell) {
+<i>68</i>&nbsp;
+<i>69</i>&nbsp;        // apollo can swap workers within move phase
+<b class="fc"><i>70</i>&nbsp;        if(IsAMovePhase()) {</b>
+<i>71</i>&nbsp;
+<b class="fc"><i>72</i>&nbsp;            if (chosenCell.isOccupiedByOpponentWorker(getWorker().getWorkerOwner())) {</b>
+<i>73</i>&nbsp;
+<b class="fc"><i>74</i>&nbsp;                Cell oldCell = getWorker().getWorkerPosition();</b>
+<i>75</i>&nbsp;
+<b class="fc"><i>76</i>&nbsp;                chosenCell.getOccupyingWorker().changePosition(oldCell);</b>
+<i>77</i>&nbsp;            }
+<i>78</i>&nbsp;
+<i>79</i>&nbsp;        }
+<i>80</i>&nbsp;
+<b class="fc"><i>81</i>&nbsp;        super.performActionOnCell(chosenCell);</b>
+<b class="fc"><i>82</i>&nbsp;    }</b>
+<i>83</i>&nbsp;
+<i>84</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-05-01 12:21</div>
+</div>
+</body>
+</html>

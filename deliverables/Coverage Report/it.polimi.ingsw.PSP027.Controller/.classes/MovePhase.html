@@ -1,0 +1,138 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: MovePhase</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.PSP027.Controller</a> ]
+</div>
+
+<h1>Coverage Summary for Class: MovePhase (it.polimi.ingsw.PSP027.Controller)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">MovePhase</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (3/ 3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (17/ 17)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.PSP027.Controller;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.PSP027.Model.Game.Cell;
+<i>4</i>&nbsp;
+<i>5</i>&nbsp;/**
+<i>6</i>&nbsp; * @author danielecarta
+<i>7</i>&nbsp; * @author Lorenzo Guarino
+<i>8</i>&nbsp; * @author Elisa Maistri
+<i>9</i>&nbsp; */
+<i>10</i>&nbsp;
+<i>11</i>&nbsp;public class MovePhase extends Phase {
+<i>12</i>&nbsp;
+<i>13</i>&nbsp;    /**
+<i>14</i>&nbsp;     * Constructor: when creating the move phase it sets the phase&#39;s type as phase type &quot;Move&quot;
+<i>15</i>&nbsp;     */
+<i>16</i>&nbsp;
+<b class="fc"><i>17</i>&nbsp;    public MovePhase() {</b>
+<b class="fc"><i>18</i>&nbsp;        SetType(PhaseType.Move);</b>
+<b class="fc"><i>19</i>&nbsp;    }</b>
+<i>20</i>&nbsp;
+<i>21</i>&nbsp;    /**
+<i>22</i>&nbsp;     * Standard candidate cells list for any movePhase of any player and worker
+<i>23</i>&nbsp;     */
+<i>24</i>&nbsp;
+<i>25</i>&nbsp;    @Override
+<i>26</i>&nbsp;    public void evalCandidateCells(){
+<b class="fc"><i>27</i>&nbsp;        Cell startingCell = this.getWorker().getWorkerPosition();</b>
+<i>28</i>&nbsp;
+<b class="fc"><i>29</i>&nbsp;        for(Cell candidateCell : this.getGameBoard().getNeighbouringCells(startingCell)){   //for each candidate cell in neighbouringCells if</b>
+<b class="fc"><i>30</i>&nbsp;            if(     (candidateCell.getLevel() &lt;= startingCell.getLevel() + 1) &amp;&amp;                //the lv i want to get to is higher less than one</b>
+<b class="fc"><i>31</i>&nbsp;                    (!candidateCell.isOccupiedByWorker()) &amp;&amp;                                    //it is not occupied by a worker</b>
+<b class="fc"><i>32</i>&nbsp;                    (!candidateCell.checkDome())) {                                             //it is not occupied by a dome</b>
+<b class="fc"><i>33</i>&nbsp;                System.out.println(&quot;MOVE: evalCandidateCells inserting cell &quot; + candidateCell.getCellIndex());</b>
+<b class="fc"><i>34</i>&nbsp;                this.getCandidateCells().add(candidateCell);                                    //then add the cell to candidateCells</b>
+<i>35</i>&nbsp;                }
+<i>36</i>&nbsp;            else
+<i>37</i>&nbsp;            {
+<b class="fc"><i>38</i>&nbsp;                System.out.println(&quot;MOVE: evalCandidateCells discarding cell &quot; + candidateCell.getCellIndex() + &quot; (l=&quot; +</b>
+<b class="fc"><i>39</i>&nbsp;                        candidateCell.getLevel() + &quot;, w=&quot; + candidateCell.isOccupiedByWorker() + &quot;, d=&quot; + candidateCell.checkDome());</b>
+<i>40</i>&nbsp;            }
+<b class="fc"><i>41</i>&nbsp;        }</b>
+<b class="fc"><i>42</i>&nbsp;    }</b>
+<i>43</i>&nbsp;
+<i>44</i>&nbsp;    /**
+<i>45</i>&nbsp;     * Standard update for a standard movePhase action
+<i>46</i>&nbsp;     * @param chosenCell the cell the worker is going to step onto
+<i>47</i>&nbsp;     */
+<i>48</i>&nbsp;
+<i>49</i>&nbsp;    @Override
+<i>50</i>&nbsp;    public void performActionOnCell(Cell chosenCell){
+<b class="fc"><i>51</i>&nbsp;        this.getWorker().changePosition(chosenCell);</b>
+<b class="fc"><i>52</i>&nbsp;        this.getWorker().IncrementMoveCounter();</b>
+<i>53</i>&nbsp;
+<b class="fc"><i>54</i>&nbsp;    }</b>
+<i>55</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-05-01 12:21</div>
+</div>
+</body>
+</html>

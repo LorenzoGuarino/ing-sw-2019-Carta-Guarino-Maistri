@@ -1,0 +1,430 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: GodCard</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.PSP027.Model.Game</a> ]
+</div>
+
+<h1>Coverage Summary for Class: GodCard (it.polimi.ingsw.PSP027.Model.Game)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">GodCard</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (10/ 10)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    46.2%
+  </span>
+  <span class="absValue">
+    (24/ 52)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">GodCard$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">GodCard$GodsType</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/ 2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (15/ 15)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">GodCard$ToWhomIsApplied</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/ 2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (3/ 3)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">GodCard$WhereToApply</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/ 2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (7/ 7)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (17/ 17)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    64.1%
+  </span>
+  <span class="absValue">
+    (50/ 78)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.PSP027.Model.Game;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;/**
+<i>4</i>&nbsp; * @author Elisa Maistri
+<i>5</i>&nbsp; * @author Lorenzo Guarino
+<i>6</i>&nbsp; * */
+<i>7</i>&nbsp;
+<i>8</i>&nbsp;public class GodCard {
+<i>9</i>&nbsp;
+<b class="fc"><i>10</i>&nbsp;    public enum GodsType {</b>
+<b class="fc"><i>11</i>&nbsp;        Apollo,</b>
+<b class="fc"><i>12</i>&nbsp;        Artemis,</b>
+<b class="fc"><i>13</i>&nbsp;        Athena,</b>
+<b class="fc"><i>14</i>&nbsp;        Atlas,</b>
+<b class="fc"><i>15</i>&nbsp;        Demeter,</b>
+<b class="fc"><i>16</i>&nbsp;        Hephaestus,</b>
+<b class="fc"><i>17</i>&nbsp;        Minotaur,</b>
+<b class="fc"><i>18</i>&nbsp;        Pan,</b>
+<b class="fc"><i>19</i>&nbsp;        Prometheus,</b>
+<i>20</i>&nbsp;
+<i>21</i>&nbsp;        // choose 5 among the next gods
+<b class="fc"><i>22</i>&nbsp;        Zeus,</b>
+<b class="fc"><i>23</i>&nbsp;        Ares,</b>
+<b class="fc"><i>24</i>&nbsp;        Hestia,</b>
+<b class="fc"><i>25</i>&nbsp;        Poseidon,</b>
+<b class="fc"><i>26</i>&nbsp;        Medusa</b>
+<i>27</i>&nbsp;    }
+<i>28</i>&nbsp;
+<b class="fc"><i>29</i>&nbsp;    public enum WhereToApply {</b>
+<b class="fc"><i>30</i>&nbsp;        Move,</b>
+<b class="fc"><i>31</i>&nbsp;        ExtraMove,</b>
+<b class="fc"><i>32</i>&nbsp;        Build,</b>
+<b class="fc"><i>33</i>&nbsp;        ExtraBuild,</b>
+<b class="fc"><i>34</i>&nbsp;        EndTurn,</b>
+<b class="fc"><i>35</i>&nbsp;        WinCondition</b>
+<i>36</i>&nbsp;    }
+<i>37</i>&nbsp;
+<b class="fc"><i>38</i>&nbsp;    public enum ToWhomIsApplied {</b>
+<b class="fc"><i>39</i>&nbsp;        Owner,</b>
+<b class="fc"><i>40</i>&nbsp;        Opponent</b>
+<i>41</i>&nbsp;    }
+<i>42</i>&nbsp;
+<i>43</i>&nbsp;    private GodsType godType;
+<i>44</i>&nbsp;    private WhereToApply whereToApply;
+<i>45</i>&nbsp;    private ToWhomIsApplied toWhomIsApplied;
+<i>46</i>&nbsp;
+<i>47</i>&nbsp;    public static final String APOLLO_D     = &quot;Your Move: Your Worker may move into an opponent Worker&#39;s space by forcing their Worker to the space yours just vacated.&quot;;
+<i>48</i>&nbsp;    public static final String ARTEMIS_D    = &quot;Your Move: Your Worker may move one additional time, but not back to its initial space.&quot;;
+<i>49</i>&nbsp;    public static final String ATHENA_D     = &quot;Opponent&#39;s Turn: If one of your Workers moved up on your last turn, opponent Workers cannot move up this turn.&quot;;
+<i>50</i>&nbsp;    public static final String ATLAS_D      = &quot;Your Build: Your Worker may build a dome at any level.&quot;;
+<i>51</i>&nbsp;    public static final String DEMETER_D    = &quot;Your Build: Your Worker may build one additional time, but not on the same space.&quot;;
+<i>52</i>&nbsp;    public static final String HEPHAESTUS_D = &quot;Your Build: Your Worker may build one additional block (not dome) on top of your first block.&quot;;
+<i>53</i>&nbsp;    public static final String MINOTAUR_D   = &quot;Your Move: Your Worker may move into an opponent Worker&#39;s space, if their Worker can be forced one space straight backwards to an unoccupied space at any level.&quot;;
+<i>54</i>&nbsp;    public static final String PAN_D        = &quot;Win Condition: You also win if your Worker moves down two or more levels.&quot;;
+<i>55</i>&nbsp;    public static final String PROMETHEUS_D = &quot;Your Turn: If your Worker does not move up, it may build both before and after moving.&quot;;
+<i>56</i>&nbsp;    public static final String ZEUS_D       = &quot;Your Build: Your Worker may build under itself in its current space, forcing it up one level. You do not win by forcing yourself up to the third level.&quot;;
+<i>57</i>&nbsp;    public static final String HESTIA_D     = &quot;Your Build: Your Worker may build one additional time. The additional build cannot be on a perimeter space&quot;;
+<i>58</i>&nbsp;    public static final String MEDUSA_D     = &quot;End of Your Turn: If any of your opponent&#39;s Workers occupy lower neighbouring spaces, replace them all with blocks and remove them from the game&quot;;
+<i>59</i>&nbsp;    public static final String ARES_D       = &quot;End Of Your Turn: You may remove an unoccupied block (not dome) neighbouring your unmoved Worker.&quot;;
+<i>60</i>&nbsp;    public static final String POSEIDON_D   = &quot;End Of Your Turn: If your unmoved Worker is on the ground level, it may build up to three times in neighbouring spaces.&quot;;
+<i>61</i>&nbsp;
+<i>62</i>&nbsp;    public static final String APOLLO      = &quot;Apollo&quot;;
+<i>63</i>&nbsp;    public static final String ARTEMIS     = &quot;Artemis&quot;;
+<i>64</i>&nbsp;    public static final String ATHENA      = &quot;Athena&quot;;
+<i>65</i>&nbsp;    public static final String ATLAS       = &quot;Atlas&quot;;
+<i>66</i>&nbsp;    public static final String DEMETER     = &quot;Demeter&quot;;
+<i>67</i>&nbsp;    public static final String HEPHAESTUS  = &quot;Hephaestus&quot;;
+<i>68</i>&nbsp;    public static final String MINOTAUR    = &quot;Minotaur&quot;;
+<i>69</i>&nbsp;    public static final String PAN         = &quot;Pan&quot;;
+<i>70</i>&nbsp;    public static final String PROMETHEUS  = &quot;Prometheus&quot;;
+<i>71</i>&nbsp;    public static final String ZEUS        = &quot;Zeus&quot;;
+<i>72</i>&nbsp;    public static final String HESTIA      = &quot;Hestia&quot;;
+<i>73</i>&nbsp;    public static final String MEDUSA      = &quot;Medusa&quot;;
+<i>74</i>&nbsp;    public static final String ARES        = &quot;Ares&quot;;
+<i>75</i>&nbsp;    public static final String POSEIDON    = &quot;Poseidon&quot;;
+<i>76</i>&nbsp;
+<i>77</i>&nbsp;    /**
+<i>78</i>&nbsp;     * Constructor: create a god with its name, description and id
+<i>79</i>&nbsp;     * @param godType name of the god of the card
+<i>80</i>&nbsp;     */
+<i>81</i>&nbsp;
+<b class="fc"><i>82</i>&nbsp;    public GodCard(GodsType godType, WhereToApply whereToApply, ToWhomIsApplied toWhomIsApplied) {</b>
+<b class="fc"><i>83</i>&nbsp;        this.godType = godType;</b>
+<b class="fc"><i>84</i>&nbsp;        this.whereToApply = whereToApply;</b>
+<b class="fc"><i>85</i>&nbsp;        this.toWhomIsApplied = toWhomIsApplied;</b>
+<b class="fc"><i>86</i>&nbsp;    }</b>
+<i>87</i>&nbsp;
+<i>88</i>&nbsp;    /**
+<i>89</i>&nbsp;     * Method to get the GodType of the god card
+<i>90</i>&nbsp;     * @return the god type form an enum
+<i>91</i>&nbsp;     */
+<i>92</i>&nbsp;
+<i>93</i>&nbsp;    public GodsType getGodType() {
+<b class="fc"><i>94</i>&nbsp;        return godType;</b>
+<i>95</i>&nbsp;    }
+<i>96</i>&nbsp;
+<i>97</i>&nbsp;    /**
+<i>98</i>&nbsp;     * Method to get the god&#39;s name
+<i>99</i>&nbsp;     * @return the name of the GodCard
+<i>100</i>&nbsp;     * */
+<i>101</i>&nbsp;
+<i>102</i>&nbsp;    public String getGodName() {
+<i>103</i>&nbsp;
+<b class="fc"><i>104</i>&nbsp;        switch(godType)</b>
+<i>105</i>&nbsp;        {
+<i>106</i>&nbsp;            case Apollo:
+<b class="fc"><i>107</i>&nbsp;                return APOLLO;</b>
+<i>108</i>&nbsp;            case Artemis:
+<b class="nc"><i>109</i>&nbsp;                return ARTEMIS;</b>
+<i>110</i>&nbsp;            case Athena:
+<b class="nc"><i>111</i>&nbsp;                return ATHENA;</b>
+<i>112</i>&nbsp;            case Atlas:
+<b class="nc"><i>113</i>&nbsp;                return ATLAS;</b>
+<i>114</i>&nbsp;            case Demeter:
+<b class="nc"><i>115</i>&nbsp;                return DEMETER;</b>
+<i>116</i>&nbsp;            case Hephaestus:
+<b class="nc"><i>117</i>&nbsp;                return HEPHAESTUS;</b>
+<i>118</i>&nbsp;            case Minotaur:
+<b class="nc"><i>119</i>&nbsp;                return MINOTAUR;</b>
+<i>120</i>&nbsp;            case Pan:
+<b class="nc"><i>121</i>&nbsp;                return PAN;</b>
+<i>122</i>&nbsp;            case Prometheus:
+<b class="nc"><i>123</i>&nbsp;                return PROMETHEUS;</b>
+<i>124</i>&nbsp;            case Zeus:
+<b class="nc"><i>125</i>&nbsp;                return ZEUS;</b>
+<i>126</i>&nbsp;            case Ares:
+<b class="nc"><i>127</i>&nbsp;                return ARES;</b>
+<i>128</i>&nbsp;            case Poseidon:
+<b class="nc"><i>129</i>&nbsp;                return POSEIDON;</b>
+<i>130</i>&nbsp;            case Hestia:
+<b class="nc"><i>131</i>&nbsp;                return HESTIA;</b>
+<i>132</i>&nbsp;            case Medusa:
+<b class="nc"><i>133</i>&nbsp;                return MEDUSA;</b>
+<i>134</i>&nbsp;            default:
+<b class="nc"><i>135</i>&nbsp;                return &quot;&quot;;</b>
+<i>136</i>&nbsp;        }
+<i>137</i>&nbsp;    }
+<i>138</i>&nbsp;
+<i>139</i>&nbsp;    /**
+<i>140</i>&nbsp;     * Method to get the god&#39;s description
+<i>141</i>&nbsp;     * @return the description of the GodCard
+<i>142</i>&nbsp;     * */
+<i>143</i>&nbsp;
+<i>144</i>&nbsp;    public String getDescription() {
+<i>145</i>&nbsp;
+<b class="fc"><i>146</i>&nbsp;        switch(godType)</b>
+<i>147</i>&nbsp;        {
+<i>148</i>&nbsp;            case Apollo:
+<b class="fc"><i>149</i>&nbsp;                return APOLLO_D;</b>
+<i>150</i>&nbsp;            case Artemis:
+<b class="nc"><i>151</i>&nbsp;                return ARTEMIS_D;</b>
+<i>152</i>&nbsp;            case Athena:
+<b class="nc"><i>153</i>&nbsp;                return ATHENA_D;</b>
+<i>154</i>&nbsp;            case Atlas:
+<b class="nc"><i>155</i>&nbsp;                return ATLAS_D;</b>
+<i>156</i>&nbsp;            case Demeter:
+<b class="nc"><i>157</i>&nbsp;                return DEMETER_D;</b>
+<i>158</i>&nbsp;            case Hephaestus:
+<b class="nc"><i>159</i>&nbsp;                return HEPHAESTUS_D;</b>
+<i>160</i>&nbsp;            case Minotaur:
+<b class="nc"><i>161</i>&nbsp;                return MINOTAUR_D;</b>
+<i>162</i>&nbsp;            case Pan:
+<b class="nc"><i>163</i>&nbsp;                return PAN_D;</b>
+<i>164</i>&nbsp;            case Prometheus:
+<b class="nc"><i>165</i>&nbsp;                return PROMETHEUS_D;</b>
+<i>166</i>&nbsp;            case Zeus:
+<b class="nc"><i>167</i>&nbsp;                return ZEUS_D;</b>
+<i>168</i>&nbsp;            case Poseidon:
+<b class="nc"><i>169</i>&nbsp;                return POSEIDON_D;</b>
+<i>170</i>&nbsp;            case Ares:
+<b class="nc"><i>171</i>&nbsp;                return ARES_D;</b>
+<i>172</i>&nbsp;            case Hestia:
+<b class="nc"><i>173</i>&nbsp;                return HESTIA_D;</b>
+<i>174</i>&nbsp;            case Medusa:
+<b class="nc"><i>175</i>&nbsp;                return MEDUSA_D;</b>
+<i>176</i>&nbsp;            default:
+<b class="nc"><i>177</i>&nbsp;                return &quot;&quot;;</b>
+<i>178</i>&nbsp;        }
+<i>179</i>&nbsp;    }
+<i>180</i>&nbsp;
+<i>181</i>&nbsp;    /**
+<i>182</i>&nbsp;     * Method to know if the God card must be applied on card owner or opponent
+<i>183</i>&nbsp;     * @return to whom it must be applied
+<i>184</i>&nbsp;     */
+<i>185</i>&nbsp;
+<i>186</i>&nbsp;    public ToWhomIsApplied getToWhomIsApplied() {
+<b class="fc"><i>187</i>&nbsp;        return toWhomIsApplied;</b>
+<i>188</i>&nbsp;    }
+<i>189</i>&nbsp;
+<i>190</i>&nbsp;    /**
+<i>191</i>&nbsp;     * Method to query when the god card must be applied
+<i>192</i>&nbsp;     * @return where it must be applied or asked form an enum
+<i>193</i>&nbsp;     */
+<i>194</i>&nbsp;
+<i>195</i>&nbsp;    public WhereToApply getWhereToApply() {
+<b class="fc"><i>196</i>&nbsp;        return whereToApply;</b>
+<i>197</i>&nbsp;    }
+<i>198</i>&nbsp;
+<i>199</i>&nbsp;    /**
+<i>200</i>&nbsp;     * Method to call in order to know if the god card allows an extra move
+<i>201</i>&nbsp;     * @return true if it allows it, otherwise false
+<i>202</i>&nbsp;     */
+<i>203</i>&nbsp;
+<i>204</i>&nbsp;    public boolean AllowExtraMove() {
+<i>205</i>&nbsp;
+<b class="fc"><i>206</i>&nbsp;        switch(godType)</b>
+<i>207</i>&nbsp;        {
+<i>208</i>&nbsp;            case Artemis:
+<b class="fc"><i>209</i>&nbsp;                return true;</b>
+<i>210</i>&nbsp;            default:
+<b class="fc"><i>211</i>&nbsp;                return false;</b>
+<i>212</i>&nbsp;        }
+<i>213</i>&nbsp;    }
+<i>214</i>&nbsp;
+<i>215</i>&nbsp;    /**
+<i>216</i>&nbsp;     * Method to call in order to know if a godcard allows an extra build before the move.
+<i>217</i>&nbsp;     * @return true if it allows it, otherwise false
+<i>218</i>&nbsp;     */
+<i>219</i>&nbsp;
+<i>220</i>&nbsp;    public boolean AllowExtraBuildBeforeMove() {
+<i>221</i>&nbsp;
+<b class="fc"><i>222</i>&nbsp;        switch(godType)</b>
+<i>223</i>&nbsp;        {
+<i>224</i>&nbsp;            case Prometheus:
+<b class="fc"><i>225</i>&nbsp;                return true;</b>
+<i>226</i>&nbsp;            default:
+<b class="fc"><i>227</i>&nbsp;                return false;</b>
+<i>228</i>&nbsp;        }
+<i>229</i>&nbsp;    }
+<i>230</i>&nbsp;
+<i>231</i>&nbsp;    /**
+<i>232</i>&nbsp;     * Method to call in order to know if a godcard allows an extra build after the move
+<i>233</i>&nbsp;     * @return true if ti allows it, otherwise false
+<i>234</i>&nbsp;     */
+<i>235</i>&nbsp;
+<i>236</i>&nbsp;    public boolean AllowExtraBuildAfterMove() {
+<i>237</i>&nbsp;
+<b class="fc"><i>238</i>&nbsp;        switch(godType)</b>
+<i>239</i>&nbsp;        {
+<i>240</i>&nbsp;            case Demeter:
+<i>241</i>&nbsp;            case Hephaestus:
+<i>242</i>&nbsp;            case Hestia:
+<b class="fc"><i>243</i>&nbsp;                return true;</b>
+<i>244</i>&nbsp;            default:
+<b class="fc"><i>245</i>&nbsp;                return false;</b>
+<i>246</i>&nbsp;        }
+<i>247</i>&nbsp;    }
+<i>248</i>&nbsp;
+<i>249</i>&nbsp;    /**
+<i>250</i>&nbsp;     * Method to call in order to know if a godcard allows an extra end
+<i>251</i>&nbsp;     * @return true if ti allows it, otherwise false
+<i>252</i>&nbsp;     */
+<i>253</i>&nbsp;
+<i>254</i>&nbsp;    public boolean AllowExtraEnd() {
+<i>255</i>&nbsp;
+<b class="fc"><i>256</i>&nbsp;        switch(godType)</b>
+<i>257</i>&nbsp;        {
+<i>258</i>&nbsp;            case Poseidon:
+<b class="fc"><i>259</i>&nbsp;                return true;</b>
+<i>260</i>&nbsp;            default:
+<b class="fc"><i>261</i>&nbsp;                return false;</b>
+<i>262</i>&nbsp;        }
+<i>263</i>&nbsp;    }
+<i>264</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-05-01 12:21</div>
+</div>
+</body>
+</html>

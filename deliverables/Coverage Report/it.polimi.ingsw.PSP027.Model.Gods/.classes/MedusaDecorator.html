@@ -1,0 +1,156 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: MedusaDecorator</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.PSP027.Model.Gods</a> ]
+</div>
+
+<h1>Coverage Summary for Class: MedusaDecorator (it.polimi.ingsw.PSP027.Model.Gods)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">MedusaDecorator</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (3/ 3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    97.1%
+  </span>
+  <span class="absValue">
+    (34/ 35)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.PSP027.Model.Gods;
+<i>2</i>&nbsp;import it.polimi.ingsw.PSP027.Controller.Phase;
+<i>3</i>&nbsp;import it.polimi.ingsw.PSP027.Model.Game.Cell;
+<i>4</i>&nbsp;import it.polimi.ingsw.PSP027.Model.Game.Player;
+<i>5</i>&nbsp;import it.polimi.ingsw.PSP027.Model.Game.Worker;
+<i>6</i>&nbsp;
+<i>7</i>&nbsp;/**
+<i>8</i>&nbsp; * @author danielecarta
+<i>9</i>&nbsp; */
+<i>10</i>&nbsp;
+<i>11</i>&nbsp;public class MedusaDecorator extends GodPowerDecorator {
+<i>12</i>&nbsp;
+<i>13</i>&nbsp;    public MedusaDecorator(Phase decoratedPhase, boolean bActAsOpponentGod) {
+<i>14</i>&nbsp;
+<b class="fc"><i>15</i>&nbsp;        super(decoratedPhase, bActAsOpponentGod);</b>
+<b class="fc"><i>16</i>&nbsp;    }</b>
+<i>17</i>&nbsp;
+<i>18</i>&nbsp;    @Override
+<i>19</i>&nbsp;    public void evalCandidateCells() {
+<i>20</i>&nbsp;
+<i>21</i>&nbsp;        // call nested phase evalCandidateCells
+<i>22</i>&nbsp;
+<b class="fc"><i>23</i>&nbsp;        super.evalCandidateCells();</b>
+<i>24</i>&nbsp;
+<i>25</i>&nbsp;        //if is an endPhase the evaluation of the candidate cells takes place for each of the medusa&#39;s workers
+<i>26</i>&nbsp;        //and then it automatically performs (if possible) the consequent actions
+<i>27</i>&nbsp;
+<b class="fc"><i>28</i>&nbsp;        if (IsAnEndPhase()) {</b>
+<b class="fc"><i>29</i>&nbsp;            Worker worker1=null;</b>
+<b class="fc"><i>30</i>&nbsp;            Worker worker2=null;</b>
+<b class="fc"><i>31</i>&nbsp;            if(this.getPlayingPlayer().getPlayerWorkers().get(0)!=null) {</b>
+<b class="fc"><i>32</i>&nbsp;                worker1 = this.getPlayingPlayer().getPlayerWorkers().get(0);</b>
+<i>33</i>&nbsp;            }
+<b class="fc"><i>34</i>&nbsp;            if(this.getPlayingPlayer().getPlayerWorkers().get(1)!=null) {</b>
+<b class="fc"><i>35</i>&nbsp;                worker2 = this.getPlayingPlayer().getPlayerWorkers().get(1);</b>
+<i>36</i>&nbsp;            }
+<b class="fc"><i>37</i>&nbsp;            getCandidateCells().clear();</b>
+<i>38</i>&nbsp;
+<b class="fc"><i>39</i>&nbsp;            if (worker1 != null) {</b>
+<b class="fc"><i>40</i>&nbsp;                Cell startingCell1=worker1.getWorkerPosition();</b>
+<b class="fc"><i>41</i>&nbsp;                for (Cell candidateCell : getGameBoard().getNeighbouringCells(startingCell1)) {</b>
+<b class="fc"><i>42</i>&nbsp;                    if (candidateCell.getLevel()==startingCell1.getLevel()-1&amp;&amp;candidateCell.isOccupiedByOpponentWorker(this.getPlayingPlayer()))</b>
+<b class="fc"><i>43</i>&nbsp;                        getCandidateCells().add(candidateCell);</b>
+<b class="fc"><i>44</i>&nbsp;                }</b>
+<i>45</i>&nbsp;            }
+<b class="fc"><i>46</i>&nbsp;            if (worker2 != null) {</b>
+<b class="fc"><i>47</i>&nbsp;                Cell startingCell1=worker2.getWorkerPosition();</b>
+<b class="fc"><i>48</i>&nbsp;                for (Cell candidateCell : getGameBoard().getNeighbouringCells(startingCell1)) {</b>
+<b class="fc"><i>49</i>&nbsp;                    if (candidateCell.getLevel()==startingCell1.getLevel()-1&amp;&amp;candidateCell.isOccupiedByOpponentWorker(this.getPlayingPlayer()))</b>
+<b class="fc"><i>50</i>&nbsp;                        getCandidateCells().add(candidateCell);</b>
+<b class="fc"><i>51</i>&nbsp;                }</b>
+<i>52</i>&nbsp;            }
+<b class="fc"><i>53</i>&nbsp;            for(Cell candidateCell:this.getDecoratedPhase().getCandidateCells()){</b>
+<b class="fc"><i>54</i>&nbsp;                Player oppPlayer = candidateCell.getOccupyingWorker().getWorkerOwner();</b>
+<b class="fc"><i>55</i>&nbsp;                candidateCell.getOccupyingWorker().removeWorker();</b>
+<b class="fc"><i>56</i>&nbsp;                candidateCell.addLevel();</b>
+<b class="fc"><i>57</i>&nbsp;                if(oppPlayer.getPlayerWorkers().size()==0){</b>
+<b class="fc"><i>58</i>&nbsp;                    oppPlayer.setHasLost(true);</b>
+<i>59</i>&nbsp;                }
+<b class="fc"><i>60</i>&nbsp;            }</b>
+<i>61</i>&nbsp;        }
+<b class="fc"><i>62</i>&nbsp;    }</b>
+<i>63</i>&nbsp;
+<i>64</i>&nbsp;    @Override
+<i>65</i>&nbsp;    public boolean startPhase() {
+<b class="fc"><i>66</i>&nbsp;        if(!IsAnEndPhase()) {</b>
+<b class="nc"><i>67</i>&nbsp;            return super.startPhase();</b>
+<i>68</i>&nbsp;        }
+<i>69</i>&nbsp;        else
+<b class="fc"><i>70</i>&nbsp;            evalCandidateCells();</b>
+<b class="fc"><i>71</i>&nbsp;            return false;</b>
+<i>72</i>&nbsp;    }
+<i>73</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-05-01 12:21</div>
+</div>
+</body>
+</html>
