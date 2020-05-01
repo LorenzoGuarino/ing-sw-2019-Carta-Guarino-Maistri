@@ -37,7 +37,7 @@ public class ZeusDecorator extends GodPowerDecorator {
     @Override
     public void performActionOnCell(Cell chosenCell) {
 
-        if(IsABuildPhase()) { //Zeus decorates only build
+        if(IsABuildPhase()) {
             if (chosenCell.getLevel() < 3) {
                 chosenCell.addLevel(true);
             } else {
