@@ -41,7 +41,7 @@ public class PrometheusDecorator extends GodPowerDecorator {
 
             for(int i =0; i<getCandidateCells().size(); i++){
                 Cell candidateCell = getCandidateCells().get(i);
-                if(candidateCell.getLevel() != startingCell.getLevel()){
+                if(candidateCell.getLevel() > startingCell.getLevel()){//prometheus can't move up
                     System.out.println("PROMETHEUS: evalCandidateCells discarding cell " + candidateCell.getCellIndex());
                     this.getCandidateCells().remove(i);
                 }
