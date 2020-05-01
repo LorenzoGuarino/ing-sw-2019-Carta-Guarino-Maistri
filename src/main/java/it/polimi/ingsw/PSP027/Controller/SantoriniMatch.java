@@ -140,9 +140,29 @@ public class SantoriniMatch implements Runnable{
                                     turnState = TurnState.CreateTurn;
                                 }
                                 else {
-                                    turnState = TurnState.CreateTurn;
-                                    rotatePlayers();
-                                    sendUpdatedBoard(players.get(0).getNickname());
+
+                                    boolean bDeleted = false;
+
+                                    do{
+                                        bDeleted = false;
+                                        for(Player player : players) {
+                                            if (player.HasLost()) {
+                                                removePlayer(player);
+                                                bDeleted=true;
+                                                break;
+                                            }
+                                        }
+                                    } while(bDeleted);
+
+                                    if(players.size() == 1) {
+                                        players.get(0).setHasWon(true);
+                                        endGame(players.get(0));
+                                    }
+                                    else {
+                                        turnState = TurnState.CreateTurn;
+                                        rotatePlayers();
+                                        sendUpdatedBoard(players.get(0).getNickname());
+                                    }
                                 }
                             }
                             else
