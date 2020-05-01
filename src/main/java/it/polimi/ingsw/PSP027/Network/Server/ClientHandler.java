@@ -166,6 +166,9 @@ public class ClientHandler implements Runnable
                                 case clt_Build:
                                     owner.onBuild(cmdData);
                                     break;
+                                case clt_BuildForAtlas:
+                                    owner.onBuildForAtlas(cmdData);
+                                    break;
                                 case clt_BuildPassed:
                                     owner.onBuildPassed();
                                     break;
@@ -680,6 +683,36 @@ public class ClientHandler implements Runnable
             lobby.BuildOnGivenCell(this, chosenCell);
         }
     }
+
+    /**
+     * Method that process the candidate cell written in the command in xml format received from the client.
+     * It triggers a method in the lobby that sets the chosen cell in the turn that is being played in the correspondent match
+     * @param data xml of the chosen cell received from the client
+     */
+    private void onBuildForAtlas(Node data) {
+
+        System.out.println("Received onBuild from " + nickname);
+        String chosenCell = "";
+        String build_BorD = "";
+        Node node;
+
+        if (data.hasChildNodes()) {
+            NodeList nodes = data.getChildNodes();
+
+            for (int i = 0; i < nodes.getLength(); i++) {
+                node = nodes.item(i);
+
+                if (node.getNodeName().equals("cell")) {
+                    chosenCell = node.getTextContent();
+                }
+                if (node.getNodeName().equals("blockordome")) {
+                    build_BorD = node.getTextContent();
+                }
+            }
+            lobby.BuildOnGivenCellForAtlas(this, chosenCell, build_BorD);
+        }
+    }
+
     /**
      * Method that process the candidate cell written in the command in xml format received from the client.
      * It triggers a method in the lobby that sets the chosen cell in the turn that is being played in the correspondent match

@@ -410,6 +410,27 @@ public class Client implements Runnable, ServerObserver
 
         return false;
     }
+
+    /**
+     * Method that sends a command to the server with the data required
+     * @param chosenCell Cell that is chosen to build on
+     * @return true if operation successful, false otherwise
+     */
+    public synchronized boolean CandidateBuildForAtlas(String chosenCell, String build_BorD) {
+        if(connStatus == ConnectionStatus.KeepConnected) {
+
+            if (regStatus == RegistrationStatus.Registered) {
+
+                String cmd = "<cmd><id>" + ProtocolTypes.protocolCommand.clt_BuildForAtlas.toString() + "</id><data><cell>" + chosenCell + "</cell><blockordome>" + build_BorD + "</blockordome></data></cmd>";
+
+                serverHandler.SendCommand(cmd);
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     /**
      * Method that sends a command to the server with the data required
      * @return true if operation successful, false otherwise

@@ -74,6 +74,7 @@ public class Turn {
             if(getPlayingPlayer().getPlayerGod().AllowExtraBuildBeforeMove())
             {
                 // ask player if wanna build before moving (this will decorate the move subsequent !!!)
+                CreateBuildPhase(false);
 
                 // and leave function.
                 return;
@@ -137,6 +138,10 @@ public class Turn {
         if(playingPlayer.getPlayerGod().AllowExtraBuildAfterMove() && this.chosenWorker.getBuildCounter() == 1) {
             CreateBuildPhase(false);
         }
+        else if(getPlayingPlayer().getPlayerGod().AllowExtraBuildBeforeMove() && this.chosenWorker.getMoveCounter() == 0) {
+            //Prometheus case
+            CreateMovePhase(true);
+        }
         else {
             CreateEndPhase(false);
         }
@@ -145,10 +150,39 @@ public class Turn {
     }
 
     /**
+     * Method that updates the board with the new build done
+     * @param chosenCellIndex cell where the worker is building
+     */
+    public void doBuildForAtlas(int chosenCellIndex, String build_BordD) {
+
+        Cell cell = santoriniMatch.getGameBoard().getCell(chosenCellIndex);
+        if(build_BordD.equals("D")) {
+            this.chosenWorker.setBuildDomeOnNextBuild(true);
+        }
+        else if(build_BordD.equals("B")){
+            this.chosenWorker.setBuildDomeOnNextBuild(false);
+        }
+
+        if(phaseList.size()>0)
+        {
+            phaseList.get(phaseList.size()-1).performActionOnCell(cell);
+        }
+
+        CreateEndPhase(false);
+
+        santoriniMatch.sendUpdatedBoard(santoriniMatch.getPlayers().get(0).getNickname());
+    }
+
+    /**
      * Method that create the next End phase
      */
     public void passBuild() {
-        CreateEndPhase(false);
+        if (getPlayingPlayer().getPlayerGod().AllowExtraBuildBeforeMove()) {
+            CreateMovePhase(true); //Prometheus case
+        }
+        else {
+            CreateEndPhase(false);
+        }
     }
 
 

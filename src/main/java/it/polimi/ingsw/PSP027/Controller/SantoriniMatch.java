@@ -637,6 +637,7 @@ public class SantoriniMatch implements Runnable{
 
         turn.passMove();
     }
+
     /**
      * Method that receives the chosen cell from the client and passes it to the turn that will set the new position for the worker with the method MoveWorker
      * @param chosenCell int representing the id of the chosen cell
@@ -647,6 +648,18 @@ public class SantoriniMatch implements Runnable{
 
         turn.doBuild(chosenCellIndex);
     }
+
+    /**
+     * Method that receives the chosen cell from the client and passes it to the turn that will set the new position for the worker with the method MoveWorker
+     * @param chosenCell int representing the id of the chosen cell
+     */
+    public void BuildForAtlas(String chosenCell, String build_BorD){
+        int chosenCellIndex;
+        chosenCellIndex = Integer.parseInt(chosenCell);
+
+        turn.doBuildForAtlas(chosenCellIndex, build_BorD);
+    }
+
     /**
      * Method that receives the chosen cell from the client and passes it to the turn that will set the new position for the worker with the method MoveWorker
      */

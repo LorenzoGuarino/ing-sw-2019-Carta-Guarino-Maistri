@@ -38,6 +38,7 @@ public class ProtocolTypes {
         srv_CandidateCellsForBuild,
         srv_CandidateCellsForOptBuild,
         clt_Build,
+        clt_BuildForAtlas,
         clt_BuildPassed,
         srv_CandidateCellsForOptEnd,
         srv_BoardUpdated,

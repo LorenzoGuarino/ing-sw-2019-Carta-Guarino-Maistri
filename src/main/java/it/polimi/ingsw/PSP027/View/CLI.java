@@ -31,6 +31,7 @@ public class CLI implements Runnable, ClientObserver {
     private Map<String, String> NicknameGodMap = new HashMap<String, String>();
     private String playersAndGods;
     private String playingPlayerNickname;
+    private int chosenCellIndexRead;
 
     /* *********************************************************************************************************************
      * ************************************** UTILITY STRINGS FOR CLI RENDERING ****************************************** *
@@ -145,6 +146,7 @@ public class CLI implements Runnable, ClientObserver {
         cli_CandidateCellsForMove,
         cli_CandidateCellsForOptMove,
         cli_CandidateCellsForBuild,
+        cli_ChooseBuildOrDome,
         cli_CandidateCellsForOptBuild,
         cli_CandidateCellsForOptEnd,
         cli_PrintingUpdatedBoard,
@@ -744,7 +746,7 @@ public class CLI implements Runnable, ClientObserver {
 
                             printBoard();
 
-                            System.out.println("\n" + DEFAULT_BOLD + "Your god allows you to move again." + RESET + "Please select the cell you want to move on, or if you don't want to move again enter \"PASS\"\n" + DEFAULT_ITALIC + DEFAULT_BOLD +
+                            System.out.println("\n" + DEFAULT_BOLD + "Your god allows you to move again." + RESET + "\nPlease select the cell you want to move on, or if you don't want to move again enter \"PASS\"\n" + DEFAULT_ITALIC + DEFAULT_BOLD +
                                     "Remember:" + RESET + DEFAULT_ITALIC + " You can only select the " + SANTORINI_HIGHLIGHT + " highlighted " + RESET +
                                     " cells, which, if your god allows you to move in a cell occupied by one of your opponent's workers, are highlighted with your opponent's color.\n" + "Syntax to indicate the cell you want to select: \"LetterNumber\"");
 
@@ -788,6 +790,7 @@ public class CLI implements Runnable, ClientObserver {
                             setCellsToPrint();
 
                             printBoard();
+
                             System.out.println("\nPlease select the cell you want to build on.\n" + DEFAULT_ITALIC + DEFAULT_BOLD +
                                     "Remember:" + RESET + DEFAULT_ITALIC + " You can only select the " + SANTORINI_HIGHLIGHT + " highlighted " + RESET +
                                     " cells, including the ones highlighted with a player's color if your god allows to build where there's a player's worker on.\n" + "Syntax to indicate the cell you want to select: \"LetterNumber\"");
@@ -801,23 +804,47 @@ public class CLI implements Runnable, ClientObserver {
                                     if (position.charAt(1) == '1' || position.charAt(1) == '2' || position.charAt(1) == '3' || position.charAt(1) == '4' || position.charAt(1) == '5') {
 
                                         int chosenCellIndex;
-
                                         chosenCellIndex = (position.charAt(0) - 'A') * 5 + (position.charAt(1) - '1');
+                                        chosenCellIndexRead = chosenCellIndex;
 
                                         //control that the cell chosen is one of the candidate cells
 
                                         for (int i = 0; i < indexcandidatecells.size(); i++) {
                                             if (indexcandidatecells.get(i) == chosenCellIndex) {
 
-                                                cmdLine = CANDIDATECELLFORBUILD_COMMAND + " " + chosenCellIndex;
+                                                if(NicknameGodMap.get(client.getNickname()).equals("Atlas")) {
+                                                    gamestate = CLIGameState.cli_ChooseBuildOrDome;
+                                                    break;
+                                                }
+                                                else {
+                                                    cmdLine = CANDIDATECELLFORBUILD_COMMAND + " " + chosenCellIndex;
+                                                    gamestate = CLIGameState.cli_WaitForSomethingToHappen;
+                                                    restoreCandidateCells();
+                                                    break;
 
-                                                gamestate = CLIGameState.cli_WaitForSomethingToHappen;
-
-                                                restoreCandidateCells();
-                                                break;
+                                                }
                                             }
                                         }
                                     }
+                                }
+                            }
+                        }
+                        break;
+                        case cli_ChooseBuildOrDome: {
+                            System.out.println("\nPlease choose what you want to build: enter \"B\" if you want to build a standard block or \"D\" if you want to build a dome" + DEFAULT_ITALIC + DEFAULT_BOLD);
+
+                            WaitForUserInput();
+
+                            String build_BorD = cmdLine.trim();
+
+                            if (build_BorD.length() == 1) {
+                                if (build_BorD.equals("B") || build_BorD.equals("D")) {
+                                    cmdLine = CANDIDATECELLFORBUILD_COMMAND +  " " + chosenCellIndexRead + " " + build_BorD;
+
+                                    gamestate = CLIGameState.cli_WaitForSomethingToHappen;
+
+                                    restoreCandidateCells();
+                                    break;
                                 }
                             }
                         }
@@ -829,9 +856,16 @@ public class CLI implements Runnable, ClientObserver {
 
                             printBoard();
 
-                            System.out.println("\n" + DEFAULT_BOLD + "Your god allows you to build again." + RESET + "Please select the cell you want to build on, or if you don't want to build again enter \"PASS\"\n" + DEFAULT_ITALIC + DEFAULT_BOLD +
-                                    "Remember:" + RESET + DEFAULT_ITALIC + " You can only select the " + SANTORINI_HIGHLIGHT + " highlighted " + RESET +
-                                    " cells, which, if your god allows you to build on a cell occupied by one of your opponent's workers, are highlighted with your opponent's color.\n" + "Syntax to indicate the cell you want to select: \"LetterNumber\"");
+                            if(NicknameGodMap.get(client.getNickname()).equals("Prometheus")) {
+                                System.out.println("\n" + DEFAULT_BOLD + "Your god allows you to build before moving." + RESET + "\nPlease select the cell you want to build on, or if you don't want to build before moving, enter \"PASS\"\n" + DEFAULT_ITALIC + DEFAULT_BOLD +
+                                        "Remember:" + RESET + DEFAULT_ITALIC + " You can only select the " + SANTORINI_HIGHLIGHT + " highlighted " + RESET +
+                                        " cells, which, if your god allows you to build on a cell occupied by one of your opponent's workers, are highlighted with your opponent's color.\n" + "Syntax to indicate the cell you want to select: \"LetterNumber\"");
+                            }
+                            else {
+                                System.out.println("\n" + DEFAULT_BOLD + "Your god allows you to build again." + RESET + "\nPlease select the cell you want to build on, or if you don't want to build again enter \"PASS\"\n" + DEFAULT_ITALIC + DEFAULT_BOLD +
+                                        "Remember:" + RESET + DEFAULT_ITALIC + " You can only select the " + SANTORINI_HIGHLIGHT + " highlighted " + RESET +
+                                        " cells, which, if your god allows you to build on a cell occupied by one of your opponent's workers, are highlighted with your opponent's color.\n" + "Syntax to indicate the cell you want to select: \"LetterNumber\"");
+                            }
 
                             WaitForUserInput();
 
@@ -1013,9 +1047,14 @@ public class CLI implements Runnable, ClientObserver {
                                 client.passMove();
                             }
                         } else if(cmdlineParts[0].equals(CANDIDATECELLFORBUILD_COMMAND)) {
-                            if (cmdlineParts.length == 2) {
+                            if (cmdlineParts.length == 2 || (cmdlineParts.length == 3 && NicknameGodMap.get(client.getNickname()).equals("Atlas"))) {
                                 gamestate = CLIGameState.cli_WaitForSomethingToHappen;
-                                client.CandidateBuild(cmdlineParts[1]);
+                                if(NicknameGodMap.get(client.getNickname()).equals("Atlas")) {
+                                    client.CandidateBuildForAtlas(cmdlineParts[1], cmdlineParts[2]);
+                                }
+                                else {
+                                    client.CandidateBuild(cmdlineParts[1]);
+                                }
                             }
                         } else if(cmdlineParts[0].equals(PASSBUILD_COMMAND)) {
                             if (cmdlineParts.length == 1) {
@@ -1528,6 +1567,7 @@ public class CLI implements Runnable, ClientObserver {
             else if (node.getNodeName().equals("playingPlayer")) {
 
                 this.playingPlayerNickname = node.getAttributes().getNamedItem("nickname").getTextContent();
+
             }
         }
     }

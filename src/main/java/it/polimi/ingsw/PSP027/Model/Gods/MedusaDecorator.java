@@ -26,27 +26,27 @@ public class MedusaDecorator extends GodPowerDecorator {
         //and then it automatically performs (if possible) the consequent actions
 
         if (IsAnEndPhase()) {
-            Worker worker1=null;
-            Worker worker2=null;
-            if(this.getPlayingPlayer().getPlayerWorkers().get(0)!=null) {
+            Worker worker1 = null;
+            Worker worker2 = null;
+            if(this.getPlayingPlayer().getPlayerWorkers().get(0) != null) {
                 worker1 = this.getPlayingPlayer().getPlayerWorkers().get(0);
             }
-            if(this.getPlayingPlayer().getPlayerWorkers().get(1)!=null) {
+            if(this.getPlayingPlayer().getPlayerWorkers().get(1) != null) {
                 worker2 = this.getPlayingPlayer().getPlayerWorkers().get(1);
             }
             getCandidateCells().clear();
 
             if (worker1 != null) {
-                Cell startingCell1=worker1.getWorkerPosition();
+                Cell startingCell1 = worker1.getWorkerPosition();
                 for (Cell candidateCell : getGameBoard().getNeighbouringCells(startingCell1)) {
-                    if (candidateCell.getLevel()==startingCell1.getLevel()-1&&candidateCell.isOccupiedByOpponentWorker(this.getPlayingPlayer()))
+                    if (candidateCell.getLevel() < startingCell1.getLevel() && candidateCell.isOccupiedByOpponentWorker(this.getPlayingPlayer()))
                         getCandidateCells().add(candidateCell);
                 }
             }
             if (worker2 != null) {
                 Cell startingCell1=worker2.getWorkerPosition();
                 for (Cell candidateCell : getGameBoard().getNeighbouringCells(startingCell1)) {
-                    if (candidateCell.getLevel()==startingCell1.getLevel()-1&&candidateCell.isOccupiedByOpponentWorker(this.getPlayingPlayer()))
+                    if (candidateCell.getLevel() < startingCell1.getLevel() && candidateCell.isOccupiedByOpponentWorker(this.getPlayingPlayer()))
                         getCandidateCells().add(candidateCell);
                 }
             }
@@ -54,7 +54,7 @@ public class MedusaDecorator extends GodPowerDecorator {
                 Player oppPlayer = candidateCell.getOccupyingWorker().getWorkerOwner();
                 candidateCell.getOccupyingWorker().removeWorker();
                 candidateCell.addLevel();
-                if(oppPlayer.getPlayerWorkers().size()==0){
+                if(oppPlayer.getPlayerWorkers().size() == 0){
                     oppPlayer.setHasLost(true);
                 }
             }
