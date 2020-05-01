@@ -37,17 +37,20 @@ public class ZeusDecorator extends GodPowerDecorator {
     @Override
     public void performActionOnCell(Cell chosenCell) {
 
-        if(chosenCell.getLevel() < 3){
-            chosenCell.addLevel(true);
-        }
-        else{
-            if(!chosenCell.isOccupiedByWorker())
-                chosenCell.addDome();
-        }
+        if(IsABuildPhase()) {
+            if (chosenCell.getLevel() < 3) {
+                chosenCell.addLevel(true);
+            } else {
+                if (!chosenCell.isOccupiedByWorker())
+                    chosenCell.addDome();
+            }
 
-        this.getWorker().setOldBuiltCell(chosenCell);
-        this.getWorker().IncrementBuildCounter();
-
+            this.getWorker().setOldBuiltCell(chosenCell);
+            this.getWorker().IncrementBuildCounter();
+        }
+        else {
+            super.performActionOnCell(chosenCell);
+        }
 
     }
 }

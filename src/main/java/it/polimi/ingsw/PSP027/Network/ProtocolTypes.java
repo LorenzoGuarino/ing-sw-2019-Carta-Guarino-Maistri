@@ -1,7 +1,5 @@
 package it.polimi.ingsw.PSP027.Network;
 
-import javax.lang.model.type.TypeMirror;
-
 public class ProtocolTypes {
 
     public enum protocolCommand {

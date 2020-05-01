@@ -1544,7 +1544,13 @@ public class CLI implements Runnable, ClientObserver {
 
     @Override
     public void OnLoser() {
-        System.out.println(DEFAULT_BOLD + "\n\nYou have lost! Better luck next time." + RESET);
+        System.out.println(DEFAULT_BOLD + "\n\nYou have lost! Better luck next time.\n" + RESET);
+
+        System.out.println(AVAILABLECOMMANDS);
+        System.out.println(TRIANGLE + PLAY_COMMAND_LABEL);
+        System.out.println(TRIANGLE + DEREGISTER_COMMAND_LABEL);
+        System.out.println(TRIANGLE + DISCONNECT_COMMAND_LABEL);
+        System.out.println(TRIANGLE + BYE_COMMAND_LABEL);
     }
 
 
