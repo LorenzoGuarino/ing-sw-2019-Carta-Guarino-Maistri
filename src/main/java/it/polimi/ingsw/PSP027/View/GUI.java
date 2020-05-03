@@ -6,6 +6,7 @@ import it.polimi.ingsw.PSP027.Network.Client.ClientObserver;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
@@ -92,8 +93,7 @@ public class GUI extends Application implements Runnable, ClientObserver {
     public ImageView ExitButton;
     Image ConnectButtonPressed = new Image("images/Buttons/btn_blue_pressed.png");
     Image ExitButtonPressed = new Image("images/Buttons/btn_blue_pressed.png");
-
-
+    public TextField userInput = null;
     /* ****************************************************************************************************************** */
 
 
@@ -106,8 +106,6 @@ public class GUI extends Application implements Runnable, ClientObserver {
     @Override
     public void start(Stage stage) throws Exception {
         stage.setTitle("Santorini"); //name of the game window that is shown
-
-
         Parent entryPage = FXMLLoader.load(getClass().getResource("/EntryPage.fxml"));
         Scene entryScene = new Scene(entryPage, 1800, 850);
         stage.setMaximized(true);
@@ -146,7 +144,12 @@ public class GUI extends Application implements Runnable, ClientObserver {
 
                 case gui_connecting:
                 case gui_disconnecting: {
-
+                    System.out.print(".");
+                    try {
+                        TimeUnit.MILLISECONDS.sleep(50);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
                 break;
 
@@ -858,4 +861,12 @@ public class GUI extends Application implements Runnable, ClientObserver {
     public void exitButtonPressed() {
         ExitButton.setImage(ExitButtonPressed);
     }
+//
+//    public void connectToServer(){
+//
+//        connstate = GUI.GUIConnectionState.gui_connecting;
+//
+//        client.Connect(userInput.toString());
+//
+//    }
 }
