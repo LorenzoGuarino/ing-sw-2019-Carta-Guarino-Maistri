@@ -3,7 +3,9 @@ package it.polimi.ingsw.PSP027.View;
 import it.polimi.ingsw.PSP027.Model.Game.GodCard;
 import it.polimi.ingsw.PSP027.Network.Client.Client;
 import it.polimi.ingsw.PSP027.Network.Client.ClientObserver;
+import it.polimi.ingsw.PSP027.Network.Server.Server;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.TextField;
@@ -18,7 +20,7 @@ import org.w3c.dom.NodeList;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
-public class GUI extends Application implements Runnable, ClientObserver {
+public class GUI extends Application implements ClientObserver {
 
     private Client client = null;
     private boolean bRun = false;
@@ -95,34 +97,18 @@ public class GUI extends Application implements Runnable, ClientObserver {
     Image ExitButtonPressed = new Image("images/Buttons/btn_Exit_pressed.png");
     Image ConnectButtonReleased = new Image("images/Buttons/btn_Connect.png");
     Image ExitButtonReleased = new Image("images/Buttons/btn_Exit.png");
-    public TextField userInput = null;
+    public TextField ServerIp;
+
     /* ****************************************************************************************************************** */
 
 
     public static void main(String[] args) {
-        launch(args);
         GUI gui = new GUI();
-        gui.run();
+        launch(args);
     }
 
     @Override
     public void start(Stage stage) throws Exception {
-        stage.setTitle("Santorini"); //name of the game window that is shown
-        Parent entryPage = FXMLLoader.load(getClass().getResource("/EntryPage.fxml"));
-        Scene entryScene = new Scene(entryPage, 1800, 850);
-        stage.setMaximized(true);
-        stage.setScene(entryScene);
-        stage.show();
-    }
-
-    /**
-     * Method that is launched when the GUI starts and handles the action to perform in regard to the command entered by
-     * by the user in an infinite cycle
-     */
-
-    @Override
-    public void run() {
-
         client = new Client();
         client.addObserver(this);
 
@@ -131,9 +117,16 @@ public class GUI extends Application implements Runnable, ClientObserver {
         Thread clientThread = new Thread(client);
         clientThread.start();
 
+        stage.setTitle("Santorini"); //name of the game window that is shown
+        Parent entryPage = FXMLLoader.load(getClass().getResource("/EntryPage.fxml"));
+        Scene entryScene = new Scene(entryPage, 1800, 850);
+        stage.setMaximized(true);
+        stage.setScene(entryScene);
+        stage.show();
+/*
         String[] chosenposition = new String[2];
 
-        while (bRun) {
+       while (bRun) {
 
             // SWITCH WHEN THE CONNECTION STATE CHANGES
 
@@ -146,7 +139,6 @@ public class GUI extends Application implements Runnable, ClientObserver {
 
                 case gui_connecting:
                 case gui_disconnecting: {
-                    System.out.print(".");
                     try {
                         TimeUnit.MILLISECONDS.sleep(50);
                     } catch (InterruptedException e) {
@@ -257,7 +249,7 @@ public class GUI extends Application implements Runnable, ClientObserver {
 
                     if (chosen_cmd.length != 0) {
 
-                        /* ************************** CONNECTION RELATED COMMANDS ********************** */
+                        *//* ************************** CONNECTION RELATED COMMANDS ********************** *//*
 
                         if (chosen_cmd[0].equals(DISCONNECT_COMMAND)) {
                             connstate = GUI.GUIConnectionState.gui_disconnecting;
@@ -279,7 +271,7 @@ public class GUI extends Application implements Runnable, ClientObserver {
                             gamestate = GUI.GUIGameState.gui_ChoosingMatch;
                         }
 
-                        /* *************************** GAME RELATED COMMANDS *************************** */
+                        *//* *************************** GAME RELATED COMMANDS *************************** *//*
 
                         else if (chosen_cmd[0].equals(SEARCHMATCH_COMMAND)) {
                             if (chosen_cmd.length == 2) {
@@ -359,8 +351,11 @@ public class GUI extends Application implements Runnable, ClientObserver {
             }
         }
 
-        System.exit(0);
+        System.exit(0);*/
+
+
     }
+
 
     /* *********************************************************************************************************
      *       Methods fired by the client's methods that trigger a change of connection state or game state     *
@@ -419,7 +414,7 @@ public class GUI extends Application implements Runnable, ClientObserver {
 
     @Override
     public void OnDeregistered() {
-        gamestate =GUI.GUIGameState.gui_Deregistered;
+        gamestate = GUI.GUIGameState.gui_Deregistered;
     }
 
     /**
@@ -858,15 +853,20 @@ public class GUI extends Application implements Runnable, ClientObserver {
 
     public void connectButtonPressed() {
         ConnectButton.setImage(ConnectButtonPressed);
+        if(ServerIp.getText() != null && !ServerIp.getText().isEmpty()) {
+            client.Connect(ServerIp.getText());
+        }
     }
 
     public void connectButtonReleased() {
         ConnectButton.setImage(ConnectButtonReleased);
     }
 
-    public void exitButtonPressed() {
+    public void exitButtonPressed() throws Exception {
         ExitButton.setImage(ExitButtonPressed);
-
+        client.Disconnect();
+        Platform.exit();
+        System.exit(0);
     }
 
     public void exitButtonReleased() {
