@@ -1,23 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="525.0" prefWidth="735.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.PSP027.View.GUI">
+<AnchorPane id="entryPane" prefHeight="755.0" prefWidth="986.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.PSP027.View.GUI">
    <children>
-      <GridPane layoutX="217.0" layoutY="353.0" prefHeight="73.0" prefWidth="302.0">
+      <GridPane layoutX="325.0" layoutY="426.0" prefHeight="198.0" prefWidth="986.0" AnchorPane.bottomAnchor="132.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
         <columnConstraints>
           <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-          <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="200.0" />
+            <ColumnConstraints />
         </columnConstraints>
         <rowConstraints>
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button mnemonicParsing="false" text="Connect" />
-            <Button mnemonicParsing="false" text="Exit" GridPane.columnIndex="1" />
+            <ImageView fx:id="ConnectButton" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" onMousePressed="#connectButtonPressed">
+               <image>
+                  <Image url="@images/Buttons/btn_blue.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="ExitButton" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" onMousePressed="#exitButtonPressed">
+               <image>
+                  <Image url="@images/Buttons/btn_blue.png" />
+               </image>
+            </ImageView>
          </children>
       </GridPane>
-      <Pane id="entryPane" layoutX="47.0" prefHeight="370.0" prefWidth="643.0" stylesheets="@style.css" />
    </children>
 </AnchorPane>

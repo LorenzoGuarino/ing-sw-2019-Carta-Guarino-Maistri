@@ -1,6 +1,12 @@
 #entryPane{
     -fx-background-image: url("images/EntryPane.png");
-    -fx-background-repeat: stretch;
-    -fx-background-size: 900 506;
+    -fx-background-size: 100% auto;
     -fx-background-position: center center;
+}
+
+#buttonBlue {
+    -fx-background-image: url(images/Buttons/btn_blue.png);
+    -fx-background-insets: 0;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
 }
