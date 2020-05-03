@@ -18,19 +18,19 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <TextField fx:id="serverip" alignment="CENTER" onAction="#connectToServer" prefHeight="25.0" prefWidth="964.0" promptText="Insert IP Server">
+            <TextField fx:id="serverip" alignment="CENTER" prefHeight="40.0" prefWidth="200.0" promptText="Insert IP Server">
                <font>
                   <Font size="20.0" />
                </font>
             </TextField>
-            <ImageView fx:id="ExitButton" fitHeight="150.0" fitWidth="200.0" onMousePressed="#exitButtonPressed" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1">
+            <ImageView fx:id="ConnectButton" fitHeight="150.0" fitWidth="200.0" onMousePressed="#connectButtonPressed" onMouseReleased="#connectButtonReleased" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1">
                <image>
-                  <Image url="@images/Buttons/btn_blue.png" />
+                  <Image url="@images/Buttons/btn_Connect.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="ConnectButton" fitHeight="150.0" fitWidth="200.0" onMousePressed="#connectButtonPressed" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="2">
+            <ImageView fx:id="ExitButton" fitHeight="150.0" fitWidth="200.0" onMousePressed="#exitButtonPressed" onMouseReleased="#exitButtonReleased" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="2">
                <image>
-                  <Image url="@images/Buttons/btn_blue.png" />
+                  <Image url="@images/Buttons/btn_Exit.png" />
                </image>
             </ImageView>
          </children>

@@ -91,8 +91,10 @@ public class GUI extends Application implements Runnable, ClientObserver {
 
     public ImageView ConnectButton;
     public ImageView ExitButton;
-    Image ConnectButtonPressed = new Image("images/Buttons/btn_blue_pressed.png");
-    Image ExitButtonPressed = new Image("images/Buttons/btn_blue_pressed.png");
+    Image ConnectButtonPressed = new Image("images/Buttons/btn_Connect_pressed.png");
+    Image ExitButtonPressed = new Image("images/Buttons/btn_Exit_pressed.png");
+    Image ConnectButtonReleased = new Image("images/Buttons/btn_Connect.png");
+    Image ExitButtonReleased = new Image("images/Buttons/btn_Exit.png");
     public TextField userInput = null;
     /* ****************************************************************************************************************** */
 
@@ -858,8 +860,17 @@ public class GUI extends Application implements Runnable, ClientObserver {
         ConnectButton.setImage(ConnectButtonPressed);
     }
 
+    public void connectButtonReleased() {
+        ConnectButton.setImage(ConnectButtonReleased);
+    }
+
     public void exitButtonPressed() {
         ExitButton.setImage(ExitButtonPressed);
+
+    }
+
+    public void exitButtonReleased() {
+        ExitButton.setImage(ExitButtonReleased);
     }
 //
 //    public void connectToServer(){
