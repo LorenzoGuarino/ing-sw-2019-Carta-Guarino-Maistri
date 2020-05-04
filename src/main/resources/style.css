@@ -4,6 +4,12 @@
     -fx-background-position: center center;
 }
 
+#registerPane{
+    -fx-background-image: url("images/EntryPane.png");
+    -fx-background-size: 100% auto;
+    -fx-background-position: center center;
+}
+
 #buttonBlue {
     -fx-background-image: url(images/Buttons/btn_blue.png);
     -fx-background-insets: 0;

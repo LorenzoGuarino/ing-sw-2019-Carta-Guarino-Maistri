@@ -6,6 +6,8 @@ import it.polimi.ingsw.PSP027.Network.Client.ClientObserver;
 import it.polimi.ingsw.PSP027.Network.Server.Server;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.TextField;

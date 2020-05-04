@@ -3,9 +3,14 @@ package it.polimi.ingsw.PSP027.View;
 import it.polimi.ingsw.PSP027.Network.Client.Client;
 import it.polimi.ingsw.PSP027.Network.Client.ClientObserver;
 import javafx.application.Platform;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -85,6 +90,7 @@ public class GUIController implements ClientObserver {
 
     /* ***************************************** GUI RENDERING RELATED VARIABLES ****************************************** */
 
+    @FXML
     public ImageView ConnectButton;
     public ImageView ExitButton;
     Image ConnectButtonPressed = new Image("images/Buttons/btn_Connect_pressed.png");
@@ -92,6 +98,7 @@ public class GUIController implements ClientObserver {
     Image ConnectButtonReleased = new Image("images/Buttons/btn_Connect.png");
     Image ExitButtonReleased = new Image("images/Buttons/btn_Exit.png");
     public TextField ServerIp;
+    public Pane entryPane;
 
     /* ****************************************************************************************************************** */
 
@@ -105,6 +112,9 @@ public class GUIController implements ClientObserver {
         bRun = true;
         Thread clientThread = new Thread(client);
         clientThread.start();
+
+        ServerIp.setFocusTraversable(false);
+
     }
 
 
@@ -349,6 +359,7 @@ public class GUIController implements ClientObserver {
     @Override
     public void OnConnected() {
         connstate = GUIController.GUIConnectionState.gui_Connected;
+        entryPane.getChildren().clear();
     }
 
     /**
@@ -830,7 +841,7 @@ public class GUIController implements ClientObserver {
     }
 
 
-    /* ************************************************ GUI RENDERING METHODS ********************************************* */
+    /* ******************************************************** GUI RENDERING METHODS **************************************************** */
 
     public void connectButtonPressed() {
         ConnectButton.setImage(ConnectButtonPressed);
