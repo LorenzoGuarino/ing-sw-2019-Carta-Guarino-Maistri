@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 public class GUIController implements ClientObserver {
-
+    public GUI Gui;
     public Client client = null;
     private boolean bRun = false;
     private int requiredgods = 0;
@@ -90,17 +90,13 @@ public class GUIController implements ClientObserver {
 
     /* ***************************************** GUI RENDERING RELATED VARIABLES ****************************************** */
 
-    @FXML
-    public ImageView ConnectButton;
-    public ImageView ExitButton;
-    Image ConnectButtonPressed = new Image("images/Buttons/btn_Connect_pressed.png");
-    Image ExitButtonPressed = new Image("images/Buttons/btn_Exit_pressed.png");
-    Image ConnectButtonReleased = new Image("images/Buttons/btn_Connect.png");
-    Image ExitButtonReleased = new Image("images/Buttons/btn_Exit.png");
-    public TextField ServerIp;
-    public Pane entryPane;
 
     /* ****************************************************************************************************************** */
+
+    public GUIController(GUI Gui) {
+        this.Gui = Gui;
+        this.initialize();
+    }
 
 
     public void initialize()
@@ -112,9 +108,6 @@ public class GUIController implements ClientObserver {
         bRun = true;
         Thread clientThread = new Thread(client);
         clientThread.start();
-
-        ServerIp.setFocusTraversable(false);
-
     }
 
 
@@ -358,8 +351,6 @@ public class GUIController implements ClientObserver {
 
     @Override
     public void OnConnected() {
-        connstate = GUIController.GUIConnectionState.gui_Connected;
-        entryPane.getChildren().clear();
     }
 
     /**
@@ -840,30 +831,6 @@ public class GUIController implements ClientObserver {
         indexcandidatecells.clear();
     }
 
-
-    /* ******************************************************** GUI RENDERING METHODS **************************************************** */
-
-    public void connectButtonPressed() {
-        ConnectButton.setImage(ConnectButtonPressed);
-        if(ServerIp.getText() != null && !ServerIp.getText().isEmpty()) {
-            client.Connect(ServerIp.getText());
-        }
-    }
-
-    public void connectButtonReleased() {
-        ConnectButton.setImage(ConnectButtonReleased);
-    }
-
-    public void exitButtonPressed() throws Exception {
-        ExitButton.setImage(ExitButtonPressed);
-        client.Disconnect();
-        Platform.exit();
-        System.exit(0);
-    }
-
-    public void exitButtonReleased() {
-        ExitButton.setImage(ExitButtonReleased);
-    }
 //
 //    public void connectToServer(){
 //
