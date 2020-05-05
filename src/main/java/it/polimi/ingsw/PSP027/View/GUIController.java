@@ -351,6 +351,8 @@ public class GUIController implements ClientObserver {
 
     @Override
     public void OnConnected() {
+        System.out.println("provaprovaprova");
+        this.Gui.changePane();
     }
 
     /**

@@ -21,12 +21,13 @@ import javafx.scene.control.Button;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 public class GUI extends Application {
 
-    public GUIController guiController;
+    public static GUIController guiController;
     public String address;
     @FXML
     public ImageView ConnectButton;
@@ -37,6 +38,8 @@ public class GUI extends Application {
     Image ExitButtonReleased = new Image("images/Buttons/btn_Exit.png");
     public TextField ServerIp;
     public Pane entryPane;
+    public Pane SecondPane;
+    public static Stage window;
 
     public static void main(String[] args) {
         launch(args);
@@ -44,31 +47,41 @@ public class GUI extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
+        window = stage;
+        this.guiController=new GUIController(this);
         System.out.println(this);
-        stage.setTitle("Santorini"); //name of the game window that is shown
+        window.setTitle("Santorini"); //name of the game window that is shown
         Parent entryPage = FXMLLoader.load(getClass().getResource("/EntryPage.fxml"));
         Scene entryScene = new Scene(entryPage, 1800, 850);
-        stage.setMaximized(true);
-        stage.setScene(entryScene);
-        stage.show();
+        window.setMaximized(true);
+        window.setScene(entryScene);
+        window.show();
     }
 
-    public void createGuiController(){
-        this.guiController=new GUIController(this);
+    public void changePane(){
+        try {
+            Parent SecondPage = FXMLLoader.load(getClass().getResource("/SecondPage.fxml"));
+            Scene SecondScene = new Scene(SecondPage, 1800, 850);
+            window.setMaximized(true);
+            window.setScene(SecondScene);
+            window.show();
+        }catch (IOException exception){
+            System.out.println("Prova");
+        }
     }
 
     public void connectButtonPressed() {
-        this.guiController=new GUIController(this);
         ConnectButton.setImage(ConnectButtonPressed);
         this.address=(this.ServerIp.getText());
         System.out.println("press guic"+this.guiController);
+        this.guiController.client.Connect(this.address);
     }
 
     public void connectButtonReleased() {
         ConnectButton.setImage(ConnectButtonReleased);
         System.out.println("release guic"+this.guiController);
         System.out.println(this.address);
-        this.guiController.client.Connect(this.address);
+
     }
 
     public void exitButtonPressed() throws Exception {
