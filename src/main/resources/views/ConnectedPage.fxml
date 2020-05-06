@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane fx:id="connectedPane" prefHeight="755.0" prefWidth="986.0" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.PSP027.View.Controllers.ConnectedController">
+    <children>
+        <GridPane layoutX="281.0" layoutY="509.0" prefHeight="198.0" prefWidth="425.0" AnchorPane.bottomAnchor="48.0" AnchorPane.leftAnchor="281.0" AnchorPane.rightAnchor="280.0">
+            <columnConstraints>
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            </rowConstraints>
+            <children>
+                <TextField fx:id="nickname" alignment="CENTER" prefHeight="40.0" prefWidth="100.0" promptText="enter your nickname">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </TextField>
+                <ImageView fx:id="RegisterButton" fitHeight="150.0" fitWidth="200.0" onMousePressed="#registerButtonPressed" onMouseReleased="#registerButtonReleased" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1">
+                    <image>
+                        <Image url="@../images/Buttons/btn_Register.png" />
+                    </image>
+                </ImageView>
+                <ImageView fx:id="ExitButton" fitHeight="150.0" fitWidth="200.0" onMousePressed="#exitButtonPressed" onMouseReleased="#exitButtonReleased" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="2">
+                    <image>
+                        <Image url="@../images/Buttons/btn_Exit.png" />
+                    </image>
+                </ImageView>
+            </children>
+        </GridPane>
+        <ImageView fx:id="DisconnectButton" fitHeight="50.0" fitWidth="93.0" onMousePressed="#disconnectButtonPressed" onMouseReleased="#disconnectButtonReleased" layoutX="14.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../images/Buttons/btn_goBack.png" />
+            </image>
+        </ImageView>
+    </children>
+</AnchorPane>

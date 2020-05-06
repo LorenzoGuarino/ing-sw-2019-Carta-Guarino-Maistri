@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane id="registeredPane" fx:id="registeredPane" prefHeight="755.0" prefWidth="986.0" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.PSP027.View.Controllers.RegisteredController">
+    <children>
+        <GridPane fx:id="playPane" layoutX="281.0" layoutY="509.0" prefHeight="210.0" prefWidth="425.0" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="281.0" AnchorPane.rightAnchor="281.0">
+            <columnConstraints>
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints maxHeight="104.0" minHeight="10.0" prefHeight="54.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="133.0" minHeight="10.0" prefHeight="133.0" vgrow="SOMETIMES" />
+            </rowConstraints>
+            <children>
+                <Label fx:id="welcomeMessage" alignment="CENTER" prefHeight="40.0" prefWidth="453.0" styleClass="ParagraphText" text="Welcome" textAlignment="CENTER" textFill="#2f5d9e">
+                    <font>
+                        <Font name="LillyBelle" size="22.0" />
+                    </font>
+                </Label>
+                <ImageView fx:id="PlayButton" fitHeight="165.0" fitWidth="155.0" layoutX="442.0" layoutY="539.0" onMousePressed="#playButtonPressed" onMouseReleased="#playButtonReleased" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1">
+                    <image>
+                        <Image url="@../images/Buttons/button-play-normal.png" />
+                    </image>
+                </ImageView>
+            </children>
+        </GridPane>
+        <GridPane fx:id="numberOfPlayersPane" alignment="CENTER" layoutX="135.0" layoutY="509.0" prefHeight="161.0" prefWidth="684.0" AnchorPane.bottomAnchor="76.0" AnchorPane.leftAnchor="300.0" AnchorPane.rightAnchor="300.0">
+            <columnConstraints>
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="431.0" minWidth="10.0" prefWidth="320.0" />
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="431.0" minWidth="10.0" prefWidth="300.0" />
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="431.0" minWidth="10.0" prefWidth="200.0" />
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="431.0" minWidth="10.0" prefWidth="300.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="431.0" minWidth="10.0" prefWidth="299.0" />
+                <ColumnConstraints maxWidth="0.0" minWidth="0.0" prefWidth="0.0" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints maxHeight="104.0" minHeight="10.0" prefHeight="47.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="165.0" minHeight="10.0" prefHeight="85.0" vgrow="SOMETIMES" />
+            </rowConstraints>
+            <children>
+                <Label fx:id="NumberOfPlayersMessage" alignment="CENTER" prefHeight="40.0" prefWidth="665.0" styleClass="ParagraphText" text="With how many opponent players do you want to play with?" textAlignment="CENTER" textFill="#2f5d9e" GridPane.columnSpan="5">
+                    <font>
+                        <Font size="22.0" />
+                    </font>
+                </Label>
+                <ImageView fx:id="Button1Player" fitHeight="77.0" fitWidth="99.0" layoutX="442.0" layoutY="539.0" onMousePressed="#number1Pressed" onMouseReleased="#number1Released" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                    <image>
+                        <Image url="@../images/Buttons/btn_1.png" />
+                    </image>
+                </ImageView>
+                <Label fx:id="or" alignment="CENTER" prefHeight="40.0" prefWidth="665.0" styleClass="ParagraphText" text="or" textAlignment="CENTER" textFill="#2f5d9e" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                    <font>
+                        <Font size="22.0" />
+                    </font>
+                </Label>
+                <ImageView fx:id="Button2Player" fitHeight="77.0" fitWidth="99.0" onMousePressed="#number2Pressed" onMouseReleased="#number2Released" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                    <image>
+                        <Image url="@../images/Buttons/btn_2.png" />
+                    </image>
+                </ImageView>
+            </children>
+        </GridPane>
+        <GridPane fx:id="searchingMatchPane" layoutX="281.0" layoutY="509.0" prefHeight="210.0" prefWidth="425.0" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="240.0" AnchorPane.rightAnchor="240.0">
+            <columnConstraints>
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints maxHeight="104.0" minHeight="10.0" prefHeight="54.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="133.0" minHeight="10.0" prefHeight="133.0" vgrow="SOMETIMES" />
+            </rowConstraints>
+            <children>
+                <Label fx:id="SearchingForMatchMessage" alignment="CENTER" prefHeight="40.0" prefWidth="665.0" styleClass="ParagraphText" text="Searching for an available match... Please wait..." textAlignment="CENTER" textFill="#2f5d9e">
+                    <font>
+                        <Font size="22.0" />
+                    </font>
+                </Label>
+                <ProgressIndicator fx:id="SearchingMatchIndicator" layoutX="467.0" layoutY="586.0" stylesheets="@../style.css" GridPane.rowIndex="1" />
+            </children>
+        </GridPane>
+        <ImageView fx:id="DeregisterButton" fitHeight="50.0" fitWidth="93.0" layoutX="14.0" layoutY="14.0" onMousePressed="#deregisterButtonPressed" onMouseReleased="#deregisterButtonReleased" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../images/Buttons/btn_goBack.png" />
+            </image>
+        </ImageView>
+    </children>
+</AnchorPane>

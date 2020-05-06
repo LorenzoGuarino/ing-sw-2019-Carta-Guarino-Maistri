@@ -4,25 +4,49 @@
     -fx-background-position: center center;
 }
 
-#registerPane{
+#connectedPane{
     -fx-background-image: url("images/EntryPane.png");
     -fx-background-size: 100% auto;
     -fx-background-position: center center;
 }
 
-#buttonBlue {
-    -fx-background-image: url(images/Buttons/btn_blue.png);
-    -fx-background-insets: 0;
-    -fx-background-repeat: no-repeat;
-    -fx-background-position: center;
-}
-
-#boardPane{
-    -fx-background-image: url("images/SantoriniBoard.png");
+#registeredPane{
+    -fx-background-image: url("images/EntryPane.png");
     -fx-background-size: 100% auto;
     -fx-background-position: center center;
 }
-#registerPane{
+
+#SearchingMatchIndicator {
+    -fx-progress-color: #2f5d9e;
+}
+
+#WaitForOtherPlayersIndicator {
+    -fx-progress-color: #432a1a;
+}
+
+#enteringMatchPane {
+    -fx-background-image: url("images/EnteringMatch.png");
+    -fx-background-size: 100% auto;
+    -fx-background-position: center center;
+}
+
+@font-face {
+    src: url('fonts/LillyBelle.ttf');
+}
+
+@font-face {
+    src: url('fonts/CrimsonText-Roman.ttf');
+}
+
+.TitleText {
+    -fx-font-family: 'LillyBelle';
+}
+
+.ParagraphText {
+    -fx-font-family: 'CrimsonText-Roman';
+}
+
+#boardPane{
     -fx-background-image: url("images/SantoriniBoard.png");
     -fx-background-size: 100% auto;
     -fx-background-position: center center;

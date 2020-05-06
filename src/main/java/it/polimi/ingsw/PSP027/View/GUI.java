@@ -1,97 +1,671 @@
 package it.polimi.ingsw.PSP027.View;
 
-import it.polimi.ingsw.PSP027.Model.Game.GodCard;
 import it.polimi.ingsw.PSP027.Network.Client.Client;
 import it.polimi.ingsw.PSP027.Network.Client.ClientObserver;
-import it.polimi.ingsw.PSP027.Network.Server.Server;
+import it.polimi.ingsw.PSP027.View.Controllers.EntryPageController;
+import it.polimi.ingsw.PSP027.View.Controllers.ConnectedController;
+import it.polimi.ingsw.PSP027.View.Controllers.RegisteredController;
+import it.polimi.ingsw.PSP027.View.Controllers.EnteringMatchController;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
-public class GUI extends Application {
+public class GUI extends Application implements ClientObserver {
 
-    public static GUIController guiController;
-    public String address;
-    @FXML
-    public ImageView ConnectButton;
-    public ImageView ExitButton;
-    Image ConnectButtonPressed = new Image("images/Buttons/btn_Connect_pressed.png");
-    Image ExitButtonPressed = new Image("images/Buttons/btn_Exit_pressed.png");
-    Image ConnectButtonReleased = new Image("images/Buttons/btn_Connect.png");
-    Image ExitButtonReleased = new Image("images/Buttons/btn_Exit.png");
-    public TextField ServerIp;
-    public Pane entryPane;
-    public Pane SecondPane;
-    public static Stage window;
+
+    public Client client = null;
+    private boolean bRun = false;
+    private int requiredgods = 0;
+    private List<String> gods = null;
+    private List<String> players = null;
+    private Node nodeboard; //it's overwritten every time a new board needs to be printed
+    private List<Integer> indexcandidatecells = new ArrayList<Integer>(); //used for move and build and is overwritten every time
+    private Map<String, String> NicknameGodMap = new HashMap<String, String>();
+    private String[] chosen_cmd;
+    private Stage SantoriniStage;
+
+    /* ****************************************************** COMMANDS ************************************************** */
+
+    private static String DISCONNECT_COMMAND = "disconnect";
+    private static String BYE_COMMAND = "bye";
+    private static String CONNECT_COMMAND = "connect";
+    private static String REGISTER_COMMAND = "register";
+    private static String DEREGISTER_COMMAND = "deregister";
+    private static String SEARCHMATCH_COMMAND = "searchmatch";
+    private static String CHOSENGODS_COMMAND = "chosengods";
+    private static String CHOSENGOD_COMMAND = "chosengod";
+    private static String CHOSENFIRSTPLAYER_COMMAND = "firstplayerchosen";
+    private static String PLAY_COMMAND = "play";
+    private static String WORKERSPOSITION_COMMAND = "workerspositionchosen";
+    private static String CHOSENWORKER_COMMAND = "workerchosen";
+    private static String CANDIDATECELLFORMOVE_COMMAND = "candidatecellchosen";
+    private static String CANDIDATECELLFORBUILD_COMMAND = "candidatebuildcell";
+    private static String CANDIDATECELLFOREND_COMMAND = "candidateendcell";
+    private static String PASSMOVE_COMMAND = "movepassed";
+    private static String PASSBUILD_COMMAND = "buildpassed";
+    private static String PASSEND_COMMAND = "endpassed";
+
+    /* ******************************************************************************************************************* */
 
     public static void main(String[] args) {
+
         launch(args);
     }
 
     @Override
     public void start(Stage stage) throws Exception {
-        window = stage;
-        this.guiController=new GUIController(this);
-        System.out.println(this);
-        window.setTitle("Santorini"); //name of the game window that is shown
-        Parent entryPage = FXMLLoader.load(getClass().getResource("/EntryPage.fxml"));
+
+        client = new Client();
+        client.addObserver(this);
+        Thread clientThread = new Thread(client);
+        clientThread.start();
+
+        SantoriniStage = stage;
+
+        SantoriniStage.setTitle("Santorini"); //name of the game window that is shown
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Views/EntryPage.fxml"));
+        Parent entryPage = (Parent) loader.load();
+
+        EntryPageController ctrl = loader.getController();
+        ctrl.setGui(this);
+
         Scene entryScene = new Scene(entryPage, 1800, 850);
-        window.setMaximized(true);
-        window.setScene(entryScene);
-        window.show();
+        SantoriniStage.setMaximized(true);
+        SantoriniStage.setFullScreen(true);
+        SantoriniStage.setScene(entryScene);
+        SantoriniStage.show();
     }
 
-    public void changePane(){
+    public void showConnectedPage() {
         try {
-            Parent SecondPage = FXMLLoader.load(getClass().getResource("/SecondPage.fxml"));
-            Scene SecondScene = new Scene(SecondPage, 1800, 850);
-            window.setMaximized(true);
-            window.setScene(SecondScene);
-            window.show();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Views/ConnectedPage.fxml"));
+            Parent connectedPage = (Parent) loader.load();
+
+            ConnectedController connectedController = loader.getController();
+            connectedController.setGui(this);
+
+            SantoriniStage.getScene().setRoot(connectedPage);
+            SantoriniStage.show();
+
         }catch (IOException exception){
-            System.out.println("Prova");
+            System.out.println(exception.toString());
         }
     }
 
-    public void connectButtonPressed() {
-        ConnectButton.setImage(ConnectButtonPressed);
-        this.address=(this.ServerIp.getText());
-        System.out.println("press guic"+this.guiController);
-        this.guiController.client.Connect(this.address);
+    public void showEntryPage() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Views/EntryPage.fxml"));
+            Parent entryPage = (Parent) loader.load();
+
+            EntryPageController entryPageController = loader.getController();
+            entryPageController.setGui(this);
+
+            SantoriniStage.getScene().setRoot(entryPage);
+            SantoriniStage.show();
+
+        }catch (IOException exception){
+            System.out.println(exception.toString());
+        }
     }
 
-    public void connectButtonReleased() {
-        ConnectButton.setImage(ConnectButtonReleased);
-        System.out.println("release guic"+this.guiController);
-        System.out.println(this.address);
+    public void showRegisteredPage() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Views/RegisteredPage.fxml"));
+            Parent registeredPage = (Parent) loader.load();
+
+            RegisteredController registeredController = loader.getController();
+            registeredController.setGui(this);
+            registeredController.setNickname(client.getNickname());
+
+            SantoriniStage.getScene().setRoot(registeredPage);
+            SantoriniStage.show();
+
+        }catch (IOException exception){
+            System.out.println(exception.toString());
+        }
+    }
+
+    public void showEnteringMatchPage() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Views/EnteringMatchPage.fxml"));
+            Parent enteringMatchPage = (Parent) loader.load();
+
+            EnteringMatchController enteringMatchController = loader.getController();
+            enteringMatchController.setGui(this);
+            enteringMatchController.setNickname(players);
+
+            SantoriniStage.getScene().setRoot(enteringMatchPage);
+            SantoriniStage.show();
+
+        }catch (IOException exception){
+            System.out.println(exception.toString());
+        }
+    }
+
+
+
+    /* ***************************************************************************************************************
+     *                    Methods fired by the client's methods that trigger the change of the view                  *
+     *****************************************************************************************************************/
+
+    /**
+     * Method of the ClientObserver interface that is fired by the client after connection
+     */
+
+    @Override
+    public void OnConnected(){
+        Platform.runLater(() -> showConnectedPage());
+    }
+
+    /**
+     * Method of the ClientObserver interface that is fired by the client if there was an error when trying to connect
+     */
+
+    @Override
+    public void OnConnectionError() {
+    }
+
+    /**
+     * Method of the ClientObserver interface that is fired by the client if it has been disconnected from the server
+     */
+
+    @Override
+    public void OnDisconnected() {
+        Platform.runLater(() -> showEntryPage());
+    }
+
+    /**
+     * Method of the ClientObserver interface that is fired by the client after the user has registered
+     */
+
+    @Override
+    public void OnRegistered() {
+        Platform.runLater(() -> showRegisteredPage());
 
     }
 
-    public void exitButtonPressed() throws Exception {
-        ExitButton.setImage(ExitButtonPressed);
-        guiController.client.Disconnect();
+    /**
+     * Method of the ClientObserver interface that is fired by the client if there was an error when trying to register
+     */
+
+    @Override
+    public void OnRegistrationError(String error) {
+    }
+
+    /**
+     * Method of the ClientObserver interface that is fired by the client after the user has been deregistered
+     */
+
+    @Override
+    public void OnDeregistered() {
+        Platform.runLater(() -> showConnectedPage());
+    }
+
+    /**
+     * Method of the ClientObserver interface that is fired by the client when a user leaves the match
+     *
+     * @param nickname nicknames of the user that left the match
+     */
+
+    @Override
+    public void OnLeftMatch(String nickname) {
+
+    }
+
+    /**
+     * Method of the ClientObserver interface that is fired by the client after connection
+     */
+    @Override
+    public void OnChooseMatchType() {
+    }
+
+    /**
+     * Method of the ClientObserver interface that is fired by the client when entering a match
+     */
+
+    @Override
+    public void OnEnteringMatch(List<String> players) {
+        this.players = players;
+        Platform.runLater(() -> showEnteringMatchPage());
+    }
+
+    /**
+     * Method of the ClientObserver interface that is fired by the client when it has entered a match
+     */
+
+    @Override
+    public void OnEnteredMatch(List<String> players) {
+
+    }
+
+    /**
+     * Method of the ClientObserver interface that is fired by the client when choosing the list of gods to use in the match
+     *
+     * @param requiredgods number of gods that the client must choose
+     * @param gods         gods' names chosen by the user
+     */
+
+    @Override
+    public void OnChooseGods(int requiredgods, List<String> gods) {
+        this.requiredgods = requiredgods;
+        this.gods = gods;
+    }
+
+    /**
+     * Method of the ClientObserver interface that is fired by the client when choosing the god to play with
+     *
+     * @param chosengods chosen gods to set as the gods managed by the cli that will communicate them to the user
+     */
+
+    @Override
+    public void OnChooseGod(List<String> chosengods) {
+        this.gods = chosengods;
+    }
+
+    /**
+     * Method of the ClientObserver interface that is fired by the client when choosing the first player that
+     * will place its workers and start playing
+     *
+     * @param players players in the match from which the selection must be done
+     */
+
+    @Override
+    public void OnChooseFirstPlayer(List<String> players) {
+        this.players = players;
+    }
+
+
+    /**
+     * Method of the ClientObserver interface that is fired by the client when placing the workers on the board for the first time
+     *
+     * @param nodes board in xml format that needs to be processed by the GUI when it prints the board
+     *              it also contains the list of players with their gods that needs to be saved
+     */
+
+    @Override
+    public void OnChooseWorkerStartPosition(NodeList nodes) {
+
+        Node node;
+        for (int i = 0; i < nodes.getLength(); i++) {
+            node = nodes.item(i);
+
+            if (node.getNodeName().equals("board")) {
+                this.nodeboard = node;
+            } else if (node.getNodeName().equals("players")) {
+
+                Node player;
+                if (node.hasChildNodes()) {
+                    NodeList players = node.getChildNodes();
+
+                    for (int j = 0; j < players.getLength(); j++) {
+                        player = players.item(j);
+
+                        if (player.getNodeName().equals("player")) {
+                            String playerNickname = player.getAttributes().getNamedItem("nickname").getTextContent();
+                            String playerGod = player.getAttributes().getNamedItem("god").getTextContent();
+
+                            NicknameGodMap.put(playerNickname, playerGod);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
+    /* ************************************* METHODS REGARDING THE COMMUNICATION WHEN THE TURN HAS STARTED ************************+ */
+
+    /**
+     * Method of the ClientObserver interface that is fired by the client when choosing the worker to play the turn with
+     *
+     * @param board board in xml format that needs to be processed by the GUI when it prints the board
+     */
+
+    @Override
+    public void OnChooseWorker(Node board) {
+        this.nodeboard = board;
+    }
+
+    /**
+     * Method of the ClientObserver interface that is fired by the client when choosing the cell to move the worker onto
+     *
+     * @param nodes cells where is possible to move the worker in xml format that needs to be processed by the GUI
+     */
+    @Override
+    public void OnCandidateCellsForMove(NodeList nodes) {
+
+        indexcandidatecells.clear();
+        Node node;
+        for (int i = 0; i < nodes.getLength(); i++) {
+            node = nodes.item(i);
+
+            if (node.getNodeName().equals("board")) {
+                this.nodeboard = node;
+            } else if (node.getNodeName().equals("candidates")) {
+
+                Node cell;
+                if (node.hasChildNodes()) {
+                    NodeList cells = node.getChildNodes();
+
+                    for (int j = 0; j < cells.getLength(); j++) {
+                        cell = cells.item(j);
+
+                        if (cell.getNodeName().equals("cell")) {
+                            int id = getIdOfCellNode(cell);
+                            indexcandidatecells.add(id);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Method of the ClientObserver interface that is fired by the client when choosing the cell to move the worker onto
+     *
+     * @param nodes cells where is possible to move the worker in xml format that needs to be processed by the GUI
+     */
+    @Override
+    public void OnCandidateCellsForOptMove(NodeList nodes) {
+
+        indexcandidatecells.clear();
+        Node node;
+        for (int i = 0; i < nodes.getLength(); i++) {
+            node = nodes.item(i);
+
+            if (node.getNodeName().equals("board")) {
+                this.nodeboard = node;
+            } else if (node.getNodeName().equals("candidates")) {
+
+                Node cell;
+                if (node.hasChildNodes()) {
+                    NodeList cells = node.getChildNodes();
+
+                    for (int j = 0; j < cells.getLength(); j++) {
+                        cell = cells.item(j);
+
+                        if (cell.getNodeName().equals("cell")) {
+                            int id = getIdOfCellNode(cell);
+                            indexcandidatecells.add(id);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Method of the ClientObserver interface that is fired by the client when choosing the cell to move the worker onto
+     *
+     * @param nodes cells where is possible to move the worker in xml format that needs to be processed by the GUI
+     */
+    @Override
+    public void OnCandidateCellsForBuild(NodeList nodes) {
+
+        indexcandidatecells.clear();
+        Node node;
+        for (int i = 0; i < nodes.getLength(); i++) {
+            node = nodes.item(i);
+
+            if (node.getNodeName().equals("board")) {
+                this.nodeboard = node;
+            } else if (node.getNodeName().equals("candidates")) {
+
+                Node cell;
+                if (node.hasChildNodes()) {
+                    NodeList cells = node.getChildNodes();
+
+                    for (int j = 0; j < cells.getLength(); j++) {
+                        cell = cells.item(j);
+
+                        if (cell.getNodeName().equals("cell")) {
+                            int id = getIdOfCellNode(cell);
+                            indexcandidatecells.add(id);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Method of the ClientObserver interface that is fired by the client when choosing the cell to move the worker onto
+     *
+     * @param nodes cells where is possible to move the worker in xml format that needs to be processed by the GUI
+     */
+    @Override
+    public void OnCandidateCellsForOptBuild(NodeList nodes) {
+
+        indexcandidatecells.clear();
+        Node node;
+        for (int i = 0; i < nodes.getLength(); i++) {
+            node = nodes.item(i);
+
+            if (node.getNodeName().equals("board")) {
+                this.nodeboard = node;
+            } else if (node.getNodeName().equals("candidates")) {
+
+                Node cell;
+                if (node.hasChildNodes()) {
+                    NodeList cells = node.getChildNodes();
+
+                    for (int j = 0; j < cells.getLength(); j++) {
+                        cell = cells.item(j);
+
+                        if (cell.getNodeName().equals("cell")) {
+                            int id = getIdOfCellNode(cell);
+                            indexcandidatecells.add(id);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Method of the ClientObserver interface that is fired by the client when choosing the cell to move the worker onto
+     *
+     * @param nodes cells where is possible to move the worker in xml format that needs to be processed by the GUI
+     */
+    @Override
+    public void OnCandidateCellsForOptEnd(NodeList nodes) {
+
+        indexcandidatecells.clear();
+        Node node;
+        for (int i = 0; i < nodes.getLength(); i++) {
+            node = nodes.item(i);
+
+            if (node.getNodeName().equals("board")) {
+                this.nodeboard = node;
+            } else if (node.getNodeName().equals("candidates")) {
+
+                Node cell;
+                if (node.hasChildNodes()) {
+                    NodeList cells = node.getChildNodes();
+
+                    for (int j = 0; j < cells.getLength(); j++) {
+                        cell = cells.item(j);
+
+                        if (cell.getNodeName().equals("cell")) {
+                            int id = getIdOfCellNode(cell);
+                            indexcandidatecells.add(id);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Method of the ClientObserver interface that is fired by the client when there's a winner
+     *
+     * @param nickname nickname of the winner
+     */
+
+    @Override
+    public void OnWinner(String nickname) {
+
+    }
+
+    /**
+     * Method of the ClientObserver interface that is fired by the client when a user loses
+     */
+
+    @Override
+    public void OnLoser() {
+
+    }
+
+
+    /**
+     * Method of the ClientObserver interface that is fired by the client when receiving the updated board when it's not playing
+     *
+     * @param nodes board cells updated and the playing player's nickname
+     */
+    @Override
+    public void OnPrintUpdatedBoard(NodeList nodes) {
+
+        Node node;
+        for (int i = 0; i < nodes.getLength(); i++) {
+            node = nodes.item(i);
+
+            if (node.getNodeName().equals("board")) {
+                this.nodeboard = node;
+            } else if (node.getNodeName().equals("playingPlayer")) {
+
+                //this.playingPlayerNickname = node.getAttributes().getNamedItem("nickname").getTextContent();
+
+            }
+        }
+    }
+
+
+
+    /* ******************************************************************************************************************* *
+     *                                      UTILITY METHODS FOR MANAGING THE BOARD TO SHOW                                 *
+     * ******************************************************************************************************************* */
+
+    /**
+     * Method that returns the node of the cell that has a certain id from the board in xml format (nodeboard of the class)
+     *
+     * @param cellnodeid is of the cell node that is being found
+     * @return the cell node found with the given id, null if there were no cells in the board given by the server
+     */
+
+    public Node getCellNodeGivenTheID(int cellnodeid) {
+        Node cell;
+
+        if (nodeboard.hasChildNodes()) {
+            NodeList cells = nodeboard.getChildNodes();
+            for (int i = 0; i < cells.getLength(); i++) {
+                cell = cells.item(i);
+
+                if (cell.getNodeName().equals("cell")) {
+                    if (Integer.parseInt(cell.getAttributes().getNamedItem("id").getTextContent()) == cellnodeid) {
+                        return cell;
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Method to get the id of a cell given its node
+     *
+     * @param cellnode node in xml format from which to get the id
+     * @return the id of the cell
+     */
+
+    public int getIdOfCellNode(Node cellnode) {
+        return Integer.parseInt(cellnode.getAttributes().getNamedItem("id").getTextContent());
+    }
+
+    /**
+     * Method to get the nickname of a cell given its node
+     *
+     * @param cellnode node in xml format from which to get the nickname (it can be an empty string if the cell has no nikcname)
+     * @return the nickname associated to the cell
+     */
+
+    public String getNicknameOfCellNode(Node cellnode) {
+
+        return cellnode.getAttributes().getNamedItem("nickname").getTextContent();
+    }
+
+    /**
+     * Method to get the level of a cell given its node
+     *
+     * @param cellnode node in xml format from which to get the level
+     * @return the level of the cell
+     */
+
+    public int getLevelOfCellNode(Node cellnode) {
+        return Integer.parseInt(cellnode.getAttributes().getNamedItem("level").getTextContent());
+    }
+
+    /**
+     * Method to get the dome of a cell given its node
+     *
+     * @param cellnode node in xml format from which to get the dome
+     * @return true fi the call has a dome, otherwise false
+     */
+
+    public boolean getDomeOfCellNode(Node cellnode) {
+        return Boolean.parseBoolean(cellnode.getAttributes().getNamedItem("dome").getTextContent());
+    }
+
+
+    /**
+     * Method that resets the candidate cells saved in the GUI
+     * IMPORTANT: use this each time before sending the answer to the server
+     */
+
+    public void restoreCandidateCells() {
+        indexcandidatecells.clear();
+    }
+
+
+    /* ******************************************************************************************************************* *
+     *                                METHODS CALLED BY THE GUI CONTROLLER THAT TRIGGER ACTIONS                            *
+     * ******************************************************************************************************************* */
+
+    public void doConnect(String serverip) {
+        client.Connect(serverip);
+    }
+
+    public void doExit() {
+        client.Disconnect();
         Platform.exit();
         System.exit(0);
     }
 
-    public void exitButtonReleased() {
-        ExitButton.setImage(ExitButtonReleased);
+    public void doDisconnect() {
+        client.Disconnect();
     }
+
+    public void doRegister(String nickname) {
+        client.Register(nickname);
+    }
+
+    public void doDeregister() {
+        client.Deregister();
+    }
+
+    public void doSearchMatch(int numberOfPlayers) {
+        client.SearchMatch(numberOfPlayers);
+    }
+
 }
+
+

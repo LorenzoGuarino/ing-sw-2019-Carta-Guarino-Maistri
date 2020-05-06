@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane fx:id="enteringMatchPane" prefHeight="625.0" prefWidth="992.0" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.PSP027.View.Controllers.EnteringMatchController">
+    <children>
+        <GridPane layoutX="205.0" layoutY="217.0" prefHeight="332.0" prefWidth="578.0" AnchorPane.bottomAnchor="110.0" AnchorPane.leftAnchor="290.0" AnchorPane.rightAnchor="290.0" AnchorPane.topAnchor="310.0">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="478.0" minWidth="10.0" prefWidth="340.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="272.0" minWidth="10.0" prefWidth="47.0" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            </rowConstraints>
+            <children>
+                <Label fx:id="player1" text="">
+                    <font>
+                        <Font size="30.0" />
+                    </font></Label>
+                <Label fx:id="player2" text="" GridPane.rowIndex="1">
+                    <font>
+                        <Font size="30.0" />
+                    </font></Label>
+                <Label fx:id="player3" text="" GridPane.rowIndex="2">
+                    <font>
+                        <Font size="30.0" />
+                    </font></Label>
+            </children>
+            <padding>
+                <Insets left="80.0" />
+            </padding>
+        </GridPane>
+        <ImageView fx:id="DeregisterButton" fitHeight="50.0" fitWidth="93.0" layoutX="14.0" layoutY="14.0" onMousePressed="#deregisterButtonPressed" onMouseReleased="#deregisterButtonReleased" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="430.0" AnchorPane.leftAnchor="130.0" AnchorPane.topAnchor="430.0">
+            <image>
+                <Image url="@../images/Buttons/btn_goBack.png" />
+            </image>
+        </ImageView>
+      <GridPane alignment="CENTER" layoutX="778.0" layoutY="278.0" prefHeight="92.0" prefWidth="172.0" AnchorPane.rightAnchor="60.0" AnchorPane.topAnchor="420.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
+        </rowConstraints>
+          <children>
+              <Label fx:id="SearchingForMatchMessage" alignment="CENTER" prefHeight="40.0" prefWidth="665.0" styleClass="ParagraphText" text="Wait while other players join the match" textAlignment="CENTER" textFill="#432a1a" wrapText="true">
+                  <font>
+                      <Font size="16.0" />
+                  </font>
+              </Label>
+              <ProgressIndicator fx:id="WaitForOtherPlayersIndicator" layoutX="467.0" layoutY="586.0" stylesheets="@../style.css" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+          </children>
+      </GridPane>
+    </children>
+</AnchorPane>
