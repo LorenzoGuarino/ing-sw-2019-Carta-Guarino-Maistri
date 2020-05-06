@@ -16,3 +16,14 @@
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
 }
+
+#boardPane{
+    -fx-background-image: url("images/SantoriniBoard.png");
+    -fx-background-size: 100% auto;
+    -fx-background-position: center center;
+}
+#registerPane{
+    -fx-background-image: url("images/SantoriniBoard.png");
+    -fx-background-size: 100% auto;
+    -fx-background-position: center center;
+}
