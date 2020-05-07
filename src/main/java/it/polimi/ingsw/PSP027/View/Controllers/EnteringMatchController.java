@@ -32,10 +32,13 @@ public class EnteringMatchController {
 
     @FXML
     public Label player1;
+    public ImageView player1Icon;
     @FXML
     public Label player2;
+    public ImageView player2Icon;
     @FXML
     public Label player3;
+    public ImageView player3Icon;
     @FXML
     public Pane enteringMatchPane;
     @FXML
@@ -69,11 +72,16 @@ public class EnteringMatchController {
 
     public void setNickname (List<String> players) {
         player1.setText(players.get(0));
-        if (players.size() == 2)
+        player1Icon.setVisible(true);
+        if (players.size() == 2){
             player2.setText(players.get(1));
+            player2Icon.setVisible(true);
+        }
         else if (players.size() == 3) {
-            player2.setText(players.get(1));
+            player2.setText(players.get(1));//?
+            player2Icon.setVisible(true);
             player3.setText(players.get(2));
+            player3Icon.setVisible(true);
         }
     }
 

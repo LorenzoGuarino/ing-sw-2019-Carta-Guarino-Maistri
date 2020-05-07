@@ -19,11 +19,11 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
-                <Label fx:id="player1" text="">
+                <Label fx:id="player1" text="" textFill="#d30d0d">
                     <font>
                         <Font size="30.0" />
                     </font></Label>
-                <Label fx:id="player2" text="" GridPane.rowIndex="1">
+                <Label fx:id="player2" text="" textFill="#f8af2f" GridPane.rowIndex="1">
                     <font>
                         <Font size="30.0" />
                     </font></Label>
@@ -31,6 +31,18 @@
                     <font>
                         <Font size="30.0" />
                     </font></Label>
+            <ImageView fx:id="player1Icon" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.columnIndex="1">
+               <image>
+                  <Image url="@../images/Icons/redWorker.png" />
+               </image></ImageView>
+            <ImageView fx:id="player2Icon" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <image>
+                  <Image url="@../images/Icons/orangeWorker.png" />
+               </image></ImageView>
+            <ImageView fx:id="player3Icon" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <image>
+                  <Image url="@../images/Icons/yellowWorker.png" />
+               </image></ImageView>
             </children>
             <padding>
                 <Insets left="80.0" />
