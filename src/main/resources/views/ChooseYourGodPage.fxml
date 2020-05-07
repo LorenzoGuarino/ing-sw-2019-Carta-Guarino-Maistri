@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.PSP027.View.Controllers.ChooseYourGodController">
+   <children>
+      <GridPane fx:id="GodsToChoose" layoutX="140.0" layoutY="89.0" prefHeight="868.0" prefWidth="558.0">
+        <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <ImageView fx:id="Apollo" fitHeight="220.0" fitWidth="150.0" onMouseClicked="#godHasBeenClicked" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/Gods/Apollo_big.png" />
+               </image>
+               <GridPane.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </GridPane.margin>
+            </ImageView>
+            <ImageView fx:id="Artemis" fitHeight="220.0" fitWidth="150.0" layoutX="10.0" layoutY="12.0" onMouseClicked="#godHasBeenClicked" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1">
+               <image>
+                  <Image url="@../images/Gods/Artemis_big.png" />
+               </image>
+               <GridPane.margin>
+                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+               </GridPane.margin>
+            </ImageView>
+            <ImageView fx:id="Athena" fitHeight="220.0" fitWidth="150.0" layoutX="10.0" layoutY="12.0" onMouseClicked="#godHasBeenClicked" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2">
+               <image>
+                  <Image url="@../images/Gods/Athena_big.png" />
+               </image>
+               <GridPane.margin>
+                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+               </GridPane.margin>
+            </ImageView>
+            <ImageView fx:id="Atlas" fitHeight="220.0" fitWidth="150.0" layoutX="10.0" layoutY="12.0" onMouseClicked="#godHasBeenClicked" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3">
+               <image>
+                  <Image url="@../images/Gods/Atlas_big.png" />
+               </image>
+               <GridPane.margin>
+                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+               </GridPane.margin>
+            </ImageView>
+            <ImageView fx:id="Demeter" fitHeight="220.0" fitWidth="150.0" layoutX="10.0" layoutY="12.0" onMouseClicked="#godHasBeenClicked" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1">
+               <image>
+                  <Image url="@../images/Gods/Demeter_big.png" />
+               </image>
+               <GridPane.margin>
+                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+               </GridPane.margin>
+            </ImageView>
+            <ImageView fx:id="Hephaestus" fitHeight="220.0" fitWidth="150.0" layoutX="10.0" layoutY="12.0" onMouseClicked="#godHasBeenClicked" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <image>
+                  <Image url="@../images/Gods/Hephaestus_big.png" />
+               </image>
+               <GridPane.margin>
+                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+               </GridPane.margin>
+            </ImageView>
+            <ImageView fx:id="Minotaur" fitHeight="220.0" fitWidth="150.0" layoutX="10.0" layoutY="12.0" onMouseClicked="#godHasBeenClicked" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="1">
+               <image>
+                  <Image url="@../images/Gods/Minotaur_big.png" />
+               </image>
+               <GridPane.margin>
+                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+               </GridPane.margin>
+            </ImageView>
+            <ImageView fx:id="Pan" fitHeight="220.0" fitWidth="150.0" layoutX="10.0" layoutY="12.0" onMouseClicked="#godHasBeenClicked" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.rowIndex="1">
+               <image>
+                  <Image url="@../images/Gods/Pan_big.png" />
+               </image>
+               <GridPane.margin>
+                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+               </GridPane.margin>
+            </ImageView>
+            <ImageView fx:id="Prometheus" fitHeight="220.0" fitWidth="150.0" layoutX="10.0" layoutY="12.0" onMouseClicked="#godHasBeenClicked" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="2">
+               <image>
+                  <Image url="@../images/Gods/Prometheus_full.png" />
+               </image>
+               <GridPane.margin>
+                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+               </GridPane.margin>
+            </ImageView>
+            <ImageView fx:id="Ares" fitHeight="220.0" fitWidth="150.0" layoutX="10.0" layoutY="12.0" onMouseClicked="#godHasBeenClicked" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <image>
+                  <Image url="@../images/Gods/Ares_big.png" />
+               </image>
+               <GridPane.margin>
+                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+               </GridPane.margin>
+            </ImageView>
+            <ImageView fx:id="Hestia" fitHeight="220.0" fitWidth="150.0" layoutX="10.0" layoutY="12.0" onMouseClicked="#godHasBeenClicked" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="2">
+               <image>
+                  <Image url="@../images/Gods/Hestia_big.png" />
+               </image>
+               <GridPane.margin>
+                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+               </GridPane.margin>
+            </ImageView>
+            <ImageView fx:id="Medusa" fitHeight="220.0" fitWidth="150.0" layoutX="10.0" layoutY="12.0" onMouseClicked="#godHasBeenClicked" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.rowIndex="2">
+               <image>
+                  <Image url="@../images/Gods/Medusa_big.png" />
+               </image>
+               <GridPane.margin>
+                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+               </GridPane.margin>
+            </ImageView>
+            <ImageView fx:id="Poseidon" fitHeight="220.0" fitWidth="150.0" layoutX="10.0" layoutY="12.0" onMouseClicked="#godHasBeenClicked" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="3">
+               <image>
+                  <Image url="@../images/Gods/Poseidon_big.png" />
+               </image>
+               <GridPane.margin>
+                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+               </GridPane.margin>
+            </ImageView>
+            <ImageView fx:id="Zeus" fitHeight="220.0" fitWidth="150.0" layoutX="10.0" layoutY="12.0" onMouseClicked="#godHasBeenClicked" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="3">
+               <image>
+                  <Image url="@../images/Gods/Zeus_big.png" />
+               </image>
+               <GridPane.margin>
+                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+               </GridPane.margin>
+            </ImageView>
+         </children>
+      </GridPane>
+      <ImageView fx:id="GodSelectedZoom" fitHeight="688.0" fitWidth="434.0" layoutX="818.0" layoutY="135.0" pickOnBounds="true" preserveRatio="true">
+      </ImageView>
+      <ImageView fx:id="GodSelectedDescription" fitHeight="608.0" fitWidth="434.0" layoutX="1400.0" layoutY="137.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="ConfirmSelectionButton" fitHeight="59.0" fitWidth="230.0" layoutX="1590.0" layoutY="686.0" onMousePressed="#confirmSelectionButtonPressed" onMouseReleased="#confirmSelectionButtonReleased" pickOnBounds="true" preserveRatio="true" />
+   </children>
+</AnchorPane>
