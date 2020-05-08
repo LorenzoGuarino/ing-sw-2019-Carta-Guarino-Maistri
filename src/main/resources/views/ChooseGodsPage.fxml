@@ -10,7 +10,7 @@
         <font>
             <Font size="45.0" />
         </font></Label>
-   <GridPane hgap="10.0" layoutX="36.0" layoutY="81.0" prefHeight="640.0" prefWidth="500.0" vgap="26.0" AnchorPane.leftAnchor="67.0" AnchorPane.topAnchor="130.0">
+   <GridPane fx:id="GodsToChooseGrid" hgap="10.0" layoutX="36.0" layoutY="81.0" onMouseClicked="#displayGodDescription" prefHeight="640.0" prefWidth="500.0" vgap="26.0" AnchorPane.leftAnchor="67.0" AnchorPane.topAnchor="130.0">
      <columnConstraints>
        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
          <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -96,9 +96,10 @@
          </ImageView>
       </children>
    </GridPane>
-   <ImageView fx:id="GodDescription" fitHeight="455.0" fitWidth="345.0" layoutX="732.0" layoutY="135.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="60.0" AnchorPane.topAnchor="170.0">
-    <image>
-        <Image url="@../images/Gods/ApolloDescription.png" />
-    </image>
+   <ImageView fx:id="GodDescription" fitHeight="455.0" fitWidth="345.0" layoutX="732.0" layoutY="135.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="60.0" AnchorPane.topAnchor="170.0" />
+   <ImageView fx:id="ConfirmButton" fitHeight="66.0" fitWidth="200.0" layoutX="909.0" layoutY="639.0" onMousePressed="#confirmButtonPressed" onMouseReleased="#confirmButtonReleased" pickOnBounds="true" preserveRatio="true" visible="false">
+       <image>
+           <Image url="@../images/Buttons/btn_green.png" />
+       </image>
    </ImageView>
 </AnchorPane>
