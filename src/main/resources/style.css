@@ -30,6 +30,12 @@
     -fx-background-position: center center;
 }
 
+#enteredMatchPane {
+    -fx-background-image: url("images/EnteringMatch.png");
+    -fx-background-size: 100% auto;
+    -fx-background-position: center center;
+}
+
 @font-face {
     src: url('fonts/LillyBelle.ttf');
 }
@@ -38,7 +44,7 @@
     src: url('fonts/CrimsonText-Roman.ttf');
 }
 
-.TitleText {
+.LillyBelleText {
     -fx-font-family: 'LillyBelle';
 }
 
@@ -48,6 +54,12 @@
 
 #boardPane{
     -fx-background-image: url("images/SantoriniBoard.png");
+    -fx-background-size: 100% auto;
+    -fx-background-position: center center;
+}
+
+#chooseGodsPane {
+    -fx-background-image: url("images/ChooseGodsPane.png");
     -fx-background-size: 100% auto;
     -fx-background-position: center center;
 }

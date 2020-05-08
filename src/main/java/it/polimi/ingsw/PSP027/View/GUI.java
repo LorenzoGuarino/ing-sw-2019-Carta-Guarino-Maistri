@@ -2,14 +2,15 @@ package it.polimi.ingsw.PSP027.View;
 
 import it.polimi.ingsw.PSP027.Network.Client.Client;
 import it.polimi.ingsw.PSP027.Network.Client.ClientObserver;
-import it.polimi.ingsw.PSP027.View.Controllers.EntryPageController;
-import it.polimi.ingsw.PSP027.View.Controllers.ConnectedController;
-import it.polimi.ingsw.PSP027.View.Controllers.RegisteredController;
-import it.polimi.ingsw.PSP027.View.Controllers.EnteringMatchController;
+import it.polimi.ingsw.PSP027.View.Controllers.*;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import org.w3c.dom.Node;
@@ -72,7 +73,7 @@ public class GUI extends Application implements ClientObserver {
 
         SantoriniStage.setTitle("Santorini"); //name of the game window that is shown
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Views/EntryPage.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/EntryPage.fxml"));
         Parent entryPage = (Parent) loader.load();
 
         EntryPageController ctrl = loader.getController();
@@ -85,9 +86,13 @@ public class GUI extends Application implements ClientObserver {
         SantoriniStage.show();
     }
 
+    public Stage getSantoriniStage() {
+        return SantoriniStage;
+    }
+
     public void showConnectedPage() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Views/ConnectedPage.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/ConnectedPage.fxml"));
             Parent connectedPage = (Parent) loader.load();
 
             ConnectedController connectedController = loader.getController();
@@ -103,7 +108,7 @@ public class GUI extends Application implements ClientObserver {
 
     public void showEntryPage() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Views/EntryPage.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/EntryPage.fxml"));
             Parent entryPage = (Parent) loader.load();
 
             EntryPageController entryPageController = loader.getController();
@@ -119,7 +124,7 @@ public class GUI extends Application implements ClientObserver {
 
     public void showRegisteredPage() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Views/RegisteredPage.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/RegisteredPage.fxml"));
             Parent registeredPage = (Parent) loader.load();
 
             RegisteredController registeredController = loader.getController();
@@ -136,7 +141,7 @@ public class GUI extends Application implements ClientObserver {
 
     public void showEnteringMatchPage() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Views/EnteringMatchPage.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/EnteringMatchPage.fxml"));
             Parent enteringMatchPage = (Parent) loader.load();
 
             EnteringMatchController enteringMatchController = loader.getController();
@@ -145,6 +150,48 @@ public class GUI extends Application implements ClientObserver {
 
             SantoriniStage.getScene().setRoot(enteringMatchPage);
             SantoriniStage.show();
+
+        }catch (IOException exception){
+            System.out.println(exception.toString());
+        }
+    }
+
+    public void showEnteredMatchPage() {
+        try {
+            System.out.println("showEnteredMatchPage IN");
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/EnteredMatchPage.fxml"));
+            Parent enteredMatchPage = (Parent) loader.load();
+
+            EnteredMatchController enteredMatchController = loader.getController();
+            enteredMatchController.setGui(this);
+            enteredMatchController.setNickname(players);
+
+            SantoriniStage.getScene().setRoot(enteredMatchPage);
+            SantoriniStage.show();
+
+            System.out.println("showEnteredMatchPage OUT");
+
+        }catch (IOException exception){
+            System.out.println(exception.toString());
+        }
+    }
+
+    public void showChooseGodsPage() {
+        try {
+            System.out.println("showChooseGodsPage IN");
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/ChooseGodsPage.fxml"));
+            Parent chooseGodsPage = (Parent) loader.load();
+
+            ChooseGodsController chooseGodsController = loader.getController();
+            chooseGodsController.setGui(this);
+            chooseGodsController.setChooseGodsTitle(requiredgods);
+
+            SantoriniStage.getScene().setRoot(chooseGodsPage);
+            SantoriniStage.show();
+
+            System.out.println("showChooseGodsPage OUT");
 
         }catch (IOException exception){
             System.out.println(exception.toString());
@@ -163,7 +210,9 @@ public class GUI extends Application implements ClientObserver {
 
     @Override
     public void OnConnected(){
+        System.out.println("OnConnected IN");
         Platform.runLater(() -> showConnectedPage());
+        System.out.println("OnConnected OUT");
     }
 
     /**
@@ -180,7 +229,9 @@ public class GUI extends Application implements ClientObserver {
 
     @Override
     public void OnDisconnected() {
+        System.out.println("OnDisconnected IN");
         Platform.runLater(() -> showEntryPage());
+        System.out.println("OnDisconnected OUT");
     }
 
     /**
@@ -189,7 +240,9 @@ public class GUI extends Application implements ClientObserver {
 
     @Override
     public void OnRegistered() {
+        System.out.println("OnRegistered IN");
         Platform.runLater(() -> showRegisteredPage());
+        System.out.println("OnRegistered OUT");
 
     }
 
@@ -199,6 +252,12 @@ public class GUI extends Application implements ClientObserver {
 
     @Override
     public void OnRegistrationError(String error) {
+        Alert alert = new Alert(Alert.AlertType.WARNING, "We are very sorry, please try again.");
+        alert.setTitle("REGISTRATION ERROR");
+        alert.setHeaderText("There was an error with your registration");
+        alert.initModality(Modality.APPLICATION_MODAL);
+        alert.initOwner(SantoriniStage);
+        Optional<ButtonType> result = alert.showAndWait();
     }
 
     /**
@@ -207,6 +266,7 @@ public class GUI extends Application implements ClientObserver {
 
     @Override
     public void OnDeregistered() {
+
         Platform.runLater(() -> showConnectedPage());
     }
 
@@ -234,8 +294,10 @@ public class GUI extends Application implements ClientObserver {
 
     @Override
     public void OnEnteringMatch(List<String> players) {
+        System.out.println("OnEnteringMatch IN");
         this.players = players;
         Platform.runLater(() -> showEnteringMatchPage());
+        System.out.println("OnEnteringMatch OUT");
     }
 
     /**
@@ -244,7 +306,10 @@ public class GUI extends Application implements ClientObserver {
 
     @Override
     public void OnEnteredMatch(List<String> players) {
-
+        System.out.println("OnEnteredMatch IN");
+        this.players = players;
+        Platform.runLater(() -> showEnteredMatchPage());
+        System.out.println("OnEnteredMatch OUT");
     }
 
     /**
@@ -256,8 +321,11 @@ public class GUI extends Application implements ClientObserver {
 
     @Override
     public void OnChooseGods(int requiredgods, List<String> gods) {
+        System.out.println("OnChooseGods IN");
         this.requiredgods = requiredgods;
         this.gods = gods;
+        Platform.runLater(() -> showChooseGodsPage());
+        System.out.println("OnChooseGods OUT");
     }
 
     /**
@@ -268,7 +336,10 @@ public class GUI extends Application implements ClientObserver {
 
     @Override
     public void OnChooseGod(List<String> chosengods) {
+        //System.out.println("OnChooseGod IN");
         this.gods = chosengods;
+        //Platform.runLater(() -> showChooseYourGodPage());
+        //System.out.println("OnChooseGod OUT");
     }
 
     /**

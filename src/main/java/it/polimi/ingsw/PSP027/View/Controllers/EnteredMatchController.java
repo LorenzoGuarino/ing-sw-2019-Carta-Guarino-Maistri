@@ -17,7 +17,7 @@ import org.w3c.dom.Node;
 
 import java.util.*;
 
-public class EnteringMatchController {
+public class EnteredMatchController {
 
     // Reference to the main gui application
     private GUI gui;
@@ -44,7 +44,7 @@ public class EnteringMatchController {
     public Label player3;
     public ImageView player3Icon;
     @FXML
-    public Pane enteringMatchPane;
+    public Pane enteredMatchPane;
     @FXML
     public ImageView ExitGameButton;
     Image exitButtonHovered = new Image("images/Buttons/btn_exitGame_hovered.png");
@@ -56,7 +56,7 @@ public class EnteringMatchController {
     /**
      * Constructor, called before the initialize method
      */
-    public EnteringMatchController() {
+    public EnteredMatchController() {
     }
 
     /**
@@ -96,7 +96,6 @@ public class EnteringMatchController {
     }
 
     public void exitButtonPressed() {
-
         ButtonType YES = new ButtonType("yes", ButtonBar.ButtonData.OK_DONE);
         ButtonType NO = new ButtonType("no", ButtonBar.ButtonData.CANCEL_CLOSE);
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to exit the game? You will be lead to the registering page." ,YES, NO);

@@ -2,26 +2,27 @@ package it.polimi.ingsw.PSP027.View.Controllers;
 
 import it.polimi.ingsw.PSP027.Network.Client.Client;
 import it.polimi.ingsw.PSP027.View.GUI;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.TextField;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.stage.Modality;
 import org.w3c.dom.Node;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
-public class ChooseYourGodController {
+import java.util.*;
+
+public class ChooseGodsController {
 
     // Reference to the main gui application
     private GUI gui;
 
     public Client client = null;
-    private int requiredgods = 0;
     private List<String> gods = null;
     private List<String> players = null;
     private Node nodeboard; //it's overwritten every time a new board needs to be printed
@@ -33,9 +34,11 @@ public class ChooseYourGodController {
     /* ***************************************** GUI RENDERING RELATED VARIABLES ****************************************** */
 
     @FXML
-    public ImageView Apollo;
+    public Label ChooseGodsTitle;
     @FXML
-    public ImageView Ares;
+    public Pane chooseGodsPane;
+    @FXML
+    public ImageView Apollo;
     @FXML
     public ImageView Artemis;
     @FXML
@@ -47,43 +50,39 @@ public class ChooseYourGodController {
     @FXML
     public ImageView Hephaestus;
     @FXML
-    public ImageView Hestia;
-    @FXML
-    public ImageView Medusa;
-    @FXML
     public ImageView Minotaur;
     @FXML
     public ImageView Pan;
     @FXML
-    public ImageView Poseidon;
-    @FXML
     public ImageView Prometheus;
     @FXML
+    public ImageView Ares;
+    @FXML
+    public ImageView Hestia;
+    @FXML
+    public ImageView Medusa;
+    @FXML
+    public ImageView Poseidon;
+    @FXML
     public ImageView Zeus;
-    @FXML
-    public GridPane GodsToChoose;
-    @FXML
-    public ImageView ConfirmSelectionButton;
-
-    Image ConfirmSelectionButtonPressed = new Image("images/Buttons/bnt_green_pressed.png");
-    Image ConfirmSelectionButtonReleased = new Image("images/Buttons/btn_green.png");
 
     @FXML
-    public ImageView GodSelectedZoom;
+    public ImageView GodDescription;
 
-    @FXML
-    public ImageView GodSelectedDescription;
 
     /* ****************************************************************************************************************** */
 
+    /**
+     * Constructor, called before the initialize method
+     */
+    public ChooseGodsController() {
+    }
 
     /**
      * Initializes the controller, method automatically called when the fxml is loaded
      */
     @FXML
-    public void initialize()
-    {
-
+    public void initialize() {
     }
 
     /**
@@ -94,25 +93,10 @@ public class ChooseYourGodController {
         this.gui = Gui;
     }
 
+    public void setChooseGodsTitle (int requiredGods) {
+        ChooseGodsTitle.setText("CHOOSE " + requiredGods + " GODS TO PLAY THE MATCH WITH");
+    }
+
     /* ******************************* GUI CONTROLLER METHODS THAT TRIGGER GUI RENDERING AND CONNECTION WITH SERVER  ****************************** */
-
-    public void confirmSelectionButtonPressed() {
-        ConfirmSelectionButton.setImage(ConfirmSelectionButtonPressed);
-        //TODO controllare il dio selezionato, e inviarlo al server
-    }
-
-    public void confirmSelectionButtonReleased() {
-        ConfirmSelectionButton.setImage(ConfirmSelectionButtonReleased);
-    }
-
-    public void godHasBeenClicked(){
-        //TODO trovare l'immagine che è stata cliccata e mostrarla in GodSelectedZoom e mostrare la descrizione del rispettivo dio in GodSelectedDescription
-
-
-    }
-
-
-
-
 
 }
