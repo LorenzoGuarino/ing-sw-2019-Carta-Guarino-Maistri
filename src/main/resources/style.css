@@ -63,3 +63,15 @@
     -fx-background-size: 100% auto;
     -fx-background-position: center center;
 }
+
+#chooseYourGodPaneCase2{
+    -fx-background-image: url("images/ChooseYourGod_Case2.png");
+    -fx-background-size: 100% auto;
+    -fx-background-position: center center;
+}
+
+#chooseYourGodPaneCase3{
+    -fx-background-image: url("images/ChooseYourGod_Case3.png");
+    -fx-background-size: 100% auto;
+    -fx-background-position: center center;
+}

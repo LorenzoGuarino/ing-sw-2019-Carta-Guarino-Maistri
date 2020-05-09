@@ -198,6 +198,47 @@ public class GUI extends Application implements ClientObserver {
         }
     }
 
+    public void showChooseYourGodPageCase3() {
+        try {
+            System.out.println("showChooseYourGodPageCase3 IN");
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/ChooseYourGodPageCase3.fxml"));
+            Parent chooseYourGodsPageCase3 = (Parent) loader.load();
+
+            ChooseYourGodCase3Controller chooseYourGodCase3Controller = loader.getController();
+            chooseYourGodCase3Controller.setGui(this);
+            chooseYourGodCase3Controller.setChooseGodTitle(this.gods);
+
+            SantoriniStage.getScene().setRoot(chooseYourGodsPageCase3);
+            SantoriniStage.show();
+
+            System.out.println("showChooseYourGodPageCase3 OUT");
+
+        }catch (IOException exception){
+            System.out.println(exception.toString());
+        }
+    }
+
+    public void showChooseYourGodPageCase2(){
+        try {
+            System.out.println("showChooseYourGodPageCase2 IN");
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/ChooseYourGodPageCase2.fxml"));
+            Parent chooseYourGodsPageCase2 = (Parent) loader.load();
+
+            ChooseYourGodCase2Controller chooseYourGodCase2Controller = loader.getController();
+            chooseYourGodCase2Controller.setGui(this);
+            chooseYourGodCase2Controller.setChooseGodTitle(this.gods);
+
+            SantoriniStage.getScene().setRoot(chooseYourGodsPageCase2);
+            SantoriniStage.show();
+
+            System.out.println("showChooseYourGodPageCase2 OUT");
+
+        }catch (IOException exception){
+            System.out.println(exception.toString());
+        }
+    }
 
 
     /* ***************************************************************************************************************
@@ -336,10 +377,16 @@ public class GUI extends Application implements ClientObserver {
 
     @Override
     public void OnChooseGod(List<String> chosengods) {
-        //System.out.println("OnChooseGod IN");
+        System.out.println("OnChooseGod IN");
         this.gods = chosengods;
-        //Platform.runLater(() -> showChooseYourGodPage());
-        //System.out.println("OnChooseGod OUT");
+        if(this.gods.size()==3){
+            Platform.runLater(() -> showChooseYourGodPageCase3());
+            System.out.println("OnChooseGod OUT");
+        }else if(this.gods.size()==2){
+            Platform.runLater(() -> showChooseYourGodPageCase2());
+            System.out.println("OnChooseGod OUT");
+        }
+
     }
 
     /**
@@ -737,6 +784,13 @@ public class GUI extends Application implements ClientObserver {
         client.SearchMatch(numberOfPlayers);
     }
 
+    public void doSendGods(List<String> GodsChosen){
+        client.ChosenGods(GodsChosen);
+    }
+
+    public void doSendSelectedGod(String GodSelected){
+        client.ChosenGod(GodSelected);
+    }
 }
 
 
