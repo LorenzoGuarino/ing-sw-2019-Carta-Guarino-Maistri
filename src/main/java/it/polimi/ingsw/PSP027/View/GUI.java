@@ -32,6 +32,7 @@ public class GUI extends Application implements ClientObserver {
     private Map<String, String> NicknameGodMap = new HashMap<String, String>();
     private String[] chosen_cmd;
     private Stage SantoriniStage;
+    private String firstPlayersGod;
 
     /* ****************************************************** COMMANDS ************************************************** */
 
@@ -156,27 +157,6 @@ public class GUI extends Application implements ClientObserver {
         }
     }
 
-    public void showEnteredMatchPage() {
-        try {
-            System.out.println("showEnteredMatchPage IN");
-
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/EnteredMatchPage.fxml"));
-            Parent enteredMatchPage = (Parent) loader.load();
-
-            EnteredMatchController enteredMatchController = loader.getController();
-            enteredMatchController.setGui(this);
-            enteredMatchController.setNickname(players);
-
-            SantoriniStage.getScene().setRoot(enteredMatchPage);
-            SantoriniStage.show();
-
-            System.out.println("showEnteredMatchPage OUT");
-
-        }catch (IOException exception){
-            System.out.println(exception.toString());
-        }
-    }
-
     public void showChooseGodsPage() {
         try {
             System.out.println("showChooseGodsPage IN");
@@ -234,6 +214,63 @@ public class GUI extends Application implements ClientObserver {
             SantoriniStage.show();
 
             System.out.println("showChooseYourGodPageCase2 OUT");
+
+        }catch (IOException exception){
+            System.out.println(exception.toString());
+        }
+    }
+
+    public void showWaitingPage(String waitingMessage){
+        try {
+            System.out.println("showWaitingPage IN");
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/Waiting.fxml"));
+            Parent waitingPage = (Parent) loader.load();
+
+            WaitingController waitingController = loader.getController();
+            waitingController.setGui(this);
+            waitingController.setWaitingMessage(waitingMessage);
+
+            SantoriniStage.getScene().setRoot(waitingPage);
+            SantoriniStage.show();
+
+            System.out.println("showWaitingPage OUT");
+
+        }catch (IOException exception){
+            System.out.println(exception.toString());
+        }
+    }
+
+    public void showChooseFirstPlayerPageCase2() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/ChooseFirstPlayerCase2.fxml"));
+            Parent chooseFirstPlayerCase2Page = (Parent) loader.load();
+
+            ChooseFirstPlayerCase2Controller chooseFirstPlayerCase2Controller = loader.getController();
+            chooseFirstPlayerCase2Controller.setGui(this);
+            chooseFirstPlayerCase2Controller.setNickname(players);
+            chooseFirstPlayerCase2Controller.setGod(firstPlayersGod);
+
+            SantoriniStage.getScene().setRoot(chooseFirstPlayerCase2Page);
+            SantoriniStage.show();
+
+        }catch (IOException exception){
+            System.out.println(exception.toString());
+        }
+    }
+
+    public void showChooseFirstPlayerPageCase3() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/ChooseFirstPlayerCase3.fxml"));
+            Parent chooseFirstPlayerCase3Page = (Parent) loader.load();
+
+            ChooseFirstPlayerCase3Controller chooseFirstPlayerCase3Controller = loader.getController();
+            chooseFirstPlayerCase3Controller.setGui(this);
+            chooseFirstPlayerCase3Controller.setNickname(players);
+            chooseFirstPlayerCase3Controller.setGod(firstPlayersGod);
+
+            SantoriniStage.getScene().setRoot(chooseFirstPlayerCase3Page);
+            SantoriniStage.show();
 
         }catch (IOException exception){
             System.out.println(exception.toString());
@@ -347,10 +384,10 @@ public class GUI extends Application implements ClientObserver {
 
     @Override
     public void OnEnteredMatch(List<String> players) {
-        System.out.println("OnEnteredMatch IN");
+        System.out.println("OnWaiting IN");
         this.players = players;
-        Platform.runLater(() -> showEnteredMatchPage());
-        System.out.println("OnEnteredMatch OUT");
+        Platform.runLater(() -> showWaitingPage("Wait while the first player chooses the gods you will play with"));
+        System.out.println("OnWaiting OUT");
     }
 
     /**
@@ -386,6 +423,10 @@ public class GUI extends Application implements ClientObserver {
             Platform.runLater(() -> showChooseYourGodPageCase2());
             System.out.println("OnChooseGod OUT");
         }
+        else if(this.gods.size()==1) {
+            firstPlayersGod = chosengods.get(0);
+            doSendSelectedGod(chosengods.get(0));
+        }
 
     }
 
@@ -398,7 +439,16 @@ public class GUI extends Application implements ClientObserver {
 
     @Override
     public void OnChooseFirstPlayer(List<String> players) {
+        System.out.println("OnChooseFirstPlayer IN");
         this.players = players;
+        if(players.size() == 2) {
+            Platform.runLater(() -> showChooseFirstPlayerPageCase2());
+            System.out.println("OnChooseFirstPlayer OUT");
+        }
+        else if (players.size() == 3) {
+            Platform.runLater(() -> showChooseFirstPlayerPageCase3());
+            System.out.println("OnChooseFirstPlayer OUT");
+        }
     }
 
 
@@ -786,10 +836,12 @@ public class GUI extends Application implements ClientObserver {
 
     public void doSendGods(List<String> GodsChosen){
         client.ChosenGods(GodsChosen);
+        Platform.runLater(() -> showWaitingPage("Wait while the other players choose their gods"));
     }
 
     public void doSendSelectedGod(String GodSelected){
         client.ChosenGod(GodSelected);
+        Platform.runLater(() -> showWaitingPage("Wait for your turn to begin"));
     }
 }
 

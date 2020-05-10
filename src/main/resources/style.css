@@ -24,6 +24,10 @@
     -fx-progress-color: #432a1a;
 }
 
+#WaitIndicator {
+    -fx-progress-color: #432a1a;
+}
+
 #enteringMatchPane {
     -fx-background-image: url("images/EnteringMatch.png");
     -fx-background-size: 100% auto;
@@ -72,6 +76,24 @@
 
 #chooseYourGodPaneCase3{
     -fx-background-image: url("images/ChooseYourGod_Case3.png");
+    -fx-background-size: 100% auto;
+    -fx-background-position: center center;
+}
+
+#WaitingPane {
+    -fx-background-image: url("images/WaitingPane.png");
+    -fx-background-size: 100% auto;
+    -fx-background-position: center center;
+}
+
+#ChooseFirstPlayerPaneCase2 {
+    -fx-background-image: url("images/ChooseWhoWillPlayFirst_Case2.png");
+    -fx-background-size: 100% auto;
+    -fx-background-position: center center;
+}
+
+#ChooseFirstPlayerPaneCase3 {
+    -fx-background-image: url("images/ChooseWhoWillPlayFirst_Case3.png");
     -fx-background-size: 100% auto;
     -fx-background-position: center center;
 }

@@ -336,9 +336,9 @@ public class ChooseGodsController {
                         break;
                 }
             }
+            if(godsToSend.size() == numberOfPlayers)
+                ConfirmButton.setVisible(true);
         } else if (godsToSend.size() == numberOfPlayers) {
-            ConfirmButton.setVisible(true);
-
             bAlreadySelected = false;
             for (int i = 0; i < godsToSend.size(); i++) {
                 if (godSelected.equals(godsToSend.get(i))) {

@@ -89,6 +89,7 @@ public class ChooseYourGodCase2Controller {
      */
     @FXML
     public void initialize() {
+        ConfirmButton.setVisible(false);
     }
 
     /**
@@ -107,19 +108,18 @@ public class ChooseYourGodCase2Controller {
 
     public void confirmButtonPressed() {
         ConfirmButton.setImage(ConfirmButtonPressed);
-        if(godselected==0){
+        if (godselected == 0) {
             gui.doSendSelectedGod(godsToSave.get(0));
-        }else if(godselected==1){
+        } else if(godselected == 1) {
             gui.doSendSelectedGod(godsToSave.get(1));
         }
-
     }
 
     public void confirmButtonReleased() {
         ConfirmButton.setImage(ConfirmButtonReleased);
     }
 
-    public void setImagesOfGods(List<String> chosenGods){
+    public void setImagesOfGods(List<String> chosenGods) {
         switch (chosenGods.get(0)) {
             case "Apollo":
                 GodLeft.setImage(ApolloDisplayed);
@@ -241,11 +241,13 @@ public class ChooseYourGodCase2Controller {
     public void selectGodLeft(){
         godselected = 0;
         GodDescription.setImage(GodLeftDescription);
+        ConfirmButton.setVisible(true);
     }
 
     public void selectGodRight(){
         godselected = 1;
         GodDescription.setImage(GodRightDescription);
+        ConfirmButton.setVisible(true);
     }
 
 }

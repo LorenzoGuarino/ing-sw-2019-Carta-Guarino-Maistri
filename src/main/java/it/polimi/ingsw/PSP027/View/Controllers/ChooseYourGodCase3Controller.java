@@ -91,6 +91,7 @@ public class ChooseYourGodCase3Controller {
      */
     @FXML
     public void initialize() {
+        ConfirmButton.setVisible(false);
     }
 
     /**
@@ -109,11 +110,11 @@ public class ChooseYourGodCase3Controller {
 
     public void confirmButtonPressed() {
         ConfirmButton.setImage(ConfirmButtonPressed);
-        if(godselected==0){
+        if (godselected == 0) {
             gui.doSendSelectedGod(godsToSave.get(0));
-        }else if(godselected==1){
+        } else if (godselected == 1) {
             gui.doSendSelectedGod(godsToSave.get(1));
-        }else if(godselected==2){
+        } else if (godselected == 2) {
             gui.doSendSelectedGod(godsToSave.get(2));
         }
     }
@@ -300,14 +301,17 @@ public class ChooseYourGodCase3Controller {
     }
 
     public void selectGodLeft(){
+        ConfirmButton.setVisible(true);
         godselected = 0;
         GodDescription.setImage(GodLeftDescription);
     }
     public void selectGodCenter(){
+        ConfirmButton.setVisible(true);
         godselected = 1;
         GodDescription.setImage(GodCenterDescription);
     }
     public void selectGodRight(){
+        ConfirmButton.setVisible(true);
         godselected = 2;
         GodDescription.setImage(GodRightDescription);
     }

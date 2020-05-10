@@ -3,16 +3,21 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane fx:id="chooseYourGodPaneCase3" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.PSP027.View.Controllers.ChooseYourGodCase3Controller">
+<AnchorPane prefHeight="900.0" prefWidth="1600.0" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.PSP027.View.Controllers.ChooseYourGodCase3Controller">
    <children>
-      <ImageView fx:id="GodLeft" fitHeight="651.0" fitWidth="440.0" layoutX="203.0" layoutY="164.0" onMouseClicked="#selectGodLeft" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="GodCenter" fitHeight="704.0" fitWidth="432.0" layoutX="744.0" layoutY="106.0" onMouseClicked="#selectGodCenter" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="GodRight" fitHeight="605.0" fitWidth="432.0" layoutX="1278.0" layoutY="202.0" onMouseClicked="#selectGodRight" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="GodDescription" fitHeight="319.0" fitWidth="300.0" layoutX="1616.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="ConfirmButton" fitHeight="96.0" fitWidth="251.0" layoutX="835.0" layoutY="904.0" onMousePressed="#confirmButtonPressed" onMouseReleased="#confirmButtonReleased" pickOnBounds="true" preserveRatio="true">
-          <image>
-          <Image url="@../images/Buttons/btn_Confirm.png" />
-      </image>
-      </ImageView>
+      <ImageView fx:id="GodLeft" fitHeight="500.0" fitWidth="440.0" layoutX="203.0" layoutY="164.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="40" AnchorPane.topAnchor="130" />
+      <ImageView fx:id="GodCenter" fitHeight="500.0" fitWidth="432.0" layoutX="744.0" layoutY="106.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="405" AnchorPane.topAnchor="130"/>
+      <ImageView fx:id="GodRight" fitHeight="500.0" fitWidth="432.0" layoutX="1278.0" layoutY="202.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="780" AnchorPane.topAnchor="130"/>
+      <AnchorPane fx:id="chooseYourGodPaneCase3" stylesheets="@../style.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <ImageView fitHeight="500.0" fitWidth="440.0" layoutX="203.0" layoutY="164.0" onMouseClicked="#selectGodLeft" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="40" AnchorPane.topAnchor="130" />
+         <ImageView fitHeight="500.0" fitWidth="432.0" layoutX="744.0" layoutY="106.0" onMouseClicked="#selectGodCenter" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="405" AnchorPane.topAnchor="130"/>
+         <ImageView fitHeight="500.0" fitWidth="432.0" layoutX="1278.0" layoutY="202.0" onMouseClicked="#selectGodRight" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="780" AnchorPane.topAnchor="130"/>
+         <ImageView fx:id="GodDescription" fitHeight="500.0" fitWidth="230.0" layoutX="1616.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="40" AnchorPane.topAnchor="300" AnchorPane.bottomAnchor="300"/>
+         <ImageView fx:id="ConfirmButton" visible="false" fitHeight="96.0" fitWidth="251.0" layoutX="835.0" layoutY="904.0" onMousePressed="#confirmButtonPressed" onMouseReleased="#confirmButtonReleased" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="60" AnchorPane.leftAnchor="440">
+            <image>
+               <Image url="@../images/Buttons/btn_Confirm.png" />
+            </image>
+         </ImageView>
+      </AnchorPane>
    </children>
 </AnchorPane>

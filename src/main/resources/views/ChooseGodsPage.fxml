@@ -5,8 +5,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="chooseGodsPane" prefHeight="625.0" prefWidth="992.0" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.PSP027.View.Controllers.ChooseGodsController">
-   <ImageView fx:id="GodSelectedDisplayed" fitHeight="440.0" fitWidth="301.0" layoutX="608.0" layoutY="165.0" pickOnBounds="true" preserveRatio="true" />
+<AnchorPane prefHeight="900.0" prefWidth="1600.0" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.PSP027.View.Controllers.ChooseGodsController">
+   <ImageView fx:id="GodSelectedDisplayed" fitHeight="530.0" fitWidth="350.0" layoutX="608.0" layoutY="165.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="440" AnchorPane.topAnchor="140"/>
+    <AnchorPane fx:id="chooseGodsPane" stylesheets="@../style.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
     <Label fx:id="ChooseGodsTitle" styleClass="LillyBelleText" text="" textFill="#432a1a" AnchorPane.leftAnchor="270.0" AnchorPane.rightAnchor="270.0" AnchorPane.topAnchor="26.0">
         <font>
             <Font size="45.0" />
@@ -97,10 +98,11 @@
          </ImageView>
       </children>
    </GridPane>
-   <ImageView fx:id="GodDescription" fitHeight="455.0" fitWidth="345.0" layoutX="732.0" layoutY="135.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="60.0" AnchorPane.topAnchor="170.0" />
-   <ImageView fx:id="ConfirmButton" fitHeight="66.0" fitWidth="200.0" layoutX="909.0" layoutY="639.0" onMousePressed="#confirmButtonPressed" onMouseReleased="#confirmButtonReleased" pickOnBounds="true" preserveRatio="true" visible="false">
+   <ImageView fx:id="GodDescription" fitHeight="455.0" fitWidth="345.0" layoutX="696.0" layoutY="120.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="68.0" AnchorPane.topAnchor="200.0" />
+   <ImageView fx:id="ConfirmButton" fitHeight="66.0" fitWidth="200.0" layoutX="909.0" layoutY="639.0" onMousePressed="#confirmButtonPressed" onMouseReleased="#confirmButtonReleased" pickOnBounds="true" preserveRatio="true" visible="false" AnchorPane.bottomAnchor="75.0" AnchorPane.leftAnchor="220.0">
        <image>
            <Image url="@../images/Buttons/btn_Confirm.png" />
        </image>
    </ImageView>
+    </AnchorPane>
 </AnchorPane>
