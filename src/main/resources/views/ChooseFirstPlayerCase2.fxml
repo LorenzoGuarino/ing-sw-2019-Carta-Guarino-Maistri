@@ -4,14 +4,15 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
+
 <StackPane fx:id="BackgroundFiller" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.PSP027.View.Controllers.ChooseFirstPlayerCase2Controller">
 <AnchorPane fx:id="ChooseFirstPlayerPaneCase2" maxHeight="900.0" maxWidth="1440.0" stylesheets="@../style.css">
-    <Label fx:id="player1" alignment="CENTER" prefHeight="230.0" prefWidth="665.0" styleClass="LillyBelleText" text="" textAlignment="CENTER" textFill="#432a1a" AnchorPane.leftAnchor="450" AnchorPane.rightAnchor="450" AnchorPane.topAnchor="300">
+    <Label fx:id="player1" alignment="CENTER" onMouseClicked="#clickedOnFirstPlayer" prefHeight="230.0" prefWidth="665.0" styleClass="LillyBelleText" text="" textAlignment="CENTER" textFill="#432a1a" AnchorPane.leftAnchor="450" AnchorPane.rightAnchor="450" AnchorPane.topAnchor="300">
         <font>
             <Font size="40.0" />
         </font>
     </Label>
-    <Label fx:id="player2" alignment="CENTER" prefHeight="230.0" prefWidth="665.0" styleClass="LillyBelleText" text="" textAlignment="CENTER" textFill="#432a1a" AnchorPane.leftAnchor="450" AnchorPane.rightAnchor="450" AnchorPane.topAnchor="540">
+    <Label fx:id="player2" alignment="CENTER" onMouseClicked="#clickedOnSecondPlayer" prefHeight="230.0" prefWidth="665.0" styleClass="LillyBelleText" text="" textAlignment="CENTER" textFill="#432a1a" AnchorPane.leftAnchor="450" AnchorPane.rightAnchor="450" AnchorPane.topAnchor="540">
         <font>
             <Font size="40.0" />
         </font>
@@ -25,7 +26,7 @@
        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
      </rowConstraints>
       <children>
-         <ImageView fx:id="god" fitHeight="124.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER"/>
+         <ImageView fx:id="god" fitHeight="124.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
          <Label text="YOUR GOD IS" textAlignment="CENTER" textFill="#432a1a" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
           <font>
               <Font size="20.0" />
