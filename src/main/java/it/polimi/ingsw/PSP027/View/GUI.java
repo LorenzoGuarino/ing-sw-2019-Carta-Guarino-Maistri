@@ -843,6 +843,11 @@ public class GUI extends Application implements ClientObserver {
         client.ChosenGod(GodSelected);
         Platform.runLater(() -> showWaitingPage("Wait for your turn to begin"));
     }
+
+    public void doSendFirstPlayer(String FirstPlayer){
+        client.ChosenFirstPlayer(FirstPlayer);
+        Platform.runLater(() -> showWaitingPage("Wait for your turn to begin"));
+    }
 }
 
 

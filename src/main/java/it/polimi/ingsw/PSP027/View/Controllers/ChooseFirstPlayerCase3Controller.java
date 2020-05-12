@@ -136,5 +136,14 @@ public class ChooseFirstPlayerCase3Controller {
 
     /* ******************************* GUI CONTROLLER METHODS THAT TRIGGER GUI RENDERING AND CONNECTION WITH SERVER  ****************************** */
 
+    public void clickedOnFirstPlayer(){
+        gui.doSendFirstPlayer(player1.getText());
+    }
+    public void clickedOnSecondPlayer(){
+        gui.doSendFirstPlayer(player2.getText());
+    }
+    public void clickedOnThirdPlayer(){
+        gui.doSendFirstPlayer(player3.getText());
+    }
 
 }
