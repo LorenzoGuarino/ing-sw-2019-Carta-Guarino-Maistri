@@ -8,7 +8,6 @@ import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -23,16 +22,16 @@ public class GUI extends Application implements ClientObserver {
 
 
     public Client client = null;
-    private boolean bRun = false;
     private int requiredgods = 0;
     private List<String> gods = null;
     private List<String> players = null;
     private Node nodeboard; //it's overwritten every time a new board needs to be printed
     private List<Integer> indexcandidatecells = new ArrayList<Integer>(); //used for move and build and is overwritten every time
-    private Map<String, String> NicknameGodMap = new HashMap<String, String>();
-    private String[] chosen_cmd;
+    private Map<String, String> PlayerGodMap = new HashMap<String, String>();
+    private Map<String, String> PlayerWorkerMap = new HashMap<String, String>();
     private Stage SantoriniStage;
     private String firstPlayersGod;
+    private List<String> deadPlayers = new ArrayList<String>();
 
     /* ****************************************************** COMMANDS ************************************************** */
 
@@ -279,11 +278,11 @@ public class GUI extends Application implements ClientObserver {
 
     public void showBoardPage(){
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/BoardPage.fxml"));
-            Parent boardPage = (Parent) loader.load();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/BoardPage_PlacingWorkers.fxml"));
+            Parent PlacingWorkersPage = (Parent) loader.load();
 
-            BoardPageController boardPageController = loader.getController();
-            //boardPageController.setGui(this);
+            BoardPage_PlacingWorkersController boardPage_PlacingWorkersController = loader.getController();
+            boardPage_PlacingWorkersController.setGui(this);
 
             //resetBoard(); rendo invisibile immagine livello, dome false, rende notvisible candidate cells e workeroccuping
 
@@ -300,64 +299,85 @@ public class GUI extends Application implements ClientObserver {
                         int level = getLevelOfCellNode(cell);
                         boolean dome = getDomeOfCellNode(cell);
 
-
                         String nickname = getNicknameOfCellNode(cell);
 
                         if (!nickname.isEmpty()) {
-                            // setWorkerOnBoard(id, String url);
+                            boardPage_PlacingWorkersController.setWorker(id, PlayerWorkerMap.get(nickname));
                         }
 
-                        if(!indexcandidatecells.isEmpty()) {
-                            for(int j = 0; j < indexcandidatecells.size(); j++) {
-                                if(indexcandidatecells.get(j) == id){
-
-                                    //setCandidateCell(id);
-
+                        if (!indexcandidatecells.isEmpty()) {
+                            for (int j = 0; j < indexcandidatecells.size(); j++) {
+                                if (indexcandidatecells.get(j) == id) {
+                                    boardPage_PlacingWorkersController.setCandidate(id);
                                     break;
                                 }
                             }
                         }
 
                         if (dome) {
-                            //setDome(id);
-                        } else {
-                            if (level == 0) {
-
-                            } else if (level == 1) {
-                                //setLevel1(id);
-                            } else if (level == 2) {
-                                //setLevel2(id);
-                            } else if (level == 3) {
-                                //setLevel3(id);
-                            }
+                            boardPage_PlacingWorkersController.setDome(id);
                         }
+
+                        boardPage_PlacingWorkersController.setLevel(id, level);
                     }
                 }
-            }
 
-            if(NicknameGodMap.size()>0) {
-                Set<String> nicknames = NicknameGodMap.keySet();
-                String nickname;
-                Iterator<String> itr = nicknames.iterator();
+                if (PlayerGodMap.size() > 0) {
+                    Set<String> nicknames = PlayerGodMap.keySet();
+                    String nickname;
+                    Iterator<String> itr = nicknames.iterator();
+                    int playerscount = 1;
+                    boolean playingPlayer = false;
 
-                while(itr.hasNext())
-                {
-                    nickname = itr.next();
-//                    if(NicknameColorMap.containsKey(nickname) && NicknameGodMap.containsKey(nickname))
-//                        playersAndGods += NicknameColorMap.get(nickname) + nickname + RESET + " has " + NicknameGodMap.get(nickname) + "     ";
+                    while (itr.hasNext()) {
+                        nickname = itr.next();
+                        if (PlayerWorkerMap.containsKey(nickname) && PlayerGodMap.containsKey(nickname)) {
+                            if(nickname.equals(client.getNickname())) {
+                                playingPlayer = true;
+                            }
+
+                            if(playerscount == 1) {
+                                boolean deadPlayer = false;
+                                for(int i=0; i < deadPlayers.size(); i++) {
+                                    if(deadPlayers.get(i).equals(nickname)) {
+                                        deadPlayer = true;
+                                    }
+                                }
+                                boardPage_PlacingWorkersController.setPlayer1Panel(PlayerGodMap.get(nickname), nickname, playingPlayer, deadPlayer, PlayerWorkerMap.get(nickname));
+                            } else if(playerscount == 2) {
+                                boolean deadPlayer = false;
+                                for(int i=0; i < deadPlayers.size(); i++) {
+                                    if(deadPlayers.get(i).equals(nickname)) {
+                                        deadPlayer = true;
+                                    }
+                                }
+                                boardPage_PlacingWorkersController.setPlayer2Panel(PlayerGodMap.get(nickname), nickname, playingPlayer, deadPlayer, PlayerWorkerMap.get(nickname));
+                            } else if(playerscount == 3) {
+                                boolean deadPlayer = false;
+                                for(int i=0; i < deadPlayers.size(); i++) {
+                                    if(deadPlayers.get(i).equals(nickname)) {
+                                        deadPlayer = true;
+                                    }
+                                }
+                                boardPage_PlacingWorkersController.setPlayer3Panel(PlayerGodMap.get(nickname), nickname, playingPlayer, deadPlayer, PlayerWorkerMap.get(nickname));
+                            }
+                        }
+                        playerscount++;
+                        playingPlayer = false;
+                    }
+                }
+
+                if(players.size() == 2) {
+                    boardPage_PlacingWorkersController.setPanel3Visibility(false);
                 }
             }
 
-
-
-
-            SantoriniStage.getScene().setRoot(boardPage);
+            SantoriniStage.getScene().setRoot(PlacingWorkersPage);
             SantoriniStage.show();
 
-        }catch (IOException exception){
+        } catch (IOException exception){
             System.out.println(exception.toString());
         }
-
     }
 
 
@@ -440,7 +460,7 @@ public class GUI extends Application implements ClientObserver {
 
     @Override
     public void OnLeftMatch(String nickname) {
-
+        deadPlayers.add(nickname);
     }
 
     /**
@@ -470,6 +490,16 @@ public class GUI extends Application implements ClientObserver {
     public void OnEnteredMatch(List<String> players) {
         System.out.println("OnWaiting IN");
         this.players = players;
+        for (int i = 0; i < players.size(); i++) {
+            if (i == 0) {
+                PlayerWorkerMap.put(players.get(i), "images/Board/redWorker_Board.png");
+            } else if (i == 1) {
+                PlayerWorkerMap.put(players.get(i), "images/Board/blueWorker_Board.png");
+            } else if (i == 2) {
+                PlayerWorkerMap.put(players.get(i), "images/Board/violetWorker_Board.png");
+            }
+
+        }
         Platform.runLater(() -> showWaitingPage("Wait while the first player chooses the gods you will play with"));
         System.out.println("OnWaiting OUT");
     }
@@ -565,7 +595,7 @@ public class GUI extends Application implements ClientObserver {
                             String playerNickname = player.getAttributes().getNamedItem("nickname").getTextContent();
                             String playerGod = player.getAttributes().getNamedItem("god").getTextContent();
 
-                            NicknameGodMap.put(playerNickname, playerGod);
+                            PlayerGodMap.put(playerNickname, playerGod);
                         }
                     }
                 }
@@ -878,7 +908,6 @@ public class GUI extends Application implements ClientObserver {
         return Boolean.parseBoolean(cellnode.getAttributes().getNamedItem("dome").getTextContent());
     }
 
-
     /**
      * Method that resets the candidate cells saved in the GUI
      * IMPORTANT: use this each time before sending the answer to the server
@@ -887,14 +916,6 @@ public class GUI extends Application implements ClientObserver {
     public void restoreCandidateCells() {
         indexcandidatecells.clear();
     }
-
-    /**
-     * Method that sets the cellsToPrint[] with the content that it gets from the nodeboard
-     * (board in xml format that this CLI has received from the server)
-     */
-
-
-
 
     /* ******************************************************************************************************************* *
      *                                METHODS CALLED BY THE GUI CONTROLLER THAT TRIGGER ACTIONS                            *

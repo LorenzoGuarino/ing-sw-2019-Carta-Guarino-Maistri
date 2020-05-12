@@ -2,12 +2,13 @@ package it.polimi.ingsw.PSP027.View.Controllers;
 
 import it.polimi.ingsw.PSP027.View.GUI;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import java.util.ArrayList;
 
-public class BoardPageController {
+public class BoardPage_PlacingWorkersController {
     private GUI gui;
     private ArrayList<ImageView> cellLevelList = new ArrayList<>();
     private ArrayList<ImageView> cellDomeList = new ArrayList<>();
@@ -15,7 +16,6 @@ public class BoardPageController {
     private ArrayList<ImageView> cellCandidateList = new ArrayList<>();
 
     @FXML
-
     //cellLevelImageViews
     public ImageView A1L;
     public ImageView A2L;
@@ -131,10 +131,59 @@ public class BoardPageController {
     public Image domeImage = new Image("images/Board/Dome_Board.png");
     public Image candidate = new Image("/images/Board/CandidateCell_board.png");
 
+    public Label nicknamePlayer1;
+    public Label nicknamePlayer2;
+    public Label nicknamePlayer3;
+
+    public ImageView Player1Panel;
+    public ImageView Player2Panel;
+    public ImageView Player3Panel;
+
+    Image PlayingPlayerPanel = new Image("images/Board/PlayingPlayerPanel.png");
+    Image NormalPlayerPanel = new Image("images/Board/PlayerBoardPanel.png");
+
+    public ImageView Player1God;
+    public ImageView Player2God;
+    public ImageView Player3God;
+
+    public ImageView Player1Dead;
+    public ImageView Player2Dead;
+    public ImageView Player3Dead;
+
+    public ImageView Player1Icon;
+    public ImageView Player2Icon;
+    public ImageView Player3Icon;
+
+    Image Apollo = new Image("images/Gods/Apollo_icon.png");
+    Image Ares = new Image("images/Gods/Ares_icon.png");
+    Image Artemis = new Image("images/Gods/Artemis_icon.png");
+    Image Athena = new Image("images/Gods/Athena_icon.png");
+    Image Atlas = new Image("images/Gods/Atlas_icon.png");
+    Image Demeter = new Image("images/Gods/Demeter_icon.png");
+    Image Hephaestus = new Image("images/Gods/Hephaestus_icon.png");
+    Image Hestia = new Image("images/Gods/Hestia_icon.png");
+    Image Medusa = new Image("images/Gods/Medusa_icon.png");
+    Image Minotaur = new Image("images/Gods/Minotaur_icon.png");
+    Image Pan = new Image("images/Gods/Pan_icon.png");
+    Image Poseidon = new Image("images/Gods/Poseidon_icon.png");
+    Image Prometheus = new Image("images/Gods/Prometheus_icon.png");
+    Image Zeus = new Image("images/Gods/Zeus_icon.png");
+
     /**
      * Constructor
      */
-    public BoardPageController(){
+    public BoardPage_PlacingWorkersController(){
+    }
+
+    /**
+     * Initializes the controller, method automatically called when the fxml is loaded
+     */
+
+    @FXML
+    public void initialize() {
+        Player1Dead.setVisible(false);
+        Player2Dead.setVisible(false);
+        Player3Dead.setVisible(false);
     }
 
     /**
@@ -270,7 +319,7 @@ public class BoardPageController {
      * @param index the index of the cell to set the level of
      * @param level the level displayed on the given cell after the method call
      */
-    public void setLevel(int index,int level){
+    public void setLevel(int index, int level){
         initCellLevelList();
         switch(level){
             case 1: this.cellLevelList.get(index).setImage(this.level1Image);
@@ -285,7 +334,7 @@ public class BoardPageController {
         this.cellLevelList.get(index).setImage(this.domeImage);
     }
 
-    public void setWorker(int index,String url){
+    public void setWorker(int index, String url){
         Image worker = new Image(url);
         initCellWorkerList();
         this.cellWorkerList.get(index).setImage(worker);
@@ -296,7 +345,206 @@ public class BoardPageController {
         this.cellCandidateList.get(index).setImage(this.candidate);
     }
 
+    public void setPlayer1Panel(String god, String nickname, boolean playingPlayer, boolean deadPlayer, String url_icon) {
+        if(playingPlayer) {
+            Player1Panel.setImage(PlayingPlayerPanel);
+        }
+        else {
+            Player1Panel.setImage(NormalPlayerPanel);
+        }
+
+        switch (god) {
+            case "Apollo":
+                Player1God.setImage(Apollo);
+                break;
+            case "Artemis":
+                Player1God.setImage(Artemis);
+                break;
+            case "Ares":
+                Player1God.setImage(Ares);
+                break;
+            case "Athena":
+                Player1God.setImage(Athena);
+                break;
+            case "Atlas":
+                Player1God.setImage(Atlas);
+                break;
+            case "Demeter":
+                Player1God.setImage(Demeter);
+                break;
+            case "Hephaestus":
+                Player1God.setImage(Hephaestus);
+                break;
+            case "Hestia":
+                Player1God.setImage(Hestia);
+                break;
+            case "Medusa":
+                Player1God.setImage(Medusa);
+                break;
+            case "Minotaur":
+                Player1God.setImage(Minotaur);
+                break;
+            case "Pan":
+                Player1God.setImage(Pan);
+                break;
+            case "Poseidon":
+                Player1God.setImage(Poseidon);
+                break;
+            case "Prometheus":
+                Player1God.setImage(Prometheus);
+                break;
+            case "Zeus":
+                Player1God.setImage(Zeus);
+                break;
+        }
+
+        nicknamePlayer1.setText(nickname.toUpperCase());
+
+        Image worker_icon = new Image(url_icon);
+        Player1Icon.setImage(worker_icon);
+
+        if(deadPlayer) {
+            Player1Dead.setVisible(true);
+        }
+    }
+
+    public void setPlayer2Panel(String god, String nickname, boolean playingPlayer, boolean deadPlayer, String url_icon) {
+        if(playingPlayer) {
+            Player2Panel.setImage(PlayingPlayerPanel);
+        }
+        else {
+            Player2Panel.setImage(NormalPlayerPanel);
+        }
+
+        switch (god) {
+            case "Apollo":
+                Player2God.setImage(Apollo);
+            break;
+            case "Artemis":
+                Player2God.setImage(Artemis);
+            break;
+            case "Ares":
+                Player2God.setImage(Ares);
+            break;
+            case "Athena":
+                Player2God.setImage(Athena);
+            break;
+            case "Atlas":
+                Player2God.setImage(Atlas);
+            break;
+            case "Demeter":
+                Player2God.setImage(Demeter);
+            break;
+            case "Hephaestus":
+                Player2God.setImage(Hephaestus);
+            break;
+            case "Hestia":
+                Player2God.setImage(Hestia);
+            break;
+            case "Medusa":
+                Player2God.setImage(Medusa);
+            break;
+            case "Minotaur":
+                Player2God.setImage(Minotaur);
+            break;
+            case "Pan":
+                Player2God.setImage(Pan);
+            break;
+            case "Poseidon":
+                Player2God.setImage(Poseidon);
+            break;
+            case "Prometheus":
+                Player2God.setImage(Prometheus);
+            break;
+            case "Zeus":
+                Player2God.setImage(Zeus);
+            break;
+        }
+
+        nicknamePlayer2.setText(nickname.toUpperCase());
+
+        Image worker_icon = new Image(url_icon);
+        Player2Icon.setImage(worker_icon);
+
+        if(deadPlayer) {
+            Player2Dead.setVisible(true);
+        }
+    }
+
+    public void setPlayer3Panel(String god, String nickname, boolean playingPlayer, boolean deadPlayer, String url_icon) {
+        if(playingPlayer) {
+            Player3Panel.setImage(PlayingPlayerPanel);
+        }
+        else {
+            Player3Panel.setImage(NormalPlayerPanel);
+        }
+
+        switch (god) {
+            case "Apollo":
+                Player3God.setImage(Apollo);
+                break;
+            case "Artemis":
+                Player3God.setImage(Artemis);
+                break;
+            case "Ares":
+                Player3God.setImage(Ares);
+                break;
+            case "Athena":
+                Player3God.setImage(Athena);
+                break;
+            case "Atlas":
+                Player3God.setImage(Atlas);
+                break;
+            case "Demeter":
+                Player3God.setImage(Demeter);
+                break;
+            case "Hephaestus":
+                Player3God.setImage(Hephaestus);
+                break;
+            case "Hestia":
+                Player3God.setImage(Hestia);
+                break;
+            case "Medusa":
+                Player3God.setImage(Medusa);
+                break;
+            case "Minotaur":
+                Player3God.setImage(Minotaur);
+                break;
+            case "Pan":
+                Player3God.setImage(Pan);
+                break;
+            case "Poseidon":
+                Player3God.setImage(Poseidon);
+                break;
+            case "Prometheus":
+                Player3God.setImage(Prometheus);
+                break;
+            case "Zeus":
+                Player3God.setImage(Zeus);
+                break;
+        }
+
+        nicknamePlayer3.setText(nickname.toUpperCase());
+
+        Image worker_icon = new Image(url_icon);
+        Player3Icon.setImage(worker_icon);
+
+        if(deadPlayer) {
+            Player3Dead.setVisible(true);
+        }
+    }
+
+    public void setPanel3Visibility(boolean visibility) {
+        Player3Panel.setVisible(visibility);
+        nicknamePlayer3.setVisible(visibility);
+        Player3God.setVisible(visibility);
+    }
+
     public void setGui(GUI gui) {
         this.gui = gui;
+    }
+
+    public void reset() {
+        //maybe?????
     }
 }
