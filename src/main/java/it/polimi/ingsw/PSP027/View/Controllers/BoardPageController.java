@@ -11,6 +11,8 @@ public class BoardPageController {
     private GUI gui;
     private ArrayList<ImageView> cellLevelList = new ArrayList<>();
     private ArrayList<ImageView> cellDomeList = new ArrayList<>();
+    private ArrayList<ImageView> cellWorkerList = new ArrayList<>();
+    private ArrayList<ImageView> cellCandidateList = new ArrayList<>();
 
     @FXML
 
@@ -68,11 +70,66 @@ public class BoardPageController {
     public ImageView E4D;
     public ImageView E5D;
 
+    //cellWorkerImageViews
+    public ImageView A1W;
+    public ImageView A2W;
+    public ImageView A3W;
+    public ImageView A4W;
+    public ImageView A5W;
+    public ImageView B1W;
+    public ImageView B2W;
+    public ImageView B3W;
+    public ImageView B4W;
+    public ImageView B5W;
+    public ImageView C1W;
+    public ImageView C2W;
+    public ImageView C3W;
+    public ImageView C4W;
+    public ImageView C5W;
+    public ImageView D1W;
+    public ImageView D2W;
+    public ImageView D3W;
+    public ImageView D4W;
+    public ImageView D5W;
+    public ImageView E1W;
+    public ImageView E2W;
+    public ImageView E3W;
+    public ImageView E4W;
+    public ImageView E5W;
+
+    //cellCandidateImageViews
+    public ImageView A1C;
+    public ImageView A2C;
+    public ImageView A3C;
+    public ImageView A4C;
+    public ImageView A5C;
+    public ImageView B1C;
+    public ImageView B2C;
+    public ImageView B3C;
+    public ImageView B4C;
+    public ImageView B5C;
+    public ImageView C1C;
+    public ImageView C2C;
+    public ImageView C3C;
+    public ImageView C4C;
+    public ImageView C5C;
+    public ImageView D1C;
+    public ImageView D2C;
+    public ImageView D3C;
+    public ImageView D4C;
+    public ImageView D5C;
+    public ImageView E1C;
+    public ImageView E2C;
+    public ImageView E3C;
+    public ImageView E4C;
+    public ImageView E5C;
+
 
     public Image level1Image = new Image("images/Board/Level1_Board.png");
     public Image level2Image = new Image("images/Board/Level2_Board.png");
     public Image level3Image = new Image("images/Board/Level1_Board.png");
     public Image domeImage = new Image("images/Board/Dome_Board.png");
+    public Image candidate = new Image("/images/Board/CandidateCell_board.png");
 
     /**
      * Constructor
@@ -116,31 +173,96 @@ public class BoardPageController {
      * and the corresponding ImageView in the gridPane displaying the board
      */
     public void initCellDomeList() {
-        cellLevelList.add(this.A1D);
-        cellLevelList.add(this.A2D);
-        cellLevelList.add(this.A3D);
-        cellLevelList.add(this.A4D);
-        cellLevelList.add(this.A5D);
-        cellLevelList.add(this.B1D);
-        cellLevelList.add(this.B2D);
-        cellLevelList.add(this.B3D);
-        cellLevelList.add(this.B4D);
-        cellLevelList.add(this.B5D);
-        cellLevelList.add(this.C1D);
-        cellLevelList.add(this.C2D);
-        cellLevelList.add(this.C3D);
-        cellLevelList.add(this.C4D);
-        cellLevelList.add(this.C5D);
-        cellLevelList.add(this.D1D);
-        cellLevelList.add(this.D2D);
-        cellLevelList.add(this.D3D);
-        cellLevelList.add(this.D4D);
-        cellLevelList.add(this.D5D);
-        cellLevelList.add(this.E1D);
-        cellLevelList.add(this.E2D);
-        cellLevelList.add(this.E3D);
-        cellLevelList.add(this.E4D);
-        cellLevelList.add(this.E5D);
+        cellDomeList.add(this.A1D);
+        cellDomeList.add(this.A2D);
+        cellDomeList.add(this.A3D);
+        cellDomeList.add(this.A4D);
+        cellDomeList.add(this.A5D);
+        cellDomeList.add(this.B1D);
+        cellDomeList.add(this.B2D);
+        cellDomeList.add(this.B3D);
+        cellDomeList.add(this.B4D);
+        cellDomeList.add(this.B5D);
+        cellDomeList.add(this.C1D);
+        cellDomeList.add(this.C2D);
+        cellDomeList.add(this.C3D);
+        cellDomeList.add(this.C4D);
+        cellDomeList.add(this.C5D);
+        cellDomeList.add(this.D1D);
+        cellDomeList.add(this.D2D);
+        cellDomeList.add(this.D3D);
+        cellDomeList.add(this.D4D);
+        cellDomeList.add(this.D5D);
+        cellDomeList.add(this.E1D);
+        cellDomeList.add(this.E2D);
+        cellDomeList.add(this.E3D);
+        cellDomeList.add(this.E4D);
+        cellDomeList.add(this.E5D);
+    }
+
+    /**
+     * This method creates a dependency between the dome of the cell index = the list index
+     * and the corresponding ImageView in the gridPane displaying the board
+     */
+    public void initCellWorkerList() {
+        cellWorkerList.add(this.A1W);
+        cellWorkerList.add(this.A2W);
+        cellWorkerList.add(this.A3W);
+        cellWorkerList.add(this.A4W);
+        cellWorkerList.add(this.A5W);
+        cellWorkerList.add(this.A5W);
+        cellWorkerList.add(this.B1W);
+        cellWorkerList.add(this.B2W);
+        cellWorkerList.add(this.B3W);
+        cellWorkerList.add(this.B4W);
+        cellWorkerList.add(this.B5W);
+        cellWorkerList.add(this.C1W);
+        cellWorkerList.add(this.C2W);
+        cellWorkerList.add(this.C3W);
+        cellWorkerList.add(this.C4W);
+        cellWorkerList.add(this.C5W);
+        cellWorkerList.add(this.D1W);
+        cellWorkerList.add(this.D2W);
+        cellWorkerList.add(this.D3W);
+        cellWorkerList.add(this.D4W);
+        cellWorkerList.add(this.D5W);
+        cellWorkerList.add(this.E1W);
+        cellWorkerList.add(this.E2W);
+        cellWorkerList.add(this.E3W);
+        cellWorkerList.add(this.E4W);
+        cellWorkerList.add(this.E5W);
+    }
+
+    /**
+     * This method creates a dependency between the dome of the cell index = the list index
+     * and the corresponding ImageView in the gridPane displaying the board
+     */
+    public void initCellCandidateList() {
+        cellCandidateList.add(this.A1C);
+        cellCandidateList.add(this.A2C);
+        cellCandidateList.add(this.A3C);
+        cellCandidateList.add(this.A4C);
+        cellCandidateList.add(this.A5C);
+        cellCandidateList.add(this.B1C);
+        cellCandidateList.add(this.B2C);
+        cellCandidateList.add(this.B3C);
+        cellCandidateList.add(this.B4C);
+        cellCandidateList.add(this.B5C);
+        cellCandidateList.add(this.C1C);
+        cellCandidateList.add(this.C2C);
+        cellCandidateList.add(this.C3C);
+        cellCandidateList.add(this.C4C);
+        cellCandidateList.add(this.C5C);
+        cellCandidateList.add(this.D1C);
+        cellCandidateList.add(this.D2C);
+        cellCandidateList.add(this.D3C);
+        cellCandidateList.add(this.D4C);
+        cellCandidateList.add(this.D5C);
+        cellCandidateList.add(this.E1C);
+        cellCandidateList.add(this.E2C);
+        cellCandidateList.add(this.E3C);
+        cellCandidateList.add(this.E4C);
+        cellCandidateList.add(this.E5C);
     }
 
     /**
@@ -161,6 +283,17 @@ public class BoardPageController {
     public void setDome(int index){
         initCellDomeList();
         this.cellLevelList.get(index).setImage(this.domeImage);
+    }
+
+    public void setWorker(int index,String url){
+        Image worker = new Image(url);
+        initCellWorkerList();
+        this.cellWorkerList.get(index).setImage(worker);
+    }
+
+    public void setCandidate(int index){
+        initCellCandidateList();
+        this.cellCandidateList.get(index).setImage(this.candidate);
     }
 
     public void setGui(GUI gui) {
