@@ -3,7 +3,8 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="900.0" prefWidth="1600.0" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.PSP027.View.Controllers.ChooseYourGodCase3Controller">
+<StackPane fx:id="BackgroundFiller" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.PSP027.View.Controllers.ChooseYourGodCase3Controller">
+<AnchorPane maxHeight="900.0" maxWidth="1440.0" stylesheets="@../style.css">
    <children>
       <ImageView fx:id="GodLeft" fitHeight="500.0" fitWidth="440.0" layoutX="203.0" layoutY="164.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="40" AnchorPane.topAnchor="130" />
       <ImageView fx:id="GodCenter" fitHeight="500.0" fitWidth="432.0" layoutX="744.0" layoutY="106.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="405" AnchorPane.topAnchor="130"/>
@@ -21,3 +22,4 @@
       </AnchorPane>
    </children>
 </AnchorPane>
+</StackPane>

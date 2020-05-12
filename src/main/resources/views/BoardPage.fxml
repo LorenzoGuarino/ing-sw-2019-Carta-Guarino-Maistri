@@ -5,8 +5,8 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
-
-<AnchorPane fx:id="boardPane" prefHeight="900.0" prefWidth="1600.0" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane fx:id="BackgroundFiller" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="boardPane" maxHeight="900.0" maxWidth="1440.0" stylesheets="@../style.css" >
    <children>
       <GridPane hgap="5.0" layoutX="685.0" layoutY="265.0" prefHeight="550.0" prefWidth="550.0" vgap="5.0">
         <columnConstraints>
@@ -223,3 +223,4 @@
       </GridPane>
    </children>
 </AnchorPane>
+</StackPane>

@@ -1,3 +1,9 @@
+#BackgroundFiller {
+    -fx-background-image: url("images/PlainBackground.png");
+    -fx-background-size: 100% auto;
+    -fx-background-position: center center;
+}
+
 #entryPane{
     -fx-background-image: url("images/EntryPane.png");
     -fx-background-size: 100% auto;
@@ -30,12 +36,14 @@
 
 #enteringMatchPane {
     -fx-background-image: url("images/EnteringMatch.png");
+    -fx-background-repeat: no-repeat;
     -fx-background-size: 100% auto;
     -fx-background-position: center center;
 }
 
 #enteredMatchPane {
     -fx-background-image: url("images/EnteringMatch.png");
+    -fx-background-repeat: no-repeat;
     -fx-background-size: 100% auto;
     -fx-background-position: center center;
 }
@@ -58,42 +66,49 @@
 
 #boardPane{
     -fx-background-image: url("images/SantoriniBoard.png");
+    -fx-background-repeat: no-repeat;
     -fx-background-size: 100% auto;
     -fx-background-position: center center;
 }
 
 #chooseGodsPane {
     -fx-background-image: url("images/ChooseGodsPane.png");
+    -fx-background-repeat: no-repeat;
     -fx-background-size: 100% auto;
     -fx-background-position: center center;
 }
 
 #chooseYourGodPaneCase2{
     -fx-background-image: url("images/ChooseYourGod_Case2.png");
+    -fx-background-repeat: no-repeat;
     -fx-background-size: 100% auto;
     -fx-background-position: center center;
 }
 
 #chooseYourGodPaneCase3{
     -fx-background-image: url("images/ChooseYourGod_Case3.png");
+    -fx-background-repeat: no-repeat;
     -fx-background-size: 100% auto;
     -fx-background-position: center center;
 }
 
 #WaitingPane {
     -fx-background-image: url("images/WaitingPane.png");
+    -fx-background-repeat: no-repeat;
     -fx-background-size: 100% auto;
     -fx-background-position: center center;
 }
 
 #ChooseFirstPlayerPaneCase2 {
     -fx-background-image: url("images/ChooseWhoWillPlayFirst_Case2.png");
+    -fx-background-repeat: no-repeat;
     -fx-background-size: 100% auto;
     -fx-background-position: center center;
 }
 
 #ChooseFirstPlayerPaneCase3 {
     -fx-background-image: url("images/ChooseWhoWillPlayFirst_Case3.png");
+    -fx-background-repeat: no-repeat;
     -fx-background-size: 100% auto;
     -fx-background-position: center center;
 }

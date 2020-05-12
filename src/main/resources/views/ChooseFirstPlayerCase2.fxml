@@ -4,8 +4,8 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
-
-<AnchorPane fx:id="ChooseFirstPlayerPaneCase2" prefHeight="900.0" prefWidth="1600.0" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.PSP027.View.Controllers.ChooseFirstPlayerCase2Controller">
+<StackPane fx:id="BackgroundFiller" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.PSP027.View.Controllers.ChooseFirstPlayerCase2Controller">
+<AnchorPane fx:id="ChooseFirstPlayerPaneCase2" maxHeight="900.0" maxWidth="1440.0" stylesheets="@../style.css">
     <Label fx:id="player1" alignment="CENTER" prefHeight="230.0" prefWidth="665.0" styleClass="LillyBelleText" text="" textAlignment="CENTER" textFill="#432a1a" AnchorPane.leftAnchor="450" AnchorPane.rightAnchor="450" AnchorPane.topAnchor="300">
         <font>
             <Font size="40.0" />
@@ -35,3 +35,4 @@
    </GridPane>
     
 </AnchorPane>
+</StackPane>

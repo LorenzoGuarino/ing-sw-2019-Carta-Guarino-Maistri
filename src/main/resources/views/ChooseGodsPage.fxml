@@ -5,7 +5,8 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="900.0" prefWidth="1600.0" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.PSP027.View.Controllers.ChooseGodsController">
+<StackPane fx:id="BackgroundFiller" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.PSP027.View.Controllers.ChooseGodsController">
+<AnchorPane maxHeight="900.0" maxWidth="1440.0" stylesheets="@../style.css">
    <ImageView fx:id="GodSelectedDisplayed" fitHeight="530.0" fitWidth="350.0" layoutX="608.0" layoutY="165.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="440" AnchorPane.topAnchor="140"/>
     <AnchorPane fx:id="chooseGodsPane" stylesheets="@../style.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
     <Label fx:id="ChooseGodsTitle" styleClass="LillyBelleText" text="" textFill="#432a1a" AnchorPane.leftAnchor="270.0" AnchorPane.rightAnchor="270.0" AnchorPane.topAnchor="26.0">
@@ -106,3 +107,4 @@
    </ImageView>
     </AnchorPane>
 </AnchorPane>
+</StackPane>
