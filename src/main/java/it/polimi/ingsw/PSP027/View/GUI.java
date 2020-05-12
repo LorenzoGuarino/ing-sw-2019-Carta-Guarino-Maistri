@@ -277,6 +277,90 @@ public class GUI extends Application implements ClientObserver {
         }
     }
 
+    public void showBoardPage(){
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/BoardPage.fxml"));
+            Parent boardPage = (Parent) loader.load();
+
+            BoardPageController boardPageController = loader.getController();
+            //boardPageController.setGui(this);
+
+            //resetBoard(); rendo invisibile immagine livello, dome false, rende notvisible candidate cells e workeroccuping
+
+            Node cell;
+
+            if (nodeboard.hasChildNodes()) {
+                NodeList cells = nodeboard.getChildNodes();
+
+                for (int i = 0; i < cells.getLength(); i++) {
+                    cell = cells.item(i);
+
+                    if (cell.getNodeName().equals("cell")) {
+                        int id = getIdOfCellNode(cell);
+                        int level = getLevelOfCellNode(cell);
+                        boolean dome = getDomeOfCellNode(cell);
+
+
+                        String nickname = getNicknameOfCellNode(cell);
+
+                        if (!nickname.isEmpty()) {
+                            // setWorkerOnBoard(id, String url);
+                        }
+
+                        if(!indexcandidatecells.isEmpty()) {
+                            for(int j = 0; j < indexcandidatecells.size(); j++) {
+                                if(indexcandidatecells.get(j) == id){
+
+                                    //setCandidateCell(id);
+
+                                    break;
+                                }
+                            }
+                        }
+
+                        if (dome) {
+                            //setDome(id);
+                        } else {
+                            if (level == 0) {
+
+                            } else if (level == 1) {
+                                //setLevel1(id);
+                            } else if (level == 2) {
+                                //setLevel2(id);
+                            } else if (level == 3) {
+                                //setLevel3(id);
+                            }
+                        }
+                    }
+                }
+            }
+
+            if(NicknameGodMap.size()>0) {
+                Set<String> nicknames = NicknameGodMap.keySet();
+                String nickname;
+                Iterator<String> itr = nicknames.iterator();
+
+                while(itr.hasNext())
+                {
+                    nickname = itr.next();
+//                    if(NicknameColorMap.containsKey(nickname) && NicknameGodMap.containsKey(nickname))
+//                        playersAndGods += NicknameColorMap.get(nickname) + nickname + RESET + " has " + NicknameGodMap.get(nickname) + "     ";
+                }
+            }
+
+
+
+
+            SantoriniStage.getScene().setRoot(boardPage);
+            SantoriniStage.show();
+
+        }catch (IOException exception){
+            System.out.println(exception.toString());
+        }
+
+    }
+
+
 
     /* ***************************************************************************************************************
      *                    Methods fired by the client's methods that trigger the change of the view                  *
@@ -487,6 +571,7 @@ public class GUI extends Application implements ClientObserver {
                 }
             }
         }
+        Platform.runLater(() -> showBoardPage());
     }
 
 
@@ -803,6 +888,13 @@ public class GUI extends Application implements ClientObserver {
         indexcandidatecells.clear();
     }
 
+    /**
+     * Method that sets the cellsToPrint[] with the content that it gets from the nodeboard
+     * (board in xml format that this CLI has received from the server)
+     */
+
+
+
 
     /* ******************************************************************************************************************* *
      *                                METHODS CALLED BY THE GUI CONTROLLER THAT TRIGGER ACTIONS                            *
@@ -848,6 +940,9 @@ public class GUI extends Application implements ClientObserver {
         client.ChosenFirstPlayer(FirstPlayer);
         Platform.runLater(() -> showWaitingPage("Wait for your turn to begin"));
     }
+
+
+
 }
 
 
