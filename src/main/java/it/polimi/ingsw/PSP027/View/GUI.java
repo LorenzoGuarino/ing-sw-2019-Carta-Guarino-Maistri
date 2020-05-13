@@ -380,6 +380,46 @@ public class GUI extends Application implements ClientObserver {
         }
     }
 
+    public void showYouHaveWonPage(){
+        try {
+            System.out.println("showYouHaveWonPage IN");
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/YouHaveWonPage.fxml"));
+            Parent youHaveWonPage = (Parent) loader.load();
+
+            YouHaveWonController youHaveWonController = loader.getController();
+            youHaveWonController.setGui(this);
+
+            SantoriniStage.getScene().setRoot(youHaveWonPage);
+            SantoriniStage.show();
+
+            System.out.println("showYouHaveWonPage OUT");
+
+        }catch (IOException exception){
+            System.out.println(exception.toString());
+        }
+    }
+
+    public void showYouHaveLostPage(){
+        try {
+            System.out.println("showYouHaveLostPage IN");
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/YouHaveLostPage.fxml"));
+            Parent youHaveLostPage = (Parent) loader.load();
+
+            YouHaveLostController youHaveLostController = loader.getController();
+            youHaveLostController.setGui(this);
+
+            SantoriniStage.getScene().setRoot(youHaveLostPage);
+            SantoriniStage.show();
+
+            System.out.println("showYouHaveLostPage OUT");
+
+        }catch (IOException exception){
+            System.out.println(exception.toString());
+        }
+    }
+
 
 
     /* ***************************************************************************************************************
