@@ -389,6 +389,9 @@ public class GUI extends Application implements ClientObserver {
 
             YouHaveWonController youHaveWonController = loader.getController();
             youHaveWonController.setGui(this);
+            String godWinner = PlayerGodMap.get(client.getNickname());
+            youHaveWonController.setWinnerPodium(godWinner);
+            youHaveWonController.setWinnerCongrats(client.getNickname());
 
             SantoriniStage.getScene().setRoot(youHaveWonPage);
             SantoriniStage.show();
@@ -400,7 +403,7 @@ public class GUI extends Application implements ClientObserver {
         }
     }
 
-    public void showYouHaveLostPage(){
+    public void showYouHaveLostPage(String winner){
         try {
             System.out.println("showYouHaveLostPage IN");
 
@@ -409,6 +412,13 @@ public class GUI extends Application implements ClientObserver {
 
             YouHaveLostController youHaveLostController = loader.getController();
             youHaveLostController.setGui(this);
+
+            if(!winner.isEmpty()) {
+                youHaveLostController.setBetterLuckNextTime(winner);
+            }
+
+            String godLoser = PlayerGodMap.get(client.getNickname());
+            youHaveLostController.setLoserPodium(godLoser);
 
             SantoriniStage.getScene().setRoot(youHaveLostPage);
             SantoriniStage.show();
@@ -836,7 +846,17 @@ public class GUI extends Application implements ClientObserver {
 
     @Override
     public void OnWinner(String nickname) {
-
+        System.out.println("OnWinner IN");
+        if(nickname.equals(client.getNickname())) {
+            //the winner is this client
+            Platform.runLater(() -> showYouHaveWonPage());
+            System.out.println("OnWinner OUT");
+        }
+        else {
+            //the winner is not this client, who has lost instead
+            Platform.runLater(() -> showYouHaveLostPage(nickname));
+            System.out.println("OnWinner OUT");
+        }
     }
 
     /**
@@ -845,7 +865,9 @@ public class GUI extends Application implements ClientObserver {
 
     @Override
     public void OnLoser() {
-
+        System.out.println("OnLoser IN");
+        Platform.runLater(() -> showYouHaveLostPage(""));
+        System.out.println("OnLoser OUT");
     }
 
 
@@ -1002,6 +1024,9 @@ public class GUI extends Application implements ClientObserver {
         Platform.runLater(() -> showWaitingPage("Wait for your turn to begin"));
     }
 
+    public void doPlayAgain() {
+        Platform.runLater(() -> showRegisteredPage());
+    }
 
 
 }
