@@ -413,7 +413,6 @@ public class SantoriniMatch implements Runnable{
      */
 
     public void startGame(){
-        matchStarted = true;
 
         // notify players that game has started
         String cmd = "<cmd><id>" + ProtocolTypes.protocolCommand.srv_EnteredMatch.toString()  + "</id><data><players>";
@@ -612,6 +611,7 @@ public class SantoriniMatch implements Runnable{
             // THE SETUP OF THE GAME IS DONE. THE TURNS CAN NOW BE PLAYED.
             // The thread of SantoriniMatch needs to change the state from WaitForBeingReadyToPlayTurns to CreateTurn
             // and the controller continues from now on passes on to the Turn until someone has won
+            matchStarted = true;
             this.turnState = TurnState.CreateTurn;
         }
 

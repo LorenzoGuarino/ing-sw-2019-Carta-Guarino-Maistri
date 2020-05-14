@@ -77,8 +77,8 @@ public class Lobby{
     }
 
     /**
-     * Method that creates a Match with its separate thread and adds it to the list of matches of the lobby
-     * @return the match created
+     * Method that removes a Match from the list of matches of the lobby
+     * @param santoriniMatch match to remove
      */
 
     public void removeMatch(SantoriniMatch santoriniMatch) {
@@ -105,9 +105,9 @@ public class Lobby{
     }
 
     /**
-     * Method that checks if a gamer with the same nickname and the same IP adress has already entered the lobby
+     * Method that checks if a gamer with the same nickname has already entered the lobby
      * @param client identifying the gamer
-     * @return 1 if the gamer is already in the lobby, 0 if not present, -1 if there is another gamer using the give nickname
+     * @return 0 if not present, -1 if there is another gamer using the give nickname
      */
 
     public int checkIfAGamerIsAlreadyRegistered (ClientHandler client) {
@@ -123,10 +123,6 @@ public class Lobby{
 
                         if (gamerInLobby.client.getNickname().equals(client.getNickname())) {
                             iRet = -1;
-
-                            if(gamerInLobby.client.getAddress().equals(client.getAddress()))
-                                iRet = 1;
-
                             break;
                         }
                     }
@@ -173,10 +169,6 @@ public class Lobby{
                         Gamer gamer = new Gamer();
                         gamer.client = client;
                         lobbyGamers.add(gamer);
-                    }
-
-                    if(iRet >= 0)
-                    {
                         bRet = true;
                         System.out.println("registerNewPlayer " + client.getNickname() + " done");
                     }
@@ -216,8 +208,7 @@ public class Lobby{
 
                     for (Gamer gamerInLobby : lobbyGamers) {
 
-                        if (gamerInLobby.client.getNickname().equals(client.getNickname()) &&
-                            gamerInLobby.client.getAddress().equals(client.getAddress())) {
+                        if (gamerInLobby.client.getNickname().equals(client.getNickname())) {
 
                             for (SantoriniMatch match : Matches) {
                                 if (gamerInLobby.matchAssociated == match.getMatchId()) {
@@ -231,6 +222,26 @@ public class Lobby{
                                         }
                                     }
 
+                                    if(!match.isStarted()) {
+                                        SantoriniMatch newMatch = createMatch(match.GetRequiredNumberOfPlayers());
+                                        newMatch.getMatchId();
+
+                                        for(Player player : match.getPlayers()) {
+                                            Player newMatchPlayer = new Player();
+
+                                            for(Gamer gamer : lobbyGamers) {
+                                                if(gamer.getNickname().equals(player.getNickname())) {
+                                                    newMatchPlayer.setGamer(gamer);
+                                                    gamer.matchAssociated = newMatch.getMatchId();
+                                                    break;
+                                                }
+                                            }
+
+                                            newMatch.addPlayer(newMatchPlayer);
+                                        }
+
+                                        removeMatch(match);
+                                    }
                                     break;
                                 }
                             }
