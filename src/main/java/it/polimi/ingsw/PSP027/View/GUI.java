@@ -1024,6 +1024,12 @@ public class GUI extends Application implements ClientObserver {
         Platform.runLater(() -> showWaitingPage("Wait for your turn to begin"));
     }
 
+    public void doSendSelectedCellsForWorkers(List<String> CellsSelected){
+        //aggiungere la conversione delle celle da A1->int si trova tutto nella cli
+        client.ChosenWorkersFirstPositions(CellsSelected.get(0), CellsSelected.get(1));
+        Platform.runLater(() -> showWaitingPage("Wait for your turn to begin"));
+    }
+
     public void doPlayAgain() {
         Platform.runLater(() -> showRegisteredPage());
     }
