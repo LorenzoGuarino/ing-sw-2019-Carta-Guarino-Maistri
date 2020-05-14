@@ -1,5 +1,6 @@
 package it.polimi.ingsw.PSP027.View.Controllers;
 
+
 import it.polimi.ingsw.PSP027.View.GUI;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -10,7 +11,7 @@ import javafx.scene.input.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BoardPage_PlacingWorkersController {
+public class BoardPage_ChooseWorkerController {
     private GUI gui;
     private ArrayList<ImageView> cellLevelList = new ArrayList<>();
     private ArrayList<ImageView> cellDomeList = new ArrayList<>();
@@ -181,7 +182,7 @@ public class BoardPage_PlacingWorkersController {
     /**
      * Constructor
      */
-    public BoardPage_PlacingWorkersController(){
+    public BoardPage_ChooseWorkerController(){
     }
 
     /**
@@ -446,46 +447,46 @@ public class BoardPage_PlacingWorkersController {
         switch (god) {
             case "Apollo":
                 Player2God.setImage(Apollo);
-            break;
+                break;
             case "Artemis":
                 Player2God.setImage(Artemis);
-            break;
+                break;
             case "Ares":
                 Player2God.setImage(Ares);
-            break;
+                break;
             case "Athena":
                 Player2God.setImage(Athena);
-            break;
+                break;
             case "Atlas":
                 Player2God.setImage(Atlas);
-            break;
+                break;
             case "Demeter":
                 Player2God.setImage(Demeter);
-            break;
+                break;
             case "Hephaestus":
                 Player2God.setImage(Hephaestus);
-            break;
+                break;
             case "Hestia":
                 Player2God.setImage(Hestia);
-            break;
+                break;
             case "Medusa":
                 Player2God.setImage(Medusa);
-            break;
+                break;
             case "Minotaur":
                 Player2God.setImage(Minotaur);
-            break;
+                break;
             case "Pan":
                 Player2God.setImage(Pan);
-            break;
+                break;
             case "Poseidon":
                 Player2God.setImage(Poseidon);
-            break;
+                break;
             case "Prometheus":
                 Player2God.setImage(Prometheus);
-            break;
+                break;
             case "Zeus":
                 Player2God.setImage(Zeus);
-            break;
+                break;
         }
 
         nicknamePlayer2.setText(nickname.toUpperCase());
@@ -567,12 +568,12 @@ public class BoardPage_PlacingWorkersController {
         Player3God.setVisible(visibility);
     }
 
-
     public void reset() {
         //maybe?????
     }
 
     public void clickedOnCell(MouseEvent e){
+        int chosenCellIndex;
         ImageView selectedCell = (ImageView) e.getTarget();
         System.out.println(selectedCell.getId());
         String selectedCellId = selectedCell.getId();
@@ -580,145 +581,221 @@ public class BoardPage_PlacingWorkersController {
             case 'A':
                 switch (selectedCellId.charAt(1)){
                     case '1':
-                        A1C.setVisible(true);
                         cellSelected = "A1";
-                        setCellsToList();
+                        chosenCellIndex = (cellSelected.charAt(0) - 'A') * 5 + (cellSelected.charAt(1) - '1');
+                        if(this.gui.getNicknameOfCellNode(this.gui.getCellNodeGivenTheID(chosenCellIndex)).equals(this.gui.client.getNickname())){
+                            cellSelected = Integer.toString(chosenCellIndex);
+                            gui.doSendSelectedWorker(cellSelected);
+                        }
                         break;
                     case '2':
-                        A2C.setVisible(true);
                         cellSelected = "A2";
-                        setCellsToList();
+                        chosenCellIndex = (cellSelected.charAt(0) - 'A') * 5 + (cellSelected.charAt(1) - '1');
+                        if(this.gui.getNicknameOfCellNode(this.gui.getCellNodeGivenTheID(chosenCellIndex)).equals(this.gui.client.getNickname())){
+                            cellSelected = Integer.toString(chosenCellIndex);
+                            gui.doSendSelectedWorker(cellSelected);
+                        }
                         break;
                     case '3':
                         A3C.setVisible(true);
                         cellSelected = "A3";
-                        setCellsToList();
+                        chosenCellIndex = (cellSelected.charAt(0) - 'A') * 5 + (cellSelected.charAt(1) - '1');
+                        if(this.gui.getNicknameOfCellNode(this.gui.getCellNodeGivenTheID(chosenCellIndex)).equals(this.gui.client.getNickname())){
+                            cellSelected = Integer.toString(chosenCellIndex);
+                            gui.doSendSelectedWorker(cellSelected);
+                        }
                         break;
                     case '4':
-                        A4C.setVisible(true);
                         cellSelected = "A4";
-                        setCellsToList();
+                        chosenCellIndex = (cellSelected.charAt(0) - 'A') * 5 + (cellSelected.charAt(1) - '1');
+                        if(this.gui.getNicknameOfCellNode(this.gui.getCellNodeGivenTheID(chosenCellIndex)).equals(this.gui.client.getNickname())){
+                            cellSelected = Integer.toString(chosenCellIndex);
+                            gui.doSendSelectedWorker(cellSelected);
+                        }
                         break;
                     case '5':
-                        A5C.setVisible(true);
                         cellSelected = "A5";
-                        setCellsToList();
+                        chosenCellIndex = (cellSelected.charAt(0) - 'A') * 5 + (cellSelected.charAt(1) - '1');
+                        if(this.gui.getNicknameOfCellNode(this.gui.getCellNodeGivenTheID(chosenCellIndex)).equals(this.gui.client.getNickname())){
+                            cellSelected = Integer.toString(chosenCellIndex);
+                            gui.doSendSelectedWorker(cellSelected);
+                        }
                         break;
                 }
                 break;
             case 'B':
                 switch (selectedCellId.charAt(1)){
                     case '1':
-                        B1C.setVisible(true);
                         cellSelected = "B1";
-                        setCellsToList();
+                        chosenCellIndex = (cellSelected.charAt(0) - 'A') * 5 + (cellSelected.charAt(1) - '1');
+                        if(this.gui.getNicknameOfCellNode(this.gui.getCellNodeGivenTheID(chosenCellIndex)).equals(this.gui.client.getNickname())){
+                            cellSelected = Integer.toString(chosenCellIndex);
+                            gui.doSendSelectedWorker(cellSelected);
+                        }
                         break;
                     case '2':
-                        B2C.setVisible(true);
                         cellSelected = "B2";
-                        setCellsToList();
+                        chosenCellIndex = (cellSelected.charAt(0) - 'A') * 5 + (cellSelected.charAt(1) - '1');
+                        if(this.gui.getNicknameOfCellNode(this.gui.getCellNodeGivenTheID(chosenCellIndex)).equals(this.gui.client.getNickname())){
+                            cellSelected = Integer.toString(chosenCellIndex);
+                            gui.doSendSelectedWorker(cellSelected);
+                        }
                         break;
                     case '3':
-                        B3C.setVisible(true);
                         cellSelected = "B3";
-                        setCellsToList();
+                        chosenCellIndex = (cellSelected.charAt(0) - 'A') * 5 + (cellSelected.charAt(1) - '1');
+                        if(this.gui.getNicknameOfCellNode(this.gui.getCellNodeGivenTheID(chosenCellIndex)).equals(this.gui.client.getNickname())){
+                            cellSelected = Integer.toString(chosenCellIndex);
+                            gui.doSendSelectedWorker(cellSelected);
+                        }
                         break;
                     case '4':
-                        B4C.setVisible(true);
                         cellSelected = "B4";
-                        setCellsToList();
+                        chosenCellIndex = (cellSelected.charAt(0) - 'A') * 5 + (cellSelected.charAt(1) - '1');
+                        if(this.gui.getNicknameOfCellNode(this.gui.getCellNodeGivenTheID(chosenCellIndex)).equals(this.gui.client.getNickname())){
+                            cellSelected = Integer.toString(chosenCellIndex);
+                            gui.doSendSelectedWorker(cellSelected);
+                        }
                         break;
                     case '5':
-                        B5C.setVisible(true);
                         cellSelected = "B5";
-                        setCellsToList();
+                        chosenCellIndex = (cellSelected.charAt(0) - 'A') * 5 + (cellSelected.charAt(1) - '1');
+                        if(this.gui.getNicknameOfCellNode(this.gui.getCellNodeGivenTheID(chosenCellIndex)).equals(this.gui.client.getNickname())){
+                            cellSelected = Integer.toString(chosenCellIndex);
+                            gui.doSendSelectedWorker(cellSelected);
+                        }
                         break;
                 }
                 break;
             case 'C':
                 switch (selectedCellId.charAt(1)){
                     case '1':
-                        C1C.setVisible(true);
                         cellSelected = "C1";
-                        setCellsToList();
+                        chosenCellIndex = (cellSelected.charAt(0) - 'A') * 5 + (cellSelected.charAt(1) - '1');
+                        if(this.gui.getNicknameOfCellNode(this.gui.getCellNodeGivenTheID(chosenCellIndex)).equals(this.gui.client.getNickname())){
+                            cellSelected = Integer.toString(chosenCellIndex);
+                            gui.doSendSelectedWorker(cellSelected);
+                        }
                         break;
                     case '2':
-                        C2C.setVisible(true);
                         cellSelected = "C2";
-                        setCellsToList();
+                        chosenCellIndex = (cellSelected.charAt(0) - 'A') * 5 + (cellSelected.charAt(1) - '1');
+                        if(this.gui.getNicknameOfCellNode(this.gui.getCellNodeGivenTheID(chosenCellIndex)).equals(this.gui.client.getNickname())){
+                            cellSelected = Integer.toString(chosenCellIndex);
+                            gui.doSendSelectedWorker(cellSelected);
+                        }
                         break;
                     case '3':
-                        C3C.setVisible(true);
                         cellSelected = "C3";
-                        setCellsToList();
+                        chosenCellIndex = (cellSelected.charAt(0) - 'A') * 5 + (cellSelected.charAt(1) - '1');
+                        if(this.gui.getNicknameOfCellNode(this.gui.getCellNodeGivenTheID(chosenCellIndex)).equals(this.gui.client.getNickname())){
+                            cellSelected = Integer.toString(chosenCellIndex);
+                            gui.doSendSelectedWorker(cellSelected);
+                        }
                         break;
                     case '4':
-                        C4C.setVisible(true);
                         cellSelected = "C4";
-                        setCellsToList();
+                        chosenCellIndex = (cellSelected.charAt(0) - 'A') * 5 + (cellSelected.charAt(1) - '1');
+                        if(this.gui.getNicknameOfCellNode(this.gui.getCellNodeGivenTheID(chosenCellIndex)).equals(this.gui.client.getNickname())){
+                            cellSelected = Integer.toString(chosenCellIndex);
+                            gui.doSendSelectedWorker(cellSelected);
+                        }
                         break;
                     case '5':
-                        C5C.setVisible(true);
                         cellSelected = "C5";
-                        setCellsToList();
+                        chosenCellIndex = (cellSelected.charAt(0) - 'A') * 5 + (cellSelected.charAt(1) - '1');
+                        if(this.gui.getNicknameOfCellNode(this.gui.getCellNodeGivenTheID(chosenCellIndex)).equals(this.gui.client.getNickname())){
+                            cellSelected = Integer.toString(chosenCellIndex);
+                            gui.doSendSelectedWorker(cellSelected);
+                        }
                         break;
                 }
                 break;
             case 'D':
                 switch (selectedCellId.charAt(1)){
                     case '1':
-                        D1C.setVisible(true);
                         cellSelected = "D1";
-                        setCellsToList();
+                        chosenCellIndex = (cellSelected.charAt(0) - 'A') * 5 + (cellSelected.charAt(1) - '1');
+                        if(this.gui.getNicknameOfCellNode(this.gui.getCellNodeGivenTheID(chosenCellIndex)).equals(this.gui.client.getNickname())){
+                            cellSelected = Integer.toString(chosenCellIndex);
+                            gui.doSendSelectedWorker(cellSelected);
+                        }
                         break;
                     case '2':
-                        D2C.setVisible(true);
                         cellSelected = "D2";
-                        setCellsToList();
+                        chosenCellIndex = (cellSelected.charAt(0) - 'A') * 5 + (cellSelected.charAt(1) - '1');
+                        if(this.gui.getNicknameOfCellNode(this.gui.getCellNodeGivenTheID(chosenCellIndex)).equals(this.gui.client.getNickname())){
+                            cellSelected = Integer.toString(chosenCellIndex);
+                            gui.doSendSelectedWorker(cellSelected);
+                        }
                         break;
                     case '3':
-                        D3C.setVisible(true);
                         cellSelected = "D3";
-                        setCellsToList();
+                        chosenCellIndex = (cellSelected.charAt(0) - 'A') * 5 + (cellSelected.charAt(1) - '1');
+                        if(this.gui.getNicknameOfCellNode(this.gui.getCellNodeGivenTheID(chosenCellIndex)).equals(this.gui.client.getNickname())){
+                            cellSelected = Integer.toString(chosenCellIndex);
+                            gui.doSendSelectedWorker(cellSelected);
+                        }
                         break;
                     case '4':
-                        D4C.setVisible(true);
                         cellSelected = "D4";
-                        setCellsToList();
+                        chosenCellIndex = (cellSelected.charAt(0) - 'A') * 5 + (cellSelected.charAt(1) - '1');
+                        if(this.gui.getNicknameOfCellNode(this.gui.getCellNodeGivenTheID(chosenCellIndex)).equals(this.gui.client.getNickname())){
+                            cellSelected = Integer.toString(chosenCellIndex);
+                            gui.doSendSelectedWorker(cellSelected);
+                        }
                         break;
                     case '5':
-                        D5C.setVisible(true);
                         cellSelected = "D5";
-                        setCellsToList();
+                        chosenCellIndex = (cellSelected.charAt(0) - 'A') * 5 + (cellSelected.charAt(1) - '1');
+                        if(this.gui.getNicknameOfCellNode(this.gui.getCellNodeGivenTheID(chosenCellIndex)).equals(this.gui.client.getNickname())){
+                            cellSelected = Integer.toString(chosenCellIndex);
+                            gui.doSendSelectedWorker(cellSelected);
+                        }
                         break;
                 }
                 break;
             case 'E':
                 switch (selectedCellId.charAt(1)){
                     case '1':
-                        E1C.setVisible(true);
                         cellSelected = "E1";
-                        setCellsToList();
+                        chosenCellIndex = (cellSelected.charAt(0) - 'A') * 5 + (cellSelected.charAt(1) - '1');
+                        if(this.gui.getNicknameOfCellNode(this.gui.getCellNodeGivenTheID(chosenCellIndex)).equals(this.gui.client.getNickname())){
+                            cellSelected = Integer.toString(chosenCellIndex);
+                            gui.doSendSelectedWorker(cellSelected);
+                        }
                         break;
                     case '2':
-                        E2C.setVisible(true);
                         cellSelected = "E2";
-                        setCellsToList();
+                        chosenCellIndex = (cellSelected.charAt(0) - 'A') * 5 + (cellSelected.charAt(1) - '1');
+                        if(this.gui.getNicknameOfCellNode(this.gui.getCellNodeGivenTheID(chosenCellIndex)).equals(this.gui.client.getNickname())){
+                            cellSelected = Integer.toString(chosenCellIndex);
+                            gui.doSendSelectedWorker(cellSelected);
+                        }
                         break;
                     case '3':
-                        E3C.setVisible(true);
                         cellSelected = "E3";
-                        setCellsToList();
+                        chosenCellIndex = (cellSelected.charAt(0) - 'A') * 5 + (cellSelected.charAt(1) - '1');
+                        if(this.gui.getNicknameOfCellNode(this.gui.getCellNodeGivenTheID(chosenCellIndex)).equals(this.gui.client.getNickname())){
+                            cellSelected = Integer.toString(chosenCellIndex);
+                            gui.doSendSelectedWorker(cellSelected);
+                        }
                         break;
                     case '4':
-                        E4C.setVisible(true);
                         cellSelected = "E4";
-                        setCellsToList();
+                        chosenCellIndex = (cellSelected.charAt(0) - 'A') * 5 + (cellSelected.charAt(1) - '1');
+                        if(this.gui.getNicknameOfCellNode(this.gui.getCellNodeGivenTheID(chosenCellIndex)).equals(this.gui.client.getNickname())){
+                            cellSelected = Integer.toString(chosenCellIndex);
+                            gui.doSendSelectedWorker(cellSelected);
+                        }
                         break;
                     case '5':
-                        E5C.setVisible(true);
                         cellSelected = "E5";
-                        setCellsToList();
+                        chosenCellIndex = (cellSelected.charAt(0) - 'A') * 5 + (cellSelected.charAt(1) - '1');
+                        if(this.gui.getNicknameOfCellNode(this.gui.getCellNodeGivenTheID(chosenCellIndex)).equals(this.gui.client.getNickname())){
+                            cellSelected = Integer.toString(chosenCellIndex);
+                            gui.doSendSelectedWorker(cellSelected);
+                        }
                         break;
                 }
                 break;
@@ -727,275 +804,4 @@ public class BoardPage_PlacingWorkersController {
 
     }
 
-
-
-    public void setCellsToList(){
-        boolean bAlreadySelected;
-        if(cellsToSend.size()<2){
-            bAlreadySelected = false;
-            for(int i=0; i<cellsToSend.size(); i++){
-                if(cellSelected.equals(cellsToSend.get(i))){
-                    bAlreadySelected = true;
-                    break;
-                }
-            }
-            if(!bAlreadySelected){
-                cellsToSend.add(cellSelected);
-                switch(cellSelected){
-                    case "A1":
-                        A1C.setImage(candidate);
-                        break;
-                    case "A2":
-                        A2C.setImage(candidate);
-                        break;
-                    case "A3":
-                        A3C.setImage(candidate);
-                        break;
-                    case "A4":
-                        A4C.setImage(candidate);
-                        break;
-                    case "A5":
-                        A5C.setImage(candidate);
-                        break;
-                    case "B1":
-                        B1C.setImage(candidate);
-                        break;
-                    case "B2":
-                        B2C.setImage(candidate);
-                        break;
-                    case "B3":
-                        B3C.setImage(candidate);
-                        break;
-                    case "B4":
-                        B4C.setImage(candidate);
-                        break;
-                    case "B5":
-                        B5C.setImage(candidate);
-                        break;
-                    case "C1":
-                        C1C.setImage(candidate);
-                        break;
-                    case "C2":
-                        C2C.setImage(candidate);
-                        break;
-                    case "C3":
-                        C3C.setImage(candidate);
-                        break;
-                    case "C4":
-                        C4C.setImage(candidate);
-                        break;
-                    case "C5":
-                        C5C.setImage(candidate);
-                        break;
-                    case "D1":
-                        D1C.setImage(candidate);
-                        break;
-                    case "D2":
-                        D2C.setImage(candidate);
-                        break;
-                    case "D3":
-                        D3C.setImage(candidate);
-                        break;
-                    case "D4":
-                        D4C.setImage(candidate);
-                        break;
-                    case "D5":
-                        D5C.setImage(candidate);
-                        break;
-                    case "E1":
-                        E1C.setImage(candidate);
-                        break;
-                    case "E2":
-                        E2C.setImage(candidate);
-                        break;
-                    case "E3":
-                        E3C.setImage(candidate);
-                        break;
-                    case "E4":
-                        E4C.setImage(candidate);
-                        break;
-                    case "E5":
-                        E5C.setImage(candidate);
-                        break;
-                }
-            }
-            if(cellsToSend.size() == 2){
-                ConfirmButton.setVisible(true);
-            }
-        }else if(cellsToSend.size()==2){
-            bAlreadySelected = false;
-            for(int i=0; i<cellsToSend.size(); i++){
-                if(cellSelected.equals(cellsToSend.get(i))){
-                    bAlreadySelected = true;
-                    break;
-                }
-            }
-            if(!bAlreadySelected){
-                switch(cellSelected){
-                    case "A1":
-                        A1C.setImage(candidate);
-                        break;
-                    case "A2":
-                        A2C.setImage(candidate);
-                        break;
-                    case "A3":
-                        A3C.setImage(candidate);
-                        break;
-                    case "A4":
-                        A4C.setImage(candidate);
-                        break;
-                    case "A5":
-                        A5C.setImage(candidate);
-                        break;
-                    case "B1":
-                        B1C.setImage(candidate);
-                        break;
-                    case "B2":
-                        B2C.setImage(candidate);
-                        break;
-                    case "B3":
-                        B3C.setImage(candidate);
-                        break;
-                    case "B4":
-                        B4C.setImage(candidate);
-                        break;
-                    case "B5":
-                        B5C.setImage(candidate);
-                        break;
-                    case "C1":
-                        C1C.setImage(candidate);
-                        break;
-                    case "C2":
-                        C2C.setImage(candidate);
-                        break;
-                    case "C3":
-                        C3C.setImage(candidate);
-                        break;
-                    case "C4":
-                        C4C.setImage(candidate);
-                        break;
-                    case "C5":
-                        C5C.setImage(candidate);
-                        break;
-                    case "D1":
-                        D1C.setImage(candidate);
-                        break;
-                    case "D2":
-                        D2C.setImage(candidate);
-                        break;
-                    case "D3":
-                        D3C.setImage(candidate);
-                        break;
-                    case "D4":
-                        D4C.setImage(candidate);
-                        break;
-                    case "D5":
-                        D5C.setImage(candidate);
-                        break;
-                    case "E1":
-                        E1C.setImage(candidate);
-                        break;
-                    case "E2":
-                        E2C.setImage(candidate);
-                        break;
-                    case "E3":
-                        E3C.setImage(candidate);
-                        break;
-                    case "E4":
-                        E4C.setImage(candidate);
-                        break;
-                    case "E5":
-                        E5C.setImage(candidate);
-                        break;
-                }
-
-                switch(cellsToSend.get(0)){
-                    case "A1":
-                        A1C.setImage(null);
-                        break;
-                    case "A2":
-                        A2C.setImage(null);
-                        break;
-                    case "A3":
-                        A3C.setImage(null);
-                        break;
-                    case "A4":
-                        A4C.setImage(null);
-                        break;
-                    case "A5":
-                        A5C.setImage(null);
-                        break;
-                    case "B1":
-                        B1C.setImage(null);
-                        break;
-                    case "B2":
-                        B2C.setImage(null);
-                        break;
-                    case "B3":
-                        B3C.setImage(null);
-                        break;
-                    case "B4":
-                        B4C.setImage(null);
-                        break;
-                    case "B5":
-                        B5C.setImage(null);
-                        break;
-                    case "C1":
-                        C1C.setImage(null);
-                        break;
-                    case "C2":
-                        C2C.setImage(null);
-                        break;
-                    case "C3":
-                        C3C.setImage(null);
-                        break;
-                    case "C4":
-                        C4C.setImage(null);
-                        break;
-                    case "C5":
-                        C5C.setImage(null);
-                        break;
-                    case "D1":
-                        D1C.setImage(null);
-                        break;
-                    case "D2":
-                        D2C.setImage(null);
-                        break;
-                    case "D3":
-                        D3C.setImage(null);
-                        break;
-                    case "D4":
-                        D4C.setImage(null);
-                        break;
-                    case "D5":
-                        D5C.setImage(null);
-                        break;
-                    case "E1":
-                        E1C.setImage(null);
-                        break;
-                    case "E2":
-                        E2C.setImage(null);
-                        break;
-                    case "E3":
-                        E3C.setImage(null);
-                        break;
-                    case "E4":
-                        E4C.setImage(null);
-                        break;
-                    case "E5":
-                        E5C.setImage(null);
-                        break;
-                }
-
-                cellsToSend.remove(0);
-                cellsToSend.add(cellSelected);
-            }
-            System.out.println(cellsToSend.get(0));
-            if (cellsToSend.size() == 2) {
-                System.out.println(cellsToSend.get(1));
-            }
-
-        }
-
-    }
 }
