@@ -24,6 +24,7 @@ public class BoardPage_PlacingWorkersController {
     Image ConfirmButtonReleased = new Image("images/Buttons/btn_Confirm.png");
     Image ConfirmButtonPressed = new Image("images/Buttons/btn_Confirm_pressed.png");
     @FXML
+
     //cellLevelImageViews
     public ImageView A1L;
     public ImageView A2L;
@@ -192,6 +193,7 @@ public class BoardPage_PlacingWorkersController {
         Player1Dead.setVisible(false);
         Player2Dead.setVisible(false);
         Player3Dead.setVisible(false);
+        ConfirmButton.setVisible(false);
     }
 
     /**
