@@ -635,12 +635,12 @@
                     <RowConstraints maxHeight="188.0" minHeight="10.0" prefHeight="103.0" vgrow="SOMETIMES" />
                 </rowConstraints>
                 <children>
-                    <ImageView fitHeight="178.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                    <ImageView fitHeight="178.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                         <image>
                             <Image url="@../images/OptionalPhases/OptionalBuildAfterMove.png" />
                         </image>
                     </ImageView>
-                    <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                    <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                         <image>
                             <Image url="@../images/Buttons/btn_Skip.png" />
                         </image>

@@ -590,6 +590,112 @@ public class GUI extends Application implements ClientObserver {
 
     }
 
+    public void showBoardPage_OptMove(){
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/BoardPage_OptionalMove.fxml"));
+            Parent OptMovePage = (Parent) loader.load();
+
+            BoardPage_OptMoveController boardPage_OptMoveController = loader.getController();
+            boardPage_OptMoveController.setGui(this);
+
+            //resetBoard(); rendo invisibile immagine livello, dome false, rende notvisible candidate cells e workeroccuping
+
+            Node cell;
+
+            if (nodeboard.hasChildNodes()) {
+                NodeList cells = nodeboard.getChildNodes();
+
+                for (int i = 0; i < cells.getLength(); i++) {
+                    cell = cells.item(i);
+
+                    if (cell.getNodeName().equals("cell")) {
+                        int id = getIdOfCellNode(cell);
+                        int level = getLevelOfCellNode(cell);
+                        boolean dome = getDomeOfCellNode(cell);
+
+                        String nickname = getNicknameOfCellNode(cell);
+
+                        if (!nickname.isEmpty()) {
+                            boardPage_OptMoveController.setWorker(id, PlayerWorkerMap.get(nickname));
+                        }
+
+                        if (!indexcandidatecells.isEmpty()) {
+                            for (int j = 0; j < indexcandidatecells.size(); j++) {
+                                if (indexcandidatecells.get(j) == id) {
+                                    boardPage_OptMoveController.setCandidate(id);
+                                    break;
+                                }
+                            }
+                        }
+
+                        if (dome) {
+                            boardPage_OptMoveController.setDome(id);
+                        }
+
+                        boardPage_OptMoveController.setLevel(id, level);
+                    }
+                }
+
+                if (PlayerGodMap.size() > 0) {
+                    Set<String> nicknames = PlayerGodMap.keySet();
+                    String nickname;
+                    Iterator<String> itr = nicknames.iterator();
+                    int playerscount = 1;
+                    boolean playingPlayer = false;
+
+                    while (itr.hasNext()) {
+                        nickname = itr.next();
+                        if (PlayerWorkerMap.containsKey(nickname) && PlayerGodMap.containsKey(nickname)) {
+                            if(nickname.equals(client.getNickname())) {
+                                playingPlayer = true;
+                            }
+
+                            if(playerscount == 1) {
+                                boolean deadPlayer = false;
+                                for(int i=0; i < deadPlayers.size(); i++) {
+                                    if(deadPlayers.get(i).equals(nickname)) {
+                                        deadPlayer = true;
+                                    }
+                                }
+                                boardPage_OptMoveController.setPlayer1Panel(PlayerGodMap.get(nickname), nickname, playingPlayer, deadPlayer, PlayerWorkerMap.get(nickname));
+                            } else if(playerscount == 2) {
+                                boolean deadPlayer = false;
+                                for(int i=0; i < deadPlayers.size(); i++) {
+                                    if(deadPlayers.get(i).equals(nickname)) {
+                                        deadPlayer = true;
+                                    }
+                                }
+                                boardPage_OptMoveController.setPlayer2Panel(PlayerGodMap.get(nickname), nickname, playingPlayer, deadPlayer, PlayerWorkerMap.get(nickname));
+                            } else if(playerscount == 3) {
+                                boolean deadPlayer = false;
+                                for(int i=0; i < deadPlayers.size(); i++) {
+                                    if(deadPlayers.get(i).equals(nickname)) {
+                                        deadPlayer = true;
+                                    }
+                                }
+                                boardPage_OptMoveController.setPlayer3Panel(PlayerGodMap.get(nickname), nickname, playingPlayer, deadPlayer, PlayerWorkerMap.get(nickname));
+                            }
+                        }
+                        playerscount++;
+                        playingPlayer = false;
+                    }
+                }
+
+                if(players.size() == 2) {
+                    boardPage_OptMoveController.setPanel3Visibility(false);
+                }
+            }
+
+            SantoriniStage.getScene().setRoot(OptMovePage);
+            SantoriniStage.show();
+
+        } catch (IOException exception){
+            System.out.println(exception.toString());
+        }
+
+
+    }
+
     public void showBoardPage_Build(){
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/BoardPage_Build.fxml"));
@@ -1052,6 +1158,7 @@ public class GUI extends Application implements ClientObserver {
                 }
             }
         }
+        Platform.runLater(() -> showBoardPage_OptMove());
     }
 
     /**
@@ -1362,6 +1469,11 @@ public class GUI extends Application implements ClientObserver {
     public void doSendCandidateMove(String candidateCell){
         this.restoreCandidateCells();
         client.CandidateMove(candidateCell);
+    }
+
+    public void doSkipOptMove(){
+        this.restoreCandidateCells();
+        client.passMove();
     }
 
     public void doSendCandidateBuild(String candidateCell){
