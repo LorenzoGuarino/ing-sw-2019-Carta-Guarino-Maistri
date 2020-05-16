@@ -11,7 +11,7 @@ import javafx.scene.input.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BoardPage_OptMoveController {
+public class BoardPage_UpdateController {
     private GUI gui;
     private ArrayList<ImageView> cellLevelList = new ArrayList<>();
     private ArrayList<ImageView> cellDomeList = new ArrayList<>();
@@ -21,11 +21,6 @@ public class BoardPage_OptMoveController {
     private String cellSelected;
     private List<Integer> indexcandidatecells = new ArrayList<Integer>();
 
-    @FXML
-    public ImageView SkipButton;
-
-    Image SkipButtonReleased = new Image("images/Buttons/btn_Skip.png");
-    Image SkipButtonPressed = new Image("images/Buttons/btn_Skip_pressed.png");
 
     @FXML
     //cellLevelImageViews
@@ -184,7 +179,7 @@ public class BoardPage_OptMoveController {
     /**
      * Constructor
      */
-    public BoardPage_OptMoveController(){
+    public BoardPage_UpdateController(){
     }
 
     /**
@@ -205,14 +200,7 @@ public class BoardPage_OptMoveController {
         this.gui = gui;
     }
 
-    public void skipButtonPressed() {
-        SkipButton.setImage(SkipButtonPressed);
-        gui.doSkipOptMove();
-    }
 
-    public void skipButtonReleased() {
-        SkipButton.setImage(SkipButtonReleased);
-    }
     /**
      * This method creates a dependency between the level of the cell index = the list index
      * and the corresponding ImageView in the gridPane displaying the board
@@ -573,317 +561,6 @@ public class BoardPage_OptMoveController {
         Player3Panel.setVisible(visibility);
         nicknamePlayer3.setVisible(visibility);
         Player3God.setVisible(visibility);
-    }
-
-    public void reset() {
-        //maybe?????
-    }
-
-    public void clickedOnCell(MouseEvent e){
-        int chosenCellIndex;
-        ImageView selectedCell = (ImageView) e.getTarget();
-        System.out.println(selectedCell.getId());
-        String selectedCellId = selectedCell.getId();
-        switch(selectedCellId.charAt(0)){
-            case 'A':
-                switch (selectedCellId.charAt(1)){
-                    case '1':
-                        cellSelected = "A1";
-                        chosenCellIndex = (cellSelected.charAt(0) - 'A') * 5 + (cellSelected.charAt(1) - '1');
-                        for (int i = 0; i < indexcandidatecells.size(); i++) {
-                            if (indexcandidatecells.get(i) == chosenCellIndex) {
-                                cellSelected = Integer.toString(chosenCellIndex);
-                                gui.doSendCandidateMove(cellSelected);
-                                break;
-                            }
-                        }
-                        break;
-                    case '2':
-                        cellSelected = "A2";
-                        chosenCellIndex = (cellSelected.charAt(0) - 'A') * 5 + (cellSelected.charAt(1) - '1');
-                        for (int i = 0; i < indexcandidatecells.size(); i++) {
-                            if (indexcandidatecells.get(i) == chosenCellIndex) {
-                                cellSelected = Integer.toString(chosenCellIndex);
-                                gui.doSendCandidateMove(cellSelected);
-                                break;
-                            }
-                        }
-                        break;
-                    case '3':
-                        A3C.setVisible(true);
-                        cellSelected = "A3";
-                        chosenCellIndex = (cellSelected.charAt(0) - 'A') * 5 + (cellSelected.charAt(1) - '1');
-                        for (int i = 0; i < indexcandidatecells.size(); i++) {
-                            if (indexcandidatecells.get(i) == chosenCellIndex) {
-                                cellSelected = Integer.toString(chosenCellIndex);
-                                gui.doSendCandidateMove(cellSelected);
-                                break;
-                            }
-                        }
-                        break;
-                    case '4':
-                        cellSelected = "A4";
-                        chosenCellIndex = (cellSelected.charAt(0) - 'A') * 5 + (cellSelected.charAt(1) - '1');
-                        for (int i = 0; i < indexcandidatecells.size(); i++) {
-                            if (indexcandidatecells.get(i) == chosenCellIndex) {
-                                cellSelected = Integer.toString(chosenCellIndex);
-                                gui.doSendCandidateMove(cellSelected);
-                                break;
-                            }
-                        }
-                        break;
-                    case '5':
-                        cellSelected = "A5";
-                        chosenCellIndex = (cellSelected.charAt(0) - 'A') * 5 + (cellSelected.charAt(1) - '1');
-                        for (int i = 0; i < indexcandidatecells.size(); i++) {
-                            if (indexcandidatecells.get(i) == chosenCellIndex) {
-                                cellSelected = Integer.toString(chosenCellIndex);
-                                gui.doSendCandidateMove(cellSelected);
-                                break;
-                            }
-                        }
-                        break;
-                }
-                break;
-            case 'B':
-                switch (selectedCellId.charAt(1)){
-                    case '1':
-                        cellSelected = "B1";
-                        chosenCellIndex = (cellSelected.charAt(0) - 'A') * 5 + (cellSelected.charAt(1) - '1');
-                        for (int i = 0; i < indexcandidatecells.size(); i++) {
-                            if (indexcandidatecells.get(i) == chosenCellIndex) {
-                                cellSelected = Integer.toString(chosenCellIndex);
-                                gui.doSendCandidateMove(cellSelected);
-                                break;
-                            }
-                        }
-                        break;
-                    case '2':
-                        cellSelected = "B2";
-                        chosenCellIndex = (cellSelected.charAt(0) - 'A') * 5 + (cellSelected.charAt(1) - '1');
-                        for (int i = 0; i < indexcandidatecells.size(); i++) {
-                            if (indexcandidatecells.get(i) == chosenCellIndex) {
-                                cellSelected = Integer.toString(chosenCellIndex);
-                                gui.doSendCandidateMove(cellSelected);
-                                break;
-                            }
-                        }
-                        break;
-                    case '3':
-                        cellSelected = "B3";
-                        chosenCellIndex = (cellSelected.charAt(0) - 'A') * 5 + (cellSelected.charAt(1) - '1');
-                        for (int i = 0; i < indexcandidatecells.size(); i++) {
-                            if (indexcandidatecells.get(i) == chosenCellIndex) {
-                                cellSelected = Integer.toString(chosenCellIndex);
-                                gui.doSendCandidateMove(cellSelected);
-                                break;
-                            }
-                        }
-                        break;
-                    case '4':
-                        cellSelected = "B4";
-                        chosenCellIndex = (cellSelected.charAt(0) - 'A') * 5 + (cellSelected.charAt(1) - '1');
-                        for (int i = 0; i < indexcandidatecells.size(); i++) {
-                            if (indexcandidatecells.get(i) == chosenCellIndex) {
-                                cellSelected = Integer.toString(chosenCellIndex);
-                                gui.doSendCandidateMove(cellSelected);
-                                break;
-                            }
-                        }
-                        break;
-                    case '5':
-                        cellSelected = "B5";
-                        chosenCellIndex = (cellSelected.charAt(0) - 'A') * 5 + (cellSelected.charAt(1) - '1');
-                        for (int i = 0; i < indexcandidatecells.size(); i++) {
-                            if (indexcandidatecells.get(i) == chosenCellIndex) {
-                                cellSelected = Integer.toString(chosenCellIndex);
-                                gui.doSendCandidateMove(cellSelected);
-                                break;
-                            }
-                        }
-                        break;
-                }
-                break;
-            case 'C':
-                switch (selectedCellId.charAt(1)){
-                    case '1':
-                        cellSelected = "C1";
-                        chosenCellIndex = (cellSelected.charAt(0) - 'A') * 5 + (cellSelected.charAt(1) - '1');
-                        for (int i = 0; i < indexcandidatecells.size(); i++) {
-                            if (indexcandidatecells.get(i) == chosenCellIndex) {
-                                cellSelected = Integer.toString(chosenCellIndex);
-                                gui.doSendCandidateMove(cellSelected);
-                                break;
-                            }
-                        }
-                        break;
-                    case '2':
-                        cellSelected = "C2";
-                        chosenCellIndex = (cellSelected.charAt(0) - 'A') * 5 + (cellSelected.charAt(1) - '1');
-                        for (int i = 0; i < indexcandidatecells.size(); i++) {
-                            if (indexcandidatecells.get(i) == chosenCellIndex) {
-                                cellSelected = Integer.toString(chosenCellIndex);
-                                gui.doSendCandidateMove(cellSelected);
-                                break;
-                            }
-                        }
-                        break;
-                    case '3':
-                        cellSelected = "C3";
-                        chosenCellIndex = (cellSelected.charAt(0) - 'A') * 5 + (cellSelected.charAt(1) - '1');
-                        for (int i = 0; i < indexcandidatecells.size(); i++) {
-                            if (indexcandidatecells.get(i) == chosenCellIndex) {
-                                cellSelected = Integer.toString(chosenCellIndex);
-                                gui.doSendCandidateMove(cellSelected);
-                                break;
-                            }
-                        }
-                        break;
-                    case '4':
-                        cellSelected = "C4";
-                        chosenCellIndex = (cellSelected.charAt(0) - 'A') * 5 + (cellSelected.charAt(1) - '1');
-                        for (int i = 0; i < indexcandidatecells.size(); i++) {
-                            if (indexcandidatecells.get(i) == chosenCellIndex) {
-                                cellSelected = Integer.toString(chosenCellIndex);
-                                gui.doSendCandidateMove(cellSelected);
-                                break;
-                            }
-                        }
-                        break;
-                    case '5':
-                        cellSelected = "C5";
-                        chosenCellIndex = (cellSelected.charAt(0) - 'A') * 5 + (cellSelected.charAt(1) - '1');
-                        for (int i = 0; i < indexcandidatecells.size(); i++) {
-                            if (indexcandidatecells.get(i) == chosenCellIndex) {
-                                cellSelected = Integer.toString(chosenCellIndex);
-                                gui.doSendCandidateMove(cellSelected);
-                                break;
-                            }
-                        }
-                        break;
-                }
-                break;
-            case 'D':
-                switch (selectedCellId.charAt(1)){
-                    case '1':
-                        cellSelected = "D1";
-                        chosenCellIndex = (cellSelected.charAt(0) - 'A') * 5 + (cellSelected.charAt(1) - '1');
-                        for (int i = 0; i < indexcandidatecells.size(); i++) {
-                            if (indexcandidatecells.get(i) == chosenCellIndex) {
-                                cellSelected = Integer.toString(chosenCellIndex);
-                                gui.doSendCandidateMove(cellSelected);
-                                break;
-                            }
-                        }
-                        break;
-                    case '2':
-                        cellSelected = "D2";
-                        chosenCellIndex = (cellSelected.charAt(0) - 'A') * 5 + (cellSelected.charAt(1) - '1');
-                        for (int i = 0; i < indexcandidatecells.size(); i++) {
-                            if (indexcandidatecells.get(i) == chosenCellIndex) {
-                                cellSelected = Integer.toString(chosenCellIndex);
-                                gui.doSendCandidateMove(cellSelected);
-                                break;
-                            }
-                        }
-                        break;
-                    case '3':
-                        cellSelected = "D3";
-                        chosenCellIndex = (cellSelected.charAt(0) - 'A') * 5 + (cellSelected.charAt(1) - '1');
-                        for (int i = 0; i < indexcandidatecells.size(); i++) {
-                            if (indexcandidatecells.get(i) == chosenCellIndex) {
-                                cellSelected = Integer.toString(chosenCellIndex);
-                                gui.doSendCandidateMove(cellSelected);
-                                break;
-                            }
-                        }
-                        break;
-                    case '4':
-                        cellSelected = "D4";
-                        chosenCellIndex = (cellSelected.charAt(0) - 'A') * 5 + (cellSelected.charAt(1) - '1');
-                        for (int i = 0; i < indexcandidatecells.size(); i++) {
-                            if (indexcandidatecells.get(i) == chosenCellIndex) {
-                                cellSelected = Integer.toString(chosenCellIndex);
-                                gui.doSendCandidateMove(cellSelected);
-                                break;
-                            }
-                        }
-                        break;
-                    case '5':
-                        cellSelected = "D5";
-                        chosenCellIndex = (cellSelected.charAt(0) - 'A') * 5 + (cellSelected.charAt(1) - '1');
-                        for (int i = 0; i < indexcandidatecells.size(); i++) {
-                            if (indexcandidatecells.get(i) == chosenCellIndex) {
-                                cellSelected = Integer.toString(chosenCellIndex);
-                                gui.doSendCandidateMove(cellSelected);
-                                break;
-                            }
-                        }
-                        break;
-                }
-                break;
-            case 'E':
-                switch (selectedCellId.charAt(1)){
-                    case '1':
-                        cellSelected = "E1";
-                        chosenCellIndex = (cellSelected.charAt(0) - 'A') * 5 + (cellSelected.charAt(1) - '1');
-                        for (int i = 0; i < indexcandidatecells.size(); i++) {
-                            if (indexcandidatecells.get(i) == chosenCellIndex) {
-                                cellSelected = Integer.toString(chosenCellIndex);
-                                gui.doSendCandidateMove(cellSelected);
-                                break;
-                            }
-                        }
-                        break;
-                    case '2':
-                        cellSelected = "E2";
-                        chosenCellIndex = (cellSelected.charAt(0) - 'A') * 5 + (cellSelected.charAt(1) - '1');
-                        for (int i = 0; i < indexcandidatecells.size(); i++) {
-                            if (indexcandidatecells.get(i) == chosenCellIndex) {
-                                cellSelected = Integer.toString(chosenCellIndex);
-                                gui.doSendCandidateMove(cellSelected);
-                                break;
-                            }
-                        }
-                        break;
-                    case '3':
-                        cellSelected = "E3";
-                        chosenCellIndex = (cellSelected.charAt(0) - 'A') * 5 + (cellSelected.charAt(1) - '1');
-                        for (int i = 0; i < indexcandidatecells.size(); i++) {
-                            if (indexcandidatecells.get(i) == chosenCellIndex) {
-                                cellSelected = Integer.toString(chosenCellIndex);
-                                gui.doSendCandidateMove(cellSelected);
-                                break;
-                            }
-                        }
-                        break;
-                    case '4':
-                        cellSelected = "E4";
-                        chosenCellIndex = (cellSelected.charAt(0) - 'A') * 5 + (cellSelected.charAt(1) - '1');
-                        for (int i = 0; i < indexcandidatecells.size(); i++) {
-                            if (indexcandidatecells.get(i) == chosenCellIndex) {
-                                cellSelected = Integer.toString(chosenCellIndex);
-                                gui.doSendCandidateMove(cellSelected);
-                                break;
-                            }
-                        }
-                        break;
-                    case '5':
-                        cellSelected = "E5";
-                        chosenCellIndex = (cellSelected.charAt(0) - 'A') * 5 + (cellSelected.charAt(1) - '1');
-                        for (int i = 0; i < indexcandidatecells.size(); i++) {
-                            if (indexcandidatecells.get(i) == chosenCellIndex) {
-                                cellSelected = Integer.toString(chosenCellIndex);
-                                gui.doSendCandidateMove(cellSelected);
-                                break;
-                            }
-                        }
-                        break;
-                }
-                break;
-
-        }
-
     }
 
 }

@@ -631,7 +631,7 @@
                <Image url="@../images/Buttons/btn_Confirm.png" />
             </image>
          </ImageView>
-         <ImageView fitHeight="200.0" fitWidth="250.0" layoutX="600.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="600.0" AnchorPane.rightAnchor="600.0" AnchorPane.topAnchor="0.0">
+         <ImageView fitHeight="250.0" fitWidth="300.0" layoutX="600.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="600.0" AnchorPane.rightAnchor="600.0" AnchorPane.topAnchor="0.0">
             <image>
                <Image url="@../images/Board/PlaceWorkers.png" />
             </image>
