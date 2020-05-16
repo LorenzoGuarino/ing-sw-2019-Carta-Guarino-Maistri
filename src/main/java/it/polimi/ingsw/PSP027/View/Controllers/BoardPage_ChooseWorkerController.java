@@ -20,7 +20,6 @@ public class BoardPage_ChooseWorkerController {
     private final List<String> cellsToSend = new ArrayList<>();
     private String cellSelected;
 
-
     @FXML
     //cellLevelImageViews
     public ImageView A1L;
@@ -130,7 +129,6 @@ public class BoardPage_ChooseWorkerController {
     public ImageView E4C;
     public ImageView E5C;
 
-
     public Image level1Image = new Image("images/Board/Level1_Board.png");
     public Image level2Image = new Image("images/Board/Level2_Board.png");
     public Image level3Image = new Image("images/Board/Level3_Board.png");
@@ -159,6 +157,10 @@ public class BoardPage_ChooseWorkerController {
     public ImageView Player1Icon;
     public ImageView Player2Icon;
     public ImageView Player3Icon;
+
+    Image redWorkerSelected = new Image("images/Board/redWorker_Board_selected.png");
+    Image blueWorkerSelected = new Image("images/Board/blueWorker_Board_selected.png");
+    Image violetWorkerSelected = new Image("images/Board/violetWorker_Board_selected.png");
 
     Image Apollo = new Image("images/Gods/Apollo_icon.png");
     Image Ares = new Image("images/Gods/Ares_icon.png");
@@ -335,16 +337,24 @@ public class BoardPage_ChooseWorkerController {
     public void setLevel(int index, int level){
         initCellLevelList();
         switch(level){
-            case 1: this.cellLevelList.get(index).setImage(this.level1Image);
-            case 2: this.cellLevelList.get(index).setImage(this.level2Image);
-            case 3: this.cellLevelList.get(index).setImage(this.level3Image);
-            default: return;
+            case 1: {
+                this.cellLevelList.get(index).setImage(this.level1Image);
+                break;
+            }
+            case 2: {
+                this.cellLevelList.get(index).setImage(this.level2Image);
+                break;
+            }
+            case 3: {
+                this.cellLevelList.get(index).setImage(this.level3Image);
+                break;
+            }
         }
     }
 
     public void setDome(int index){
         initCellDomeList();
-        this.cellLevelList.get(index).setImage(this.domeImage);
+        this.cellDomeList.get(index).setImage(this.domeImage);
     }
 
     public void setWorker(int index, String url){
@@ -570,6 +580,13 @@ public class BoardPage_ChooseWorkerController {
                         chosenCellIndex = (cellSelected.charAt(0) - 'A') * 5 + (cellSelected.charAt(1) - '1');
                         if(this.gui.getNicknameOfCellNode(this.gui.getCellNodeGivenTheID(chosenCellIndex)).equals(this.gui.client.getNickname())){
                             cellSelected = Integer.toString(chosenCellIndex);
+                            if(gui.getWorkerUrlImageGivenTheNickname(gui.client.getNickname()).equals("images/Board/redWorker_Board.png")) {
+                                selectedCell.setImage(redWorkerSelected);
+                            } else if(gui.getWorkerUrlImageGivenTheNickname(gui.client.getNickname()).equals("images/Board/blueWorker_Board.png")) {
+                                selectedCell.setImage(blueWorkerSelected);
+                            } else if(gui.getWorkerUrlImageGivenTheNickname(gui.client.getNickname()).equals("images/Board/violetWorker_Board.png")) {
+                                selectedCell.setImage(violetWorkerSelected);
+                            }
                             gui.doSendSelectedWorker(cellSelected);
                         }
                         break;
@@ -578,6 +595,13 @@ public class BoardPage_ChooseWorkerController {
                         chosenCellIndex = (cellSelected.charAt(0) - 'A') * 5 + (cellSelected.charAt(1) - '1');
                         if(this.gui.getNicknameOfCellNode(this.gui.getCellNodeGivenTheID(chosenCellIndex)).equals(this.gui.client.getNickname())){
                             cellSelected = Integer.toString(chosenCellIndex);
+                            if(gui.getWorkerUrlImageGivenTheNickname(gui.client.getNickname()).equals("images/Board/redWorker_Board.png")) {
+                                selectedCell.setImage(redWorkerSelected);
+                            } else if(gui.getWorkerUrlImageGivenTheNickname(gui.client.getNickname()).equals("images/Board/blueWorker_Board.png")) {
+                                selectedCell.setImage(blueWorkerSelected);
+                            } else if(gui.getWorkerUrlImageGivenTheNickname(gui.client.getNickname()).equals("images/Board/violetWorker_Board.png")) {
+                                selectedCell.setImage(violetWorkerSelected);
+                            }
                             gui.doSendSelectedWorker(cellSelected);
                         }
                         break;
@@ -587,6 +611,13 @@ public class BoardPage_ChooseWorkerController {
                         chosenCellIndex = (cellSelected.charAt(0) - 'A') * 5 + (cellSelected.charAt(1) - '1');
                         if(this.gui.getNicknameOfCellNode(this.gui.getCellNodeGivenTheID(chosenCellIndex)).equals(this.gui.client.getNickname())){
                             cellSelected = Integer.toString(chosenCellIndex);
+                            if(gui.getWorkerUrlImageGivenTheNickname(gui.client.getNickname()).equals("images/Board/redWorker_Board.png")) {
+                                selectedCell.setImage(redWorkerSelected);
+                            } else if(gui.getWorkerUrlImageGivenTheNickname(gui.client.getNickname()).equals("images/Board/blueWorker_Board.png")) {
+                                selectedCell.setImage(blueWorkerSelected);
+                            } else if(gui.getWorkerUrlImageGivenTheNickname(gui.client.getNickname()).equals("images/Board/violetWorker_Board.png")) {
+                                selectedCell.setImage(violetWorkerSelected);
+                            }
                             gui.doSendSelectedWorker(cellSelected);
                         }
                         break;
@@ -595,6 +626,13 @@ public class BoardPage_ChooseWorkerController {
                         chosenCellIndex = (cellSelected.charAt(0) - 'A') * 5 + (cellSelected.charAt(1) - '1');
                         if(this.gui.getNicknameOfCellNode(this.gui.getCellNodeGivenTheID(chosenCellIndex)).equals(this.gui.client.getNickname())){
                             cellSelected = Integer.toString(chosenCellIndex);
+                            if(gui.getWorkerUrlImageGivenTheNickname(gui.client.getNickname()).equals("images/Board/redWorker_Board.png")) {
+                                selectedCell.setImage(redWorkerSelected);
+                            } else if(gui.getWorkerUrlImageGivenTheNickname(gui.client.getNickname()).equals("images/Board/blueWorker_Board.png")) {
+                                selectedCell.setImage(blueWorkerSelected);
+                            } else if(gui.getWorkerUrlImageGivenTheNickname(gui.client.getNickname()).equals("images/Board/violetWorker_Board.png")) {
+                                selectedCell.setImage(violetWorkerSelected);
+                            }
                             gui.doSendSelectedWorker(cellSelected);
                         }
                         break;
@@ -603,6 +641,13 @@ public class BoardPage_ChooseWorkerController {
                         chosenCellIndex = (cellSelected.charAt(0) - 'A') * 5 + (cellSelected.charAt(1) - '1');
                         if(this.gui.getNicknameOfCellNode(this.gui.getCellNodeGivenTheID(chosenCellIndex)).equals(this.gui.client.getNickname())){
                             cellSelected = Integer.toString(chosenCellIndex);
+                            if(gui.getWorkerUrlImageGivenTheNickname(gui.client.getNickname()).equals("images/Board/redWorker_Board.png")) {
+                                selectedCell.setImage(redWorkerSelected);
+                            } else if(gui.getWorkerUrlImageGivenTheNickname(gui.client.getNickname()).equals("images/Board/blueWorker_Board.png")) {
+                                selectedCell.setImage(blueWorkerSelected);
+                            } else if(gui.getWorkerUrlImageGivenTheNickname(gui.client.getNickname()).equals("images/Board/violetWorker_Board.png")) {
+                                selectedCell.setImage(violetWorkerSelected);
+                            }
                             gui.doSendSelectedWorker(cellSelected);
                         }
                         break;
@@ -615,6 +660,13 @@ public class BoardPage_ChooseWorkerController {
                         chosenCellIndex = (cellSelected.charAt(0) - 'A') * 5 + (cellSelected.charAt(1) - '1');
                         if(this.gui.getNicknameOfCellNode(this.gui.getCellNodeGivenTheID(chosenCellIndex)).equals(this.gui.client.getNickname())){
                             cellSelected = Integer.toString(chosenCellIndex);
+                            if(gui.getWorkerUrlImageGivenTheNickname(gui.client.getNickname()).equals("images/Board/redWorker_Board.png")) {
+                                selectedCell.setImage(redWorkerSelected);
+                            } else if(gui.getWorkerUrlImageGivenTheNickname(gui.client.getNickname()).equals("images/Board/blueWorker_Board.png")) {
+                                selectedCell.setImage(blueWorkerSelected);
+                            } else if(gui.getWorkerUrlImageGivenTheNickname(gui.client.getNickname()).equals("images/Board/violetWorker_Board.png")) {
+                                selectedCell.setImage(violetWorkerSelected);
+                            }
                             gui.doSendSelectedWorker(cellSelected);
                         }
                         break;
@@ -623,6 +675,13 @@ public class BoardPage_ChooseWorkerController {
                         chosenCellIndex = (cellSelected.charAt(0) - 'A') * 5 + (cellSelected.charAt(1) - '1');
                         if(this.gui.getNicknameOfCellNode(this.gui.getCellNodeGivenTheID(chosenCellIndex)).equals(this.gui.client.getNickname())){
                             cellSelected = Integer.toString(chosenCellIndex);
+                            if(gui.getWorkerUrlImageGivenTheNickname(gui.client.getNickname()).equals("images/Board/redWorker_Board.png")) {
+                                selectedCell.setImage(redWorkerSelected);
+                            } else if(gui.getWorkerUrlImageGivenTheNickname(gui.client.getNickname()).equals("images/Board/blueWorker_Board.png")) {
+                                selectedCell.setImage(blueWorkerSelected);
+                            } else if(gui.getWorkerUrlImageGivenTheNickname(gui.client.getNickname()).equals("images/Board/violetWorker_Board.png")) {
+                                selectedCell.setImage(violetWorkerSelected);
+                            }
                             gui.doSendSelectedWorker(cellSelected);
                         }
                         break;
@@ -631,6 +690,13 @@ public class BoardPage_ChooseWorkerController {
                         chosenCellIndex = (cellSelected.charAt(0) - 'A') * 5 + (cellSelected.charAt(1) - '1');
                         if(this.gui.getNicknameOfCellNode(this.gui.getCellNodeGivenTheID(chosenCellIndex)).equals(this.gui.client.getNickname())){
                             cellSelected = Integer.toString(chosenCellIndex);
+                            if(gui.getWorkerUrlImageGivenTheNickname(gui.client.getNickname()).equals("images/Board/redWorker_Board.png")) {
+                                selectedCell.setImage(redWorkerSelected);
+                            } else if(gui.getWorkerUrlImageGivenTheNickname(gui.client.getNickname()).equals("images/Board/blueWorker_Board.png")) {
+                                selectedCell.setImage(blueWorkerSelected);
+                            } else if(gui.getWorkerUrlImageGivenTheNickname(gui.client.getNickname()).equals("images/Board/violetWorker_Board.png")) {
+                                selectedCell.setImage(violetWorkerSelected);
+                            }
                             gui.doSendSelectedWorker(cellSelected);
                         }
                         break;
@@ -639,6 +705,13 @@ public class BoardPage_ChooseWorkerController {
                         chosenCellIndex = (cellSelected.charAt(0) - 'A') * 5 + (cellSelected.charAt(1) - '1');
                         if(this.gui.getNicknameOfCellNode(this.gui.getCellNodeGivenTheID(chosenCellIndex)).equals(this.gui.client.getNickname())){
                             cellSelected = Integer.toString(chosenCellIndex);
+                            if(gui.getWorkerUrlImageGivenTheNickname(gui.client.getNickname()).equals("images/Board/redWorker_Board.png")) {
+                                selectedCell.setImage(redWorkerSelected);
+                            } else if(gui.getWorkerUrlImageGivenTheNickname(gui.client.getNickname()).equals("images/Board/blueWorker_Board.png")) {
+                                selectedCell.setImage(blueWorkerSelected);
+                            } else if(gui.getWorkerUrlImageGivenTheNickname(gui.client.getNickname()).equals("images/Board/violetWorker_Board.png")) {
+                                selectedCell.setImage(violetWorkerSelected);
+                            }
                             gui.doSendSelectedWorker(cellSelected);
                         }
                         break;
@@ -647,6 +720,13 @@ public class BoardPage_ChooseWorkerController {
                         chosenCellIndex = (cellSelected.charAt(0) - 'A') * 5 + (cellSelected.charAt(1) - '1');
                         if(this.gui.getNicknameOfCellNode(this.gui.getCellNodeGivenTheID(chosenCellIndex)).equals(this.gui.client.getNickname())){
                             cellSelected = Integer.toString(chosenCellIndex);
+                            if(gui.getWorkerUrlImageGivenTheNickname(gui.client.getNickname()).equals("images/Board/redWorker_Board.png")) {
+                                selectedCell.setImage(redWorkerSelected);
+                            } else if(gui.getWorkerUrlImageGivenTheNickname(gui.client.getNickname()).equals("images/Board/blueWorker_Board.png")) {
+                                selectedCell.setImage(blueWorkerSelected);
+                            } else if(gui.getWorkerUrlImageGivenTheNickname(gui.client.getNickname()).equals("images/Board/violetWorker_Board.png")) {
+                                selectedCell.setImage(violetWorkerSelected);
+                            }
                             gui.doSendSelectedWorker(cellSelected);
                         }
                         break;
@@ -659,6 +739,13 @@ public class BoardPage_ChooseWorkerController {
                         chosenCellIndex = (cellSelected.charAt(0) - 'A') * 5 + (cellSelected.charAt(1) - '1');
                         if(this.gui.getNicknameOfCellNode(this.gui.getCellNodeGivenTheID(chosenCellIndex)).equals(this.gui.client.getNickname())){
                             cellSelected = Integer.toString(chosenCellIndex);
+                            if(gui.getWorkerUrlImageGivenTheNickname(gui.client.getNickname()).equals("images/Board/redWorker_Board.png")) {
+                                selectedCell.setImage(redWorkerSelected);
+                            } else if(gui.getWorkerUrlImageGivenTheNickname(gui.client.getNickname()).equals("images/Board/blueWorker_Board.png")) {
+                                selectedCell.setImage(blueWorkerSelected);
+                            } else if(gui.getWorkerUrlImageGivenTheNickname(gui.client.getNickname()).equals("images/Board/violetWorker_Board.png")) {
+                                selectedCell.setImage(violetWorkerSelected);
+                            }
                             gui.doSendSelectedWorker(cellSelected);
                         }
                         break;
@@ -667,6 +754,13 @@ public class BoardPage_ChooseWorkerController {
                         chosenCellIndex = (cellSelected.charAt(0) - 'A') * 5 + (cellSelected.charAt(1) - '1');
                         if(this.gui.getNicknameOfCellNode(this.gui.getCellNodeGivenTheID(chosenCellIndex)).equals(this.gui.client.getNickname())){
                             cellSelected = Integer.toString(chosenCellIndex);
+                            if(gui.getWorkerUrlImageGivenTheNickname(gui.client.getNickname()).equals("images/Board/redWorker_Board.png")) {
+                                selectedCell.setImage(redWorkerSelected);
+                            } else if(gui.getWorkerUrlImageGivenTheNickname(gui.client.getNickname()).equals("images/Board/blueWorker_Board.png")) {
+                                selectedCell.setImage(blueWorkerSelected);
+                            } else if(gui.getWorkerUrlImageGivenTheNickname(gui.client.getNickname()).equals("images/Board/violetWorker_Board.png")) {
+                                selectedCell.setImage(violetWorkerSelected);
+                            }
                             gui.doSendSelectedWorker(cellSelected);
                         }
                         break;
@@ -675,6 +769,13 @@ public class BoardPage_ChooseWorkerController {
                         chosenCellIndex = (cellSelected.charAt(0) - 'A') * 5 + (cellSelected.charAt(1) - '1');
                         if(this.gui.getNicknameOfCellNode(this.gui.getCellNodeGivenTheID(chosenCellIndex)).equals(this.gui.client.getNickname())){
                             cellSelected = Integer.toString(chosenCellIndex);
+                            if(gui.getWorkerUrlImageGivenTheNickname(gui.client.getNickname()).equals("images/Board/redWorker_Board.png")) {
+                                selectedCell.setImage(redWorkerSelected);
+                            } else if(gui.getWorkerUrlImageGivenTheNickname(gui.client.getNickname()).equals("images/Board/blueWorker_Board.png")) {
+                                selectedCell.setImage(blueWorkerSelected);
+                            } else if(gui.getWorkerUrlImageGivenTheNickname(gui.client.getNickname()).equals("images/Board/violetWorker_Board.png")) {
+                                selectedCell.setImage(violetWorkerSelected);
+                            }
                             gui.doSendSelectedWorker(cellSelected);
                         }
                         break;
@@ -683,6 +784,13 @@ public class BoardPage_ChooseWorkerController {
                         chosenCellIndex = (cellSelected.charAt(0) - 'A') * 5 + (cellSelected.charAt(1) - '1');
                         if(this.gui.getNicknameOfCellNode(this.gui.getCellNodeGivenTheID(chosenCellIndex)).equals(this.gui.client.getNickname())){
                             cellSelected = Integer.toString(chosenCellIndex);
+                            if(gui.getWorkerUrlImageGivenTheNickname(gui.client.getNickname()).equals("images/Board/redWorker_Board.png")) {
+                                selectedCell.setImage(redWorkerSelected);
+                            } else if(gui.getWorkerUrlImageGivenTheNickname(gui.client.getNickname()).equals("images/Board/blueWorker_Board.png")) {
+                                selectedCell.setImage(blueWorkerSelected);
+                            } else if(gui.getWorkerUrlImageGivenTheNickname(gui.client.getNickname()).equals("images/Board/violetWorker_Board.png")) {
+                                selectedCell.setImage(violetWorkerSelected);
+                            }
                             gui.doSendSelectedWorker(cellSelected);
                         }
                         break;
@@ -691,6 +799,13 @@ public class BoardPage_ChooseWorkerController {
                         chosenCellIndex = (cellSelected.charAt(0) - 'A') * 5 + (cellSelected.charAt(1) - '1');
                         if(this.gui.getNicknameOfCellNode(this.gui.getCellNodeGivenTheID(chosenCellIndex)).equals(this.gui.client.getNickname())){
                             cellSelected = Integer.toString(chosenCellIndex);
+                            if(gui.getWorkerUrlImageGivenTheNickname(gui.client.getNickname()).equals("images/Board/redWorker_Board.png")) {
+                                selectedCell.setImage(redWorkerSelected);
+                            } else if(gui.getWorkerUrlImageGivenTheNickname(gui.client.getNickname()).equals("images/Board/blueWorker_Board.png")) {
+                                selectedCell.setImage(blueWorkerSelected);
+                            } else if(gui.getWorkerUrlImageGivenTheNickname(gui.client.getNickname()).equals("images/Board/violetWorker_Board.png")) {
+                                selectedCell.setImage(violetWorkerSelected);
+                            }
                             gui.doSendSelectedWorker(cellSelected);
                         }
                         break;
@@ -703,6 +818,13 @@ public class BoardPage_ChooseWorkerController {
                         chosenCellIndex = (cellSelected.charAt(0) - 'A') * 5 + (cellSelected.charAt(1) - '1');
                         if(this.gui.getNicknameOfCellNode(this.gui.getCellNodeGivenTheID(chosenCellIndex)).equals(this.gui.client.getNickname())){
                             cellSelected = Integer.toString(chosenCellIndex);
+                            if(gui.getWorkerUrlImageGivenTheNickname(gui.client.getNickname()).equals("images/Board/redWorker_Board.png")) {
+                                selectedCell.setImage(redWorkerSelected);
+                            } else if(gui.getWorkerUrlImageGivenTheNickname(gui.client.getNickname()).equals("images/Board/blueWorker_Board.png")) {
+                                selectedCell.setImage(blueWorkerSelected);
+                            } else if(gui.getWorkerUrlImageGivenTheNickname(gui.client.getNickname()).equals("images/Board/violetWorker_Board.png")) {
+                                selectedCell.setImage(violetWorkerSelected);
+                            }
                             gui.doSendSelectedWorker(cellSelected);
                         }
                         break;
@@ -711,6 +833,13 @@ public class BoardPage_ChooseWorkerController {
                         chosenCellIndex = (cellSelected.charAt(0) - 'A') * 5 + (cellSelected.charAt(1) - '1');
                         if(this.gui.getNicknameOfCellNode(this.gui.getCellNodeGivenTheID(chosenCellIndex)).equals(this.gui.client.getNickname())){
                             cellSelected = Integer.toString(chosenCellIndex);
+                            if(gui.getWorkerUrlImageGivenTheNickname(gui.client.getNickname()).equals("images/Board/redWorker_Board.png")) {
+                                selectedCell.setImage(redWorkerSelected);
+                            } else if(gui.getWorkerUrlImageGivenTheNickname(gui.client.getNickname()).equals("images/Board/blueWorker_Board.png")) {
+                                selectedCell.setImage(blueWorkerSelected);
+                            } else if(gui.getWorkerUrlImageGivenTheNickname(gui.client.getNickname()).equals("images/Board/violetWorker_Board.png")) {
+                                selectedCell.setImage(violetWorkerSelected);
+                            }
                             gui.doSendSelectedWorker(cellSelected);
                         }
                         break;
@@ -719,6 +848,13 @@ public class BoardPage_ChooseWorkerController {
                         chosenCellIndex = (cellSelected.charAt(0) - 'A') * 5 + (cellSelected.charAt(1) - '1');
                         if(this.gui.getNicknameOfCellNode(this.gui.getCellNodeGivenTheID(chosenCellIndex)).equals(this.gui.client.getNickname())){
                             cellSelected = Integer.toString(chosenCellIndex);
+                            if(gui.getWorkerUrlImageGivenTheNickname(gui.client.getNickname()).equals("images/Board/redWorker_Board.png")) {
+                                selectedCell.setImage(redWorkerSelected);
+                            } else if(gui.getWorkerUrlImageGivenTheNickname(gui.client.getNickname()).equals("images/Board/blueWorker_Board.png")) {
+                                selectedCell.setImage(blueWorkerSelected);
+                            } else if(gui.getWorkerUrlImageGivenTheNickname(gui.client.getNickname()).equals("images/Board/violetWorker_Board.png")) {
+                                selectedCell.setImage(violetWorkerSelected);
+                            }
                             gui.doSendSelectedWorker(cellSelected);
                         }
                         break;
@@ -727,6 +863,13 @@ public class BoardPage_ChooseWorkerController {
                         chosenCellIndex = (cellSelected.charAt(0) - 'A') * 5 + (cellSelected.charAt(1) - '1');
                         if(this.gui.getNicknameOfCellNode(this.gui.getCellNodeGivenTheID(chosenCellIndex)).equals(this.gui.client.getNickname())){
                             cellSelected = Integer.toString(chosenCellIndex);
+                            if(gui.getWorkerUrlImageGivenTheNickname(gui.client.getNickname()).equals("images/Board/redWorker_Board.png")) {
+                                selectedCell.setImage(redWorkerSelected);
+                            } else if(gui.getWorkerUrlImageGivenTheNickname(gui.client.getNickname()).equals("images/Board/blueWorker_Board.png")) {
+                                selectedCell.setImage(blueWorkerSelected);
+                            } else if(gui.getWorkerUrlImageGivenTheNickname(gui.client.getNickname()).equals("images/Board/violetWorker_Board.png")) {
+                                selectedCell.setImage(violetWorkerSelected);
+                            }
                             gui.doSendSelectedWorker(cellSelected);
                         }
                         break;
@@ -735,6 +878,13 @@ public class BoardPage_ChooseWorkerController {
                         chosenCellIndex = (cellSelected.charAt(0) - 'A') * 5 + (cellSelected.charAt(1) - '1');
                         if(this.gui.getNicknameOfCellNode(this.gui.getCellNodeGivenTheID(chosenCellIndex)).equals(this.gui.client.getNickname())){
                             cellSelected = Integer.toString(chosenCellIndex);
+                            if(gui.getWorkerUrlImageGivenTheNickname(gui.client.getNickname()).equals("images/Board/redWorker_Board.png")) {
+                                selectedCell.setImage(redWorkerSelected);
+                            } else if(gui.getWorkerUrlImageGivenTheNickname(gui.client.getNickname()).equals("images/Board/blueWorker_Board.png")) {
+                                selectedCell.setImage(blueWorkerSelected);
+                            } else if(gui.getWorkerUrlImageGivenTheNickname(gui.client.getNickname()).equals("images/Board/violetWorker_Board.png")) {
+                                selectedCell.setImage(violetWorkerSelected);
+                            }
                             gui.doSendSelectedWorker(cellSelected);
                         }
                         break;
@@ -747,6 +897,13 @@ public class BoardPage_ChooseWorkerController {
                         chosenCellIndex = (cellSelected.charAt(0) - 'A') * 5 + (cellSelected.charAt(1) - '1');
                         if(this.gui.getNicknameOfCellNode(this.gui.getCellNodeGivenTheID(chosenCellIndex)).equals(this.gui.client.getNickname())){
                             cellSelected = Integer.toString(chosenCellIndex);
+                            if(gui.getWorkerUrlImageGivenTheNickname(gui.client.getNickname()).equals("images/Board/redWorker_Board.png")) {
+                                selectedCell.setImage(redWorkerSelected);
+                            } else if(gui.getWorkerUrlImageGivenTheNickname(gui.client.getNickname()).equals("images/Board/blueWorker_Board.png")) {
+                                selectedCell.setImage(blueWorkerSelected);
+                            } else if(gui.getWorkerUrlImageGivenTheNickname(gui.client.getNickname()).equals("images/Board/violetWorker_Board.png")) {
+                                selectedCell.setImage(violetWorkerSelected);
+                            }
                             gui.doSendSelectedWorker(cellSelected);
                         }
                         break;
@@ -755,6 +912,13 @@ public class BoardPage_ChooseWorkerController {
                         chosenCellIndex = (cellSelected.charAt(0) - 'A') * 5 + (cellSelected.charAt(1) - '1');
                         if(this.gui.getNicknameOfCellNode(this.gui.getCellNodeGivenTheID(chosenCellIndex)).equals(this.gui.client.getNickname())){
                             cellSelected = Integer.toString(chosenCellIndex);
+                            if(gui.getWorkerUrlImageGivenTheNickname(gui.client.getNickname()).equals("images/Board/redWorker_Board.png")) {
+                                selectedCell.setImage(redWorkerSelected);
+                            } else if(gui.getWorkerUrlImageGivenTheNickname(gui.client.getNickname()).equals("images/Board/blueWorker_Board.png")) {
+                                selectedCell.setImage(blueWorkerSelected);
+                            } else if(gui.getWorkerUrlImageGivenTheNickname(gui.client.getNickname()).equals("images/Board/violetWorker_Board.png")) {
+                                selectedCell.setImage(violetWorkerSelected);
+                            }
                             gui.doSendSelectedWorker(cellSelected);
                         }
                         break;
@@ -763,6 +927,13 @@ public class BoardPage_ChooseWorkerController {
                         chosenCellIndex = (cellSelected.charAt(0) - 'A') * 5 + (cellSelected.charAt(1) - '1');
                         if(this.gui.getNicknameOfCellNode(this.gui.getCellNodeGivenTheID(chosenCellIndex)).equals(this.gui.client.getNickname())){
                             cellSelected = Integer.toString(chosenCellIndex);
+                            if(gui.getWorkerUrlImageGivenTheNickname(gui.client.getNickname()).equals("images/Board/redWorker_Board.png")) {
+                                selectedCell.setImage(redWorkerSelected);
+                            } else if(gui.getWorkerUrlImageGivenTheNickname(gui.client.getNickname()).equals("images/Board/blueWorker_Board.png")) {
+                                selectedCell.setImage(blueWorkerSelected);
+                            } else if(gui.getWorkerUrlImageGivenTheNickname(gui.client.getNickname()).equals("images/Board/violetWorker_Board.png")) {
+                                selectedCell.setImage(violetWorkerSelected);
+                            }
                             gui.doSendSelectedWorker(cellSelected);
                         }
                         break;
@@ -771,6 +942,13 @@ public class BoardPage_ChooseWorkerController {
                         chosenCellIndex = (cellSelected.charAt(0) - 'A') * 5 + (cellSelected.charAt(1) - '1');
                         if(this.gui.getNicknameOfCellNode(this.gui.getCellNodeGivenTheID(chosenCellIndex)).equals(this.gui.client.getNickname())){
                             cellSelected = Integer.toString(chosenCellIndex);
+                            if(gui.getWorkerUrlImageGivenTheNickname(gui.client.getNickname()).equals("images/Board/redWorker_Board.png")) {
+                                selectedCell.setImage(redWorkerSelected);
+                            } else if(gui.getWorkerUrlImageGivenTheNickname(gui.client.getNickname()).equals("images/Board/blueWorker_Board.png")) {
+                                selectedCell.setImage(blueWorkerSelected);
+                            } else if(gui.getWorkerUrlImageGivenTheNickname(gui.client.getNickname()).equals("images/Board/violetWorker_Board.png")) {
+                                selectedCell.setImage(violetWorkerSelected);
+                            }
                             gui.doSendSelectedWorker(cellSelected);
                         }
                         break;
@@ -779,6 +957,13 @@ public class BoardPage_ChooseWorkerController {
                         chosenCellIndex = (cellSelected.charAt(0) - 'A') * 5 + (cellSelected.charAt(1) - '1');
                         if(this.gui.getNicknameOfCellNode(this.gui.getCellNodeGivenTheID(chosenCellIndex)).equals(this.gui.client.getNickname())){
                             cellSelected = Integer.toString(chosenCellIndex);
+                            if(gui.getWorkerUrlImageGivenTheNickname(gui.client.getNickname()).equals("images/Board/redWorker_Board.png")) {
+                                selectedCell.setImage(redWorkerSelected);
+                            } else if(gui.getWorkerUrlImageGivenTheNickname(gui.client.getNickname()).equals("images/Board/blueWorker_Board.png")) {
+                                selectedCell.setImage(blueWorkerSelected);
+                            } else if(gui.getWorkerUrlImageGivenTheNickname(gui.client.getNickname()).equals("images/Board/violetWorker_Board.png")) {
+                                selectedCell.setImage(violetWorkerSelected);
+                            }
                             gui.doSendSelectedWorker(cellSelected);
                         }
                         break;

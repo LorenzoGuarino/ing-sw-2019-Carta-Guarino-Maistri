@@ -353,16 +353,24 @@ public class BoardPage_OptMoveController {
     public void setLevel(int index, int level){
         initCellLevelList();
         switch(level){
-            case 1: this.cellLevelList.get(index).setImage(this.level1Image);
-            case 2: this.cellLevelList.get(index).setImage(this.level2Image);
-            case 3: this.cellLevelList.get(index).setImage(this.level3Image);
-            default: return;
+            case 1: {
+                this.cellLevelList.get(index).setImage(this.level1Image);
+                break;
+            }
+            case 2: {
+                this.cellLevelList.get(index).setImage(this.level2Image);
+                break;
+            }
+            case 3: {
+                this.cellLevelList.get(index).setImage(this.level3Image);
+                break;
+            }
         }
     }
 
     public void setDome(int index){
         initCellDomeList();
-        this.cellLevelList.get(index).setImage(this.domeImage);
+        this.cellDomeList.get(index).setImage(this.domeImage);
     }
 
     public void setWorker(int index, String url){

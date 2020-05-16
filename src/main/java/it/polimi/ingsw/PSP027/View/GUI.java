@@ -86,6 +86,10 @@ public class GUI extends Application implements ClientObserver {
         SantoriniStage.show();
     }
 
+    public String getWorkerUrlImageGivenTheNickname (String nickname) {
+        return PlayerWorkerMap.get(nickname);
+    }
+
     public Stage getSantoriniStage() {
         return SantoriniStage;
     }
@@ -301,6 +305,12 @@ public class GUI extends Application implements ClientObserver {
 
                         String nickname = getNicknameOfCellNode(cell);
 
+                        boardPage_PlacingWorkersController.setLevel(id, level);
+
+                        if (dome) {
+                            boardPage_PlacingWorkersController.setDome(id);
+                        }
+
                         if (!nickname.isEmpty()) {
                             boardPage_PlacingWorkersController.setWorker(id, PlayerWorkerMap.get(nickname));
                         }
@@ -313,12 +323,6 @@ public class GUI extends Application implements ClientObserver {
                                 }
                             }
                         }
-
-                        if (dome) {
-                            boardPage_PlacingWorkersController.setDome(id);
-                        }
-
-                        boardPage_PlacingWorkersController.setLevel(id, level);
                     }
                 }
 
@@ -405,6 +409,12 @@ public class GUI extends Application implements ClientObserver {
 
                         String nickname = getNicknameOfCellNode(cell);
 
+                        boardPage_ChooseWorkerController.setLevel(id, level);
+
+                        if (dome) {
+                            boardPage_ChooseWorkerController.setDome(id);
+                        }
+
                         if (!nickname.isEmpty()) {
                             boardPage_ChooseWorkerController.setWorker(id, PlayerWorkerMap.get(nickname));
                         }
@@ -417,12 +427,6 @@ public class GUI extends Application implements ClientObserver {
                                 }
                             }
                         }
-
-                        if (dome) {
-                            boardPage_ChooseWorkerController.setDome(id);
-                        }
-
-                        boardPage_ChooseWorkerController.setLevel(id, level);
                     }
                 }
 
@@ -509,6 +513,12 @@ public class GUI extends Application implements ClientObserver {
 
                         String nickname = getNicknameOfCellNode(cell);
 
+                        boardPage_MoveController.setLevel(id, level);
+
+                        if (dome) {
+                            boardPage_MoveController.setDome(id);
+                        }
+
                         if (!nickname.isEmpty()) {
                             boardPage_MoveController.setWorker(id, PlayerWorkerMap.get(nickname));
                         }
@@ -521,12 +531,6 @@ public class GUI extends Application implements ClientObserver {
                                 }
                             }
                         }
-
-                        if (dome) {
-                            boardPage_MoveController.setDome(id);
-                        }
-
-                        boardPage_MoveController.setLevel(id, level);
                     }
                 }
 
@@ -615,6 +619,13 @@ public class GUI extends Application implements ClientObserver {
 
                         String nickname = getNicknameOfCellNode(cell);
 
+                        boardPage_OptMoveController.setLevel(id, level);
+
+                        if (dome) {
+                            boardPage_OptMoveController.setDome(id);
+                        }
+
+
                         if (!nickname.isEmpty()) {
                             boardPage_OptMoveController.setWorker(id, PlayerWorkerMap.get(nickname));
                         }
@@ -627,12 +638,6 @@ public class GUI extends Application implements ClientObserver {
                                 }
                             }
                         }
-
-                        if (dome) {
-                            boardPage_OptMoveController.setDome(id);
-                        }
-
-                        boardPage_OptMoveController.setLevel(id, level);
                     }
                 }
 
@@ -721,6 +726,12 @@ public class GUI extends Application implements ClientObserver {
 
                         String nickname = getNicknameOfCellNode(cell);
 
+                        boardPage_BuildController.setLevel(id, level);
+
+                        if (dome) {
+                            boardPage_BuildController.setDome(id);
+                        }
+
                         if (!nickname.isEmpty()) {
                             boardPage_BuildController.setWorker(id, PlayerWorkerMap.get(nickname));
                         }
@@ -733,12 +744,6 @@ public class GUI extends Application implements ClientObserver {
                                 }
                             }
                         }
-
-                        if (dome) {
-                            boardPage_BuildController.setDome(id);
-                        }
-
-                        boardPage_BuildController.setLevel(id, level);
                     }
                 }
 
@@ -1158,6 +1163,7 @@ public class GUI extends Application implements ClientObserver {
                 }
             }
         }
+
         Platform.runLater(() -> showBoardPage_OptMove());
     }
 

@@ -349,23 +349,24 @@ public class BoardPage_PlacingWorkersController {
     public void setLevel(int index, int level){
         initCellLevelList();
         switch(level){
-            case 1:
+            case 1: {
                 this.cellLevelList.get(index).setImage(this.level1Image);
                 break;
-            case 2:
+            }
+            case 2: {
                 this.cellLevelList.get(index).setImage(this.level2Image);
                 break;
-            case 3:
+            }
+            case 3: {
                 this.cellLevelList.get(index).setImage(this.level3Image);
                 break;
-            default:
-                return;
+            }
         }
     }
 
     public void setDome(int index){
         initCellDomeList();
-        this.cellLevelList.get(index).setImage(this.domeImage);
+        this.cellDomeList.get(index).setImage(this.domeImage);
     }
 
     public void setWorker(int index, String url){
