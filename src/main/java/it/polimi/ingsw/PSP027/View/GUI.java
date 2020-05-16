@@ -276,7 +276,7 @@ public class GUI extends Application implements ClientObserver {
         }
     }
 
-    public void showBoardPage(){
+    public void showBoardPage_PlacingWorkers(){
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/BoardPage_PlacingWorkers.fxml"));
             Parent PlacingWorkersPage = (Parent) loader.load();
@@ -380,7 +380,7 @@ public class GUI extends Application implements ClientObserver {
         }
     }
 
-    public void showBoardPage_Turn(){
+    public void showBoardPage_ChooseWorker(){
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/BoardPage_ChooseWorker.fxml"));
             Parent ChooseWorkerPage = (Parent) loader.load();
@@ -482,6 +482,218 @@ public class GUI extends Application implements ClientObserver {
         } catch (IOException exception){
             System.out.println(exception.toString());
         }
+    }
+
+    public void showBoardPage_Move(){
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/BoardPage_Move.fxml"));
+            Parent MovePage = (Parent) loader.load();
+
+            BoardPage_MoveController boardPage_MoveController = loader.getController();
+            boardPage_MoveController.setGui(this);
+
+            //resetBoard(); rendo invisibile immagine livello, dome false, rende notvisible candidate cells e workeroccuping
+
+            Node cell;
+
+            if (nodeboard.hasChildNodes()) {
+                NodeList cells = nodeboard.getChildNodes();
+
+                for (int i = 0; i < cells.getLength(); i++) {
+                    cell = cells.item(i);
+
+                    if (cell.getNodeName().equals("cell")) {
+                        int id = getIdOfCellNode(cell);
+                        int level = getLevelOfCellNode(cell);
+                        boolean dome = getDomeOfCellNode(cell);
+
+                        String nickname = getNicknameOfCellNode(cell);
+
+                        if (!nickname.isEmpty()) {
+                            boardPage_MoveController.setWorker(id, PlayerWorkerMap.get(nickname));
+                        }
+
+                        if (!indexcandidatecells.isEmpty()) {
+                            for (int j = 0; j < indexcandidatecells.size(); j++) {
+                                if (indexcandidatecells.get(j) == id) {
+                                    boardPage_MoveController.setCandidate(id);
+                                    break;
+                                }
+                            }
+                        }
+
+                        if (dome) {
+                            boardPage_MoveController.setDome(id);
+                        }
+
+                        boardPage_MoveController.setLevel(id, level);
+                    }
+                }
+
+                if (PlayerGodMap.size() > 0) {
+                    Set<String> nicknames = PlayerGodMap.keySet();
+                    String nickname;
+                    Iterator<String> itr = nicknames.iterator();
+                    int playerscount = 1;
+                    boolean playingPlayer = false;
+
+                    while (itr.hasNext()) {
+                        nickname = itr.next();
+                        if (PlayerWorkerMap.containsKey(nickname) && PlayerGodMap.containsKey(nickname)) {
+                            if(nickname.equals(client.getNickname())) {
+                                playingPlayer = true;
+                            }
+
+                            if(playerscount == 1) {
+                                boolean deadPlayer = false;
+                                for(int i=0; i < deadPlayers.size(); i++) {
+                                    if(deadPlayers.get(i).equals(nickname)) {
+                                        deadPlayer = true;
+                                    }
+                                }
+                                boardPage_MoveController.setPlayer1Panel(PlayerGodMap.get(nickname), nickname, playingPlayer, deadPlayer, PlayerWorkerMap.get(nickname));
+                            } else if(playerscount == 2) {
+                                boolean deadPlayer = false;
+                                for(int i=0; i < deadPlayers.size(); i++) {
+                                    if(deadPlayers.get(i).equals(nickname)) {
+                                        deadPlayer = true;
+                                    }
+                                }
+                                boardPage_MoveController.setPlayer2Panel(PlayerGodMap.get(nickname), nickname, playingPlayer, deadPlayer, PlayerWorkerMap.get(nickname));
+                            } else if(playerscount == 3) {
+                                boolean deadPlayer = false;
+                                for(int i=0; i < deadPlayers.size(); i++) {
+                                    if(deadPlayers.get(i).equals(nickname)) {
+                                        deadPlayer = true;
+                                    }
+                                }
+                                boardPage_MoveController.setPlayer3Panel(PlayerGodMap.get(nickname), nickname, playingPlayer, deadPlayer, PlayerWorkerMap.get(nickname));
+                            }
+                        }
+                        playerscount++;
+                        playingPlayer = false;
+                    }
+                }
+
+                if(players.size() == 2) {
+                    boardPage_MoveController.setPanel3Visibility(false);
+                }
+            }
+
+            SantoriniStage.getScene().setRoot(MovePage);
+            SantoriniStage.show();
+
+        } catch (IOException exception){
+            System.out.println(exception.toString());
+        }
+
+
+    }
+
+    public void showBoardPage_Build(){
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/BoardPage_Build.fxml"));
+            Parent BuildPage = (Parent) loader.load();
+
+            BoardPage_BuildController boardPage_BuildController = loader.getController();
+            boardPage_BuildController.setGui(this);
+
+            //resetBoard(); rendo invisibile immagine livello, dome false, rende notvisible candidate cells e workeroccuping
+
+            Node cell;
+
+            if (nodeboard.hasChildNodes()) {
+                NodeList cells = nodeboard.getChildNodes();
+
+                for (int i = 0; i < cells.getLength(); i++) {
+                    cell = cells.item(i);
+
+                    if (cell.getNodeName().equals("cell")) {
+                        int id = getIdOfCellNode(cell);
+                        int level = getLevelOfCellNode(cell);
+                        boolean dome = getDomeOfCellNode(cell);
+
+                        String nickname = getNicknameOfCellNode(cell);
+
+                        if (!nickname.isEmpty()) {
+                            boardPage_BuildController.setWorker(id, PlayerWorkerMap.get(nickname));
+                        }
+
+                        if (!indexcandidatecells.isEmpty()) {
+                            for (int j = 0; j < indexcandidatecells.size(); j++) {
+                                if (indexcandidatecells.get(j) == id) {
+                                    boardPage_BuildController.setCandidate(id);
+                                    break;
+                                }
+                            }
+                        }
+
+                        if (dome) {
+                            boardPage_BuildController.setDome(id);
+                        }
+
+                        boardPage_BuildController.setLevel(id, level);
+                    }
+                }
+
+                if (PlayerGodMap.size() > 0) {
+                    Set<String> nicknames = PlayerGodMap.keySet();
+                    String nickname;
+                    Iterator<String> itr = nicknames.iterator();
+                    int playerscount = 1;
+                    boolean playingPlayer = false;
+
+                    while (itr.hasNext()) {
+                        nickname = itr.next();
+                        if (PlayerWorkerMap.containsKey(nickname) && PlayerGodMap.containsKey(nickname)) {
+                            if(nickname.equals(client.getNickname())) {
+                                playingPlayer = true;
+                            }
+
+                            if(playerscount == 1) {
+                                boolean deadPlayer = false;
+                                for(int i=0; i < deadPlayers.size(); i++) {
+                                    if(deadPlayers.get(i).equals(nickname)) {
+                                        deadPlayer = true;
+                                    }
+                                }
+                                boardPage_BuildController.setPlayer1Panel(PlayerGodMap.get(nickname), nickname, playingPlayer, deadPlayer, PlayerWorkerMap.get(nickname));
+                            } else if(playerscount == 2) {
+                                boolean deadPlayer = false;
+                                for(int i=0; i < deadPlayers.size(); i++) {
+                                    if(deadPlayers.get(i).equals(nickname)) {
+                                        deadPlayer = true;
+                                    }
+                                }
+                                boardPage_BuildController.setPlayer2Panel(PlayerGodMap.get(nickname), nickname, playingPlayer, deadPlayer, PlayerWorkerMap.get(nickname));
+                            } else if(playerscount == 3) {
+                                boolean deadPlayer = false;
+                                for(int i=0; i < deadPlayers.size(); i++) {
+                                    if(deadPlayers.get(i).equals(nickname)) {
+                                        deadPlayer = true;
+                                    }
+                                }
+                                boardPage_BuildController.setPlayer3Panel(PlayerGodMap.get(nickname), nickname, playingPlayer, deadPlayer, PlayerWorkerMap.get(nickname));
+                            }
+                        }
+                        playerscount++;
+                        playingPlayer = false;
+                    }
+                }
+
+                if(players.size() == 2) {
+                    boardPage_BuildController.setPanel3Visibility(false);
+                }
+            }
+
+            SantoriniStage.getScene().setRoot(BuildPage);
+            SantoriniStage.show();
+
+        } catch (IOException exception){
+            System.out.println(exception.toString());
+        }
+
+
     }
 
     public void showYouHaveWonPage(){
@@ -755,7 +967,7 @@ public class GUI extends Application implements ClientObserver {
                 }
             }
         }
-        Platform.runLater(() -> showBoardPage());
+        Platform.runLater(() -> showBoardPage_PlacingWorkers());
     }
 
 
@@ -770,7 +982,7 @@ public class GUI extends Application implements ClientObserver {
     @Override
     public void OnChooseWorker(Node board) {
         this.nodeboard = board;
-        Platform.runLater(() -> showBoardPage_Turn());
+        Platform.runLater(() -> showBoardPage_ChooseWorker());
     }
 
     /**
@@ -805,6 +1017,7 @@ public class GUI extends Application implements ClientObserver {
                 }
             }
         }
+        Platform.runLater(() -> showBoardPage_Move());
     }
 
     /**
@@ -873,6 +1086,7 @@ public class GUI extends Application implements ClientObserver {
                 }
             }
         }
+        Platform.runLater(() -> showBoardPage_Build());
     }
 
     /**
@@ -1143,6 +1357,16 @@ public class GUI extends Application implements ClientObserver {
 
     public void doSendSelectedWorker(String chosenWorker){
         client.ChosenWorker(chosenWorker);
+    }
+
+    public void doSendCandidateMove(String candidateCell){
+        this.restoreCandidateCells();
+        client.CandidateMove(candidateCell);
+    }
+
+    public void doSendCandidateBuild(String candidateCell){
+        this.restoreCandidateCells();
+        client.CandidateBuild(candidateCell);
     }
 
     public void doPlayAgain() {

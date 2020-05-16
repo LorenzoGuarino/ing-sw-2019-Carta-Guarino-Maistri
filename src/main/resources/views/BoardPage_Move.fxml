@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<StackPane fx:id="BackgroundFiller" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.PSP027.View.Controllers.BoardPage_ChooseWorkerController">
+<StackPane fx:id="BackgroundFiller" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.PSP027.View.Controllers.BoardPage_MoveController">
     <AnchorPane fx:id="boardPane" maxHeight="900.0" maxWidth="1440.0" stylesheets="@../style.css">
         <children>
             <GridPane layoutX="423.0" layoutY="154.0" prefHeight="546.0" prefWidth="509.0" AnchorPane.bottomAnchor="137.0" AnchorPane.leftAnchor="423.0" AnchorPane.rightAnchor="410.0" AnchorPane.topAnchor="154.0">

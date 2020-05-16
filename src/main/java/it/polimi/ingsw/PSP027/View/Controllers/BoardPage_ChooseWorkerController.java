@@ -20,10 +20,6 @@ public class BoardPage_ChooseWorkerController {
     private final List<String> cellsToSend = new ArrayList<>();
     private String cellSelected;
 
-    @FXML
-    public ImageView ConfirmButton;
-    Image ConfirmButtonReleased = new Image("images/Buttons/btn_Confirm.png");
-    Image ConfirmButtonPressed = new Image("images/Buttons/btn_Confirm_pressed.png");
 
     @FXML
     //cellLevelImageViews
@@ -194,7 +190,6 @@ public class BoardPage_ChooseWorkerController {
         Player1Dead.setVisible(false);
         Player2Dead.setVisible(false);
         Player3Dead.setVisible(false);
-        ConfirmButton.setVisible(false);
     }
 
     /**
@@ -330,16 +325,6 @@ public class BoardPage_ChooseWorkerController {
         cellCandidateList.add(this.E3C);
         cellCandidateList.add(this.E4C);
         cellCandidateList.add(this.E5C);
-    }
-
-
-    public void confirmButtonPressed() {
-        ConfirmButton.setImage(ConfirmButtonPressed);
-        gui.doSendSelectedCellsForWorkers(cellsToSend);
-    }
-
-    public void confirmButtonReleased() {
-        ConfirmButton.setImage(ConfirmButtonReleased);
     }
 
     /**

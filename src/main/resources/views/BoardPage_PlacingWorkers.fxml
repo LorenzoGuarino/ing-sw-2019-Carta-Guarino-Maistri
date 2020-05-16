@@ -29,9 +29,6 @@
          </padding>
          <children>
             <ImageView fx:id="A1L" fitHeight="100.0" fitWidth="100.0" onMouseClicked="#clickedOnCell" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="4">
-               <image>
-                  <Image url="@../images/Board/Level1_Board.png" />
-               </image>
                <GridPane.margin>
                   <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
                </GridPane.margin>
@@ -112,9 +109,6 @@
                </GridPane.margin>
             </ImageView>
             <ImageView fx:id="A5L" fitHeight="100.0" fitWidth="100.0" layoutX="18.0" layoutY="17.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.rowIndex="4">
-               <image>
-                  <Image url="@../images/Board/Level1_Board.png" />
-               </image>
                <GridPane.margin>
                   <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
                </GridPane.margin>
@@ -435,9 +429,6 @@
                </GridPane.margin>
             </ImageView>
             <ImageView fx:id="E1L" fitHeight="100.0" fitWidth="100.0" layoutX="18.0" layoutY="17.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../images/Board/Level1_Board.png" />
-               </image>
                <GridPane.margin>
                   <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
                </GridPane.margin>
@@ -518,9 +509,6 @@
                </GridPane.margin>
             </ImageView>
             <ImageView fx:id="E5L" fitHeight="100.0" fitWidth="100.0" layoutX="18.0" layoutY="17.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4">
-               <image>
-                  <Image url="@../images/Board/Level1_Board.png" />
-               </image>
                <GridPane.margin>
                   <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
                </GridPane.margin>
