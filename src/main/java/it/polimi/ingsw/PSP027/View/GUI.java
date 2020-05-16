@@ -304,7 +304,9 @@ public class GUI extends Application implements ClientObserver {
 
                         String nickname = getNicknameOfCellNode(cell);
 
-                        boardPage_PlacingWorkersController.setLevel(id, level);
+                        if(level!=0) {
+                            boardPage_PlacingWorkersController.setLevel(id, level);
+                        }
 
                         if (dome) {
                             boardPage_PlacingWorkersController.setDome(id);
@@ -406,7 +408,9 @@ public class GUI extends Application implements ClientObserver {
 
                         String nickname = getNicknameOfCellNode(cell);
 
-                        boardPage_ChooseWorkerController.setLevel(id, level);
+                        if(level!=0) {
+                            boardPage_ChooseWorkerController.setLevel(id, level);
+                        }
 
                         if (dome) {
                             boardPage_ChooseWorkerController.setDome(id);
@@ -508,7 +512,9 @@ public class GUI extends Application implements ClientObserver {
 
                         String nickname = getNicknameOfCellNode(cell);
 
-                        boardPage_MoveController.setLevel(id, level);
+                        if(level!=0) {
+                            boardPage_MoveController.setLevel(id, level);
+                        }
 
                         if (dome) {
                             boardPage_MoveController.setDome(id);
@@ -612,7 +618,9 @@ public class GUI extends Application implements ClientObserver {
 
                         String nickname = getNicknameOfCellNode(cell);
 
-                        boardPage_OptMoveController.setLevel(id, level);
+                        if(level!=0) {
+                            boardPage_OptMoveController.setLevel(id, level);
+                        }
 
                         if (dome) {
                             boardPage_OptMoveController.setDome(id);
@@ -717,7 +725,9 @@ public class GUI extends Application implements ClientObserver {
 
                         String nickname = getNicknameOfCellNode(cell);
 
-                        boardPage_BuildController.setLevel(id, level);
+                        if(level!=0) {
+                            boardPage_BuildController.setLevel(id, level);
+                        }
 
                         if (dome) {
                             boardPage_BuildController.setDome(id);
@@ -819,7 +829,9 @@ public class GUI extends Application implements ClientObserver {
 
                         String nickname = getNicknameOfCellNode(cell);
 
-                        boardPage_updateController.setLevel(id, level);
+                        if(level!=0) {
+                            boardPage_updateController.setLevel(id, level);
+                        }
 
                         if (dome) {
                             boardPage_updateController.setDome(id);

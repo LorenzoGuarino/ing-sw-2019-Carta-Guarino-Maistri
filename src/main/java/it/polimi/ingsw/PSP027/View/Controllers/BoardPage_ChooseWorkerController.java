@@ -335,7 +335,10 @@ public class BoardPage_ChooseWorkerController {
      * @param level the level displayed on the given cell after the method call
      */
     public void setLevel(int index, int level){
-        initCellLevelList();
+        System.out.println("SETLEVEL CALLED ON" +index);
+        if(this.cellLevelList.size()==0){
+            initCellLevelList();
+        }
         switch(level){
             case 1: {
                 this.cellLevelList.get(index).setImage(this.level1Image);
@@ -353,18 +356,24 @@ public class BoardPage_ChooseWorkerController {
     }
 
     public void setDome(int index){
-        initCellDomeList();
+        if(this.cellDomeList.size()==0){
+            initCellDomeList();
+        }
         this.cellDomeList.get(index).setImage(this.domeImage);
     }
 
     public void setWorker(int index, String url){
+        if(this.cellWorkerList.size()==0){
+            initCellWorkerList();
+        }
         Image worker = new Image(url);
-        initCellWorkerList();
         this.cellWorkerList.get(index).setImage(worker);
     }
 
     public void setCandidate(int index){
-        initCellCandidateList();
+        if(cellCandidateList.size()==0) {
+            initCellCandidateList();
+        }
         this.cellCandidateList.get(index).setImage(this.candidate);
     }
 
