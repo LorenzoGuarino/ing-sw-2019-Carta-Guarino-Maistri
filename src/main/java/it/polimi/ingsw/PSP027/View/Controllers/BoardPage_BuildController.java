@@ -7,6 +7,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -175,6 +176,21 @@ public class BoardPage_BuildController {
     Image Poseidon = new Image("images/Gods/Poseidon_icon.png");
     Image Prometheus = new Image("images/Gods/Prometheus_icon.png");
     Image Zeus = new Image("images/Gods/Zeus_icon.png");
+
+    @FXML
+    public ImageView LevelButton;
+    public ImageView DomeButton;
+
+    Image LevelButtonPressed = new Image("images/Buttons/btn_Level_pressed.png");
+    Image DomeButtonPressed = new Image("images/Buttons/btn_Dome_pressed.png");
+    Image LevelButtonRestored = new Image("images/Buttons/btn_Level.png");
+    Image DomeButtonRestored = new Image("images/Buttons/btn_Dome_pressed.png");
+
+    @FXML
+    public Pane LevelOrDomeQuestion;
+
+    @FXML
+    public Pane DisabledPane;
 
     /**
      * Constructor
@@ -573,10 +589,6 @@ public class BoardPage_BuildController {
         Player3God.setVisible(visibility);
     }
 
-    public void reset() {
-        //maybe?????
-    }
-
     public void clickedOnCell(MouseEvent e){
         int chosenCellIndex;
         ImageView selectedCell = (ImageView) e.getTarget();
@@ -591,7 +603,7 @@ public class BoardPage_BuildController {
                         for (int i = 0; i < indexcandidatecells.size(); i++) {
                             if (indexcandidatecells.get(i) == chosenCellIndex) {
                                 cellSelected = Integer.toString(chosenCellIndex);
-                                gui.doSendCandidateBuild(cellSelected);
+                                sendCellSelected(cellSelected);
                                 break;
                             }
                         }
@@ -602,7 +614,7 @@ public class BoardPage_BuildController {
                         for (int i = 0; i < indexcandidatecells.size(); i++) {
                             if (indexcandidatecells.get(i) == chosenCellIndex) {
                                 cellSelected = Integer.toString(chosenCellIndex);
-                                gui.doSendCandidateBuild(cellSelected);
+                                sendCellSelected(cellSelected);
                                 break;
                             }
                         }
@@ -614,7 +626,7 @@ public class BoardPage_BuildController {
                         for (int i = 0; i < indexcandidatecells.size(); i++) {
                             if (indexcandidatecells.get(i) == chosenCellIndex) {
                                 cellSelected = Integer.toString(chosenCellIndex);
-                                gui.doSendCandidateBuild(cellSelected);
+                                sendCellSelected(cellSelected);
                                 break;
                             }
                         }
@@ -625,7 +637,7 @@ public class BoardPage_BuildController {
                         for (int i = 0; i < indexcandidatecells.size(); i++) {
                             if (indexcandidatecells.get(i) == chosenCellIndex) {
                                 cellSelected = Integer.toString(chosenCellIndex);
-                                gui.doSendCandidateBuild(cellSelected);
+                                sendCellSelected(cellSelected);
                                 break;
                             }
                         }
@@ -636,7 +648,7 @@ public class BoardPage_BuildController {
                         for (int i = 0; i < indexcandidatecells.size(); i++) {
                             if (indexcandidatecells.get(i) == chosenCellIndex) {
                                 cellSelected = Integer.toString(chosenCellIndex);
-                                gui.doSendCandidateBuild(cellSelected);
+                                sendCellSelected(cellSelected);
                                 break;
                             }
                         }
@@ -651,7 +663,7 @@ public class BoardPage_BuildController {
                         for (int i = 0; i < indexcandidatecells.size(); i++) {
                             if (indexcandidatecells.get(i) == chosenCellIndex) {
                                 cellSelected = Integer.toString(chosenCellIndex);
-                                gui.doSendCandidateBuild(cellSelected);
+                                sendCellSelected(cellSelected);
                                 break;
                             }
                         }
@@ -662,7 +674,7 @@ public class BoardPage_BuildController {
                         for (int i = 0; i < indexcandidatecells.size(); i++) {
                             if (indexcandidatecells.get(i) == chosenCellIndex) {
                                 cellSelected = Integer.toString(chosenCellIndex);
-                                gui.doSendCandidateBuild(cellSelected);
+                                sendCellSelected(cellSelected);
                                 break;
                             }
                         }
@@ -673,7 +685,7 @@ public class BoardPage_BuildController {
                         for (int i = 0; i < indexcandidatecells.size(); i++) {
                             if (indexcandidatecells.get(i) == chosenCellIndex) {
                                 cellSelected = Integer.toString(chosenCellIndex);
-                                gui.doSendCandidateBuild(cellSelected);
+                                sendCellSelected(cellSelected);
                                 break;
                             }
                         }
@@ -684,7 +696,7 @@ public class BoardPage_BuildController {
                         for (int i = 0; i < indexcandidatecells.size(); i++) {
                             if (indexcandidatecells.get(i) == chosenCellIndex) {
                                 cellSelected = Integer.toString(chosenCellIndex);
-                                gui.doSendCandidateBuild(cellSelected);
+                                sendCellSelected(cellSelected);
                                 break;
                             }
                         }
@@ -695,7 +707,7 @@ public class BoardPage_BuildController {
                         for (int i = 0; i < indexcandidatecells.size(); i++) {
                             if (indexcandidatecells.get(i) == chosenCellIndex) {
                                 cellSelected = Integer.toString(chosenCellIndex);
-                                gui.doSendCandidateBuild(cellSelected);
+                                sendCellSelected(cellSelected);
                                 break;
                             }
                         }
@@ -710,7 +722,7 @@ public class BoardPage_BuildController {
                         for (int i = 0; i < indexcandidatecells.size(); i++) {
                             if (indexcandidatecells.get(i) == chosenCellIndex) {
                                 cellSelected = Integer.toString(chosenCellIndex);
-                                gui.doSendCandidateBuild(cellSelected);
+                                sendCellSelected(cellSelected);
                                 break;
                             }
                         }
@@ -721,7 +733,7 @@ public class BoardPage_BuildController {
                         for (int i = 0; i < indexcandidatecells.size(); i++) {
                             if (indexcandidatecells.get(i) == chosenCellIndex) {
                                 cellSelected = Integer.toString(chosenCellIndex);
-                                gui.doSendCandidateBuild(cellSelected);
+                                sendCellSelected(cellSelected);
                                 break;
                             }
                         }
@@ -732,7 +744,7 @@ public class BoardPage_BuildController {
                         for (int i = 0; i < indexcandidatecells.size(); i++) {
                             if (indexcandidatecells.get(i) == chosenCellIndex) {
                                 cellSelected = Integer.toString(chosenCellIndex);
-                                gui.doSendCandidateBuild(cellSelected);
+                                sendCellSelected(cellSelected);
                                 break;
                             }
                         }
@@ -743,7 +755,7 @@ public class BoardPage_BuildController {
                         for (int i = 0; i < indexcandidatecells.size(); i++) {
                             if (indexcandidatecells.get(i) == chosenCellIndex) {
                                 cellSelected = Integer.toString(chosenCellIndex);
-                                gui.doSendCandidateBuild(cellSelected);
+                                sendCellSelected(cellSelected);
                                 break;
                             }
                         }
@@ -754,7 +766,7 @@ public class BoardPage_BuildController {
                         for (int i = 0; i < indexcandidatecells.size(); i++) {
                             if (indexcandidatecells.get(i) == chosenCellIndex) {
                                 cellSelected = Integer.toString(chosenCellIndex);
-                                gui.doSendCandidateBuild(cellSelected);
+                                sendCellSelected(cellSelected);
                                 break;
                             }
                         }
@@ -769,7 +781,7 @@ public class BoardPage_BuildController {
                         for (int i = 0; i < indexcandidatecells.size(); i++) {
                             if (indexcandidatecells.get(i) == chosenCellIndex) {
                                 cellSelected = Integer.toString(chosenCellIndex);
-                                gui.doSendCandidateBuild(cellSelected);
+                                sendCellSelected(cellSelected);
                                 break;
                             }
                         }
@@ -780,7 +792,7 @@ public class BoardPage_BuildController {
                         for (int i = 0; i < indexcandidatecells.size(); i++) {
                             if (indexcandidatecells.get(i) == chosenCellIndex) {
                                 cellSelected = Integer.toString(chosenCellIndex);
-                                gui.doSendCandidateBuild(cellSelected);
+                                sendCellSelected(cellSelected);
                                 break;
                             }
                         }
@@ -791,7 +803,7 @@ public class BoardPage_BuildController {
                         for (int i = 0; i < indexcandidatecells.size(); i++) {
                             if (indexcandidatecells.get(i) == chosenCellIndex) {
                                 cellSelected = Integer.toString(chosenCellIndex);
-                                gui.doSendCandidateBuild(cellSelected);
+                                sendCellSelected(cellSelected);
                                 break;
                             }
                         }
@@ -802,7 +814,7 @@ public class BoardPage_BuildController {
                         for (int i = 0; i < indexcandidatecells.size(); i++) {
                             if (indexcandidatecells.get(i) == chosenCellIndex) {
                                 cellSelected = Integer.toString(chosenCellIndex);
-                                gui.doSendCandidateBuild(cellSelected);
+                                sendCellSelected(cellSelected);
                                 break;
                             }
                         }
@@ -813,7 +825,7 @@ public class BoardPage_BuildController {
                         for (int i = 0; i < indexcandidatecells.size(); i++) {
                             if (indexcandidatecells.get(i) == chosenCellIndex) {
                                 cellSelected = Integer.toString(chosenCellIndex);
-                                gui.doSendCandidateBuild(cellSelected);
+                                sendCellSelected(cellSelected);
                                 break;
                             }
                         }
@@ -828,7 +840,7 @@ public class BoardPage_BuildController {
                         for (int i = 0; i < indexcandidatecells.size(); i++) {
                             if (indexcandidatecells.get(i) == chosenCellIndex) {
                                 cellSelected = Integer.toString(chosenCellIndex);
-                                gui.doSendCandidateBuild(cellSelected);
+                                sendCellSelected(cellSelected);
                                 break;
                             }
                         }
@@ -839,7 +851,7 @@ public class BoardPage_BuildController {
                         for (int i = 0; i < indexcandidatecells.size(); i++) {
                             if (indexcandidatecells.get(i) == chosenCellIndex) {
                                 cellSelected = Integer.toString(chosenCellIndex);
-                                gui.doSendCandidateBuild(cellSelected);
+                                sendCellSelected(cellSelected);
                                 break;
                             }
                         }
@@ -850,7 +862,7 @@ public class BoardPage_BuildController {
                         for (int i = 0; i < indexcandidatecells.size(); i++) {
                             if (indexcandidatecells.get(i) == chosenCellIndex) {
                                 cellSelected = Integer.toString(chosenCellIndex);
-                                gui.doSendCandidateBuild(cellSelected);
+                                sendCellSelected(cellSelected);
                                 break;
                             }
                         }
@@ -861,7 +873,7 @@ public class BoardPage_BuildController {
                         for (int i = 0; i < indexcandidatecells.size(); i++) {
                             if (indexcandidatecells.get(i) == chosenCellIndex) {
                                 cellSelected = Integer.toString(chosenCellIndex);
-                                gui.doSendCandidateBuild(cellSelected);
+                                sendCellSelected(cellSelected);
                                 break;
                             }
                         }
@@ -872,7 +884,7 @@ public class BoardPage_BuildController {
                         for (int i = 0; i < indexcandidatecells.size(); i++) {
                             if (indexcandidatecells.get(i) == chosenCellIndex) {
                                 cellSelected = Integer.toString(chosenCellIndex);
-                                gui.doSendCandidateBuild(cellSelected);
+                                sendCellSelected(cellSelected);
                                 break;
                             }
                         }
@@ -884,6 +896,32 @@ public class BoardPage_BuildController {
 
     }
 
+    public void sendCellSelected(String cellSelected) {
+        if(!gui.getGodGivenTheNickname(gui.client.getNickname()).equals("Atlas")) {
+            gui.doSendCandidateBuild(cellSelected);
+        }
+        else {
+            DisabledPane.setVisible(true);
+            LevelOrDomeQuestion.setVisible(true);
+        }
+    }
 
+    public void LevelChosen() {
+        LevelButton.setImage(LevelButtonPressed);
+    }
+
+    public void DomeChosen() {
+        DomeButton.setImage(DomeButtonPressed);
+    }
+
+    public void LevelReleased() {
+        LevelButton.setImage(LevelButtonRestored);
+        gui.doSendCandidateBuildForAtlas(cellSelected, "B");
+    }
+
+    public void DomeReleased() {
+        DomeButton.setImage(DomeButtonRestored);
+        gui.doSendCandidateBuildForAtlas(cellSelected, "D");
+    }
 
 }

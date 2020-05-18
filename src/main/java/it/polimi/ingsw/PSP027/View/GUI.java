@@ -91,6 +91,10 @@ public class GUI extends Application implements ClientObserver {
         return PlayerWorkerMap.get(nickname);
     }
 
+    public String getGodGivenTheNickname (String nickname) {
+        return PlayerGodMap.get(nickname);
+    }
+
     public Stage getSantoriniStage() {
         return SantoriniStage;
     }
@@ -1587,6 +1591,11 @@ public class GUI extends Application implements ClientObserver {
     public void doSendCandidateBuild(String candidateCell){
         this.restoreCandidateCells();
         client.CandidateBuild(candidateCell);
+    }
+
+    public void doSendCandidateBuildForAtlas(String candidateCell, String LevelOrDome) {
+        this.restoreCandidateCells();
+        client.CandidateBuildForAtlas(candidateCell, LevelOrDome);
     }
 
     public void doPlayAgain() {

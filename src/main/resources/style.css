@@ -126,3 +126,10 @@
     -fx-background-size: 100% auto;
     -fx-background-position: center center;
 }
+
+#DisabledPane {
+    -fx-background-image: url("images/Disabled.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: 100% auto;
+    -fx-background-position: center center;
+}

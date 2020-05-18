@@ -631,6 +631,35 @@
                     <Image url="@../images/Board/Build.png" />
                 </image>
             </ImageView>
+            <Pane fx:id="DisabledPane" maxHeight="900.0" maxWidth="1440.0" stylesheets="@../style.css" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" visible="false">
+            </Pane>
+         <GridPane fx:id="LevelOrDomeQuestion" layoutX="430.0" layoutY="58.0" prefHeight="344.0" prefWidth="645.0" AnchorPane.leftAnchor="400.0" AnchorPane.rightAnchor="400.0" AnchorPane.topAnchor="250.0" visible="false">
+           <columnConstraints>
+             <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+             <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+           </columnConstraints>
+           <rowConstraints>
+             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+           </rowConstraints>
+            <children>
+               <ImageView fitHeight="293.0" fitWidth="702.0" pickOnBounds="true" preserveRatio="true" GridPane.columnSpan="2">
+                   <image>
+                       <Image url="@../images/Board/LevelOrDome.png" />
+                   </image>
+               </ImageView>
+               <ImageView fx:id="LevelButton" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1" onMouseClicked="#LevelChosen" onMouseReleased="#LevelReleased">
+                   <image>
+                       <Image url="@../images/Buttons/btn_Level.png" />
+                   </image>
+               </ImageView>
+               <ImageView fx:id="DomeButton" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="1" onMouseClicked="#DomeChosen" onMouseReleased="#DomeReleased">
+                   <image>
+                       <Image url="@../images/Buttons/btn_Dome.png" />
+                   </image>
+               </ImageView>
+            </children>
+         </GridPane>
         </children>
     </AnchorPane>
 </StackPane>
