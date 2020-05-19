@@ -81,10 +81,14 @@ public class GUI extends Application implements ClientObserver {
         ctrl.setGui(this);
 
         Scene entryScene = new Scene(entryPage, 1800, 850);
+        SantoriniStage.setMinHeight(900);
+        SantoriniStage.setMinWidth(1440);
         SantoriniStage.setMaximized(true);
         SantoriniStage.setFullScreen(true);
         SantoriniStage.setScene(entryScene);
+        SantoriniStage.setResizable(false);
         SantoriniStage.show();
+
     }
 
     public String getWorkerUrlImageGivenTheNickname (String nickname) {
