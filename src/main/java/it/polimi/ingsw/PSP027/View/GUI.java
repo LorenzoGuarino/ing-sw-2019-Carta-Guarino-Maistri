@@ -814,6 +814,110 @@ public class GUI extends Application implements ClientObserver {
         }
     }
 
+    public void showBoardPage_OptBuild(){
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/BoardPage_OptBuild.fxml"));
+            Parent OptBuildPage = (Parent) loader.load();
+
+            BoardPage_OptBuildController boardPage_OptBuildController = loader.getController();
+            boardPage_OptBuildController.setGui(this);
+
+            Node cell;
+
+            if (nodeboard.hasChildNodes()) {
+                NodeList cells = nodeboard.getChildNodes();
+
+                for (int i = 0; i < cells.getLength(); i++) {
+                    cell = cells.item(i);
+
+                    if (cell.getNodeName().equals("cell")) {
+                        int id = getIdOfCellNode(cell);
+                        int level = getLevelOfCellNode(cell);
+                        boolean dome = getDomeOfCellNode(cell);
+
+                        String nickname = getNicknameOfCellNode(cell);
+
+                        if(level!=0) {
+                            boardPage_OptBuildController.setLevel(id, level);
+                        }
+
+                        if (dome) {
+                            boardPage_OptBuildController.setDome(id);
+                        }
+
+                        if (!nickname.isEmpty()) {
+                            boardPage_OptBuildController.setWorker(id, PlayerWorkerMap.get(nickname));
+                        }
+
+                        if (!indexcandidatecells.isEmpty()) {
+                            for (int j = 0; j < indexcandidatecells.size(); j++) {
+                                if (indexcandidatecells.get(j) == id) {
+                                    boardPage_OptBuildController.setCandidate(id);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                if (PlayerGodMap.size() > 0) {
+                    Set<String> nicknames = PlayerGodMap.keySet();
+                    String nickname;
+                    Iterator<String> itr = nicknames.iterator();
+                    int playerscount = 1;
+                    boolean playingPlayer = false;
+
+                    while (itr.hasNext()) {
+                        nickname = itr.next();
+                        if (PlayerWorkerMap.containsKey(nickname) && PlayerGodMap.containsKey(nickname)) {
+                            if(nickname.equals(client.getNickname())) {
+                                playingPlayer = true;
+                            }
+
+                            if(playerscount == 1) {
+                                boolean deadPlayer = false;
+                                for(int i=0; i < deadPlayers.size(); i++) {
+                                    if(deadPlayers.get(i).equals(nickname)) {
+                                        deadPlayer = true;
+                                    }
+                                }
+                                boardPage_OptBuildController.setPlayer1Panel(PlayerGodMap.get(nickname), nickname, playingPlayer, deadPlayer, PlayerWorkerMap.get(nickname));
+                            } else if(playerscount == 2) {
+                                boolean deadPlayer = false;
+                                for(int i=0; i < deadPlayers.size(); i++) {
+                                    if(deadPlayers.get(i).equals(nickname)) {
+                                        deadPlayer = true;
+                                    }
+                                }
+                                boardPage_OptBuildController.setPlayer2Panel(PlayerGodMap.get(nickname), nickname, playingPlayer, deadPlayer, PlayerWorkerMap.get(nickname));
+                            } else if(playerscount == 3) {
+                                boolean deadPlayer = false;
+                                for(int i=0; i < deadPlayers.size(); i++) {
+                                    if(deadPlayers.get(i).equals(nickname)) {
+                                        deadPlayer = true;
+                                    }
+                                }
+                                boardPage_OptBuildController.setPlayer3Panel(PlayerGodMap.get(nickname), nickname, playingPlayer, deadPlayer, PlayerWorkerMap.get(nickname));
+                            }
+                        }
+                        playerscount++;
+                        playingPlayer = false;
+                    }
+                }
+
+                if(players.size() == 2) {
+                    boardPage_OptBuildController.setPanel3Visibility(false);
+                }
+            }
+
+            SantoriniStage.getScene().setRoot(OptBuildPage);
+            SantoriniStage.show();
+
+        } catch (IOException exception){
+            System.out.println(exception.toString());
+        }
+    }
+
     public void showBoardPage_Update(){
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/BoardPage_Update.fxml"));
@@ -1345,6 +1449,7 @@ public class GUI extends Application implements ClientObserver {
                 }
             }
         }
+        Platform.runLater(() -> showBoardPage_OptBuild());
     }
 
     /**
@@ -1592,9 +1697,24 @@ public class GUI extends Application implements ClientObserver {
         client.passMove();
     }
 
+    public void doSkipOptBuild(){
+        this.restoreCandidateCells();
+        client.passBuild();
+    }
+
     public void doSendCandidateBuild(String candidateCell){
         this.restoreCandidateCells();
         client.CandidateBuild(candidateCell);
+    }
+
+    public void doSendCandidateEnd(String candidateCell){
+        this.restoreCandidateCells();
+        client.CandidateEnd(candidateCell);
+    }
+
+    public void doSkipOptEnd(){
+        this.restoreCandidateCells();
+        client.passEnd();
     }
 
     public void doSendCandidateBuildForAtlas(String candidateCell, String LevelOrDome) {
