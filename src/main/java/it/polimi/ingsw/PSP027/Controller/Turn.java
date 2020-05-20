@@ -280,6 +280,14 @@ public class Turn {
     }
 
     /**
+     * Method that sets the state of the turn to completed if true, or not completed if false
+     */
+
+    public void setCompleted(Boolean completed) {
+        this.bCompleted = completed;
+    }
+
+    /**
      * Method that checks if the player playing this turn has won
      *
      * @return true if it has won, otherwise false

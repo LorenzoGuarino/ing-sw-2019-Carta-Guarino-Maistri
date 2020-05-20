@@ -39,5 +39,10 @@
             </Label>
         </children>
     </GridPane>
+    <ImageView fx:id="ExitGameButton" fitHeight="135.0" fitWidth="128.0" layoutX="1141.0" layoutY="293.0" onMouseEntered="#exitButtonHovered" onMouseExited="#exitButtonReleased" onMousePressed="#exitButtonPressed" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="171.0" AnchorPane.topAnchor="293.0">
+        <image>
+            <Image url="@../images/Buttons/btn_exitGame.png" />
+        </image>
+    </ImageView>
 </AnchorPane>
 </StackPane>

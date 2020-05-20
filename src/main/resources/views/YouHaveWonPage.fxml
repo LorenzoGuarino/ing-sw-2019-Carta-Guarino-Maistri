@@ -18,12 +18,12 @@
                     <Image url="@../images/Buttons/button-play-normal.png" />
                 </image>
             </ImageView>
-            <ImageView fitHeight="300.0" fitWidth="600.0" layoutX="481.0" layoutY="415.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="300.0" fitWidth="600.0" layoutX="481.0" layoutY="415.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="500" AnchorPane.leftAnchor="500">
                 <image>
                     <Image url="@../images/WinnerPodium.png" />
                 </image>
             </ImageView>
-            <ImageView fx:id="WinnerGod" fitHeight="90.0" fitWidth="225.0" layoutX="681.0" layoutY="540.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="WinnerGod" fitHeight="90.0" fitWidth="225.0" layoutX="681.0" layoutY="540.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="680" AnchorPane.leftAnchor="680"/>
          <Label fx:id="Congrats" alignment="CENTER" contentDisplay="CENTER" layoutX="438.0" layoutY="711.0" prefHeight="117.0" prefWidth="555.0" text="Label" textAlignment="CENTER" textFill="#432a1a" wrapText="true">
              <font>
                  <Font size="20.0" />

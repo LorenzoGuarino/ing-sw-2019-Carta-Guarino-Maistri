@@ -39,6 +39,11 @@ public class WaitingController {
     @FXML
     public Pane WaitingPane;
 
+    @FXML
+    public ImageView ExitGameButton;
+    Image exitButtonHovered = new Image("images/Buttons/btn_exitGame_hovered.png");
+    Image exitButtonReleased = new Image("images/Buttons/btn_exitGame.png");
+
 
     /* ****************************************************************************************************************** */
 
@@ -65,6 +70,28 @@ public class WaitingController {
 
     public void setWaitingMessage (String waitingMessage) {
         WaitingMessage.setText(waitingMessage);
+    }
+
+    public void exitButtonHovered() {
+        ExitGameButton.setImage(exitButtonHovered);
+    }
+
+    public void exitButtonPressed() {
+
+        ButtonType YES = new ButtonType("yes", ButtonBar.ButtonData.OK_DONE);
+        ButtonType NO = new ButtonType("no", ButtonBar.ButtonData.CANCEL_CLOSE);
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to exit the game? You will be lead to the registering page." ,YES, NO);
+        alert.setTitle("Exit Game");
+        alert.setHeaderText("You are going to exit the game!");
+        alert.initModality(Modality.APPLICATION_MODAL);
+        alert.initOwner(gui.getSantoriniStage());
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == YES)
+            gui.doDeregister();
+    }
+
+    public void exitButtonReleased() {
+        ExitGameButton.setImage(exitButtonReleased);
     }
 
 }

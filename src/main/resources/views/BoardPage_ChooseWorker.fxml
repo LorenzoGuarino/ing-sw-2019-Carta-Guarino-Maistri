@@ -9,7 +9,7 @@
 <StackPane fx:id="BackgroundFiller" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.PSP027.View.Controllers.BoardPage_ChooseWorkerController">
     <AnchorPane fx:id="boardPane" maxHeight="900.0" maxWidth="1440.0" stylesheets="@../style.css">
         <children>
-            <GridPane layoutX="423.0" layoutY="154.0" prefHeight="546.0" prefWidth="509.0" AnchorPane.bottomAnchor="137.0" AnchorPane.leftAnchor="423.0" AnchorPane.rightAnchor="410.0" AnchorPane.topAnchor="154.0">
+            <GridPane layoutX="442.0" layoutY="139.0" prefHeight="572.0" prefWidth="636.0" AnchorPane.bottomAnchor="126.0" AnchorPane.leftAnchor="442.0" AnchorPane.rightAnchor="422.0" AnchorPane.topAnchor="139.0">
                 <columnConstraints>
                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -629,6 +629,11 @@
             <ImageView fitHeight="250.0" fitWidth="300.0" layoutX="600.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="600.0" AnchorPane.rightAnchor="600.0" AnchorPane.topAnchor="0.0">
                 <image>
                     <Image url="@../images/Board/ChooseWorker.png" />
+                </image>
+            </ImageView>
+            <ImageView fx:id="ExitGameButton" fitHeight="135.0" fitWidth="128.0" layoutX="80.0" layoutY="51.0" onMouseEntered="#exitButtonHovered" onMouseExited="#exitButtonReleased" onMousePressed="#exitButtonPressed" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="1292.0" AnchorPane.topAnchor="51.0">
+                <image>
+                    <Image url="@../images/Buttons/btn_exitGame.png" />
                 </image>
             </ImageView>
         </children>

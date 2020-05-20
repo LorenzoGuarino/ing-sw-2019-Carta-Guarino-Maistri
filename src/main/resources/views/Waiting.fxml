@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
@@ -23,5 +24,10 @@
             <ProgressIndicator fx:id="WaitIndicator" layoutX="467.0" layoutY="586.0" stylesheets="@../style.css" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
         </children>
     </GridPane>
+    <ImageView fx:id="ExitGameButton" fitHeight="135.0" fitWidth="128.0" layoutX="1143.0" layoutY="386.0" onMouseEntered="#exitButtonHovered" onMouseExited="#exitButtonReleased" onMousePressed="#exitButtonPressed" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="159.0" AnchorPane.topAnchor="386.0">
+        <image>
+            <Image url="@../images/Buttons/btn_exitGame.png" />
+        </image>
+    </ImageView>
 </AnchorPane>
 </StackPane>

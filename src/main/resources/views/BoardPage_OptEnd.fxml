@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<StackPane fx:id="BackgroundFiller" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.PSP027.View.Controllers.BoardPage_MoveController">
+<StackPane fx:id="BackgroundFiller" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.PSP027.View.Controllers.BoardPage_OptEndController">
     <AnchorPane fx:id="boardPane" maxHeight="900.0" maxWidth="1440.0" stylesheets="@../style.css">
         <children>
             <GridPane layoutX="442.0" layoutY="139.0" prefHeight="572.0" prefWidth="636.0" AnchorPane.bottomAnchor="126.0" AnchorPane.leftAnchor="442.0" AnchorPane.rightAnchor="422.0" AnchorPane.topAnchor="139.0">
@@ -628,9 +628,26 @@
             </GridPane>
             <ImageView fitHeight="250.0" fitWidth="300.0" layoutX="600.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="600.0" AnchorPane.rightAnchor="600.0" AnchorPane.topAnchor="0.0">
                 <image>
-                    <Image url="@../images/Board/Move.png" />
+                    <Image url="@../images/Board/End.png" />
                 </image>
             </ImageView>
+            <GridPane layoutX="33.0" layoutY="600.0" prefHeight="206.0" prefWidth="317.0">
+                <columnConstraints>
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                </columnConstraints>
+                <rowConstraints>
+                    <RowConstraints maxHeight="274.0" minHeight="10.0" prefHeight="121.0" vgrow="SOMETIMES" />
+                    <RowConstraints maxHeight="188.0" minHeight="10.0" prefHeight="100.0" vgrow="SOMETIMES" />
+                </rowConstraints>
+                <children>
+                    <ImageView fx:id="DescriptionOptional" fitHeight="193.0" fitWidth="178.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                    <ImageView fx:id="SkipButton" fitHeight="150.0" fitWidth="200.0" onMousePressed="#skipButtonPressed" onMouseReleased="#skipButtonReleased" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                        <image>
+                            <Image url="@../images/Buttons/btn_Skip.png" />
+                        </image>
+                    </ImageView>
+                </children>
+            </GridPane>
             <ImageView fx:id="ExitGameButton" fitHeight="135.0" fitWidth="128.0" layoutX="80.0" layoutY="51.0" onMouseEntered="#exitButtonHovered" onMouseExited="#exitButtonReleased" onMousePressed="#exitButtonPressed" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="1292.0" AnchorPane.topAnchor="51.0">
                 <image>
                     <Image url="@../images/Buttons/btn_exitGame.png" />

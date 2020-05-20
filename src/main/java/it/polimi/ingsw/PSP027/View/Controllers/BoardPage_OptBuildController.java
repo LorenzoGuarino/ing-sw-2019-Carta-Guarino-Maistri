@@ -3,14 +3,19 @@ package it.polimi.ingsw.PSP027.View.Controllers;
 import it.polimi.ingsw.PSP027.View.CLI;
 import it.polimi.ingsw.PSP027.View.GUI;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.stage.Modality;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class BoardPage_OptBuildController {
 
@@ -27,7 +32,7 @@ public class BoardPage_OptBuildController {
     public ImageView DescriptionOptional;
 
     Image OptionalBuild = new Image("images/OptionalPhases/OptionalBuild.png");
-    Image OptionalBuildBeforeMove = new Image("images/OptionalPhases/OptionalBuild.png");
+    Image OptionalBuildBeforeMove = new Image("images/OptionalPhases/OptionalBuildBeforeMove.png");
 
     @FXML
     public ImageView SkipButton;
@@ -189,6 +194,10 @@ public class BoardPage_OptBuildController {
     Image Prometheus = new Image("images/Gods/Prometheus_icon.png");
     Image Zeus = new Image("images/Gods/Zeus_icon.png");
 
+    @FXML
+    public ImageView ExitGameButton;
+    Image exitButtonHovered = new Image("images/Buttons/btn_exitGame_hovered.png");
+    Image exitButtonReleased = new Image("images/Buttons/btn_exitGame.png");
 
     /**
      * Constructor
@@ -918,6 +927,26 @@ public class BoardPage_OptBuildController {
 
     }
 
+    public void exitButtonHovered() {
+        ExitGameButton.setImage(exitButtonHovered);
+    }
 
+    public void exitButtonPressed() {
+
+        ButtonType YES = new ButtonType("yes", ButtonBar.ButtonData.OK_DONE);
+        ButtonType NO = new ButtonType("no", ButtonBar.ButtonData.CANCEL_CLOSE);
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to exit the game? You will be lead to the registering page." ,YES, NO);
+        alert.setTitle("Exit Game");
+        alert.setHeaderText("You are going to exit the game!");
+        alert.initModality(Modality.APPLICATION_MODAL);
+        alert.initOwner(gui.getSantoriniStage());
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == YES)
+            gui.doDeregister();
+    }
+
+    public void exitButtonReleased() {
+        ExitGameButton.setImage(exitButtonReleased);
+    }
 
 }

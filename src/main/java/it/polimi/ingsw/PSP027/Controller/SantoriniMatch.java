@@ -372,6 +372,8 @@ public class SantoriniMatch implements Runnable{
             System.out.println("SantoriniMatch removePlayer notify loser players cmd: " + cmd);
             playerToRemove.SendCommand(cmd);
 
+            Player firstPlayer = getFirstPlayer();
+
             players.remove(playerToRemove);
 
             // notify remainig players that one player has been removed
@@ -384,8 +386,12 @@ public class SantoriniMatch implements Runnable{
             }
 
             checkLoseCondition(players);
+            if(playerToRemove == firstPlayer) {
+                turn.setCompleted(true);
+            }
         }
-        else{
+
+        else {
 
             players.remove(playerToRemove);
 
@@ -405,6 +411,7 @@ public class SantoriniMatch implements Runnable{
             }
         }
     }
+
 
     /**
      * Method that does the setup of the game. It notifies the players that they have entered the match and
