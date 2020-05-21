@@ -39,8 +39,7 @@ public class PoseidonDecorator extends GodPowerDecorator {
 
                     if (startingCell.getLevel() == 0) {
                         for (Cell candidateCell : getGameBoard().getNeighbouringCells(startingCell)) {
-
-                            if (candidateCell.canALevelBeAdded())
+                            if((!candidateCell.isOccupiedByWorker()) && (!candidateCell.checkDome()))
                                 getCandidateCells().add(candidateCell);
                         }
                     }
