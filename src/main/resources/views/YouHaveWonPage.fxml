@@ -23,7 +23,7 @@
                     <Image url="@../images/WinnerPodium.png" />
                 </image>
             </ImageView>
-            <ImageView fx:id="WinnerGod" fitHeight="90.0" fitWidth="225.0" layoutX="681.0" layoutY="540.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="680" AnchorPane.leftAnchor="680"/>
+            <ImageView fx:id="WinnerGod" fitHeight="90.0" fitWidth="225.0" layoutX="681.0" layoutY="540.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="700" AnchorPane.leftAnchor="700"/>
          <Label fx:id="Congrats" alignment="CENTER" contentDisplay="CENTER" layoutX="438.0" layoutY="711.0" prefHeight="117.0" prefWidth="555.0" text="Label" textAlignment="CENTER" textFill="#432a1a" wrapText="true">
              <font>
                  <Font size="20.0" />
