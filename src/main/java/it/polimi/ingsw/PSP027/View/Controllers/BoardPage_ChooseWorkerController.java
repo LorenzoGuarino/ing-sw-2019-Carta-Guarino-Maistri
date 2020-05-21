@@ -1008,7 +1008,7 @@ public class BoardPage_ChooseWorkerController {
         alert.initOwner(gui.getSantoriniStage());
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == YES)
-            gui.doDeregister();
+            gui.doPlayAgain();
     }
 
     public void exitButtonReleased() {

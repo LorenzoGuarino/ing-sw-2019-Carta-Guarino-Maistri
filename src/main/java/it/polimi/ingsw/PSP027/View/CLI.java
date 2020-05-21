@@ -1532,6 +1532,15 @@ public class CLI implements Runnable, ClientObserver {
         else
             System.out.println("\n\n" + DEFAULT_BOLD + nickname + " has won the game." + RESET);
 
+        gods.clear();
+        players.clear();
+        indexcandidatecells.clear();
+        NicknameColorMap.clear();
+        NicknameHighlightMap.clear();
+        NicknameGodMap.clear();
+        playersAndGods = "";
+        playingPlayerNickname = "";
+
         System.out.println(AVAILABLECOMMANDS);
         System.out.println(TRIANGLE + PLAY_COMMAND_LABEL);
         System.out.println(TRIANGLE + DEREGISTER_COMMAND_LABEL);
@@ -1546,6 +1555,16 @@ public class CLI implements Runnable, ClientObserver {
     @Override
     public void OnLoser() {
         System.out.println(DEFAULT_BOLD + "\n\nYou have lost! Better luck next time.\n" + RESET);
+
+        gods.clear();
+        players.clear();
+        indexcandidatecells.clear();
+        NicknameColorMap.clear();
+        NicknameHighlightMap.clear();
+        NicknameGodMap.clear();
+        playersAndGods = "";
+        playingPlayerNickname = "";
+
 
         System.out.println(AVAILABLECOMMANDS);
         System.out.println(TRIANGLE + PLAY_COMMAND_LABEL);

@@ -151,6 +151,29 @@ public class GUI extends Application implements ClientObserver {
             System.out.println(exception.toString());
         }
     }
+    public void showRegistrationError(String error) {
+
+        switch(error) {
+            case "Nickname already present": {
+                Alert alert = new Alert(Alert.AlertType.WARNING, "Please try again with another nickname");
+                alert.setTitle("REGISTRATION ERROR");
+                alert.setHeaderText("There was an error with your registration: your chosen nickname is already taken.");
+                alert.initModality(Modality.APPLICATION_MODAL);
+                alert.initOwner(SantoriniStage);
+                Optional<ButtonType> result = alert.showAndWait();
+                break;
+            }
+            case "Missing nickname": {
+                Alert alert = new Alert(Alert.AlertType.WARNING, "Please try again with a valid nickname");
+                alert.setTitle("REGISTRATION ERROR");
+                alert.setHeaderText("There was an error with your registration: please enter a valid nickname and try again.");
+                alert.initModality(Modality.APPLICATION_MODAL);
+                alert.initOwner(SantoriniStage);
+                Optional<ButtonType> result = alert.showAndWait();
+                break;
+            }
+        }
+    }
 
     public void showEnteringMatchPage() {
         try {
@@ -1232,12 +1255,7 @@ public class GUI extends Application implements ClientObserver {
 
     @Override
     public void OnRegistrationError(String error) {
-        Alert alert = new Alert(Alert.AlertType.WARNING, "We are very sorry, please try again.");
-        alert.setTitle("REGISTRATION ERROR");
-        alert.setHeaderText("There was an error with your registration");
-        alert.initModality(Modality.APPLICATION_MODAL);
-        alert.initOwner(SantoriniStage);
-        Optional<ButtonType> result = alert.showAndWait();
+        Platform.runLater(() -> showRegistrationError(error));
     }
 
     /**
@@ -1246,7 +1264,6 @@ public class GUI extends Application implements ClientObserver {
 
     @Override
     public void OnDeregistered() {
-
         Platform.runLater(() -> showConnectedPage());
     }
 
@@ -1757,6 +1774,14 @@ public class GUI extends Application implements ClientObserver {
     }
 
     public void doDeregister() {
+        gods.clear();
+        players.clear();
+        indexcandidatecells.clear();
+        PlayerGodMap.clear();
+        PlayerWorkerMap.clear();
+        firstPlayersGod = "";
+        deadPlayers.clear();
+        playingPlayerNickname = "";
         client.Deregister();
     }
 
@@ -1831,6 +1856,14 @@ public class GUI extends Application implements ClientObserver {
     }
 
     public void doPlayAgain() {
+        gods.clear();
+        players.clear();
+        indexcandidatecells.clear();
+        PlayerGodMap.clear();
+        PlayerWorkerMap.clear();
+        firstPlayersGod = "";
+        deadPlayers.clear();
+        playingPlayerNickname = "";
         Platform.runLater(() -> showRegisteredPage());
     }
 
