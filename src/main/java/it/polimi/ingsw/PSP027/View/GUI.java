@@ -1186,7 +1186,7 @@ public class GUI extends Application implements ClientObserver {
                 youHaveLostController.setBetterLuckNextTime(winner);
             }
 
-            if(client.getNickname() != null) {
+            if(client.getNickname() != null && !gods.isEmpty() && !PlayerGodMap.isEmpty()) {
                 String godLoser = PlayerGodMap.get(client.getNickname());
                 youHaveLostController.setLoserPodium(godLoser);
             }
