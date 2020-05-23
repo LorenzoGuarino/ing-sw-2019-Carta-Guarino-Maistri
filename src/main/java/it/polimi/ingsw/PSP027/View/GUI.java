@@ -1774,8 +1774,12 @@ public class GUI extends Application implements ClientObserver {
     }
 
     public void doDeregister() {
-        gods.clear();
-        players.clear();
+        if(gods != null) {
+            gods.clear();
+        }
+        if(players != null) {
+            players.clear();
+        }
         indexcandidatecells.clear();
         PlayerGodMap.clear();
         PlayerWorkerMap.clear();
@@ -1856,8 +1860,12 @@ public class GUI extends Application implements ClientObserver {
     }
 
     public void doPlayAgain() {
-        gods.clear();
-        players.clear();
+        if(gods != null) {
+            gods.clear();
+        }
+        if(players != null) {
+            players.clear();
+        }
         indexcandidatecells.clear();
         PlayerGodMap.clear();
         PlayerWorkerMap.clear();

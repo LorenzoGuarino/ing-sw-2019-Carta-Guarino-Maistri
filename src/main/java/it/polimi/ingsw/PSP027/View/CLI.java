@@ -645,7 +645,7 @@ public class CLI implements Runnable, ClientObserver {
                                         chosencellindex = (position.charAt(0) - 'A') * 5 + (position.charAt(1) - '1');
 
                                         //control that the position chosen was not occupied by another worker and is valid
-                                        if(getNicknameOfCellNode(getCellNodeGivenTheID(chosencellindex)).isEmpty() && !chosenposition[0].equals(position)) {
+                                        if(getNicknameOfCellNode(getCellNodeGivenTheID(chosencellindex)).isEmpty() && !chosenposition[0].equals(Integer.toString(chosencellindex))) {
                                             chosenposition[1] = Integer.toString(chosencellindex);
 
                                             cmdLine = WORKERSPOSITION_COMMAND + " " + chosenposition[0] + " " + chosenposition[1];
@@ -1532,8 +1532,12 @@ public class CLI implements Runnable, ClientObserver {
         else
             System.out.println("\n\n" + DEFAULT_BOLD + nickname + " has won the game." + RESET);
 
-        gods.clear();
-        players.clear();
+        if(gods != null) {
+            gods.clear();
+        }
+        if(players != null) {
+            players.clear();
+        }
         indexcandidatecells.clear();
         NicknameColorMap.clear();
         NicknameHighlightMap.clear();
@@ -1556,8 +1560,12 @@ public class CLI implements Runnable, ClientObserver {
     public void OnLoser() {
         System.out.println(DEFAULT_BOLD + "\n\nYou have lost! Better luck next time.\n" + RESET);
 
-        gods.clear();
-        players.clear();
+        if(gods != null) {
+            gods.clear();
+        }
+        if(players != null) {
+            players.clear();
+        }
         indexcandidatecells.clear();
         NicknameColorMap.clear();
         NicknameHighlightMap.clear();

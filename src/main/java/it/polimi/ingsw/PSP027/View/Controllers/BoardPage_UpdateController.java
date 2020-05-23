@@ -597,7 +597,7 @@ public class BoardPage_UpdateController {
         alert.initOwner(gui.getSantoriniStage());
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == YES)
-            gui.doPlayAgain();
+            gui.doDeregister();
     }
 
     public void exitButtonReleased() {
