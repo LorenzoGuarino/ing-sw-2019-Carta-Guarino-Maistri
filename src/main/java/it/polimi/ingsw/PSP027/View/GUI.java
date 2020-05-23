@@ -89,6 +89,13 @@ public class GUI extends Application implements ClientObserver {
         SantoriniStage.setResizable(false);
         SantoriniStage.show();
 
+        SantoriniStage.setOnCloseRequest(e->{
+            System.out.println("Closing Santorini Game");
+            Platform.exit();
+            System.exit(0);
+        });
+
+
     }
 
     public String getWorkerUrlImageGivenTheNickname (String nickname) {
