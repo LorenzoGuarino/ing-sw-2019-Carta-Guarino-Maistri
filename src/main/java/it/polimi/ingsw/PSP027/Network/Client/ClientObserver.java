@@ -16,6 +16,8 @@ public interface ClientObserver {
     void OnConnectionError();
     void OnRegistered();
     void OnDeregistered();
+    void OnServerConnectionClosed();
+    void OnServerHasDied();
     void OnChooseMatchType();
     void OnEnteringMatch(List<String> players);
     void OnEnteredMatch(List<String> players);

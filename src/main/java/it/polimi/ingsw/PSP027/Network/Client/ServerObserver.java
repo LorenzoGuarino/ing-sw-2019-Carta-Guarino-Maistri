@@ -13,6 +13,8 @@ public interface ServerObserver
 {
     void onConnected();
     void onDisconnected();
+    void onServerConnectionClosed();
+    void onServerHasDied();
     void onHello();
     void onRegister();
     void onDeregister();

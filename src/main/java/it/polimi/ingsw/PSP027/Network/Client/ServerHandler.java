@@ -139,10 +139,23 @@ public class ServerHandler implements Runnable
             handleServerConnection();
         } catch (IOException | ClassNotFoundException | ClassCastException  e) {
 
-            if(bManualDisconnection)
-                System.out.println("\nserver connection closed");
-            else
-                System.out.println("\nserver has died");
+            List<ServerObserver> observersCpy;
+            synchronized (observers) {
+                observersCpy = new ArrayList<ServerObserver>(observers);
+            }
+
+            if(bManualDisconnection) {
+                /* notify the observers that we got the string */
+                for (ServerObserver observer : observersCpy) {
+                    observer.onServerConnectionClosed();
+                }
+            }
+            else {
+                /* notify the observers that we got the string */
+                for (ServerObserver observer : observersCpy) {
+                    observer.onServerHasDied();
+                }
+            }
         }
 
         try {

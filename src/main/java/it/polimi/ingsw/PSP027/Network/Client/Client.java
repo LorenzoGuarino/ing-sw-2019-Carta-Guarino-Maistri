@@ -697,6 +697,38 @@ public class Client implements Runnable, ServerObserver
     }
 
     /**
+     * Method that fires the OnDeregistered() method of the observer (client instance)
+     */
+
+    private void FireOnServerConnectionClosed() {
+        List<ClientObserver> observersCpy;
+        synchronized (observers) {
+            observersCpy = new ArrayList<>(observers);
+        }
+
+        /* notify the observers that we got the string */
+        for (ClientObserver observer: observersCpy) {
+            observer.OnServerConnectionClosed();
+        }
+    }
+
+    /**
+     * Method that fires the OnDeregistered() method of the observer (client instance)
+     */
+
+    private void FireOnServerHasDied() {
+        List<ClientObserver> observersCpy;
+        synchronized (observers) {
+            observersCpy = new ArrayList<>(observers);
+        }
+
+        /* notify the observers that we got the string */
+        for (ClientObserver observer: observersCpy) {
+            observer.OnServerHasDied();
+        }
+    }
+
+    /**
      * Method that fires the OnRegistrationError() method of the observer (client instance)
      */
 
@@ -1029,6 +1061,26 @@ public class Client implements Runnable, ServerObserver
     public synchronized void onDisconnected() {
         connStatus = ConnectionStatus.Disconnected;
         regStatus = RegistrationStatus.Unregistered;
+        notifyAll();
+    }
+
+    /**
+     * Method that alerts the client that the server connection has been closed
+     */
+
+    @Override
+    public synchronized void onServerConnectionClosed() {
+        FireOnServerConnectionClosed();
+        notifyAll();
+    }
+
+    /**
+     * Method that alerts the client that the server has died
+     */
+
+    @Override
+    public synchronized void onServerHasDied() {
+        FireOnServerHasDied();
         notifyAll();
     }
 

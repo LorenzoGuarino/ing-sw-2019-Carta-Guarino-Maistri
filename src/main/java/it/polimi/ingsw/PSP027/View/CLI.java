@@ -1138,6 +1138,24 @@ public class CLI implements Runnable, ClientObserver {
     }
 
     /**
+     * Method of the ClientObserver interface that is fired by the client if the server connection was closed
+     */
+
+    @Override
+    public void OnServerConnectionClosed() {
+        System.out.println("\nserver connection closed");
+    }
+
+    /**
+     * Method of the ClientObserver interface that is fired by the client if the server has died
+     */
+
+    @Override
+    public void OnServerHasDied() {
+        System.out.println("\nserver has died");
+    }
+
+    /**
      * Method of the ClientObserver interface that is fired by the client after the user has registered
      */
 

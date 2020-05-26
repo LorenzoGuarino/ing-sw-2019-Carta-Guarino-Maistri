@@ -126,6 +126,24 @@ public class GUI extends Application implements ClientObserver {
         }
     }
 
+    public void showServerConnectionClosed() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION, "The connection was closed.");
+        alert.setTitle("THE SERVER CONNECTION WAS CLOSED");
+        alert.setHeaderText("The server connection was closed. You can connect again.");
+        alert.initModality(Modality.APPLICATION_MODAL);
+        alert.initOwner(SantoriniStage);
+        Optional<ButtonType> result = alert.showAndWait();
+    }
+
+    public void showServerHasDied() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION, "The connection was closed.");
+        alert.setTitle("THE SERVER HAS DIED");
+        alert.setHeaderText("The server has died, we are sorry.");
+        alert.initModality(Modality.APPLICATION_MODAL);
+        alert.initOwner(SantoriniStage);
+        Optional<ButtonType> result = alert.showAndWait();
+    }
+
     public void showEntryPage() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/EntryPage.fxml"));
@@ -1242,6 +1260,24 @@ public class GUI extends Application implements ClientObserver {
         System.out.println("OnDisconnected IN");
         Platform.runLater(() -> showEntryPage());
         System.out.println("OnDisconnected OUT");
+    }
+
+    /**
+     * Method of the ClientObserver interface that is fired by the client if the server connection was closed
+     */
+
+    @Override
+    public void OnServerConnectionClosed() {
+        Platform.runLater(() -> showServerConnectionClosed());
+    }
+
+    /**
+     * Method of the ClientObserver interface that is fired by the client if the server has died
+     */
+
+    @Override
+    public void OnServerHasDied() {
+        Platform.runLater(() -> showServerHasDied());
     }
 
     /**
