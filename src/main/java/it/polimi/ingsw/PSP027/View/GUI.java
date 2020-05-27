@@ -33,6 +33,16 @@ public class GUI extends Application implements ClientObserver {
     private String firstPlayersGod;
     private List<String> deadPlayers = new ArrayList<String>();
     private String playingPlayerNickname;
+    private Phase currentPhase;
+    public enum Phase {
+        Build,
+        ChooseWorker,
+        Move,
+        OptBuild,
+        OptMove,
+        OptEnd,
+        Update
+    }
 
     /* ****************************************************** COMMANDS ************************************************** */
 
@@ -425,10 +435,10 @@ public class GUI extends Application implements ClientObserver {
 
     public void showBoardPage_ChooseWorker(){
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/BoardPage_ChooseWorker.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/BoardPage_UniqueBoard.fxml"));
             Parent ChooseWorkerPage = (Parent) loader.load();
 
-            BoardPage_ChooseWorkerController boardPage_ChooseWorkerController = loader.getController();
+            BoardPage_UniqueController boardPage_ChooseWorkerController = loader.getController();
             boardPage_ChooseWorkerController.setGui(this);
 
             Node cell;
@@ -1438,6 +1448,7 @@ public class GUI extends Application implements ClientObserver {
     @Override
     public void OnChooseWorker(Node board) {
         this.nodeboard = board;
+        this.currentPhase = Phase.ChooseWorker;
         Platform.runLater(() -> showBoardPage_ChooseWorker());
     }
 
@@ -1473,6 +1484,7 @@ public class GUI extends Application implements ClientObserver {
                 }
             }
         }
+        this.currentPhase = Phase.Move;
         Platform.runLater(() -> showBoardPage_Move());
     }
 
@@ -1882,7 +1894,9 @@ public class GUI extends Application implements ClientObserver {
         Platform.runLater(() -> showRegisteredPage());
     }
 
-
+    public Phase getCurrentPhase(){
+        return this.currentPhase;
+    }
 }
 
 
