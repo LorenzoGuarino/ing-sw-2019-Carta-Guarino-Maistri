@@ -98,7 +98,6 @@ public class GUI extends Application implements ClientObserver {
         SantoriniStage.setMaximized(true);
         SantoriniStage.setFullScreen(true);
         SantoriniStage.setScene(entryScene);
-        SantoriniStage.setResizable(false);
         SantoriniStage.show();
 
         SantoriniStage.setOnCloseRequest(e->{

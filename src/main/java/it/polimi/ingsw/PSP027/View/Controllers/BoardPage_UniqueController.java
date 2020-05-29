@@ -470,59 +470,62 @@ public class BoardPage_UniqueController {
         OptGrid.setVisible(false);
         DisabledPane.setVisible(false);
         LevelOrDomeQuestion.setVisible(false);
+        indexcandidatecells.clear();
     }
 
     public void clickedOnGrid(MouseEvent e){
         Node source = e.getPickResult().getIntersectedNode();
         Integer gridColumn = GridPane.getColumnIndex(source);
         Integer gridRow = GridPane.getRowIndex(source);
-        int chosenCellIndex = abs(gridRow-4)*5 + gridColumn;
-        switch(this.gui.getCurrentPhase()){
-            case ChooseWorker:
-                if(this.gui.getNicknameOfCellNode(this.gui.getCellNodeGivenTheID(chosenCellIndex)).equals(this.gui.client.getNickname())){
-                    cellSelected = Integer.toString(chosenCellIndex);
-                    gui.doSendSelectedWorker(cellSelected);
-                }
-                break;
-            case Move:
-            case OptMove:
-                for (int i = 0; i < indexcandidatecells.size(); i++) {
-                    if (indexcandidatecells.get(i) == chosenCellIndex) {
+        if(gridRow != null && gridColumn != null) {
+            int chosenCellIndex = abs(gridRow - 4) * 5 + gridColumn;
+            switch (this.gui.getCurrentPhase()) {
+                case ChooseWorker:
+                    if (this.gui.getNicknameOfCellNode(this.gui.getCellNodeGivenTheID(chosenCellIndex)).equals(this.gui.client.getNickname())) {
                         cellSelected = Integer.toString(chosenCellIndex);
-                        gui.doSendCandidateMove(cellSelected);
-                        break;
+                        gui.doSendSelectedWorker(cellSelected);
                     }
-                }
-                break;
-            case Build:
-                for (int i = 0; i < indexcandidatecells.size(); i++) {
-                    if (indexcandidatecells.get(i) == chosenCellIndex) {
-                        cellSelected = Integer.toString(chosenCellIndex);
-                        sendCellSelected(cellSelected);
-                        break;
+                    break;
+                case Move:
+                case OptMove:
+                    for (int i = 0; i < indexcandidatecells.size(); i++) {
+                        if (indexcandidatecells.get(i) == chosenCellIndex) {
+                            cellSelected = Integer.toString(chosenCellIndex);
+                            gui.doSendCandidateMove(cellSelected);
+                            break;
+                        }
                     }
-                }
-                break;
-            case OptBuild:
-                for (int i = 0; i < indexcandidatecells.size(); i++) {
-                    if (indexcandidatecells.get(i) == chosenCellIndex) {
-                        cellSelected = Integer.toString(chosenCellIndex);
-                        gui.doSendCandidateBuild(cellSelected);
-                        break;
+                    break;
+                case Build:
+                    for (int i = 0; i < indexcandidatecells.size(); i++) {
+                        if (indexcandidatecells.get(i) == chosenCellIndex) {
+                            cellSelected = Integer.toString(chosenCellIndex);
+                            sendCellSelected(cellSelected);
+                            break;
+                        }
                     }
-                }
-                break;
-            case OptEnd:
-                for (int i = 0; i < indexcandidatecells.size(); i++) {
-                    if (indexcandidatecells.get(i) == chosenCellIndex) {
-                        cellSelected = Integer.toString(chosenCellIndex);
-                        gui.doSendCandidateEnd(cellSelected);
-                        break;
+                    break;
+                case OptBuild:
+                    for (int i = 0; i < indexcandidatecells.size(); i++) {
+                        if (indexcandidatecells.get(i) == chosenCellIndex) {
+                            cellSelected = Integer.toString(chosenCellIndex);
+                            gui.doSendCandidateBuild(cellSelected);
+                            break;
+                        }
                     }
-                }
-                break;
-            case Update:
-                break;
+                    break;
+                case OptEnd:
+                    for (int i = 0; i < indexcandidatecells.size(); i++) {
+                        if (indexcandidatecells.get(i) == chosenCellIndex) {
+                            cellSelected = Integer.toString(chosenCellIndex);
+                            gui.doSendCandidateEnd(cellSelected);
+                            break;
+                        }
+                    }
+                    break;
+                case Update:
+                    break;
+            }
         }
     }
 
@@ -583,16 +586,12 @@ public class BoardPage_UniqueController {
                 PhaseName.setImage(new Image("images/Board/ChooseWorker.png"));
                 break;
             case Move:
+            case OptMove:
                 PhaseName.setImage(new Image("images/Board/Move.png"));
                 break;
             case Build:
-                PhaseName.setImage(new Image("images/Board/Build.png"));
-                break;
             case OptBuild:
                 PhaseName.setImage(new Image("images/Board/Build.png"));
-                break;
-            case OptMove:
-                PhaseName.setImage(new Image("images/Board/Move.png"));
                 break;
             case OptEnd:
                 PhaseName.setImage(new Image("images/Board/End.png"));

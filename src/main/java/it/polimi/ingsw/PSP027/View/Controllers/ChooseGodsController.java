@@ -37,7 +37,7 @@ public class ChooseGodsController {
     /* ***************************************** GUI RENDERING RELATED VARIABLES ****************************************** */
 
     @FXML
-    public Label ChooseGodsTitle;
+    public ImageView ChooseGodsTitle;
     @FXML
     public GridPane GodsToChooseGrid;
     @FXML
@@ -164,7 +164,16 @@ public class ChooseGodsController {
 
     public void setChooseGodsTitle(int requiredGods) {
         numberOfPlayers = requiredGods;
-        ChooseGodsTitle.setText("CHOOSE " + requiredGods + " GODS TO PLAY THE MATCH WITH");
+        switch (numberOfPlayers) {
+            case 2:
+                ChooseGodsTitle.setImage(new Image("images/Choose2Gods.png"));
+                break;
+
+            case 3:
+                ChooseGodsTitle.setImage(new Image("images/Choose3Gods.png"));
+                break;
+
+        }
     }
 
     /* ******************************* GUI CONTROLLER METHODS THAT TRIGGER GUI RENDERING AND CONNECTION WITH SERVER  ****************************** */

@@ -594,11 +594,6 @@ public class BoardPage_PlacingWorkersController {
         Player3God.setVisible(visibility);
     }
 
-
-    public void reset() {
-        //maybe?????
-    }
-
     public void clickedOnCell(MouseEvent e){
         ImageView selectedCell = (ImageView) e.getTarget();
         System.out.println(selectedCell.getId());
@@ -857,7 +852,7 @@ public class BoardPage_PlacingWorkersController {
             if(cellsToSend.size() == 2){
                 ConfirmButton.setVisible(true);
             }
-        }else if(cellsToSend.size()==2){
+        } else if(cellsToSend.size()==2){
             bAlreadySelected = false;
             for(int i=0; i<cellsToSend.size(); i++){
                 if(cellSelected.equals(cellsToSend.get(i))){
@@ -865,7 +860,12 @@ public class BoardPage_PlacingWorkersController {
                     break;
                 }
             }
-            if(!bAlreadySelected){
+            bAlreadyTaken = false;
+            int chosencellindex = (cellSelected.charAt(0) - 'A') * 5 + (cellSelected.charAt(1) - '1');
+            if(!gui.getNicknameOfCellNode(gui.getCellNodeGivenTheID(chosencellindex)).isEmpty()) {
+                bAlreadyTaken = true;
+            }
+            if(!bAlreadySelected && !bAlreadyTaken){
                 switch(cellSelected){
                     case "A1":
                         A1C.setImage(candidate);
