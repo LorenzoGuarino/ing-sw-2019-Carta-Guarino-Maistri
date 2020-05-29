@@ -461,7 +461,7 @@ public class BoardPage_UniqueController {
             BoardGrid.getChildren().clear();
         }
         if(OptGrid.getChildren().size()!=0){
-            OptGrid.getChildren().clear();
+            System.out.println("ero io");
         }
         DisabledPane.setVisible(false);
         LevelOrDomeQuestion.setVisible(false);
