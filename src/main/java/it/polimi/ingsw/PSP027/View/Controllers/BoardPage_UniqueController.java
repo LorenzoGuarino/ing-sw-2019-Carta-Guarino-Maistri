@@ -24,6 +24,14 @@ public class BoardPage_UniqueController {
     private String cellSelected;
 
     @FXML
+    public ImageView DescriptionOptional;
+
+    Image OptionalEnd_Poseidon = new Image("images/OptionalPhases/OptionalEnd_Poseidon.png");
+    Image OptionalEnd_Ares = new Image("images/OptionalPhases/OptionalEnd_Ares.png");
+    Image OptionalBuild = new Image("images/OptionalPhases/OptionalBuild.png");
+    Image OptionalMove = new Image("images/OptionalPhases/OptionalMove.png");
+    Image OptionalBuildBeforeMove = new Image("images/OptionalPhases/OptionalBuildBeforeMove.png");
+    @FXML
     public ImageView LevelButton;
     public ImageView DomeButton;
 
@@ -43,7 +51,9 @@ public class BoardPage_UniqueController {
     Image SkipButtonPressed = new Image("images/Buttons/btn_Skip_pressed.png");
     @FXML
     public GridPane BoardGrid;
-
+    @FXML
+    public GridPane OptGrid;
+    public ImageView PhaseName;
     public Label nicknamePlayer1;
     public Label nicknamePlayer2;
     public Label nicknamePlayer3;
@@ -134,13 +144,25 @@ public class BoardPage_UniqueController {
         int row = abs(index/5-4);
         switch(level){
             case 1:
-                BoardGrid.add(new ImageView("images/Board/Level1_Board.png"),column,row);
+                ImageView level1 = new ImageView("images/Board/Level1_Board.png");
+                level1.setPickOnBounds(true);
+                level1.setFitHeight(100);
+                level1.setFitWidth(100);
+                BoardGrid.add(level1,column,row);
                 break;
             case 2:
-                BoardGrid.add(new ImageView("images/Board/Level2_Board.png"),column,row);
+                ImageView level2 = new ImageView("images/Board/Level2_Board.png");
+                level2.setPickOnBounds(true);
+                level2.setFitWidth(100);
+                level2.setFitHeight(100);
+                BoardGrid.add(level2, column, row);
                 break;
             case 3:
-                BoardGrid.add(new ImageView("images/Board/Level3_Board.png"),column,row);
+                ImageView level3 = new ImageView("images/Board/Level3_Board.png");
+                level3.setPickOnBounds(true);
+                level3.setFitHeight(100);
+                level3.setFitWidth(100);
+                BoardGrid.add(level3, column, row);
                 break;
         }
     }
@@ -148,7 +170,11 @@ public class BoardPage_UniqueController {
     public void setDome(int index){
         int column = index%5;
         int row = abs(index/5-4);
-        BoardGrid.add(new ImageView("images/Board/Dome_Board"), column, row);
+        ImageView dome = new ImageView("images/Board/Dome_Board.png");
+        dome.setPickOnBounds(true);
+        dome.setFitHeight(100);
+        dome.setFitWidth(100);
+        BoardGrid.add(dome, column, row);
     }
 
     public void setWorker(int index, String url){
@@ -164,13 +190,40 @@ public class BoardPage_UniqueController {
     public void setCandidate(int index){
         int column = index%5;
         int row = abs(index/5-4);
-        BoardGrid.add(new ImageView("images/Board/CandidateCell_board.png"), column, row);
+        ImageView candidate = new ImageView("images/Board/CandidateCell_board.png");
+        candidate.setPickOnBounds(true);
+        candidate.setFitHeight(100);
+        candidate.setFitWidth(100);
+        BoardGrid.add(candidate, column, row);
         indexcandidatecells.add(index);
     }
 
     public void setPlayer1Panel(String god, String nickname, boolean playingPlayer, boolean deadPlayer, String url_icon) {
         if(playingPlayer) {
             Player1Panel.setImage(PlayingPlayerPanel);
+            System.out.println("giocatore 1");
+            if(this.gui.getCurrentPhase().equals(GUI.Phase.OptEnd)){
+                System.out.println("get phase");
+                if (god.equals("Ares")){
+                    DescriptionOptional.setImage(OptionalEnd_Ares);
+                    SkipButton.setVisible(true);
+                } else if(god.equals("Poseidon")){
+                    DescriptionOptional.setImage(OptionalEnd_Poseidon);
+                    System.out.println("skip?");
+                    SkipButton.setVisible(true);
+                }
+            }else if(this.gui.getCurrentPhase().equals(GUI.Phase.OptBuild)){
+                if(god.equals("Prometheus")){
+                    DescriptionOptional.setImage(OptionalBuildBeforeMove);
+                    SkipButton.setVisible(true);
+                }else{
+                    DescriptionOptional.setImage(OptionalBuild);
+                    SkipButton.setVisible(true);
+                }
+            }else if(this.gui.getCurrentPhase().equals(GUI.Phase.OptMove)){
+                DescriptionOptional.setImage(OptionalMove);
+                SkipButton.setVisible(true);
+            }
         }
         else {
             Player1Panel.setImage(NormalPlayerPanel);
@@ -234,6 +287,26 @@ public class BoardPage_UniqueController {
     public void setPlayer2Panel(String god, String nickname, boolean playingPlayer, boolean deadPlayer, String url_icon) {
         if(playingPlayer) {
             Player2Panel.setImage(PlayingPlayerPanel);
+            if(this.gui.getCurrentPhase().equals(GUI.Phase.OptEnd)){
+                if (god.equals("Ares")){
+                    DescriptionOptional.setImage(OptionalEnd_Ares);
+                    SkipButton.setVisible(true);
+                } else if(god.equals("Poseidon")){
+                    DescriptionOptional.setImage(OptionalEnd_Poseidon);
+                    SkipButton.setVisible(true);
+                }
+            }else if(this.gui.getCurrentPhase().equals(GUI.Phase.OptBuild)){
+                if(god.equals("Prometheus")){
+                    DescriptionOptional.setImage(OptionalBuildBeforeMove);
+                    SkipButton.setVisible(true);
+                }else{
+                    DescriptionOptional.setImage(OptionalBuild);
+                    SkipButton.setVisible(true);
+                }
+            }else if(this.gui.getCurrentPhase().equals(GUI.Phase.OptMove)){
+                DescriptionOptional.setImage(OptionalMove);
+                SkipButton.setVisible(true);
+            }
         }
         else {
             Player2Panel.setImage(NormalPlayerPanel);
@@ -297,6 +370,26 @@ public class BoardPage_UniqueController {
     public void setPlayer3Panel(String god, String nickname, boolean playingPlayer, boolean deadPlayer, String url_icon) {
         if(playingPlayer) {
             Player3Panel.setImage(PlayingPlayerPanel);
+            if(this.gui.getCurrentPhase().equals(GUI.Phase.OptEnd)){
+                if (god.equals("Ares")){
+                    DescriptionOptional.setImage(OptionalEnd_Ares);
+                    SkipButton.setVisible(true);
+                } else if(god.equals("Poseidon")){
+                    DescriptionOptional.setImage(OptionalEnd_Poseidon);
+                    SkipButton.setVisible(true);
+                }
+            }else if(this.gui.getCurrentPhase().equals(GUI.Phase.OptBuild)){
+                if(god.equals("Prometheus")){
+                    DescriptionOptional.setImage(OptionalBuildBeforeMove);
+                    SkipButton.setVisible(true);
+                }else{
+                    DescriptionOptional.setImage(OptionalBuild);
+                    SkipButton.setVisible(true);
+                }
+            }else if(this.gui.getCurrentPhase().equals(GUI.Phase.OptMove)){
+                DescriptionOptional.setImage(OptionalMove);
+                SkipButton.setVisible(true);
+            }
         }
         else {
             Player3Panel.setImage(NormalPlayerPanel);
@@ -364,15 +457,20 @@ public class BoardPage_UniqueController {
     }
 
     public void resetBoardGrid() {
-        BoardGrid.getChildren().removeAll();
+        if(BoardGrid.getChildren().size()!=0){
+            BoardGrid.getChildren().clear();
+        }
+        if(OptGrid.getChildren().size()!=0){
+            OptGrid.getChildren().clear();
+        }
+        DisabledPane.setVisible(false);
+        LevelOrDomeQuestion.setVisible(false);
     }
 
     public void clickedOnGrid(MouseEvent e){
         Node source = e.getPickResult().getIntersectedNode();
-        System.out.println(e);
         Integer gridColumn = GridPane.getColumnIndex(source);
         Integer gridRow = GridPane.getRowIndex(source);
-        System.out.println(gridColumn + gridRow);
         int chosenCellIndex = abs(gridRow-4)*5 + gridColumn;
         switch(this.gui.getCurrentPhase()){
             case ChooseWorker:
@@ -418,9 +516,9 @@ public class BoardPage_UniqueController {
                     }
                 }
                 break;
+            case Update:
+                break;
         }
-
-
     }
 
 
@@ -474,6 +572,30 @@ public class BoardPage_UniqueController {
         ExitGameButton.setImage(exitButtonReleased);
     }
 
-
+    public void setPhaseName(){
+        switch (this.gui.getCurrentPhase()){
+            case ChooseWorker:
+                PhaseName.setImage(new Image("images/Board/ChooseWorker.png"));
+                break;
+            case Move:
+                PhaseName.setImage(new Image("images/Board/Move.png"));
+                break;
+            case Build:
+                PhaseName.setImage(new Image("images/Board/Build.png"));
+                break;
+            case OptBuild:
+                PhaseName.setImage(new Image("images/Board/Build.png"));
+                break;
+            case OptMove:
+                PhaseName.setImage(new Image("images/Board/Move.png"));
+                break;
+            case OptEnd:
+                PhaseName.setImage(new Image("images/Board/End.png"));
+                break;
+            case Update:
+                PhaseName.setImage(new Image("images/Board/WaitForYourTurn.png"));
+                break;
+        }
+    }
 
 }

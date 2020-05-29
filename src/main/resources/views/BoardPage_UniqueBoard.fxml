@@ -124,7 +124,29 @@
                     </ImageView>
                 </children>
             </GridPane>
-            <GridPane fx:id="LevelOrDomeQuestion" layoutX="430.0" layoutY="58.0" prefHeight="344.0" prefWidth="645.0" AnchorPane.leftAnchor="400.0" AnchorPane.rightAnchor="400.0" AnchorPane.topAnchor="250.0" visible="false">
+            <ImageView fx:id="PhaseName" fitHeight="250.0" fitWidth="300.0" layoutX="600.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="600.0" AnchorPane.rightAnchor="600.0" AnchorPane.topAnchor="0.0">
+            </ImageView>
+            <GridPane fx:id="OptGrid" layoutX="33.0" layoutY="600.0" prefHeight="206.0" prefWidth="317.0">
+                <columnConstraints>
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                </columnConstraints>
+                <rowConstraints>
+                    <RowConstraints maxHeight="274.0" minHeight="10.0" prefHeight="121.0" vgrow="SOMETIMES" />
+                    <RowConstraints maxHeight="188.0" minHeight="10.0" prefHeight="100.0" vgrow="SOMETIMES" />
+                </rowConstraints>
+                <children>
+                    <ImageView fx:id="DescriptionOptional" fitHeight="193.0" fitWidth="178.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                    </ImageView>
+                    <ImageView fx:id="SkipButton" fitHeight="150.0" fitWidth="200.0" onMousePressed="#skipButtonPressed" onMouseReleased="#skipButtonReleased" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                        <image>
+                            <Image url="@../images/Buttons/btn_Skip.png" />
+                        </image>
+                    </ImageView>
+                </children>
+            </GridPane>
+            <Pane fx:id="DisabledPane" maxHeight="900.0" maxWidth="1440.0" stylesheets="@../style.css" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" visible="false">
+            </Pane>
+            <GridPane fx:id="LevelOrDomeQuestion" layoutX="430.0" layoutY="58.0" prefHeight="344.0" prefWidth="645.0" visible="false" AnchorPane.leftAnchor="400.0" AnchorPane.rightAnchor="400.0" AnchorPane.topAnchor="250.0">
                 <columnConstraints>
                     <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                     <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -139,44 +161,19 @@
                             <Image url="@../images/Board/LevelOrDome.png" />
                         </image>
                     </ImageView>
-                    <ImageView fx:id="LevelButton" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1" onMouseClicked="#LevelChosen" onMouseReleased="#LevelReleased">
+                    <ImageView fx:id="LevelButton" fitHeight="150.0" fitWidth="200.0" onMouseClicked="#LevelChosen" onMouseReleased="#LevelReleased" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1">
                         <image>
                             <Image url="@../images/Buttons/btn_Level.png" />
                         </image>
                     </ImageView>
-                    <ImageView fx:id="DomeButton" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="1" onMouseClicked="#DomeChosen" onMouseReleased="#DomeReleased">
+                    <ImageView fx:id="DomeButton" fitHeight="150.0" fitWidth="200.0" onMouseClicked="#DomeChosen" onMouseReleased="#DomeReleased" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
                         <image>
                             <Image url="@../images/Buttons/btn_Dome.png" />
                         </image>
                     </ImageView>
                 </children>
             </GridPane>
-            <ImageView fitHeight="250.0" fitWidth="300.0" layoutX="600.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="600.0" AnchorPane.rightAnchor="600.0" AnchorPane.topAnchor="0.0">
-                <image>
-                    <Image url="@../images/Board/Move.png" />
-                </image>
-            </ImageView>
-            <GridPane layoutX="33.0" layoutY="600.0" prefHeight="206.0" prefWidth="317.0">
-                <columnConstraints>
-                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                </columnConstraints>
-                <rowConstraints>
-                    <RowConstraints maxHeight="274.0" minHeight="10.0" prefHeight="121.0" vgrow="SOMETIMES" />
-                    <RowConstraints maxHeight="188.0" minHeight="10.0" prefHeight="100.0" vgrow="SOMETIMES" />
-                </rowConstraints>
-                <children>
-                    <ImageView fitHeight="193.0" fitWidth="178.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-                        <image>
-                            <Image url="@../images/OptionalPhases/OptionalMove.png" />
-                        </image>
-                    </ImageView>
-                    <ImageView fx:id="SkipButton" fitHeight="150.0" fitWidth="200.0" onMousePressed="#skipButtonPressed" onMouseReleased="#skipButtonReleased" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-                        <image>
-                            <Image url="@../images/Buttons/btn_Skip.png" />
-                        </image>
-                    </ImageView>
-                </children>
-            </GridPane>
+
             <ImageView fx:id="ExitGameButton" fitHeight="135.0" fitWidth="128.0" layoutX="80.0" layoutY="51.0" onMouseEntered="#exitButtonHovered" onMouseExited="#exitButtonReleased" onMousePressed="#exitButtonPressed" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="1292.0" AnchorPane.topAnchor="51.0">
                 <image>
                     <Image url="@../images/Buttons/btn_exitGame.png" />
