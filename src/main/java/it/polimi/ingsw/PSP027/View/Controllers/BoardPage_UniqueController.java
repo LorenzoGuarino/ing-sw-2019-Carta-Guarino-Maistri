@@ -127,7 +127,17 @@ public class BoardPage_UniqueController {
 
     public void skipButtonPressed() {
         SkipButton.setImage(SkipButtonPressed);
-        gui.doSkipOptBuild();
+        switch(this.gui.getCurrentPhase()){
+            case OptEnd:
+                gui.doSkipOptEnd();
+                break;
+            case OptMove:
+                gui.doSkipOptMove();
+                break;
+            case OptBuild:
+                gui.doSkipOptBuild();
+                break;
+        }
     }
 
     public void skipButtonReleased() {
@@ -201,28 +211,25 @@ public class BoardPage_UniqueController {
     public void setPlayer1Panel(String god, String nickname, boolean playingPlayer, boolean deadPlayer, String url_icon) {
         if(playingPlayer) {
             Player1Panel.setImage(PlayingPlayerPanel);
-            System.out.println("giocatore 1");
             if(this.gui.getCurrentPhase().equals(GUI.Phase.OptEnd)){
-                System.out.println("get phase");
                 if (god.equals("Ares")){
                     DescriptionOptional.setImage(OptionalEnd_Ares);
-                    SkipButton.setVisible(true);
+                    OptGrid.setVisible(true);
                 } else if(god.equals("Poseidon")){
                     DescriptionOptional.setImage(OptionalEnd_Poseidon);
-                    System.out.println("skip?");
-                    SkipButton.setVisible(true);
+                    OptGrid.setVisible(true);
                 }
             }else if(this.gui.getCurrentPhase().equals(GUI.Phase.OptBuild)){
                 if(god.equals("Prometheus")){
                     DescriptionOptional.setImage(OptionalBuildBeforeMove);
-                    SkipButton.setVisible(true);
+                    OptGrid.setVisible(true);
                 }else{
                     DescriptionOptional.setImage(OptionalBuild);
-                    SkipButton.setVisible(true);
+                    OptGrid.setVisible(true);
                 }
             }else if(this.gui.getCurrentPhase().equals(GUI.Phase.OptMove)){
                 DescriptionOptional.setImage(OptionalMove);
-                SkipButton.setVisible(true);
+                OptGrid.setVisible(true);
             }
         }
         else {
@@ -290,22 +297,22 @@ public class BoardPage_UniqueController {
             if(this.gui.getCurrentPhase().equals(GUI.Phase.OptEnd)){
                 if (god.equals("Ares")){
                     DescriptionOptional.setImage(OptionalEnd_Ares);
-                    SkipButton.setVisible(true);
+                    OptGrid.setVisible(true);
                 } else if(god.equals("Poseidon")){
                     DescriptionOptional.setImage(OptionalEnd_Poseidon);
-                    SkipButton.setVisible(true);
+                    OptGrid.setVisible(true);
                 }
             }else if(this.gui.getCurrentPhase().equals(GUI.Phase.OptBuild)){
                 if(god.equals("Prometheus")){
                     DescriptionOptional.setImage(OptionalBuildBeforeMove);
-                    SkipButton.setVisible(true);
+                    OptGrid.setVisible(true);
                 }else{
                     DescriptionOptional.setImage(OptionalBuild);
-                    SkipButton.setVisible(true);
+                    OptGrid.setVisible(true);
                 }
             }else if(this.gui.getCurrentPhase().equals(GUI.Phase.OptMove)){
                 DescriptionOptional.setImage(OptionalMove);
-                SkipButton.setVisible(true);
+                OptGrid.setVisible(true);
             }
         }
         else {
@@ -373,22 +380,22 @@ public class BoardPage_UniqueController {
             if(this.gui.getCurrentPhase().equals(GUI.Phase.OptEnd)){
                 if (god.equals("Ares")){
                     DescriptionOptional.setImage(OptionalEnd_Ares);
-                    SkipButton.setVisible(true);
+                    OptGrid.setVisible(true);
                 } else if(god.equals("Poseidon")){
                     DescriptionOptional.setImage(OptionalEnd_Poseidon);
-                    SkipButton.setVisible(true);
+                    OptGrid.setVisible(true);
                 }
             }else if(this.gui.getCurrentPhase().equals(GUI.Phase.OptBuild)){
                 if(god.equals("Prometheus")){
                     DescriptionOptional.setImage(OptionalBuildBeforeMove);
-                    SkipButton.setVisible(true);
+                    OptGrid.setVisible(true);
                 }else{
                     DescriptionOptional.setImage(OptionalBuild);
-                    SkipButton.setVisible(true);
+                    OptGrid.setVisible(true);
                 }
             }else if(this.gui.getCurrentPhase().equals(GUI.Phase.OptMove)){
                 DescriptionOptional.setImage(OptionalMove);
-                SkipButton.setVisible(true);
+                OptGrid.setVisible(true);
             }
         }
         else {
@@ -460,9 +467,7 @@ public class BoardPage_UniqueController {
         if(BoardGrid.getChildren().size()!=0){
             BoardGrid.getChildren().clear();
         }
-        if(OptGrid.getChildren().size()!=0){
-            System.out.println("ero io");
-        }
+        OptGrid.setVisible(false);
         DisabledPane.setVisible(false);
         LevelOrDomeQuestion.setVisible(false);
     }
