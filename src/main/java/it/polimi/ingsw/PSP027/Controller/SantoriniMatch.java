@@ -637,12 +637,23 @@ public class SantoriniMatch implements Runnable{
 
         chosencellindex = Integer.parseInt(worker);
         Worker tempWorker = getGameBoard().getCell(chosencellindex).getOccupyingWorker();
+        Worker tempWorker2;
 
+        if(tempWorker.getWorkerIndex()==0) {
+            tempWorker2 = tempWorker.getWorkerOwner().getPlayerWorkers().get(1);
+        }
+        else{
+            tempWorker2 = tempWorker.getWorkerOwner().getPlayerWorkers().get(0);
+        }
 
         if((turn != null) && (tempWorker != null)) {
 
             tempWorker.ResetWorkerTurnVars();
             turn.setChosenWorker(tempWorker);
+            if(tempWorker2!=null){
+                tempWorker2.ResetWorkerTurnVars();
+            }
+
         }
     }
 
