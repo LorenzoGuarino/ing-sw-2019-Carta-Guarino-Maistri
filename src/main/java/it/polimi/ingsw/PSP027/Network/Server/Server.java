@@ -22,7 +22,7 @@ public class Server
 
             int port = SOCKET_PORT;
 
-            if(args[0] != null) {
+            if(args.length > 0) {
 
                 try {
                     port = Integer.parseInt(args[0]);
@@ -34,7 +34,7 @@ public class Server
             }
 
             socket = new ServerSocket(port);
-            
+
             InetAddress ip;
             String hostname;
 
