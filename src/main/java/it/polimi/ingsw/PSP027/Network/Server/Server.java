@@ -19,8 +19,22 @@ public class Server
     {
         ServerSocket socket;
         try {
-            socket = new ServerSocket(SOCKET_PORT);
 
+            int port = SOCKET_PORT;
+
+            if(args[0] != null) {
+
+                try {
+                    port = Integer.parseInt(args[0]);
+                }
+                catch (NumberFormatException e) {
+                    System.err.println("Argument" + args[0] + " must be an integer. Default port will be used !");
+                    port = SOCKET_PORT;
+                }
+            }
+
+            socket = new ServerSocket(port);
+            
             InetAddress ip;
             String hostname;
 
