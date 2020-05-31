@@ -458,6 +458,7 @@ public class BoardPage_UniqueController {
     }
 
     public void setPanel3Visibility(boolean visibility) {
+        Player3Icon.setVisible(visibility);
         Player3Panel.setVisible(visibility);
         nicknamePlayer3.setVisible(visibility);
         Player3God.setVisible(visibility);

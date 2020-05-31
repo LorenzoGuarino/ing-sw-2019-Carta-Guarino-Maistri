@@ -352,15 +352,6 @@ public class GUI extends Application implements ClientObserver {
                         boolean dome = getDomeOfCellNode(cell);
 
                         String nickname = getNicknameOfCellNode(cell);
-
-                        if(level!=0) {
-                            boardPage_PlacingWorkersController.setLevel(id, level);
-                        }
-
-                        if (dome) {
-                            boardPage_PlacingWorkersController.setDome(id);
-                        }
-
                         if (!nickname.isEmpty()) {
                             boardPage_PlacingWorkersController.setWorker(id, PlayerWorkerMap.get(nickname));
                         }
