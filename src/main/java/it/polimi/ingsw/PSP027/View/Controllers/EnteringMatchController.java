@@ -23,13 +23,6 @@ public class EnteringMatchController {
     private GUI gui;
 
     public Client client = null;
-    private int requiredgods = 0;
-    private List<String> gods = null;
-    private List<String> players = null;
-    private Node nodeboard; //it's overwritten every time a new board needs to be printed
-    private List<Integer> indexcandidatecells = new ArrayList<Integer>(); //used for move and build and is overwritten every time
-    private Map<String, String> NicknameGodMap = new HashMap<String, String>();
-    private String[] chosen_cmd;
 
 
     /* ***************************************** GUI RENDERING RELATED VARIABLES ****************************************** */
@@ -37,18 +30,16 @@ public class EnteringMatchController {
     @FXML
     public Label player1;
     public ImageView player1Icon;
-    @FXML
+
     public Label player2;
     public ImageView player2Icon;
-    @FXML
+
     public Label player3;
     public ImageView player3Icon;
-    @FXML
+
     public Pane enteringMatchPane;
-    @FXML
+
     public ImageView ExitGameButton;
-    Image exitButtonHovered = new Image("images/Buttons/btn_exitGame_hovered.png");
-    Image exitButtonReleased = new Image("images/Buttons/btn_exitGame.png");
 
 
     /* ****************************************************************************************************************** */
@@ -92,7 +83,7 @@ public class EnteringMatchController {
     /* ******************************* GUI CONTROLLER METHODS THAT TRIGGER GUI RENDERING AND CONNECTION WITH SERVER  ****************************** */
 
     public void exitButtonHovered() {
-        ExitGameButton.setImage(exitButtonHovered);
+        ExitGameButton.setImage(new Image("images/Buttons/btn_exitGame_hovered.png"));
     }
 
     public void exitButtonPressed() {
@@ -110,6 +101,6 @@ public class EnteringMatchController {
     }
 
     public void exitButtonReleased() {
-        ExitGameButton.setImage(exitButtonReleased);
+        ExitGameButton.setImage(new Image("images/Buttons/btn_exitGame.png"));
     }
 }

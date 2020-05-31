@@ -18,49 +18,15 @@ public class YouHaveWonController {
 
     // Reference to the main gui application
     private GUI gui;
-
     public Client client = null;
-    private boolean bRun = false;
-    private int requiredgods = 0;
-    private List<String> gods = null;
-    private List<String> players = null;
-    private Node nodeboard; //it's overwritten every time a new board needs to be printed
-    private List<Integer> indexcandidatecells = new ArrayList<Integer>(); //used for move and build and is overwritten every time
-    private Map<String, String> NicknameGodMap = new HashMap<String, String>();
-
 
     /* ***************************************** GUI RENDERING RELATED VARIABLES ****************************************** */
 
     @FXML
-    ImageView WinnerGod;
-
-    Image Apollo = new Image("images/Gods/Apollo_icon.png");
-    Image Ares = new Image("images/Gods/Ares_icon.png");
-    Image Artemis = new Image("images/Gods/Artemis_icon.png");
-    Image Athena = new Image("images/Gods/Athena_icon.png");
-    Image Atlas = new Image("images/Gods/Atlas_icon.png");
-    Image Demeter = new Image("images/Gods/Demeter_icon.png");
-    Image Hephaestus = new Image("images/Gods/Hephaestus_icon.png");
-    Image Hestia = new Image("images/Gods/Hestia_icon.png");
-    Image Medusa = new Image("images/Gods/Medusa_icon.png");
-    Image Minotaur = new Image("images/Gods/Minotaur_icon.png");
-    Image Pan = new Image("images/Gods/Pan_icon.png");
-    Image Poseidon = new Image("images/Gods/Poseidon_icon.png");
-    Image Prometheus = new Image("images/Gods/Prometheus_icon.png");
-    Image Zeus = new Image("images/Gods/Zeus_icon.png");
-
-    @FXML
-    Label Congrats;
-
-    @FXML
+    public ImageView WinnerGod;
+    public Label Congrats;
     public ImageView ExitGameButton;
-    Image exitButtonHovered = new Image("images/Buttons/btn_exitGame_hovered.png");
-    Image exitButtonReleased = new Image("images/Buttons/btn_exitGame.png");
-
-    @FXML
     public ImageView PlayButton;
-    Image PlayButtonPressed = new Image("images/Buttons/button-play-down.png");
-    Image PlayButtonReleased = new Image("images/Buttons/button-play-normal.png");
     /* ****************************************************************************************************************** */
 
     /**
@@ -88,46 +54,46 @@ public class YouHaveWonController {
     public void setWinnerPodium(String godWinner) {
         switch (godWinner) {
             case "Apollo":
-                WinnerGod.setImage(Apollo);
+                WinnerGod.setImage(new Image("images/Gods/Apollo_icon.png"));
                 break;
             case "Artemis":
-                WinnerGod.setImage(Artemis);
+                WinnerGod.setImage(new Image("images/Gods/Artemis_icon.png"));
                 break;
             case "Ares":
-                WinnerGod.setImage(Ares);
+                WinnerGod.setImage(new Image("images/Gods/Ares_icon.png"));
                 break;
             case "Athena":
-                WinnerGod.setImage(Athena);
+                WinnerGod.setImage(new Image("images/Gods/Athena_icon.png"));
                 break;
             case "Atlas":
-                WinnerGod.setImage(Atlas);
+                WinnerGod.setImage(new Image("images/Gods/Atlas_icon.png"));
                 break;
             case "Demeter":
-                WinnerGod.setImage(Demeter);
+                WinnerGod.setImage(new Image("images/Gods/Demeter_icon.png"));
                 break;
             case "Hephaestus":
-                WinnerGod.setImage(Hephaestus);
+                WinnerGod.setImage(new Image("images/Gods/Hephaestus_icon.png"));
                 break;
             case "Hestia":
-                WinnerGod.setImage(Hestia);
+                WinnerGod.setImage(new Image("images/Gods/Hestia_icon.png"));
                 break;
             case "Medusa":
-                WinnerGod.setImage(Medusa);
+                WinnerGod.setImage(new Image("images/Gods/Medusa_icon.png"));
                 break;
             case "Minotaur":
-                WinnerGod.setImage(Minotaur);
+                WinnerGod.setImage(new Image("images/Gods/Minotaur_icon.png"));
                 break;
             case "Pan":
-                WinnerGod.setImage(Pan);
+                WinnerGod.setImage(new Image("images/Gods/Pan_icon.png"));
                 break;
             case "Poseidon":
-                WinnerGod.setImage(Poseidon);
+                WinnerGod.setImage(new Image("images/Gods/Poseidon_icon.png"));
                 break;
             case "Prometheus":
-                WinnerGod.setImage(Prometheus);
+                WinnerGod.setImage(new Image("images/Gods/Prometheus_icon.png"));
                 break;
             case "Zeus":
-                WinnerGod.setImage(Zeus);
+                WinnerGod.setImage(new Image("images/Gods/Zeus_icon.png"));
                 break;
         }
     }
@@ -139,7 +105,7 @@ public class YouHaveWonController {
     /* ******************************* GUI CONTROLLER METHODS THAT TRIGGER GUI RENDERING AND CONNECTION WITH SERVER  ****************************** */
 
     public void exitButtonHovered() {
-        ExitGameButton.setImage(exitButtonHovered);
+        ExitGameButton.setImage(new Image("images/Buttons/btn_exitGame_hovered.png"));
     }
 
     public void exitButtonPressed() {
@@ -157,15 +123,15 @@ public class YouHaveWonController {
     }
 
     public void exitButtonReleased() {
-        ExitGameButton.setImage(exitButtonReleased);
+        ExitGameButton.setImage(new Image("images/Buttons/btn_exitGame.png"));
     }
 
     public void playButtonPressed() {
-        PlayButton.setImage(PlayButtonPressed);
+        PlayButton.setImage(new Image("images/Buttons/button-play-down.png"));
     }
 
     public void playButtonReleased() {
-        PlayButton.setImage(PlayButtonReleased);
+        PlayButton.setImage(new Image("images/Buttons/button-play-normal.png"));
         gui.doPlayAgain();
     }
 }

@@ -25,35 +25,15 @@ public class BoardPage_UniqueController {
 
     @FXML
     public ImageView DescriptionOptional;
-
-    Image OptionalEnd_Poseidon = new Image("images/OptionalPhases/OptionalEnd_Poseidon.png");
-    Image OptionalEnd_Ares = new Image("images/OptionalPhases/OptionalEnd_Ares.png");
-    Image OptionalBuild = new Image("images/OptionalPhases/OptionalBuild.png");
-    Image OptionalMove = new Image("images/OptionalPhases/OptionalMove.png");
-    Image OptionalBuildBeforeMove = new Image("images/OptionalPhases/OptionalBuildBeforeMove.png");
-    @FXML
     public ImageView LevelButton;
     public ImageView DomeButton;
-
-    Image LevelButtonPressed = new Image("images/Buttons/btn_Level_pressed.png");
-    Image DomeButtonPressed = new Image("images/Buttons/btn_Dome_pressed.png");
-    Image LevelButtonRestored = new Image("images/Buttons/btn_Level.png");
-    Image DomeButtonRestored = new Image("images/Buttons/btn_Dome_pressed.png");
-
-    @FXML
     public Pane LevelOrDomeQuestion;
-    @FXML
     public Pane DisabledPane;
-    @FXML
     public ImageView SkipButton;
-
-    Image SkipButtonReleased = new Image("images/Buttons/btn_Skip.png");
-    Image SkipButtonPressed = new Image("images/Buttons/btn_Skip_pressed.png");
-    @FXML
     public GridPane BoardGrid;
-    @FXML
     public GridPane OptGrid;
     public ImageView PhaseName;
+
     public Label nicknamePlayer1;
     public Label nicknamePlayer2;
     public Label nicknamePlayer3;
@@ -61,9 +41,6 @@ public class BoardPage_UniqueController {
     public ImageView Player1Panel;
     public ImageView Player2Panel;
     public ImageView Player3Panel;
-
-    Image PlayingPlayerPanel = new Image("images/Board/PlayingPlayerPanel.png");
-    Image NormalPlayerPanel = new Image("images/Board/PlayerBoardPanel.png");
 
     public ImageView Player1God;
     public ImageView Player2God;
@@ -77,30 +54,8 @@ public class BoardPage_UniqueController {
     public ImageView Player2Icon;
     public ImageView Player3Icon;
 
-    Image redWorkerSelected = new Image("images/Board/redWorker_Board_selected.png");
-    Image blueWorkerSelected = new Image("images/Board/blueWorker_Board_selected.png");
-    Image violetWorkerSelected = new Image("images/Board/violetWorker_Board_selected.png");
-
-    Image Apollo = new Image("images/Gods/Apollo_icon.png");
-    Image Ares = new Image("images/Gods/Ares_icon.png");
-    Image Artemis = new Image("images/Gods/Artemis_icon.png");
-    Image Athena = new Image("images/Gods/Athena_icon.png");
-    Image Atlas = new Image("images/Gods/Atlas_icon.png");
-    Image Demeter = new Image("images/Gods/Demeter_icon.png");
-    Image Hephaestus = new Image("images/Gods/Hephaestus_icon.png");
-    Image Hestia = new Image("images/Gods/Hestia_icon.png");
-    Image Medusa = new Image("images/Gods/Medusa_icon.png");
-    Image Minotaur = new Image("images/Gods/Minotaur_icon.png");
-    Image Pan = new Image("images/Gods/Pan_icon.png");
-    Image Poseidon = new Image("images/Gods/Poseidon_icon.png");
-    Image Prometheus = new Image("images/Gods/Prometheus_icon.png");
-    Image Zeus = new Image("images/Gods/Zeus_icon.png");
-
     @FXML
     public ImageView ExitGameButton;
-    Image exitButtonHovered = new Image("images/Buttons/btn_exitGame_hovered.png");
-    Image exitButtonReleased = new Image("images/Buttons/btn_exitGame.png");
-
     /**
      * Constructor
      */
@@ -126,7 +81,7 @@ public class BoardPage_UniqueController {
     }
 
     public void skipButtonPressed() {
-        SkipButton.setImage(SkipButtonPressed);
+        SkipButton.setImage(new Image("images/Buttons/btn_Skip_pressed.png"));
         switch(this.gui.getCurrentPhase()){
             case OptEnd:
                 gui.doSkipOptEnd();
@@ -141,7 +96,7 @@ public class BoardPage_UniqueController {
     }
 
     public void skipButtonReleased() {
-        SkipButton.setImage(SkipButtonReleased);
+        SkipButton.setImage(new Image("images/Buttons/btn_Skip.png"));
     }
 
     /**
@@ -210,74 +165,74 @@ public class BoardPage_UniqueController {
 
     public void setPlayer1Panel(String god, String nickname, boolean playingPlayer, boolean deadPlayer, String url_icon) {
         if(playingPlayer) {
-            Player1Panel.setImage(PlayingPlayerPanel);
+            Player1Panel.setImage(new Image("images/Board/PlayingPlayerPanel.png"));
             if(this.gui.getCurrentPhase().equals(GUI.Phase.OptEnd)){
                 if (god.equals("Ares")){
-                    DescriptionOptional.setImage(OptionalEnd_Ares);
+                    DescriptionOptional.setImage(new Image("images/OptionalPhases/OptionalEnd_Ares.png"));
                     OptGrid.setVisible(true);
                 } else if(god.equals("Poseidon")){
-                    DescriptionOptional.setImage(OptionalEnd_Poseidon);
+                    DescriptionOptional.setImage(new Image("images/OptionalPhases/OptionalEnd_Poseidon.png"));
                     OptGrid.setVisible(true);
                 }
             }else if(this.gui.getCurrentPhase().equals(GUI.Phase.OptBuild)){
                 if(god.equals("Prometheus")){
-                    DescriptionOptional.setImage(OptionalBuildBeforeMove);
+                    DescriptionOptional.setImage(new Image("images/OptionalPhases/OptionalBuildBeforeMove.png"));
                     OptGrid.setVisible(true);
                 }else{
-                    DescriptionOptional.setImage(OptionalBuild);
+                    DescriptionOptional.setImage(new Image("images/OptionalPhases/OptionalBuild.png"));
                     OptGrid.setVisible(true);
                 }
             }else if(this.gui.getCurrentPhase().equals(GUI.Phase.OptMove)){
-                DescriptionOptional.setImage(OptionalMove);
+                DescriptionOptional.setImage(new Image("images/OptionalPhases/OptionalMove.png"));
                 OptGrid.setVisible(true);
             }
         }
         else {
-            Player1Panel.setImage(NormalPlayerPanel);
+            Player1Panel.setImage(new Image("images/Board/PlayerBoardPanel.png"));
         }
 
         switch (god) {
             case "Apollo":
-                Player1God.setImage(Apollo);
+                Player1God.setImage(new Image("images/Gods/Apollo_icon.png"));
                 break;
             case "Artemis":
-                Player1God.setImage(Artemis);
+                Player1God.setImage(new Image("images/Gods/Artemis_icon.png"));
                 break;
             case "Ares":
-                Player1God.setImage(Ares);
+                Player1God.setImage(new Image("images/Gods/Ares_icon.png"));
                 break;
             case "Athena":
-                Player1God.setImage(Athena);
+                Player1God.setImage(new Image("images/Gods/Athena_icon.png"));
                 break;
             case "Atlas":
-                Player1God.setImage(Atlas);
+                Player1God.setImage(new Image("images/Gods/Atlas_icon.png"));
                 break;
             case "Demeter":
-                Player1God.setImage(Demeter);
+                Player1God.setImage(new Image("images/Gods/Demeter_icon.png"));
                 break;
             case "Hephaestus":
-                Player1God.setImage(Hephaestus);
+                Player1God.setImage(new Image("images/Gods/Hephaestus_icon.png"));
                 break;
             case "Hestia":
-                Player1God.setImage(Hestia);
+                Player1God.setImage(new Image("images/Gods/Hestia_icon.png"));
                 break;
             case "Medusa":
-                Player1God.setImage(Medusa);
+                Player1God.setImage(new Image("images/Gods/Medusa_icon.png"));
                 break;
             case "Minotaur":
-                Player1God.setImage(Minotaur);
+                Player1God.setImage(new Image("images/Gods/Minotaur_icon.png"));
                 break;
             case "Pan":
-                Player1God.setImage(Pan);
+                Player1God.setImage(new Image("images/Gods/Pan_icon.png"));
                 break;
             case "Poseidon":
-                Player1God.setImage(Poseidon);
+                Player1God.setImage(new Image("images/Gods/Poseidon_icon.png"));
                 break;
             case "Prometheus":
-                Player1God.setImage(Prometheus);
+                Player1God.setImage(new Image("images/Gods/Prometheus_icon.png"));
                 break;
             case "Zeus":
-                Player1God.setImage(Zeus);
+                Player1God.setImage(new Image("images/Gods/Zeus_icon.png"));
                 break;
         }
 
@@ -293,74 +248,74 @@ public class BoardPage_UniqueController {
 
     public void setPlayer2Panel(String god, String nickname, boolean playingPlayer, boolean deadPlayer, String url_icon) {
         if(playingPlayer) {
-            Player2Panel.setImage(PlayingPlayerPanel);
+            Player2Panel.setImage(new Image("images/Board/PlayingPlayerPanel.png"));
             if(this.gui.getCurrentPhase().equals(GUI.Phase.OptEnd)){
                 if (god.equals("Ares")){
-                    DescriptionOptional.setImage(OptionalEnd_Ares);
+                    DescriptionOptional.setImage(new Image("images/OptionalPhases/OptionalEnd_Ares.png"));
                     OptGrid.setVisible(true);
                 } else if(god.equals("Poseidon")){
-                    DescriptionOptional.setImage(OptionalEnd_Poseidon);
+                    DescriptionOptional.setImage(new Image("images/OptionalPhases/OptionalEnd_Poseidon.png"));
                     OptGrid.setVisible(true);
                 }
             }else if(this.gui.getCurrentPhase().equals(GUI.Phase.OptBuild)){
                 if(god.equals("Prometheus")){
-                    DescriptionOptional.setImage(OptionalBuildBeforeMove);
+                    DescriptionOptional.setImage(new Image("images/OptionalPhases/OptionalBuildBeforeMove.png"));
                     OptGrid.setVisible(true);
                 }else{
-                    DescriptionOptional.setImage(OptionalBuild);
+                    DescriptionOptional.setImage(new Image("images/OptionalPhases/OptionalBuild.png"));
                     OptGrid.setVisible(true);
                 }
             }else if(this.gui.getCurrentPhase().equals(GUI.Phase.OptMove)){
-                DescriptionOptional.setImage(OptionalMove);
+                DescriptionOptional.setImage(new Image("images/OptionalPhases/OptionalMove.png"));
                 OptGrid.setVisible(true);
             }
         }
         else {
-            Player2Panel.setImage(NormalPlayerPanel);
+            Player2Panel.setImage(new Image("images/Board/PlayerBoardPanel.png"));
         }
 
         switch (god) {
             case "Apollo":
-                Player2God.setImage(Apollo);
+                Player2God.setImage(new Image("images/Gods/Apollo_icon.png"));
                 break;
             case "Artemis":
-                Player2God.setImage(Artemis);
+                Player2God.setImage(new Image("images/Gods/Artemis_icon.png"));
                 break;
             case "Ares":
-                Player2God.setImage(Ares);
+                Player2God.setImage(new Image("images/Gods/Ares_icon.png"));
                 break;
             case "Athena":
-                Player2God.setImage(Athena);
+                Player2God.setImage(new Image("images/Gods/Athena_icon.png"));
                 break;
             case "Atlas":
-                Player2God.setImage(Atlas);
+                Player2God.setImage(new Image("images/Gods/Atlas_icon.png"));
                 break;
             case "Demeter":
-                Player2God.setImage(Demeter);
+                Player2God.setImage(new Image("images/Gods/Demeter_icon.png"));
                 break;
             case "Hephaestus":
-                Player2God.setImage(Hephaestus);
+                Player2God.setImage(new Image("images/Gods/Hephaestus_icon.png"));
                 break;
             case "Hestia":
-                Player2God.setImage(Hestia);
+                Player2God.setImage(new Image("images/Gods/Hestia_icon.png"));
                 break;
             case "Medusa":
-                Player2God.setImage(Medusa);
+                Player2God.setImage(new Image("images/Gods/Medusa_icon.png"));
                 break;
             case "Minotaur":
-                Player2God.setImage(Minotaur);
+                Player2God.setImage(new Image("images/Gods/Minotaur_icon.png"));
                 break;
             case "Pan":
-                Player2God.setImage(Pan);
+                Player2God.setImage(new Image("images/Gods/Pan_icon.png"));
                 break;
             case "Poseidon":
-                Player2God.setImage(Poseidon);
+                Player2God.setImage(new Image("images/Gods/Poseidon_icon.png"));
                 break;
             case "Prometheus":
-                Player2God.setImage(Prometheus);
+                Player2God.setImage(new Image("images/Gods/Prometheus_icon.png"));
                 break;
             case "Zeus":
-                Player2God.setImage(Zeus);
+                Player2God.setImage(new Image("images/Gods/Zeus_icon.png"));
                 break;
         }
 
@@ -376,74 +331,74 @@ public class BoardPage_UniqueController {
 
     public void setPlayer3Panel(String god, String nickname, boolean playingPlayer, boolean deadPlayer, String url_icon) {
         if(playingPlayer) {
-            Player3Panel.setImage(PlayingPlayerPanel);
+            Player3Panel.setImage(new Image("images/Board/PlayingPlayerPanel.png"));
             if(this.gui.getCurrentPhase().equals(GUI.Phase.OptEnd)){
                 if (god.equals("Ares")){
-                    DescriptionOptional.setImage(OptionalEnd_Ares);
+                    DescriptionOptional.setImage(new Image("images/OptionalPhases/OptionalEnd_Ares.png"));
                     OptGrid.setVisible(true);
                 } else if(god.equals("Poseidon")){
-                    DescriptionOptional.setImage(OptionalEnd_Poseidon);
+                    DescriptionOptional.setImage(new Image("images/OptionalPhases/OptionalEnd_Poseidon.png"));
                     OptGrid.setVisible(true);
                 }
             }else if(this.gui.getCurrentPhase().equals(GUI.Phase.OptBuild)){
                 if(god.equals("Prometheus")){
-                    DescriptionOptional.setImage(OptionalBuildBeforeMove);
+                    DescriptionOptional.setImage(new Image("images/OptionalPhases/OptionalBuildBeforeMove.png"));
                     OptGrid.setVisible(true);
                 }else{
-                    DescriptionOptional.setImage(OptionalBuild);
+                    DescriptionOptional.setImage(new Image("images/OptionalPhases/OptionalBuild.png"));
                     OptGrid.setVisible(true);
                 }
             }else if(this.gui.getCurrentPhase().equals(GUI.Phase.OptMove)){
-                DescriptionOptional.setImage(OptionalMove);
+                DescriptionOptional.setImage(new Image("images/OptionalPhases/OptionalMove.png"));
                 OptGrid.setVisible(true);
             }
         }
         else {
-            Player3Panel.setImage(NormalPlayerPanel);
+            Player3Panel.setImage(new Image("images/Board/PlayerBoardPanel.png"));
         }
 
         switch (god) {
             case "Apollo":
-                Player3God.setImage(Apollo);
+                Player3God.setImage(new Image("images/Gods/Apollo_icon.png"));
                 break;
             case "Artemis":
-                Player3God.setImage(Artemis);
+                Player3God.setImage(new Image("images/Gods/Artemis_icon.png"));
                 break;
             case "Ares":
-                Player3God.setImage(Ares);
+                Player3God.setImage(new Image("images/Gods/Ares_icon.png"));
                 break;
             case "Athena":
-                Player3God.setImage(Athena);
+                Player3God.setImage(new Image("images/Gods/Athena_icon.png"));
                 break;
             case "Atlas":
-                Player3God.setImage(Atlas);
+                Player3God.setImage(new Image("images/Gods/Atlas_icon.png"));
                 break;
             case "Demeter":
-                Player3God.setImage(Demeter);
+                Player3God.setImage(new Image("images/Gods/Demeter_icon.png"));
                 break;
             case "Hephaestus":
-                Player3God.setImage(Hephaestus);
+                Player3God.setImage(new Image("images/Gods/Hephaestus_icon.png"));
                 break;
             case "Hestia":
-                Player3God.setImage(Hestia);
+                Player3God.setImage(new Image("images/Gods/Hestia_icon.png"));
                 break;
             case "Medusa":
-                Player3God.setImage(Medusa);
+                Player3God.setImage(new Image("images/Gods/Medusa_icon.png"));
                 break;
             case "Minotaur":
-                Player3God.setImage(Minotaur);
+                Player3God.setImage(new Image("images/Gods/Minotaur_icon.png"));
                 break;
             case "Pan":
-                Player3God.setImage(Pan);
+                Player3God.setImage(new Image("images/Gods/Pan_icon.png"));
                 break;
             case "Poseidon":
-                Player3God.setImage(Poseidon);
+                Player3God.setImage(new Image("images/Gods/Poseidon_icon.png"));
                 break;
             case "Prometheus":
-                Player3God.setImage(Prometheus);
+                Player3God.setImage(new Image("images/Gods/Prometheus_icon.png"));
                 break;
             case "Zeus":
-                Player3God.setImage(Zeus);
+                Player3God.setImage(new Image("images/Gods/Zeus_icon.png"));
                 break;
         }
 
@@ -542,25 +497,25 @@ public class BoardPage_UniqueController {
     }
 
     public void LevelChosen() {
-        LevelButton.setImage(LevelButtonPressed);
+        LevelButton.setImage(new Image("images/Buttons/btn_Level_pressed.png"));
     }
 
     public void DomeChosen() {
-        DomeButton.setImage(DomeButtonPressed);
+        DomeButton.setImage(new Image("images/Buttons/btn_Dome_pressed.png"));
     }
 
     public void LevelReleased() {
-        LevelButton.setImage(LevelButtonRestored);
+        LevelButton.setImage(new Image("images/Buttons/btn_Level.png"));
         gui.doSendCandidateBuildForAtlas(cellSelected, "B");
     }
 
     public void DomeReleased() {
-        DomeButton.setImage(DomeButtonRestored);
+        DomeButton.setImage(new Image("images/Buttons/btn_Dome_pressed.png"));
         gui.doSendCandidateBuildForAtlas(cellSelected, "D");
     }
 
     public void exitButtonHovered() {
-        ExitGameButton.setImage(exitButtonHovered);
+        ExitGameButton.setImage(new Image("images/Buttons/btn_exitGame_hovered.png"));
     }
 
     public void exitButtonPressed() {
@@ -578,7 +533,7 @@ public class BoardPage_UniqueController {
     }
 
     public void exitButtonReleased() {
-        ExitGameButton.setImage(exitButtonReleased);
+        ExitGameButton.setImage(new Image("images/Buttons/btn_exitGame.png"));
     }
 
     public void setPhaseName(){

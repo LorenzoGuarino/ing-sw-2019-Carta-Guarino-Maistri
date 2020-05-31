@@ -20,46 +20,22 @@ public class RegisteredController {
     private GUI gui;
 
     public Client client = null;
-    private int requiredgods = 0;
-    private List<String> gods = null;
-    private List<String> players = null;
-    private Node nodeboard; //it's overwritten every time a new board needs to be printed
-    private List<Integer> indexcandidatecells = new ArrayList<Integer>(); //used for move and build and is overwritten every time
-    private Map<String, String> NicknameGodMap = new HashMap<String, String>();
-    private String[] chosen_cmd;
 
 
     /* ***************************************** GUI RENDERING RELATED VARIABLES ****************************************** */
 
     @FXML
     public Label welcomeMessage;
-    @FXML
     public Label NumberOfPlayersMessage;
-    @FXML
     public Label SearchingForMatchMessage;
-    @FXML
     public ImageView PlayButton;
-    @FXML
     public ImageView DeregisterButton;
-    @FXML
     public ImageView Button1Player;
-    @FXML
     public ImageView Button2Player;
-    Image PlayButtonPressed = new Image("images/Buttons/button-play-down.png");
-    Image DeregisterButtonPressed = new Image("images/Buttons/btn_goBack_pressed.png");
-    Image Button1PlayerPressed = new Image("images/Buttons/btn_1_pressed.png");
-    Image Button2PlayerPressed = new Image("images/Buttons/btn_2_pressed.png");
-    Image PlayButtonReleased = new Image("images/Buttons/button-play-normal.png");
-    Image DeregisterButtonReleased = new Image("images/Buttons/btn_goBack.png");
-    Image Button1PlayerReleased = new Image("images/Buttons/btn_1.png");
-    Image Button2PlayerReleased = new Image("images/Buttons/btn_2.png");
-    @FXML
+
     public Pane registeredPane;
-    @FXML
     public GridPane playPane;
-    @FXML
     public GridPane numberOfPlayersPane;
-    @FXML
     public GridPane searchingMatchPane;
 
 
@@ -95,44 +71,44 @@ public class RegisteredController {
     /* ******************************* GUI CONTROLLER METHODS THAT TRIGGER GUI RENDERING AND CONNECTION WITH SERVER  ****************************** */
 
     public void playButtonPressed() {
-        PlayButton.setImage(PlayButtonPressed);
+        PlayButton.setImage(new Image("images/Buttons/button-play-down.png"));
     }
 
     public void playButtonReleased() {
-        PlayButton.setImage(PlayButtonReleased);
+        PlayButton.setImage(new Image("images/Buttons/button-play-normal.png"));
         numberOfPlayersPane.setVisible(true);
         playPane.setVisible(false);
     }
 
     public void deregisterButtonPressed() {
-        DeregisterButton.setImage(DeregisterButtonPressed);
+        DeregisterButton.setImage(new Image("images/Buttons/btn_goBack_pressed.png"));
         gui.doDeregister();
     }
 
     public void deregisterButtonReleased() {
-        DeregisterButton.setImage(DeregisterButtonReleased);
+        DeregisterButton.setImage(new Image("images/Buttons/btn_goBack.png"));
     }
 
     public void number1Pressed() {
-        Button1Player.setImage(Button1PlayerPressed);
+        Button1Player.setImage(new Image("images/Buttons/btn_1_pressed.png"));
         int onePlayer = 2;
         gui.doSearchMatch(onePlayer);
     }
 
     public void number1Released() {
-        Button1Player.setImage(Button1PlayerReleased);
+        Button1Player.setImage(new Image("images/Buttons/btn_1.png"));
         numberOfPlayersPane.setVisible(false);
         searchingMatchPane.setVisible(true);
     }
 
     public void number2Pressed() {
-        Button2Player.setImage(Button2PlayerPressed);
+        Button2Player.setImage(new Image("images/Buttons/btn_2_pressed.png"));
         int twoPlayers = 3;
         gui.doSearchMatch(twoPlayers);
     }
 
     public void number2Released() {
-        Button2Player.setImage(Button2PlayerReleased);
+        Button2Player.setImage(new Image("images/Buttons/btn_2.png"));
         numberOfPlayersPane.setVisible(false);
         searchingMatchPane.setVisible(true);
     }

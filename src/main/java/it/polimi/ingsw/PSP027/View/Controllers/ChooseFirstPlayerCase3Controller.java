@@ -23,13 +23,6 @@ public class ChooseFirstPlayerCase3Controller {
     private GUI gui;
 
     public Client client = null;
-    private int requiredgods = 0;
-    private List<String> gods = null;
-    private List<String> players = null;
-    private Node nodeboard; //it's overwritten every time a new board needs to be printed
-    private List<Integer> indexcandidatecells = new ArrayList<Integer>(); //used for move and build and is overwritten every time
-    private Map<String, String> NicknameGodMap = new HashMap<String, String>();
-    private String[] chosen_cmd;
 
 
     /* ***************************************** GUI RENDERING RELATED VARIABLES ****************************************** */
@@ -45,23 +38,6 @@ public class ChooseFirstPlayerCase3Controller {
 
     @FXML
     public ImageView ExitGameButton;
-    Image exitButtonHovered = new Image("images/Buttons/btn_exitGame_hovered.png");
-    Image exitButtonReleased = new Image("images/Buttons/btn_exitGame.png");
-
-    Image ApolloDisplayed = new Image("images/Gods/Apollo_icon.png");
-    Image AresDisplayed = new Image("images/Gods/Ares_icon.png");
-    Image ArtemisDisplayed = new Image("images/Gods/Artemis_icon.png");
-    Image AthenaDisplayed = new Image("images/Gods/Athena_icon.png");
-    Image AtlasDisplayed = new Image("images/Gods/Atlas_icon.png");
-    Image DemeterDisplayed = new Image("images/Gods/Demeter_icon.png");
-    Image HephaestusDisplayed = new Image("images/Gods/Hephaestus_icon.png");
-    Image HestiaDisplayed = new Image("images/Gods/Hestia_icon.png");
-    Image MedusaDisplayed = new Image("images/Gods/Medusa_icon.png");
-    Image MinotaurDisplayed = new Image("images/Gods/Minotaur_icon.png");
-    Image PanDisplayed = new Image("images/Gods/Pan_icon.png");
-    Image PoseidonDisplayed = new Image("images/Gods/Poseidon_icon.png");
-    Image PrometheusDisplayed = new Image("images/Gods/Prometheus_icon.png");
-    Image ZeusDisplayed = new Image("images/Gods/Zeus_icon.png");
 
     /* ****************************************************************************************************************** */
 
@@ -95,46 +71,46 @@ public class ChooseFirstPlayerCase3Controller {
     public void setGod (String firstPlayersGod) {
         switch (firstPlayersGod) {
             case "Apollo":
-                god.setImage(ApolloDisplayed);
+                god.setImage(new Image("images/Gods/Apollo_icon.png"));
                 break;
             case "Artemis":
-                god.setImage(ArtemisDisplayed);
+                god.setImage(new Image("images/Gods/Artemis_icon.png"));
                 break;
             case "Ares":
-                god.setImage(AresDisplayed);
+                god.setImage(new Image("images/Gods/Ares_icon.png"));
                 break;
             case "Athena":
-                god.setImage(AthenaDisplayed);
+                god.setImage(new Image("images/Gods/Athena_icon.png"));
                 break;
             case "Atlas":
-                god.setImage(AtlasDisplayed);
+                god.setImage(new Image("images/Gods/Atlas_icon.png"));
                 break;
             case "Demeter":
-                god.setImage(DemeterDisplayed);
+                god.setImage(new Image("images/Gods/Demeter_icon.png"));
                 break;
             case "Hephaestus":
-                god.setImage(HephaestusDisplayed);
+                god.setImage(new Image("images/Gods/Hephaestus_icon.png"));
                 break;
             case "Hestia":
-                god.setImage(HestiaDisplayed);
+                god.setImage(new Image("images/Gods/Hestia_icon.png"));
                 break;
             case "Medusa":
-                god.setImage(MedusaDisplayed);
+                god.setImage(new Image("images/Gods/Medusa_icon.png"));
                 break;
             case "Minotaur":
-                god.setImage(MinotaurDisplayed);
+                god.setImage(new Image("images/Gods/Minotaur_icon.png"));
                 break;
             case "Pan":
-                god.setImage(PanDisplayed);
+                god.setImage(new Image("images/Gods/Pan_icon.png"));
                 break;
             case "Poseidon":
-                god.setImage(PoseidonDisplayed);
+                god.setImage(new Image("images/Gods/Poseidon_icon.png"));
                 break;
             case "Prometheus":
-                god.setImage(PrometheusDisplayed);
+                god.setImage(new Image("images/Gods/Prometheus_icon.png"));
                 break;
             case "Zeus":
-                god.setImage(ZeusDisplayed);
+                god.setImage(new Image("images/Gods/Zeus_icon.png"));
                 break;
         }
     }
@@ -152,7 +128,7 @@ public class ChooseFirstPlayerCase3Controller {
     }
 
     public void exitButtonHovered() {
-        ExitGameButton.setImage(exitButtonHovered);
+        ExitGameButton.setImage(new Image("images/Buttons/btn_exitGame_hovered.png"));
     }
 
     public void exitButtonPressed() {
@@ -170,7 +146,7 @@ public class ChooseFirstPlayerCase3Controller {
     }
 
     public void exitButtonReleased() {
-        ExitGameButton.setImage(exitButtonReleased);
+        ExitGameButton.setImage(new Image("images/Buttons/btn_exitGame.png"));
     }
 
 }
