@@ -383,25 +383,28 @@ public class GUI extends Application implements ClientObserver {
 
                             if(playerscount == 1) {
                                 boolean deadPlayer = false;
-                                for(int i=0; i < deadPlayers.size(); i++) {
-                                    if(deadPlayers.get(i).equals(nickname)) {
+                                for (String player : deadPlayers) {
+                                    if (player.equals(nickname)) {
                                         deadPlayer = true;
+                                        break;
                                     }
                                 }
                                 boardPage_PlacingWorkersController.setPlayer1Panel(PlayerGodMap.get(nickname), nickname, playingPlayer, deadPlayer, PlayerWorkerMap.get(nickname));
                             } else if(playerscount == 2) {
                                 boolean deadPlayer = false;
-                                for(int i=0; i < deadPlayers.size(); i++) {
-                                    if(deadPlayers.get(i).equals(nickname)) {
+                                for (String player : deadPlayers) {
+                                    if (player.equals(nickname)) {
                                         deadPlayer = true;
+                                        break;
                                     }
                                 }
                                 boardPage_PlacingWorkersController.setPlayer2Panel(PlayerGodMap.get(nickname), nickname, playingPlayer, deadPlayer, PlayerWorkerMap.get(nickname));
                             } else if(playerscount == 3) {
                                 boolean deadPlayer = false;
-                                for(int i=0; i < deadPlayers.size(); i++) {
-                                    if(deadPlayers.get(i).equals(nickname)) {
+                                for (String player : deadPlayers) {
+                                    if (player.equals(nickname)) {
                                         deadPlayer = true;
+                                        break;
                                     }
                                 }
                                 boardPage_PlacingWorkersController.setPlayer3Panel(PlayerGodMap.get(nickname), nickname, playingPlayer, deadPlayer, PlayerWorkerMap.get(nickname));
@@ -479,7 +482,7 @@ public class GUI extends Application implements ClientObserver {
                     while (itr.hasNext()) {
                         nickname = itr.next();
                         if (PlayerWorkerMap.containsKey(nickname) && PlayerGodMap.containsKey(nickname)) {
-                            if(nickname.equals(client.getNickname())) {
+                            if(nickname.equals(playingPlayerNickname)) {
                                 playingPlayer = true;
                             }
 
@@ -803,6 +806,7 @@ public class GUI extends Application implements ClientObserver {
                 }
             }
         }
+        this.playingPlayerNickname = this.client.getNickname();
         Platform.runLater(() -> showBoardPage_PlacingWorkers());
     }
 
@@ -819,6 +823,7 @@ public class GUI extends Application implements ClientObserver {
     public void OnChooseWorker(Node board) {
         this.nodeboard = board;
         this.currentPhase = Phase.ChooseWorker;
+        this.playingPlayerNickname = this.client.getNickname();
         Platform.runLater(() -> showBoardPage_UniqueBoard());
     }
 
@@ -854,6 +859,7 @@ public class GUI extends Application implements ClientObserver {
                 }
             }
         }
+        this.playingPlayerNickname = this.client.getNickname();
         this.currentPhase = Phase.Move;
         Platform.runLater(() -> showBoardPage_UniqueBoard());
     }
@@ -890,6 +896,7 @@ public class GUI extends Application implements ClientObserver {
                 }
             }
         }
+        this.playingPlayerNickname = this.client.getNickname();
         this.currentPhase = Phase.OptMove;
         Platform.runLater(() -> showBoardPage_UniqueBoard());
     }
@@ -926,6 +933,7 @@ public class GUI extends Application implements ClientObserver {
                 }
             }
         }
+        this.playingPlayerNickname = this.client.getNickname();
         this.currentPhase = Phase.Build;
         Platform.runLater(() -> showBoardPage_UniqueBoard());
     }
@@ -962,6 +970,7 @@ public class GUI extends Application implements ClientObserver {
                 }
             }
         }
+        this.playingPlayerNickname = this.client.getNickname();
         this.currentPhase = Phase.OptBuild;
         Platform.runLater(() -> showBoardPage_UniqueBoard());
     }
@@ -998,6 +1007,7 @@ public class GUI extends Application implements ClientObserver {
                 }
             }
         }
+        this.playingPlayerNickname = this.client.getNickname();
         this.currentPhase = Phase.OptEnd;
         Platform.runLater(() -> showBoardPage_UniqueBoard());
     }

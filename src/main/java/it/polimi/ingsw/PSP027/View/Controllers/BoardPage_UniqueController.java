@@ -472,6 +472,12 @@ public class BoardPage_UniqueController {
         DisabledPane.setVisible(false);
         LevelOrDomeQuestion.setVisible(false);
         indexcandidatecells.clear();
+        Player1Dead.setVisible(false);
+        Player2Dead.setVisible(false);
+        Player3Dead.setVisible(false);
+        Player1Icon.setImage(null);
+        Player2Icon.setImage(null);
+        Player3Icon.setImage(null);
     }
 
     public void clickedOnGrid(MouseEvent e){

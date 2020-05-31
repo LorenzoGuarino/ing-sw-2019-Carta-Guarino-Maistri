@@ -38,17 +38,13 @@
                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 </rowConstraints>
                 <children>
-                    <ImageView fx:id="Player1Panel" fitHeight="250.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-                        <image>
-                            <Image url="@../images/Board/PlayerBoardPanel.png" />
-                        </image>
-                    </ImageView>
+                    <ImageView fx:id="Player1Panel" fitHeight="250.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                     <ImageView fx:id="Player1Icon" fitHeight="80.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                         <GridPane.margin>
                             <Insets top="110.0" />
                         </GridPane.margin>
                     </ImageView>
-                    <Label fx:id="nicknamePlayer1" alignment="CENTER" prefHeight="100.0" prefWidth="350.0" styleClass="LillyBelleText" text="nickname1" textAlignment="CENTER" textFill="#432a1a" wrapText="true" GridPane.valignment="CENTER">
+                    <Label fx:id="nicknamePlayer1" alignment="CENTER" prefHeight="100.0" prefWidth="350.0" styleClass="LillyBelleText" text="" textAlignment="CENTER" textFill="#432a1a" wrapText="true" GridPane.valignment="CENTER">
                         <font>
                             <Font size="12.0" />
                         </font>
@@ -66,17 +62,13 @@
                             <Image url="@../images/Board/PlayerDeadPanel.png" />
                         </image>
                     </ImageView>
-                    <ImageView fx:id="Player2Panel" fitHeight="250.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-                        <image>
-                            <Image url="@../images/Board/PlayingPlayerPanel.png" />
-                        </image>
-                    </ImageView>
+                    <ImageView fx:id="Player2Panel" fitHeight="250.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER"/>
                     <ImageView fx:id="Player2Icon" fitHeight="80.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                         <GridPane.margin>
                             <Insets top="110.0" />
                         </GridPane.margin>
                     </ImageView>
-                    <Label fx:id="nicknamePlayer2" alignment="CENTER" prefHeight="161.0" prefWidth="200.0" styleClass="LillyBelleText" text="nickname2" textAlignment="CENTER" textFill="#432a1a" wrapText="true" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                    <Label fx:id="nicknamePlayer2" alignment="CENTER" prefHeight="161.0" prefWidth="200.0" styleClass="LillyBelleText" text="" textAlignment="CENTER" textFill="#432a1a" wrapText="true" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                         <font>
                             <Font size="12.0" />
                         </font>
@@ -94,12 +86,8 @@
                             <Image url="@../images/Board/PlayerDeadPanel.png" />
                         </image>
                     </ImageView>
-                    <ImageView fx:id="Player3Panel" fitHeight="250.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
-                        <image>
-                            <Image url="@../images/Board/PlayerBoardPanel.png" />
-                        </image>
-                    </ImageView>
-                    <Label fx:id="nicknamePlayer3" alignment="CENTER" prefHeight="100.0" prefWidth="350.0" styleClass="LillyBelleText" text="nickname3" textAlignment="CENTER" textFill="#432a1a" wrapText="true" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+                    <ImageView fx:id="Player3Panel" fitHeight="250.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER"/>
+                    <Label fx:id="nicknamePlayer3" alignment="CENTER" prefHeight="100.0" prefWidth="350.0" styleClass="LillyBelleText" text="" textAlignment="CENTER" textFill="#432a1a" wrapText="true" GridPane.rowIndex="2" GridPane.valignment="CENTER">
                         <font>
                             <Font size="12.0" />
                         </font>
