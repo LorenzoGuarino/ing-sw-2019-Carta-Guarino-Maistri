@@ -57,50 +57,7 @@ public class YouHaveLostController {
     }
 
     public void setLoserPodium(String godLoser) {
-        switch (godLoser) {
-            case "Apollo":
-                LoserGod.setImage(new Image("images/Gods/Apollo_icon.png"));
-                break;
-            case "Artemis":
-                LoserGod.setImage(new Image("images/Gods/Artemis_icon.png"));
-                break;
-            case "Ares":
-                LoserGod.setImage(new Image("images/Gods/Ares_icon.png"));
-                break;
-            case "Athena":
-                LoserGod.setImage(new Image("images/Gods/Athena_icon.png"));
-                break;
-            case "Atlas":
-                LoserGod.setImage(new Image("images/Gods/Atlas_icon.png"));
-                break;
-            case "Demeter":
-                LoserGod.setImage(new Image("images/Gods/Demeter_icon.png"));
-                break;
-            case "Hephaestus":
-                LoserGod.setImage(new Image("images/Gods/Hephaestus_icon.png"));
-                break;
-            case "Hestia":
-                LoserGod.setImage(new Image("images/Gods/Hestia_icon.png"));
-                break;
-            case "Medusa":
-                LoserGod.setImage(new Image("images/Gods/Medusa_icon.png"));
-                break;
-            case "Minotaur":
-                LoserGod.setImage(new Image("images/Gods/Minotaur_icon.png"));
-                break;
-            case "Pan":
-                LoserGod.setImage(new Image("images/Gods/Pan_icon.png"));
-                break;
-            case "Poseidon":
-                LoserGod.setImage(new Image("images/Gods/Poseidon_icon.png"));
-                break;
-            case "Prometheus":
-                LoserGod.setImage(new Image("images/Gods/Prometheus_icon.png"));
-                break;
-            case "Zeus":
-                LoserGod.setImage(new Image("images/Gods/Zeus_icon.png"));
-                break;
-        }
+        LoserGod.setImage(new Image("images/Gods/"+godLoser+"_icon.png"));
     }
 
     /* ******************************* GUI CONTROLLER METHODS THAT TRIGGER GUI RENDERING AND CONNECTION WITH SERVER  ****************************** */

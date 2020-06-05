@@ -190,51 +190,7 @@ public class BoardPage_UniqueController {
         else {
             Player1Panel.setImage(new Image("images/Board/PlayerBoardPanel.png"));
         }
-
-        switch (god) {
-            case "Apollo":
-                Player1God.setImage(new Image("images/Gods/Apollo_icon.png"));
-                break;
-            case "Artemis":
-                Player1God.setImage(new Image("images/Gods/Artemis_icon.png"));
-                break;
-            case "Ares":
-                Player1God.setImage(new Image("images/Gods/Ares_icon.png"));
-                break;
-            case "Athena":
-                Player1God.setImage(new Image("images/Gods/Athena_icon.png"));
-                break;
-            case "Atlas":
-                Player1God.setImage(new Image("images/Gods/Atlas_icon.png"));
-                break;
-            case "Demeter":
-                Player1God.setImage(new Image("images/Gods/Demeter_icon.png"));
-                break;
-            case "Hephaestus":
-                Player1God.setImage(new Image("images/Gods/Hephaestus_icon.png"));
-                break;
-            case "Hestia":
-                Player1God.setImage(new Image("images/Gods/Hestia_icon.png"));
-                break;
-            case "Medusa":
-                Player1God.setImage(new Image("images/Gods/Medusa_icon.png"));
-                break;
-            case "Minotaur":
-                Player1God.setImage(new Image("images/Gods/Minotaur_icon.png"));
-                break;
-            case "Pan":
-                Player1God.setImage(new Image("images/Gods/Pan_icon.png"));
-                break;
-            case "Poseidon":
-                Player1God.setImage(new Image("images/Gods/Poseidon_icon.png"));
-                break;
-            case "Prometheus":
-                Player1God.setImage(new Image("images/Gods/Prometheus_icon.png"));
-                break;
-            case "Zeus":
-                Player1God.setImage(new Image("images/Gods/Zeus_icon.png"));
-                break;
-        }
+        Player1God.setImage(new Image("images/Gods/"+god+"_icon.png"));
 
         nicknamePlayer1.setText(nickname.toUpperCase());
 
@@ -273,52 +229,7 @@ public class BoardPage_UniqueController {
         else {
             Player2Panel.setImage(new Image("images/Board/PlayerBoardPanel.png"));
         }
-
-        switch (god) {
-            case "Apollo":
-                Player2God.setImage(new Image("images/Gods/Apollo_icon.png"));
-                break;
-            case "Artemis":
-                Player2God.setImage(new Image("images/Gods/Artemis_icon.png"));
-                break;
-            case "Ares":
-                Player2God.setImage(new Image("images/Gods/Ares_icon.png"));
-                break;
-            case "Athena":
-                Player2God.setImage(new Image("images/Gods/Athena_icon.png"));
-                break;
-            case "Atlas":
-                Player2God.setImage(new Image("images/Gods/Atlas_icon.png"));
-                break;
-            case "Demeter":
-                Player2God.setImage(new Image("images/Gods/Demeter_icon.png"));
-                break;
-            case "Hephaestus":
-                Player2God.setImage(new Image("images/Gods/Hephaestus_icon.png"));
-                break;
-            case "Hestia":
-                Player2God.setImage(new Image("images/Gods/Hestia_icon.png"));
-                break;
-            case "Medusa":
-                Player2God.setImage(new Image("images/Gods/Medusa_icon.png"));
-                break;
-            case "Minotaur":
-                Player2God.setImage(new Image("images/Gods/Minotaur_icon.png"));
-                break;
-            case "Pan":
-                Player2God.setImage(new Image("images/Gods/Pan_icon.png"));
-                break;
-            case "Poseidon":
-                Player2God.setImage(new Image("images/Gods/Poseidon_icon.png"));
-                break;
-            case "Prometheus":
-                Player2God.setImage(new Image("images/Gods/Prometheus_icon.png"));
-                break;
-            case "Zeus":
-                Player2God.setImage(new Image("images/Gods/Zeus_icon.png"));
-                break;
-        }
-
+        Player2God.setImage(new Image("images/Gods/"+god+"_icon.png"));
         nicknamePlayer2.setText(nickname.toUpperCase());
 
         Image worker_icon = new Image(url_icon);
@@ -356,52 +267,7 @@ public class BoardPage_UniqueController {
         else {
             Player3Panel.setImage(new Image("images/Board/PlayerBoardPanel.png"));
         }
-
-        switch (god) {
-            case "Apollo":
-                Player3God.setImage(new Image("images/Gods/Apollo_icon.png"));
-                break;
-            case "Artemis":
-                Player3God.setImage(new Image("images/Gods/Artemis_icon.png"));
-                break;
-            case "Ares":
-                Player3God.setImage(new Image("images/Gods/Ares_icon.png"));
-                break;
-            case "Athena":
-                Player3God.setImage(new Image("images/Gods/Athena_icon.png"));
-                break;
-            case "Atlas":
-                Player3God.setImage(new Image("images/Gods/Atlas_icon.png"));
-                break;
-            case "Demeter":
-                Player3God.setImage(new Image("images/Gods/Demeter_icon.png"));
-                break;
-            case "Hephaestus":
-                Player3God.setImage(new Image("images/Gods/Hephaestus_icon.png"));
-                break;
-            case "Hestia":
-                Player3God.setImage(new Image("images/Gods/Hestia_icon.png"));
-                break;
-            case "Medusa":
-                Player3God.setImage(new Image("images/Gods/Medusa_icon.png"));
-                break;
-            case "Minotaur":
-                Player3God.setImage(new Image("images/Gods/Minotaur_icon.png"));
-                break;
-            case "Pan":
-                Player3God.setImage(new Image("images/Gods/Pan_icon.png"));
-                break;
-            case "Poseidon":
-                Player3God.setImage(new Image("images/Gods/Poseidon_icon.png"));
-                break;
-            case "Prometheus":
-                Player3God.setImage(new Image("images/Gods/Prometheus_icon.png"));
-                break;
-            case "Zeus":
-                Player3God.setImage(new Image("images/Gods/Zeus_icon.png"));
-                break;
-        }
-
+        Player3God.setImage(new Image("images/Gods/"+god+"_icon.png"));
         nicknamePlayer3.setText(nickname.toUpperCase());
 
         Image worker_icon = new Image(url_icon);

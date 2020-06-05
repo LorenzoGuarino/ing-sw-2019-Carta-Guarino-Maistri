@@ -52,50 +52,7 @@ public class YouHaveWonController {
     }
 
     public void setWinnerPodium(String godWinner) {
-        switch (godWinner) {
-            case "Apollo":
-                WinnerGod.setImage(new Image("images/Gods/Apollo_icon.png"));
-                break;
-            case "Artemis":
-                WinnerGod.setImage(new Image("images/Gods/Artemis_icon.png"));
-                break;
-            case "Ares":
-                WinnerGod.setImage(new Image("images/Gods/Ares_icon.png"));
-                break;
-            case "Athena":
-                WinnerGod.setImage(new Image("images/Gods/Athena_icon.png"));
-                break;
-            case "Atlas":
-                WinnerGod.setImage(new Image("images/Gods/Atlas_icon.png"));
-                break;
-            case "Demeter":
-                WinnerGod.setImage(new Image("images/Gods/Demeter_icon.png"));
-                break;
-            case "Hephaestus":
-                WinnerGod.setImage(new Image("images/Gods/Hephaestus_icon.png"));
-                break;
-            case "Hestia":
-                WinnerGod.setImage(new Image("images/Gods/Hestia_icon.png"));
-                break;
-            case "Medusa":
-                WinnerGod.setImage(new Image("images/Gods/Medusa_icon.png"));
-                break;
-            case "Minotaur":
-                WinnerGod.setImage(new Image("images/Gods/Minotaur_icon.png"));
-                break;
-            case "Pan":
-                WinnerGod.setImage(new Image("images/Gods/Pan_icon.png"));
-                break;
-            case "Poseidon":
-                WinnerGod.setImage(new Image("images/Gods/Poseidon_icon.png"));
-                break;
-            case "Prometheus":
-                WinnerGod.setImage(new Image("images/Gods/Prometheus_icon.png"));
-                break;
-            case "Zeus":
-                WinnerGod.setImage(new Image("images/Gods/Zeus_icon.png"));
-                break;
-        }
+        WinnerGod.setImage(new Image("images/Gods/"+godWinner+"_icon.png"));
     }
 
     public void setWinnerCongrats(String winner) {

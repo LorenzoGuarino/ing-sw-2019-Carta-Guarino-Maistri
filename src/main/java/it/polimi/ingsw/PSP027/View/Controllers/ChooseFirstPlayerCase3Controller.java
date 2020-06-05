@@ -69,50 +69,7 @@ public class ChooseFirstPlayerCase3Controller {
     }
 
     public void setGod (String firstPlayersGod) {
-        switch (firstPlayersGod) {
-            case "Apollo":
-                god.setImage(new Image("images/Gods/Apollo_icon.png"));
-                break;
-            case "Artemis":
-                god.setImage(new Image("images/Gods/Artemis_icon.png"));
-                break;
-            case "Ares":
-                god.setImage(new Image("images/Gods/Ares_icon.png"));
-                break;
-            case "Athena":
-                god.setImage(new Image("images/Gods/Athena_icon.png"));
-                break;
-            case "Atlas":
-                god.setImage(new Image("images/Gods/Atlas_icon.png"));
-                break;
-            case "Demeter":
-                god.setImage(new Image("images/Gods/Demeter_icon.png"));
-                break;
-            case "Hephaestus":
-                god.setImage(new Image("images/Gods/Hephaestus_icon.png"));
-                break;
-            case "Hestia":
-                god.setImage(new Image("images/Gods/Hestia_icon.png"));
-                break;
-            case "Medusa":
-                god.setImage(new Image("images/Gods/Medusa_icon.png"));
-                break;
-            case "Minotaur":
-                god.setImage(new Image("images/Gods/Minotaur_icon.png"));
-                break;
-            case "Pan":
-                god.setImage(new Image("images/Gods/Pan_icon.png"));
-                break;
-            case "Poseidon":
-                god.setImage(new Image("images/Gods/Poseidon_icon.png"));
-                break;
-            case "Prometheus":
-                god.setImage(new Image("images/Gods/Prometheus_icon.png"));
-                break;
-            case "Zeus":
-                god.setImage(new Image("images/Gods/Zeus_icon.png"));
-                break;
-        }
+        god.setImage(new Image("images/Gods/"+firstPlayersGod+"_icon.png"));
     }
 
     /* ******************************* GUI CONTROLLER METHODS THAT TRIGGER GUI RENDERING AND CONNECTION WITH SERVER  ****************************** */

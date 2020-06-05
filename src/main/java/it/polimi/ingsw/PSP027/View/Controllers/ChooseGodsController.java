@@ -108,94 +108,12 @@ public class ChooseGodsController {
     public void displayGodDescription(MouseEvent e) {
         ImageView selectedGod = (ImageView) e.getTarget();
         if (selectedGod.getId() != null) {
-            switch (selectedGod.getId()) {
-                case "Apollo":
-                    GodDescription.setImage(new Image("images/Gods/ApolloDescription.png"));
-                    GodSelectedDisplayed.setImage(new Image("images/Gods/Apollo_big.png"));
-                    godSelected = selectedGod.getId();
-                    setGodToList();
-                    break;
-                case "Artemis":
-                    GodDescription.setImage(new Image("images/Gods/ArtemisDescription.png"));
-                    GodSelectedDisplayed.setImage(new Image("images/Gods/Artemis_big.png"));
-                    godSelected = selectedGod.getId();
-                    setGodToList();
-                    break;
-                case "Ares":
-                    GodDescription.setImage(new Image("images/Gods/AresDescription.png"));
-                    GodSelectedDisplayed.setImage(new Image("images/Gods/Ares_big.png"));
-                    godSelected = selectedGod.getId();
-                    setGodToList();
-                    break;
-                case "Athena":
-                    GodDescription.setImage(new Image("images/Gods/AthenaDescription.png"));
-                    GodSelectedDisplayed.setImage(new Image("images/Gods/Athena_big.png"));
-                    godSelected = selectedGod.getId();
-                    setGodToList();
-                    break;
-                case "Atlas":
-                    GodDescription.setImage(new Image("images/Gods/AtlasDescription.png"));
-                    GodSelectedDisplayed.setImage(new Image("images/Gods/Atlas_big.png"));
-                    godSelected = selectedGod.getId();
-                    setGodToList();
-                    break;
-                case "Demeter":
-                    GodDescription.setImage(new Image("images/Gods/DemeterDescription.png"));
-                    GodSelectedDisplayed.setImage(new Image("images/Gods/Demeter_big.png"));
-                    godSelected = selectedGod.getId();
-                    setGodToList();
-                    break;
-                case "Hephaestus":
-                    GodDescription.setImage(new Image("images/Gods/HephaestusDescription.png"));
-                    GodSelectedDisplayed.setImage(new Image("images/Gods/Hephaestus_big.png"));
-                    godSelected = selectedGod.getId();
-                    setGodToList();
-                    break;
-                case "Hestia":
-                    GodDescription.setImage(new Image("images/Gods/HestiaDescription.png"));
-                    GodSelectedDisplayed.setImage(new Image("images/Gods/Hestia_big.png"));
-                    godSelected = selectedGod.getId();
-                    setGodToList();
-                    break;
-                case "Medusa":
-                    GodDescription.setImage(new Image("images/Gods/MedusaDescription.png"));
-                    GodSelectedDisplayed.setImage(new Image("images/Gods/Medusa_big.png"));
-                    godSelected = selectedGod.getId();
-                    setGodToList();
-                    break;
-                case "Minotaur":
-                    GodDescription.setImage(new Image("images/Gods/MinotaurDescription.png"));
-                    GodSelectedDisplayed.setImage(new Image("images/Gods/Minotaur_big.png"));
-                    godSelected = selectedGod.getId();
-                    setGodToList();
-                    break;
-                case "Pan":
-                    GodDescription.setImage(new Image("images/Gods/PanDescription.png"));
-                    GodSelectedDisplayed.setImage(new Image("images/Gods/Pan_big.png"));
-                    godSelected = selectedGod.getId();
-                    setGodToList();
-                    break;
-                case "Poseidon":
-                    GodDescription.setImage(new Image("images/Gods/PoseidonDescription.png"));
-                    GodSelectedDisplayed.setImage(new Image("images/Gods/Poseidon_big.png"));
-                    godSelected = selectedGod.getId();
-                    setGodToList();
-                    break;
-                case "Prometheus":
-                    GodDescription.setImage(new Image("images/Gods/PrometheusDescription.png"));
-                    GodSelectedDisplayed.setImage(new Image("images/Gods/Prometheus_big.png"));
-                    godSelected = selectedGod.getId();
-                    setGodToList();
-                    break;
-                case "Zeus":
-                    GodDescription.setImage(new Image("images/Gods/ZeusDescription.png"));
-                    GodSelectedDisplayed.setImage(new Image("images/Gods/Zeus_big.png"));
-                    godSelected = selectedGod.getId();
-                    setGodToList();
-                    break;
-            }
-        }
+            godSelected = selectedGod.getId();
+            GodDescription.setImage(new Image("images/Gods/"+godSelected+"Description.png"));
+            GodSelectedDisplayed.setImage(new Image("images/Gods/"+godSelected+"_big.png"));
+            setGodToList();
 
+        }
     }
 
     /**
