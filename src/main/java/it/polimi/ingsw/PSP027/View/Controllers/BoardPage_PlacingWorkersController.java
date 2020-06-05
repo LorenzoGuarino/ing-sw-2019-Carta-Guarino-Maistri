@@ -17,8 +17,6 @@ import java.util.Optional;
 
 public class BoardPage_PlacingWorkersController {
     private GUI gui;
-    private ArrayList<ImageView> cellLevelList = new ArrayList<>();
-    private ArrayList<ImageView> cellDomeList = new ArrayList<>();
     private ArrayList<ImageView> cellWorkerList = new ArrayList<>();
     private ArrayList<ImageView> cellCandidateList = new ArrayList<>();
     private final List<String> cellsToSend = new ArrayList<>();
@@ -26,9 +24,6 @@ public class BoardPage_PlacingWorkersController {
 
     @FXML
     public ImageView ConfirmButton;
-    Image ConfirmButtonReleased = new Image("images/Buttons/btn_Confirm.png");
-    Image ConfirmButtonPressed = new Image("images/Buttons/btn_Confirm_pressed.png");
-
 
     //cellWorkerImageViews
     public ImageView A1W;
@@ -94,9 +89,6 @@ public class BoardPage_PlacingWorkersController {
     public ImageView Player2Panel;
     public ImageView Player3Panel;
 
-    Image PlayingPlayerPanel = new Image("images/Board/PlayingPlayerPanel.png");
-    Image NormalPlayerPanel = new Image("images/Board/PlayerBoardPanel.png");
-
     public ImageView Player1God;
     public ImageView Player2God;
     public ImageView Player3God;
@@ -108,27 +100,7 @@ public class BoardPage_PlacingWorkersController {
     public ImageView Player1Icon;
     public ImageView Player2Icon;
     public ImageView Player3Icon;
-
-    Image Apollo = new Image("images/Gods/Apollo_icon.png");
-    Image Ares = new Image("images/Gods/Ares_icon.png");
-    Image Artemis = new Image("images/Gods/Artemis_icon.png");
-    Image Athena = new Image("images/Gods/Athena_icon.png");
-    Image Atlas = new Image("images/Gods/Atlas_icon.png");
-    Image Demeter = new Image("images/Gods/Demeter_icon.png");
-    Image Hephaestus = new Image("images/Gods/Hephaestus_icon.png");
-    Image Hestia = new Image("images/Gods/Hestia_icon.png");
-    Image Medusa = new Image("images/Gods/Medusa_icon.png");
-    Image Minotaur = new Image("images/Gods/Minotaur_icon.png");
-    Image Pan = new Image("images/Gods/Pan_icon.png");
-    Image Poseidon = new Image("images/Gods/Poseidon_icon.png");
-    Image Prometheus = new Image("images/Gods/Prometheus_icon.png");
-    Image Zeus = new Image("images/Gods/Zeus_icon.png");
-
-    @FXML
     public ImageView ExitGameButton;
-    Image exitButtonHovered = new Image("images/Buttons/btn_exitGame_hovered.png");
-    Image exitButtonReleased = new Image("images/Buttons/btn_exitGame.png");
-
     /**
      * Constructor
      */
@@ -221,12 +193,12 @@ public class BoardPage_PlacingWorkersController {
 
 
     public void confirmButtonPressed() {
-        ConfirmButton.setImage(ConfirmButtonPressed);
+        ConfirmButton.setImage(new Image("images/Buttons/btn_Confirm_pressed.png"));
         gui.doSendSelectedCellsForWorkers(cellsToSend);
     }
 
     public void confirmButtonReleased() {
-        ConfirmButton.setImage(ConfirmButtonReleased);
+        ConfirmButton.setImage(new Image("images/Buttons/btn_Confirm.png"));
     }
 
     public void setWorker(int index, String url){
@@ -246,57 +218,12 @@ public class BoardPage_PlacingWorkersController {
 
     public void setPlayer1Panel(String god, String nickname, boolean playingPlayer, boolean deadPlayer, String url_icon) {
         if(playingPlayer) {
-            Player1Panel.setImage(PlayingPlayerPanel);
+            Player1Panel.setImage(new Image("images/Board/PlayingPlayerPanel.png"));
         }
         else {
-            Player1Panel.setImage(NormalPlayerPanel);
+            Player1Panel.setImage(new Image("images/Board/PlayerBoardPanel.png"));
         }
-
-        switch (god) {
-            case "Apollo":
-                Player1God.setImage(Apollo);
-                break;
-            case "Artemis":
-                Player1God.setImage(Artemis);
-                break;
-            case "Ares":
-                Player1God.setImage(Ares);
-                break;
-            case "Athena":
-                Player1God.setImage(Athena);
-                break;
-            case "Atlas":
-                Player1God.setImage(Atlas);
-                break;
-            case "Demeter":
-                Player1God.setImage(Demeter);
-                break;
-            case "Hephaestus":
-                Player1God.setImage(Hephaestus);
-                break;
-            case "Hestia":
-                Player1God.setImage(Hestia);
-                break;
-            case "Medusa":
-                Player1God.setImage(Medusa);
-                break;
-            case "Minotaur":
-                Player1God.setImage(Minotaur);
-                break;
-            case "Pan":
-                Player1God.setImage(Pan);
-                break;
-            case "Poseidon":
-                Player1God.setImage(Poseidon);
-                break;
-            case "Prometheus":
-                Player1God.setImage(Prometheus);
-                break;
-            case "Zeus":
-                Player1God.setImage(Zeus);
-                break;
-        }
-
+        Player1God.setImage(new Image("images/Gods/"+god+"_icon"));
         nicknamePlayer1.setText(nickname.toUpperCase());
 
         Image worker_icon = new Image(url_icon);
@@ -309,57 +236,12 @@ public class BoardPage_PlacingWorkersController {
 
     public void setPlayer2Panel(String god, String nickname, boolean playingPlayer, boolean deadPlayer, String url_icon) {
         if(playingPlayer) {
-            Player2Panel.setImage(PlayingPlayerPanel);
+            Player2Panel.setImage(new Image("images/Board/PlayingPlayerPanel.png"));
         }
         else {
-            Player2Panel.setImage(NormalPlayerPanel);
+            Player2Panel.setImage(new Image("images/Board/PlayerBoardPanel.png"));
         }
-
-        switch (god) {
-            case "Apollo":
-                Player2God.setImage(Apollo);
-            break;
-            case "Artemis":
-                Player2God.setImage(Artemis);
-            break;
-            case "Ares":
-                Player2God.setImage(Ares);
-            break;
-            case "Athena":
-                Player2God.setImage(Athena);
-            break;
-            case "Atlas":
-                Player2God.setImage(Atlas);
-            break;
-            case "Demeter":
-                Player2God.setImage(Demeter);
-            break;
-            case "Hephaestus":
-                Player2God.setImage(Hephaestus);
-            break;
-            case "Hestia":
-                Player2God.setImage(Hestia);
-            break;
-            case "Medusa":
-                Player2God.setImage(Medusa);
-            break;
-            case "Minotaur":
-                Player2God.setImage(Minotaur);
-            break;
-            case "Pan":
-                Player2God.setImage(Pan);
-            break;
-            case "Poseidon":
-                Player2God.setImage(Poseidon);
-            break;
-            case "Prometheus":
-                Player2God.setImage(Prometheus);
-            break;
-            case "Zeus":
-                Player2God.setImage(Zeus);
-            break;
-        }
-
+        Player2God.setImage(new Image("images/Gods/"+god+"_icon"));
         nicknamePlayer2.setText(nickname.toUpperCase());
 
         Image worker_icon = new Image(url_icon);
@@ -372,57 +254,12 @@ public class BoardPage_PlacingWorkersController {
 
     public void setPlayer3Panel(String god, String nickname, boolean playingPlayer, boolean deadPlayer, String url_icon) {
         if(playingPlayer) {
-            Player3Panel.setImage(PlayingPlayerPanel);
+            Player3Panel.setImage(new Image("images/Board/PlayingPlayerPanel.png"));
         }
         else {
-            Player3Panel.setImage(NormalPlayerPanel);
+            Player3Panel.setImage(new Image("images/Board/PlayerBoardPanel.png"));
         }
-
-        switch (god) {
-            case "Apollo":
-                Player3God.setImage(Apollo);
-                break;
-            case "Artemis":
-                Player3God.setImage(Artemis);
-                break;
-            case "Ares":
-                Player3God.setImage(Ares);
-                break;
-            case "Athena":
-                Player3God.setImage(Athena);
-                break;
-            case "Atlas":
-                Player3God.setImage(Atlas);
-                break;
-            case "Demeter":
-                Player3God.setImage(Demeter);
-                break;
-            case "Hephaestus":
-                Player3God.setImage(Hephaestus);
-                break;
-            case "Hestia":
-                Player3God.setImage(Hestia);
-                break;
-            case "Medusa":
-                Player3God.setImage(Medusa);
-                break;
-            case "Minotaur":
-                Player3God.setImage(Minotaur);
-                break;
-            case "Pan":
-                Player3God.setImage(Pan);
-                break;
-            case "Poseidon":
-                Player3God.setImage(Poseidon);
-                break;
-            case "Prometheus":
-                Player3God.setImage(Prometheus);
-                break;
-            case "Zeus":
-                Player3God.setImage(Zeus);
-                break;
-        }
-
+        Player3God.setImage(new Image("images/Gods/"+god+"_icon"));
         nicknamePlayer3.setText(nickname.toUpperCase());
 
         Image worker_icon = new Image(url_icon);
@@ -881,7 +718,7 @@ public class BoardPage_PlacingWorkersController {
     }
 
     public void exitButtonHovered() {
-        ExitGameButton.setImage(exitButtonHovered);
+        ExitGameButton.setImage(new Image("images/Buttons/btn_exitGame_hovered.png"));
     }
 
     public void exitButtonPressed() {
@@ -899,6 +736,6 @@ public class BoardPage_PlacingWorkersController {
     }
 
     public void exitButtonReleased() {
-        ExitGameButton.setImage(exitButtonReleased);
+        ExitGameButton.setImage(new Image("images/Buttons/btn_exitGame.png"));
     }
 }
