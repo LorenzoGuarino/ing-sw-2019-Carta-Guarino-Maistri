@@ -223,7 +223,7 @@ public class BoardPage_PlacingWorkersController {
         else {
             Player1Panel.setImage(new Image("images/Board/PlayerBoardPanel.png"));
         }
-        Player1God.setImage(new Image("images/Gods/"+god+"_icon"));
+        Player1God.setImage(new Image("images/Gods/"+god+"_icon.png"));
         nicknamePlayer1.setText(nickname.toUpperCase());
 
         Image worker_icon = new Image(url_icon);
@@ -241,7 +241,7 @@ public class BoardPage_PlacingWorkersController {
         else {
             Player2Panel.setImage(new Image("images/Board/PlayerBoardPanel.png"));
         }
-        Player2God.setImage(new Image("images/Gods/"+god+"_icon"));
+        Player2God.setImage(new Image("images/Gods/"+god+"_icon.png"));
         nicknamePlayer2.setText(nickname.toUpperCase());
 
         Image worker_icon = new Image(url_icon);
@@ -259,7 +259,7 @@ public class BoardPage_PlacingWorkersController {
         else {
             Player3Panel.setImage(new Image("images/Board/PlayerBoardPanel.png"));
         }
-        Player3God.setImage(new Image("images/Gods/"+god+"_icon"));
+        Player3God.setImage(new Image("images/Gods/"+god+"_icon.png"));
         nicknamePlayer3.setText(nickname.toUpperCase());
 
         Image worker_icon = new Image(url_icon);
