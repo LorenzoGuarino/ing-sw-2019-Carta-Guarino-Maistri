@@ -58,6 +58,11 @@ public class EntryPageController {
 
     /* ******************************* GUI CONTROLLER METHODS THAT TRIGGER GUI RENDERING AND CONNECTION WITH SERVER  ****************************** */
 
+    /**
+     * Method called when the Connect Button is pressed,
+     * it send the Connect Command
+     */
+
     public void connectButtonPressed() {
         ConnectButton.setImage(new Image("images/Buttons/btn_Connect_pressed.png"));
         if(ServerIp.getText() != null && !ServerIp.getText().isEmpty()) {
@@ -65,15 +70,24 @@ public class EntryPageController {
         }
     }
 
+    /**
+     * Method that update the image of the button pressed
+     */
     public void connectButtonReleased() {
         ConnectButton.setImage(new Image("images/Buttons/btn_Connect.png"));
     }
 
+    /**
+     * Method that update the image of the button pressed and call the Exit method in GUI
+     */
     public void exitButtonPressed() {
         ExitButton.setImage(new Image("images/Buttons/btn_Exit_pressed.png"));
         gui.doExit();
     }
 
+    /**
+     * Method that update the image of the button pressed
+     */
     public void exitButtonReleased() {
         ExitButton.setImage(new Image("images/Buttons/btn_Exit.png"));
     }

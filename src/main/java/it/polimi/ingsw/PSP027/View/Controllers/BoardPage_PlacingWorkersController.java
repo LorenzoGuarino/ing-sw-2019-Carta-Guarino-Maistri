@@ -102,7 +102,7 @@ public class BoardPage_PlacingWorkersController {
     public ImageView Player3Icon;
     public ImageView ExitGameButton;
     /**
-     * Constructor
+     * Constructor, called before the initialize method
      */
     public BoardPage_PlacingWorkersController(){
     }
@@ -128,8 +128,7 @@ public class BoardPage_PlacingWorkersController {
 
 
     /**
-     * This method creates a dependency between the dome of the cell index = the list index
-     * and the corresponding ImageView in the gridPane displaying the board
+     * This method creates a List of Image to display the worker position
      */
     public void initCellWorkerList() {
         cellWorkerList.add(this.A1W);
@@ -160,8 +159,7 @@ public class BoardPage_PlacingWorkersController {
     }
 
     /**
-     * This method creates a dependency between the dome of the cell index = the list index
-     * and the corresponding ImageView in the gridPane displaying the board
+     * This method creates a List of Image to display the Cell that can be clicked
      */
     public void initCellCandidateList() {
         cellCandidateList.add(this.A1C);
@@ -191,16 +189,27 @@ public class BoardPage_PlacingWorkersController {
         cellCandidateList.add(this.E5C);
     }
 
-
+    /**
+     * Method that update the image of the button pressed and call the method that sends the position,
+     * chosen for the workers by the player that is playing to the GUI
+     */
     public void confirmButtonPressed() {
         ConfirmButton.setImage(new Image("images/Buttons/btn_Confirm_pressed.png"));
         gui.doSendSelectedCellsForWorkers(cellsToSend);
     }
 
+    /**
+     * Method that update the image of the button pressed
+     */
     public void confirmButtonReleased() {
         ConfirmButton.setImage(new Image("images/Buttons/btn_Confirm.png"));
     }
 
+    /**
+     * Method that set an image to display the worker already on the board
+     * @param index cell occupied by the worker
+     * @param url Id that distinguishes each workers by his color (different by each player)
+     */
     public void setWorker(int index, String url){
         if(this.cellWorkerList.size()==0){
             initCellWorkerList();
@@ -209,6 +218,10 @@ public class BoardPage_PlacingWorkersController {
         this.cellWorkerList.get(index).setImage(worker);
     }
 
+    /**
+     * Method that set an image to display the Candidate Cell selectable
+     * @param index cell highlighted by the Candidate ring
+     */
     public void setCandidate(int index){
         if(this.cellCandidateList.size()==0) {
             initCellCandidateList();
@@ -216,6 +229,14 @@ public class BoardPage_PlacingWorkersController {
         this.cellCandidateList.get(index).setImage(this.candidate);
     }
 
+    /**
+     * Method that set the Player 1 Pane with every detail about it
+     * @param god god card owned by the player 1
+     * @param nickname nickname of the player 1
+     * @param playingPlayer indicate if the player 1 is the one that is playing the turn
+     * @param deadPlayer indicate if the player 1 is dead or is not playing anymore
+     * @param url_icon Id that distinguishes each workers by his color (different by each player)
+     */
     public void setPlayer1Panel(String god, String nickname, boolean playingPlayer, boolean deadPlayer, String url_icon) {
         if(playingPlayer) {
             Player1Panel.setImage(new Image("images/Board/PlayingPlayerPanel.png"));
@@ -233,7 +254,14 @@ public class BoardPage_PlacingWorkersController {
             Player1Dead.setVisible(true);
         }
     }
-
+    /**
+     * Method that set the Player 2 Pane with every detail about it
+     * @param god god card owned by the player 2
+     * @param nickname nickname of the player 2
+     * @param playingPlayer indicate if the player 2 is the one that is playing the turn
+     * @param deadPlayer indicate if the player 2 is dead or is not playing anymore
+     * @param url_icon Id that distinguishes each workers by his color (different by each player)
+     */
     public void setPlayer2Panel(String god, String nickname, boolean playingPlayer, boolean deadPlayer, String url_icon) {
         if(playingPlayer) {
             Player2Panel.setImage(new Image("images/Board/PlayingPlayerPanel.png"));
@@ -251,7 +279,14 @@ public class BoardPage_PlacingWorkersController {
             Player2Dead.setVisible(true);
         }
     }
-
+    /**
+     * Method that set the Player 3 Pane with every detail about it
+     * @param god god card owned by the player 3
+     * @param nickname nickname of the player 3
+     * @param playingPlayer indicate if the player 3 is the one that is playing the turn
+     * @param deadPlayer indicate if the player 3 is dead or is not playing anymore
+     * @param url_icon Id that distinguishes each workers by his color (different by each player)
+     */
     public void setPlayer3Panel(String god, String nickname, boolean playingPlayer, boolean deadPlayer, String url_icon) {
         if(playingPlayer) {
             Player3Panel.setImage(new Image("images/Board/PlayingPlayerPanel.png"));
@@ -270,6 +305,10 @@ public class BoardPage_PlacingWorkersController {
         }
     }
 
+    /**
+     * Method that set invisible the Player 3 Panel if this is a 2 PLayer match
+     * @param visibility identify if the match is 2 or 3 Players
+     */
     public void setPanel3Visibility(boolean visibility) {
         Player3Icon.setVisible(visibility);
         Player3Panel.setVisible(visibility);
@@ -277,6 +316,10 @@ public class BoardPage_PlacingWorkersController {
         Player3God.setVisible(visibility);
     }
 
+    /**
+     * Method that save the cell clicked
+     * @param e Mouse Event that triggers the Method
+     */
     public void clickedOnCell(MouseEvent e){
         ImageView selectedCell = (ImageView) e.getTarget();
         System.out.println(selectedCell.getId());
@@ -432,8 +475,9 @@ public class BoardPage_PlacingWorkersController {
 
     }
 
-
-
+    /**
+     * Method that check if the already selected cells are more than 2 and then removes the first clicked to save the last one clicked
+     */
     public void setCellsToList(){
         boolean bAlreadySelected;
         boolean bAlreadyTaken;
@@ -708,19 +752,19 @@ public class BoardPage_PlacingWorkersController {
                 cellsToSend.remove(0);
                 cellsToSend.add(cellSelected);
             }
-            System.out.println(cellsToSend.get(0));
-            if (cellsToSend.size() == 2) {
-                System.out.println(cellsToSend.get(1));
-            }
-
         }
-
     }
 
+    /**
+     * Method that update the image of the button when the mouse is on the button
+     */
     public void exitButtonHovered() {
         ExitGameButton.setImage(new Image("images/Buttons/btn_exitGame_hovered.png"));
     }
 
+    /**
+     * Method that update the button image and than proceed to deregister the player that want to exit from the game
+     */
     public void exitButtonPressed() {
 
         ButtonType YES = new ButtonType("yes", ButtonBar.ButtonData.OK_DONE);
@@ -735,6 +779,9 @@ public class BoardPage_PlacingWorkersController {
             gui.doDeregister();
     }
 
+    /**
+     * Method that update the image of the button pressed
+     */
     public void exitButtonReleased() {
         ExitGameButton.setImage(new Image("images/Buttons/btn_exitGame.png"));
     }
