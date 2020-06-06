@@ -20,44 +20,14 @@ public class YouHaveLostController {
     private GUI gui;
 
     public Client client = null;
-    private int requiredgods = 0;
-    private List<String> gods = null;
-    private List<String> players = null;
-    private Node nodeboard; //it's overwritten every time a new board needs to be printed
-    private List<Integer> indexcandidatecells = new ArrayList<Integer>(); //used for move and build and is overwritten every time
-    private Map<String, String> NicknameGodMap = new HashMap<String, String>();
 
 
     /* ***************************************** GUI RENDERING RELATED VARIABLES ****************************************** */
     @FXML
-    Label BetterLuckNextTime;
-    @FXML
-    ImageView LoserGod;
-
-    Image Apollo = new Image("images/Gods/Apollo_icon.png");
-    Image Ares = new Image("images/Gods/Ares_icon.png");
-    Image Artemis = new Image("images/Gods/Artemis_icon.png");
-    Image Athena = new Image("images/Gods/Athena_icon.png");
-    Image Atlas = new Image("images/Gods/Atlas_icon.png");
-    Image Demeter = new Image("images/Gods/Demeter_icon.png");
-    Image Hephaestus = new Image("images/Gods/Hephaestus_icon.png");
-    Image Hestia = new Image("images/Gods/Hestia_icon.png");
-    Image Medusa = new Image("images/Gods/Medusa_icon.png");
-    Image Minotaur = new Image("images/Gods/Minotaur_icon.png");
-    Image Pan = new Image("images/Gods/Pan_icon.png");
-    Image Poseidon = new Image("images/Gods/Poseidon_icon.png");
-    Image Prometheus = new Image("images/Gods/Prometheus_icon.png");
-    Image Zeus = new Image("images/Gods/Zeus_icon.png");
-
-    @FXML
+    public Label BetterLuckNextTime;
+    public ImageView LoserGod;
     public ImageView ExitGameButton;
-    Image exitButtonHovered = new Image("images/Buttons/btn_exitGame_hovered.png");
-    Image exitButtonReleased = new Image("images/Buttons/btn_exitGame.png");
-
-    @FXML
     public ImageView PlayButton;
-    Image PlayButtonPressed = new Image("images/Buttons/button-play-down.png");
-    Image PlayButtonReleased = new Image("images/Buttons/button-play-normal.png");
     /* ****************************************************************************************************************** */
 
     /**
@@ -87,56 +57,13 @@ public class YouHaveLostController {
     }
 
     public void setLoserPodium(String godLoser) {
-        switch (godLoser) {
-            case "Apollo":
-                LoserGod.setImage(Apollo);
-                break;
-            case "Artemis":
-                LoserGod.setImage(Artemis);
-                break;
-            case "Ares":
-                LoserGod.setImage(Ares);
-                break;
-            case "Athena":
-                LoserGod.setImage(Athena);
-                break;
-            case "Atlas":
-                LoserGod.setImage(Atlas);
-                break;
-            case "Demeter":
-                LoserGod.setImage(Demeter);
-                break;
-            case "Hephaestus":
-                LoserGod.setImage(Hephaestus);
-                break;
-            case "Hestia":
-                LoserGod.setImage(Hestia);
-                break;
-            case "Medusa":
-                LoserGod.setImage(Medusa);
-                break;
-            case "Minotaur":
-                LoserGod.setImage(Minotaur);
-                break;
-            case "Pan":
-                LoserGod.setImage(Pan);
-                break;
-            case "Poseidon":
-                LoserGod.setImage(Poseidon);
-                break;
-            case "Prometheus":
-                LoserGod.setImage(Prometheus);
-                break;
-            case "Zeus":
-                LoserGod.setImage(Zeus);
-                break;
-        }
+        LoserGod.setImage(new Image("images/Gods/"+godLoser+"_icon.png"));
     }
 
     /* ******************************* GUI CONTROLLER METHODS THAT TRIGGER GUI RENDERING AND CONNECTION WITH SERVER  ****************************** */
 
     public void exitButtonHovered() {
-        ExitGameButton.setImage(exitButtonHovered);
+        ExitGameButton.setImage(new Image("images/Buttons/btn_exitGame_hovered.png"));
     }
 
     public void exitButtonPressed() {
@@ -154,15 +81,15 @@ public class YouHaveLostController {
     }
 
     public void exitButtonReleased() {
-        ExitGameButton.setImage(exitButtonReleased);
+        ExitGameButton.setImage(new Image("images/Buttons/btn_exitGame.png"));
     }
 
     public void playButtonPressed() {
-        PlayButton.setImage(PlayButtonPressed);
+        PlayButton.setImage(new Image("images/Buttons/button-play-down.png"));
     }
 
     public void playButtonReleased() {
-        PlayButton.setImage(PlayButtonReleased);
+        PlayButton.setImage(new Image("images/Buttons/button-play-normal.png"));
         gui.doPlayAgain();
     }
 }

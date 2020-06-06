@@ -18,33 +18,15 @@ public class EntryPageController {
 
     // Reference to the main gui application
     private GUI gui;
-
     public Client client = null;
-    private boolean bRun = false;
-    private int requiredgods = 0;
-    private List<String> gods = null;
-    private List<String> players = null;
-    private Node nodeboard; //it's overwritten every time a new board needs to be printed
-    private List<Integer> indexcandidatecells = new ArrayList<Integer>(); //used for move and build and is overwritten every time
-    private Map<String, String> NicknameGodMap = new HashMap<String, String>();
-    private String[] chosen_cmd;
 
 
     /* ***************************************** GUI RENDERING RELATED VARIABLES ****************************************** */
 
     @FXML
     public ImageView ConnectButton;
-    @FXML
     public ImageView ExitButton;
-    Image ConnectButtonPressed = new Image("images/Buttons/btn_Connect_pressed.png");
-    Image ExitButtonPressed = new Image("images/Buttons/btn_Exit_pressed.png");
-    Image RegisterButtonPressed = new Image("images/Buttons/btn_Register_pressed.png");
-    Image ConnectButtonReleased = new Image("images/Buttons/btn_Connect.png");
-    Image ExitButtonReleased = new Image("images/Buttons/btn_Exit.png");
-    Image RegisterButtonReleased = new Image("images/Buttons/btn_Register.png");
-    @FXML
     public TextField ServerIp;
-    @FXML
     public Pane entryPane;
 
     /* ****************************************************************************************************************** */
@@ -76,24 +58,38 @@ public class EntryPageController {
 
     /* ******************************* GUI CONTROLLER METHODS THAT TRIGGER GUI RENDERING AND CONNECTION WITH SERVER  ****************************** */
 
+    /**
+     * Method called when the Connect Button is pressed,
+     * it send the Connect Command
+     */
+
     public void connectButtonPressed() {
-        ConnectButton.setImage(ConnectButtonPressed);
+        ConnectButton.setImage(new Image("images/Buttons/btn_Connect_pressed.png"));
         if(ServerIp.getText() != null && !ServerIp.getText().isEmpty()) {
             gui.doConnect(ServerIp.getText());
         }
     }
 
+    /**
+     * Method that update the image of the button pressed
+     */
     public void connectButtonReleased() {
-        ConnectButton.setImage(ConnectButtonReleased);
+        ConnectButton.setImage(new Image("images/Buttons/btn_Connect.png"));
     }
 
-    public void exitButtonPressed() throws Exception {
-        ExitButton.setImage(ExitButtonPressed);
+    /**
+     * Method that update the image of the button pressed and call the Exit method in GUI
+     */
+    public void exitButtonPressed() {
+        ExitButton.setImage(new Image("images/Buttons/btn_Exit_pressed.png"));
         gui.doExit();
     }
 
+    /**
+     * Method that update the image of the button pressed
+     */
     public void exitButtonReleased() {
-        ExitButton.setImage(ExitButtonReleased);
+        ExitButton.setImage(new Image("images/Buttons/btn_Exit.png"));
     }
 
 }

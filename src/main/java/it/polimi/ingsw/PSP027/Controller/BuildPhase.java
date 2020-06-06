@@ -18,7 +18,7 @@ public class BuildPhase extends Phase {
     }
 
     /**
-     * Updates the candidateBuildingCells in a standard way, that allows the chosen worker to build in any adjacent cell that
+     * Updates the candidateBuildingCells in a standard way, allowing the chosen worker to build in any adjacent cell that
      * is not occupied by any worker and has not a dome
      */
 

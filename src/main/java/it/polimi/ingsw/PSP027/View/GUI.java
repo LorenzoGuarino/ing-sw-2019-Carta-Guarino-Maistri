@@ -33,6 +33,18 @@ public class GUI extends Application implements ClientObserver {
     private String firstPlayersGod;
     private List<String> deadPlayers = new ArrayList<String>();
     private String playingPlayerNickname;
+    private Phase currentPhase;
+    private BoardPage_UniqueController BoardController;
+    private Parent BoardPage=null;
+    public enum Phase {
+        Build,
+        ChooseWorker,
+        Move,
+        OptBuild,
+        OptMove,
+        OptEnd,
+        Update
+    }
 
     /* ****************************************************** COMMANDS ************************************************** */
 
@@ -86,7 +98,6 @@ public class GUI extends Application implements ClientObserver {
         SantoriniStage.setMaximized(true);
         SantoriniStage.setFullScreen(true);
         SantoriniStage.setScene(entryScene);
-        SantoriniStage.setResizable(false);
         SantoriniStage.show();
 
         SantoriniStage.setOnCloseRequest(e->{
@@ -359,652 +370,14 @@ public class GUI extends Application implements ClientObserver {
                         boolean dome = getDomeOfCellNode(cell);
 
                         String nickname = getNicknameOfCellNode(cell);
-
-                        if(level!=0) {
-                            boardPage_PlacingWorkersController.setLevel(id, level);
-                        }
-
-                        if (dome) {
-                            boardPage_PlacingWorkersController.setDome(id);
-                        }
-
                         if (!nickname.isEmpty()) {
                             boardPage_PlacingWorkersController.setWorker(id, PlayerWorkerMap.get(nickname));
                         }
 
                         if (!indexcandidatecells.isEmpty()) {
-                            for (int j = 0; j < indexcandidatecells.size(); j++) {
-                                if (indexcandidatecells.get(j) == id) {
+                            for (Integer indexcandidatecell : indexcandidatecells) {
+                                if (indexcandidatecell == id) {
                                     boardPage_PlacingWorkersController.setCandidate(id);
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                }
-
-                if (PlayerGodMap.size() > 0) {
-                    Set<String> nicknames = PlayerGodMap.keySet();
-                    String nickname;
-                    Iterator<String> itr = nicknames.iterator();
-                    int playerscount = 1;
-                    boolean playingPlayer = false;
-
-                    while (itr.hasNext()) {
-                        nickname = itr.next();
-                        if (PlayerWorkerMap.containsKey(nickname) && PlayerGodMap.containsKey(nickname)) {
-                            if(nickname.equals(client.getNickname())) {
-                                playingPlayer = true;
-                            }
-
-                            if(playerscount == 1) {
-                                boolean deadPlayer = false;
-                                for(int i=0; i < deadPlayers.size(); i++) {
-                                    if(deadPlayers.get(i).equals(nickname)) {
-                                        deadPlayer = true;
-                                    }
-                                }
-                                boardPage_PlacingWorkersController.setPlayer1Panel(PlayerGodMap.get(nickname), nickname, playingPlayer, deadPlayer, PlayerWorkerMap.get(nickname));
-                            } else if(playerscount == 2) {
-                                boolean deadPlayer = false;
-                                for(int i=0; i < deadPlayers.size(); i++) {
-                                    if(deadPlayers.get(i).equals(nickname)) {
-                                        deadPlayer = true;
-                                    }
-                                }
-                                boardPage_PlacingWorkersController.setPlayer2Panel(PlayerGodMap.get(nickname), nickname, playingPlayer, deadPlayer, PlayerWorkerMap.get(nickname));
-                            } else if(playerscount == 3) {
-                                boolean deadPlayer = false;
-                                for(int i=0; i < deadPlayers.size(); i++) {
-                                    if(deadPlayers.get(i).equals(nickname)) {
-                                        deadPlayer = true;
-                                    }
-                                }
-                                boardPage_PlacingWorkersController.setPlayer3Panel(PlayerGodMap.get(nickname), nickname, playingPlayer, deadPlayer, PlayerWorkerMap.get(nickname));
-                            }
-                        }
-                        playerscount++;
-                        playingPlayer = false;
-                    }
-                }
-
-                if(players.size() == 2) {
-                    boardPage_PlacingWorkersController.setPanel3Visibility(false);
-                }
-            }
-
-            SantoriniStage.getScene().setRoot(PlacingWorkersPage);
-            SantoriniStage.show();
-
-        } catch (IOException exception){
-            System.out.println(exception.toString());
-        }
-    }
-
-    public void showBoardPage_ChooseWorker(){
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/BoardPage_ChooseWorker.fxml"));
-            Parent ChooseWorkerPage = (Parent) loader.load();
-
-            BoardPage_ChooseWorkerController boardPage_ChooseWorkerController = loader.getController();
-            boardPage_ChooseWorkerController.setGui(this);
-
-            Node cell;
-
-            if (nodeboard.hasChildNodes()) {
-                NodeList cells = nodeboard.getChildNodes();
-
-                for (int i = 0; i < cells.getLength(); i++) {
-                    cell = cells.item(i);
-
-                    if (cell.getNodeName().equals("cell")) {
-                        int id = getIdOfCellNode(cell);
-                        int level = getLevelOfCellNode(cell);
-                        boolean dome = getDomeOfCellNode(cell);
-
-                        String nickname = getNicknameOfCellNode(cell);
-
-                        if(level!=0) {
-                            boardPage_ChooseWorkerController.setLevel(id, level);
-                        }
-
-                        if (dome) {
-                            boardPage_ChooseWorkerController.setDome(id);
-                        }
-
-                        if (!nickname.isEmpty()) {
-                            boardPage_ChooseWorkerController.setWorker(id, PlayerWorkerMap.get(nickname));
-                        }
-
-                        if (!indexcandidatecells.isEmpty()) {
-                            for (int j = 0; j < indexcandidatecells.size(); j++) {
-                                if (indexcandidatecells.get(j) == id) {
-                                    boardPage_ChooseWorkerController.setCandidate(id);
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                }
-
-                if (PlayerGodMap.size() > 0) {
-                    Set<String> nicknames = PlayerGodMap.keySet();
-                    String nickname;
-                    Iterator<String> itr = nicknames.iterator();
-                    int playerscount = 1;
-                    boolean playingPlayer = false;
-
-                    while (itr.hasNext()) {
-                        nickname = itr.next();
-                        if (PlayerWorkerMap.containsKey(nickname) && PlayerGodMap.containsKey(nickname)) {
-                            if(nickname.equals(client.getNickname())) {
-                                playingPlayer = true;
-                            }
-
-                            if(playerscount == 1) {
-                                boolean deadPlayer = false;
-                                for(int i=0; i < deadPlayers.size(); i++) {
-                                    if(deadPlayers.get(i).equals(nickname)) {
-                                        deadPlayer = true;
-                                    }
-                                }
-                                boardPage_ChooseWorkerController.setPlayer1Panel(PlayerGodMap.get(nickname), nickname, playingPlayer, deadPlayer, PlayerWorkerMap.get(nickname));
-                            } else if(playerscount == 2) {
-                                boolean deadPlayer = false;
-                                for(int i=0; i < deadPlayers.size(); i++) {
-                                    if(deadPlayers.get(i).equals(nickname)) {
-                                        deadPlayer = true;
-                                    }
-                                }
-                                boardPage_ChooseWorkerController.setPlayer2Panel(PlayerGodMap.get(nickname), nickname, playingPlayer, deadPlayer, PlayerWorkerMap.get(nickname));
-                            } else if(playerscount == 3) {
-                                boolean deadPlayer = false;
-                                for(int i=0; i < deadPlayers.size(); i++) {
-                                    if(deadPlayers.get(i).equals(nickname)) {
-                                        deadPlayer = true;
-                                    }
-                                }
-                                boardPage_ChooseWorkerController.setPlayer3Panel(PlayerGodMap.get(nickname), nickname, playingPlayer, deadPlayer, PlayerWorkerMap.get(nickname));
-                            }
-                        }
-                        playerscount++;
-                        playingPlayer = false;
-                    }
-                }
-
-                if(players.size() == 2) {
-                    boardPage_ChooseWorkerController.setPanel3Visibility(false);
-                }
-            }
-
-            SantoriniStage.getScene().setRoot(ChooseWorkerPage);
-            SantoriniStage.show();
-
-        } catch (IOException exception){
-            System.out.println(exception.toString());
-        }
-    }
-
-    public void showBoardPage_Move(){
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/BoardPage_Move.fxml"));
-            Parent MovePage = (Parent) loader.load();
-
-            BoardPage_MoveController boardPage_MoveController = loader.getController();
-            boardPage_MoveController.setGui(this);
-
-            Node cell;
-
-            if (nodeboard.hasChildNodes()) {
-                NodeList cells = nodeboard.getChildNodes();
-
-                for (int i = 0; i < cells.getLength(); i++) {
-                    cell = cells.item(i);
-
-                    if (cell.getNodeName().equals("cell")) {
-                        int id = getIdOfCellNode(cell);
-                        int level = getLevelOfCellNode(cell);
-                        boolean dome = getDomeOfCellNode(cell);
-
-                        String nickname = getNicknameOfCellNode(cell);
-
-                        if(level!=0) {
-                            boardPage_MoveController.setLevel(id, level);
-                        }
-
-                        if (dome) {
-                            boardPage_MoveController.setDome(id);
-                        }
-
-                        if (!nickname.isEmpty()) {
-                            boardPage_MoveController.setWorker(id, PlayerWorkerMap.get(nickname));
-                        }
-
-                        if (!indexcandidatecells.isEmpty()) {
-                            for (int j = 0; j < indexcandidatecells.size(); j++) {
-                                if (indexcandidatecells.get(j) == id) {
-                                    boardPage_MoveController.setCandidate(id);
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                }
-
-                if (PlayerGodMap.size() > 0) {
-                    Set<String> nicknames = PlayerGodMap.keySet();
-                    String nickname;
-                    Iterator<String> itr = nicknames.iterator();
-                    int playerscount = 1;
-                    boolean playingPlayer = false;
-
-                    while (itr.hasNext()) {
-                        nickname = itr.next();
-                        if (PlayerWorkerMap.containsKey(nickname) && PlayerGodMap.containsKey(nickname)) {
-                            if(nickname.equals(client.getNickname())) {
-                                playingPlayer = true;
-                            }
-
-                            if(playerscount == 1) {
-                                boolean deadPlayer = false;
-                                for(int i=0; i < deadPlayers.size(); i++) {
-                                    if(deadPlayers.get(i).equals(nickname)) {
-                                        deadPlayer = true;
-                                    }
-                                }
-                                boardPage_MoveController.setPlayer1Panel(PlayerGodMap.get(nickname), nickname, playingPlayer, deadPlayer, PlayerWorkerMap.get(nickname));
-                            } else if(playerscount == 2) {
-                                boolean deadPlayer = false;
-                                for(int i=0; i < deadPlayers.size(); i++) {
-                                    if(deadPlayers.get(i).equals(nickname)) {
-                                        deadPlayer = true;
-                                    }
-                                }
-                                boardPage_MoveController.setPlayer2Panel(PlayerGodMap.get(nickname), nickname, playingPlayer, deadPlayer, PlayerWorkerMap.get(nickname));
-                            } else if(playerscount == 3) {
-                                boolean deadPlayer = false;
-                                for(int i=0; i < deadPlayers.size(); i++) {
-                                    if(deadPlayers.get(i).equals(nickname)) {
-                                        deadPlayer = true;
-                                    }
-                                }
-                                boardPage_MoveController.setPlayer3Panel(PlayerGodMap.get(nickname), nickname, playingPlayer, deadPlayer, PlayerWorkerMap.get(nickname));
-                            }
-                        }
-                        playerscount++;
-                        playingPlayer = false;
-                    }
-                }
-
-                if(players.size() == 2) {
-                    boardPage_MoveController.setPanel3Visibility(false);
-                }
-            }
-
-            SantoriniStage.getScene().setRoot(MovePage);
-            SantoriniStage.show();
-
-        } catch (IOException exception){
-            System.out.println(exception.toString());
-        }
-
-
-    }
-
-    public void showBoardPage_OptMove(){
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/BoardPage_OptMove.fxml"));
-            Parent OptMovePage = (Parent) loader.load();
-
-            BoardPage_OptMoveController boardPage_OptMoveController = loader.getController();
-            boardPage_OptMoveController.setGui(this);
-
-            Node cell;
-
-            if (nodeboard.hasChildNodes()) {
-                NodeList cells = nodeboard.getChildNodes();
-
-                for (int i = 0; i < cells.getLength(); i++) {
-                    cell = cells.item(i);
-
-                    if (cell.getNodeName().equals("cell")) {
-                        int id = getIdOfCellNode(cell);
-                        int level = getLevelOfCellNode(cell);
-                        boolean dome = getDomeOfCellNode(cell);
-
-                        String nickname = getNicknameOfCellNode(cell);
-
-                        if(level!=0) {
-                            boardPage_OptMoveController.setLevel(id, level);
-                        }
-
-                        if (dome) {
-                            boardPage_OptMoveController.setDome(id);
-                        }
-
-
-                        if (!nickname.isEmpty()) {
-                            boardPage_OptMoveController.setWorker(id, PlayerWorkerMap.get(nickname));
-                        }
-
-                        if (!indexcandidatecells.isEmpty()) {
-                            for (int j = 0; j < indexcandidatecells.size(); j++) {
-                                if (indexcandidatecells.get(j) == id) {
-                                    boardPage_OptMoveController.setCandidate(id);
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                }
-
-                if (PlayerGodMap.size() > 0) {
-                    Set<String> nicknames = PlayerGodMap.keySet();
-                    String nickname;
-                    Iterator<String> itr = nicknames.iterator();
-                    int playerscount = 1;
-                    boolean playingPlayer = false;
-
-                    while (itr.hasNext()) {
-                        nickname = itr.next();
-                        if (PlayerWorkerMap.containsKey(nickname) && PlayerGodMap.containsKey(nickname)) {
-                            if(nickname.equals(client.getNickname())) {
-                                playingPlayer = true;
-                            }
-
-                            if(playerscount == 1) {
-                                boolean deadPlayer = false;
-                                for(int i=0; i < deadPlayers.size(); i++) {
-                                    if(deadPlayers.get(i).equals(nickname)) {
-                                        deadPlayer = true;
-                                    }
-                                }
-                                boardPage_OptMoveController.setPlayer1Panel(PlayerGodMap.get(nickname), nickname, playingPlayer, deadPlayer, PlayerWorkerMap.get(nickname));
-                            } else if(playerscount == 2) {
-                                boolean deadPlayer = false;
-                                for(int i=0; i < deadPlayers.size(); i++) {
-                                    if(deadPlayers.get(i).equals(nickname)) {
-                                        deadPlayer = true;
-                                    }
-                                }
-                                boardPage_OptMoveController.setPlayer2Panel(PlayerGodMap.get(nickname), nickname, playingPlayer, deadPlayer, PlayerWorkerMap.get(nickname));
-                            } else if(playerscount == 3) {
-                                boolean deadPlayer = false;
-                                for(int i=0; i < deadPlayers.size(); i++) {
-                                    if(deadPlayers.get(i).equals(nickname)) {
-                                        deadPlayer = true;
-                                    }
-                                }
-                                boardPage_OptMoveController.setPlayer3Panel(PlayerGodMap.get(nickname), nickname, playingPlayer, deadPlayer, PlayerWorkerMap.get(nickname));
-                            }
-                        }
-                        playerscount++;
-                        playingPlayer = false;
-                    }
-                }
-
-                if(players.size() == 2) {
-                    boardPage_OptMoveController.setPanel3Visibility(false);
-                }
-            }
-
-            SantoriniStage.getScene().setRoot(OptMovePage);
-            SantoriniStage.show();
-
-        } catch (IOException exception){
-            System.out.println(exception.toString());
-        }
-
-
-    }
-
-    public void showBoardPage_Build(){
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/BoardPage_Build.fxml"));
-            Parent BuildPage = (Parent) loader.load();
-
-            BoardPage_BuildController boardPage_BuildController = loader.getController();
-            boardPage_BuildController.setGui(this);
-
-            Node cell;
-
-            if (nodeboard.hasChildNodes()) {
-                NodeList cells = nodeboard.getChildNodes();
-
-                for (int i = 0; i < cells.getLength(); i++) {
-                    cell = cells.item(i);
-
-                    if (cell.getNodeName().equals("cell")) {
-                        int id = getIdOfCellNode(cell);
-                        int level = getLevelOfCellNode(cell);
-                        boolean dome = getDomeOfCellNode(cell);
-
-                        String nickname = getNicknameOfCellNode(cell);
-
-                        if(level!=0) {
-                            boardPage_BuildController.setLevel(id, level);
-                        }
-
-                        if (dome) {
-                            boardPage_BuildController.setDome(id);
-                        }
-
-                        if (!nickname.isEmpty()) {
-                            boardPage_BuildController.setWorker(id, PlayerWorkerMap.get(nickname));
-                        }
-
-                        if (!indexcandidatecells.isEmpty()) {
-                            for (int j = 0; j < indexcandidatecells.size(); j++) {
-                                if (indexcandidatecells.get(j) == id) {
-                                    boardPage_BuildController.setCandidate(id);
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                }
-
-                if (PlayerGodMap.size() > 0) {
-                    Set<String> nicknames = PlayerGodMap.keySet();
-                    String nickname;
-                    Iterator<String> itr = nicknames.iterator();
-                    int playerscount = 1;
-                    boolean playingPlayer = false;
-
-                    while (itr.hasNext()) {
-                        nickname = itr.next();
-                        if (PlayerWorkerMap.containsKey(nickname) && PlayerGodMap.containsKey(nickname)) {
-                            if(nickname.equals(client.getNickname())) {
-                                playingPlayer = true;
-                            }
-
-                            if(playerscount == 1) {
-                                boolean deadPlayer = false;
-                                for(int i=0; i < deadPlayers.size(); i++) {
-                                    if(deadPlayers.get(i).equals(nickname)) {
-                                        deadPlayer = true;
-                                    }
-                                }
-                                boardPage_BuildController.setPlayer1Panel(PlayerGodMap.get(nickname), nickname, playingPlayer, deadPlayer, PlayerWorkerMap.get(nickname));
-                            } else if(playerscount == 2) {
-                                boolean deadPlayer = false;
-                                for(int i=0; i < deadPlayers.size(); i++) {
-                                    if(deadPlayers.get(i).equals(nickname)) {
-                                        deadPlayer = true;
-                                    }
-                                }
-                                boardPage_BuildController.setPlayer2Panel(PlayerGodMap.get(nickname), nickname, playingPlayer, deadPlayer, PlayerWorkerMap.get(nickname));
-                            } else if(playerscount == 3) {
-                                boolean deadPlayer = false;
-                                for(int i=0; i < deadPlayers.size(); i++) {
-                                    if(deadPlayers.get(i).equals(nickname)) {
-                                        deadPlayer = true;
-                                    }
-                                }
-                                boardPage_BuildController.setPlayer3Panel(PlayerGodMap.get(nickname), nickname, playingPlayer, deadPlayer, PlayerWorkerMap.get(nickname));
-                            }
-                        }
-                        playerscount++;
-                        playingPlayer = false;
-                    }
-                }
-
-                if(players.size() == 2) {
-                    boardPage_BuildController.setPanel3Visibility(false);
-                }
-            }
-
-            SantoriniStage.getScene().setRoot(BuildPage);
-            SantoriniStage.show();
-
-        } catch (IOException exception){
-            System.out.println(exception.toString());
-        }
-    }
-
-    public void showBoardPage_OptBuild(){
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/BoardPage_OptBuild.fxml"));
-            Parent OptBuildPage = (Parent) loader.load();
-
-            BoardPage_OptBuildController boardPage_OptBuildController = loader.getController();
-            boardPage_OptBuildController.setGui(this);
-
-            Node cell;
-
-            if (nodeboard.hasChildNodes()) {
-                NodeList cells = nodeboard.getChildNodes();
-
-                for (int i = 0; i < cells.getLength(); i++) {
-                    cell = cells.item(i);
-
-                    if (cell.getNodeName().equals("cell")) {
-                        int id = getIdOfCellNode(cell);
-                        int level = getLevelOfCellNode(cell);
-                        boolean dome = getDomeOfCellNode(cell);
-
-                        String nickname = getNicknameOfCellNode(cell);
-
-                        if(level!=0) {
-                            boardPage_OptBuildController.setLevel(id, level);
-                        }
-
-                        if (dome) {
-                            boardPage_OptBuildController.setDome(id);
-                        }
-
-                        if (!nickname.isEmpty()) {
-                            boardPage_OptBuildController.setWorker(id, PlayerWorkerMap.get(nickname));
-                        }
-
-                        if (!indexcandidatecells.isEmpty()) {
-                            for (int j = 0; j < indexcandidatecells.size(); j++) {
-                                if (indexcandidatecells.get(j) == id) {
-                                    boardPage_OptBuildController.setCandidate(id);
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                }
-
-                if (PlayerGodMap.size() > 0) {
-                    Set<String> nicknames = PlayerGodMap.keySet();
-                    String nickname;
-                    Iterator<String> itr = nicknames.iterator();
-                    int playerscount = 1;
-                    boolean playingPlayer = false;
-
-                    while (itr.hasNext()) {
-                        nickname = itr.next();
-                        if (PlayerWorkerMap.containsKey(nickname) && PlayerGodMap.containsKey(nickname)) {
-                            if(nickname.equals(client.getNickname())) {
-                                playingPlayer = true;
-                            }
-
-                            if(playerscount == 1) {
-                                boolean deadPlayer = false;
-                                for(int i=0; i < deadPlayers.size(); i++) {
-                                    if(deadPlayers.get(i).equals(nickname)) {
-                                        deadPlayer = true;
-                                    }
-                                }
-                                boardPage_OptBuildController.setPlayer1Panel(PlayerGodMap.get(nickname), nickname, playingPlayer, deadPlayer, PlayerWorkerMap.get(nickname));
-                            } else if(playerscount == 2) {
-                                boolean deadPlayer = false;
-                                for(int i=0; i < deadPlayers.size(); i++) {
-                                    if(deadPlayers.get(i).equals(nickname)) {
-                                        deadPlayer = true;
-                                    }
-                                }
-                                boardPage_OptBuildController.setPlayer2Panel(PlayerGodMap.get(nickname), nickname, playingPlayer, deadPlayer, PlayerWorkerMap.get(nickname));
-                            } else if(playerscount == 3) {
-                                boolean deadPlayer = false;
-                                for(int i=0; i < deadPlayers.size(); i++) {
-                                    if(deadPlayers.get(i).equals(nickname)) {
-                                        deadPlayer = true;
-                                    }
-                                }
-                                boardPage_OptBuildController.setPlayer3Panel(PlayerGodMap.get(nickname), nickname, playingPlayer, deadPlayer, PlayerWorkerMap.get(nickname));
-                            }
-                        }
-                        playerscount++;
-                        playingPlayer = false;
-                    }
-                }
-
-                if(players.size() == 2) {
-                    boardPage_OptBuildController.setPanel3Visibility(false);
-                }
-            }
-
-            SantoriniStage.getScene().setRoot(OptBuildPage);
-            SantoriniStage.show();
-
-        } catch (IOException exception){
-            System.out.println(exception.toString());
-        }
-    }
-
-    public void showBoardPage_Update(){
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/BoardPage_Update.fxml"));
-            Parent updatePage = (Parent) loader.load();
-
-            BoardPage_UpdateController boardPage_updateController = loader.getController();
-            boardPage_updateController.setGui(this);
-
-            Node cell;
-
-            if (nodeboard.hasChildNodes()) {
-                NodeList cells = nodeboard.getChildNodes();
-
-                for (int i = 0; i < cells.getLength(); i++) {
-                    cell = cells.item(i);
-
-                    if (cell.getNodeName().equals("cell")) {
-                        int id = getIdOfCellNode(cell);
-                        int level = getLevelOfCellNode(cell);
-                        boolean dome = getDomeOfCellNode(cell);
-
-                        String nickname = getNicknameOfCellNode(cell);
-
-                        if(level!=0) {
-                            boardPage_updateController.setLevel(id, level);
-                        }
-
-                        if (dome) {
-                            boardPage_updateController.setDome(id);
-                        }
-
-                        if (!nickname.isEmpty()) {
-                            boardPage_updateController.setWorker(id, PlayerWorkerMap.get(nickname));
-                        }
-
-                        if (!indexcandidatecells.isEmpty()) {
-                            for (int j = 0; j < indexcandidatecells.size(); j++) {
-                                if (indexcandidatecells.get(j) == id) {
-                                    boardPage_updateController.setCandidate(id);
                                     break;
                                 }
                             }
@@ -1028,28 +401,31 @@ public class GUI extends Application implements ClientObserver {
 
                             if(playerscount == 1) {
                                 boolean deadPlayer = false;
-                                for(int i=0; i < deadPlayers.size(); i++) {
-                                    if(deadPlayers.get(i).equals(nickname)) {
+                                for (String player : deadPlayers) {
+                                    if (player.equals(nickname)) {
                                         deadPlayer = true;
+                                        break;
                                     }
                                 }
-                                boardPage_updateController.setPlayer1Panel(PlayerGodMap.get(nickname), nickname, playingPlayer, deadPlayer, PlayerWorkerMap.get(nickname));
+                                boardPage_PlacingWorkersController.setPlayer1Panel(PlayerGodMap.get(nickname), nickname, playingPlayer, deadPlayer, PlayerWorkerMap.get(nickname));
                             } else if(playerscount == 2) {
                                 boolean deadPlayer = false;
-                                for(int i=0; i < deadPlayers.size(); i++) {
-                                    if(deadPlayers.get(i).equals(nickname)) {
+                                for (String player : deadPlayers) {
+                                    if (player.equals(nickname)) {
                                         deadPlayer = true;
+                                        break;
                                     }
                                 }
-                                boardPage_updateController.setPlayer2Panel(PlayerGodMap.get(nickname), nickname, playingPlayer, deadPlayer, PlayerWorkerMap.get(nickname));
+                                boardPage_PlacingWorkersController.setPlayer2Panel(PlayerGodMap.get(nickname), nickname, playingPlayer, deadPlayer, PlayerWorkerMap.get(nickname));
                             } else if(playerscount == 3) {
                                 boolean deadPlayer = false;
-                                for(int i=0; i < deadPlayers.size(); i++) {
-                                    if(deadPlayers.get(i).equals(nickname)) {
+                                for (String player : deadPlayers) {
+                                    if (player.equals(nickname)) {
                                         deadPlayer = true;
+                                        break;
                                     }
                                 }
-                                boardPage_updateController.setPlayer3Panel(PlayerGodMap.get(nickname), nickname, playingPlayer, deadPlayer, PlayerWorkerMap.get(nickname));
+                                boardPage_PlacingWorkersController.setPlayer3Panel(PlayerGodMap.get(nickname), nickname, playingPlayer, deadPlayer, PlayerWorkerMap.get(nickname));
                             }
                         }
                         playerscount++;
@@ -1058,11 +434,11 @@ public class GUI extends Application implements ClientObserver {
                 }
 
                 if(players.size() == 2) {
-                    boardPage_updateController.setPanel3Visibility(false);
+                    boardPage_PlacingWorkersController.setPanel3Visibility(false);
                 }
             }
 
-            SantoriniStage.getScene().setRoot(updatePage);
+            SantoriniStage.getScene().setRoot(PlacingWorkersPage);
             SantoriniStage.show();
 
         } catch (IOException exception){
@@ -1070,16 +446,14 @@ public class GUI extends Application implements ClientObserver {
         }
     }
 
-    public void showBoardPage_OptEnd(){
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/BoardPage_OptEnd.fxml"));
-            Parent OptEndPage = (Parent) loader.load();
+    public void showBoardPage_UniqueBoard(){
+            if(BoardPage==null){
+                loadBoardPage();
+             }
 
-            BoardPage_OptEndController boardPage_OptEndController = loader.getController();
-            boardPage_OptEndController.setGui(this);
-
+            BoardController.resetBoardGrid();
             Node cell;
-
+            BoardController.setPhaseName();
             if (nodeboard.hasChildNodes()) {
                 NodeList cells = nodeboard.getChildNodes();
 
@@ -1094,21 +468,21 @@ public class GUI extends Application implements ClientObserver {
                         String nickname = getNicknameOfCellNode(cell);
 
                         if(level!=0) {
-                            boardPage_OptEndController.setLevel(id, level);
+                            BoardController.setLevel(id, level);
                         }
 
                         if (dome) {
-                            boardPage_OptEndController.setDome(id);
+                            BoardController.setDome(id);
                         }
 
                         if (!nickname.isEmpty()) {
-                            boardPage_OptEndController.setWorker(id, PlayerWorkerMap.get(nickname));
+                            BoardController.setWorker(id, PlayerWorkerMap.get(nickname));
                         }
 
                         if (!indexcandidatecells.isEmpty()) {
-                            for (int j = 0; j < indexcandidatecells.size(); j++) {
-                                if (indexcandidatecells.get(j) == id) {
-                                    boardPage_OptEndController.setCandidate(id);
+                            for (Integer indexcandidatecell : indexcandidatecells) {
+                                if (indexcandidatecell == id) {
+                                    BoardController.setCandidate(id);
                                     break;
                                 }
                             }
@@ -1126,34 +500,37 @@ public class GUI extends Application implements ClientObserver {
                     while (itr.hasNext()) {
                         nickname = itr.next();
                         if (PlayerWorkerMap.containsKey(nickname) && PlayerGodMap.containsKey(nickname)) {
-                            if(nickname.equals(client.getNickname())) {
+                            if(nickname.equals(playingPlayerNickname)) {
                                 playingPlayer = true;
                             }
 
                             if(playerscount == 1) {
                                 boolean deadPlayer = false;
-                                for(int i=0; i < deadPlayers.size(); i++) {
-                                    if(deadPlayers.get(i).equals(nickname)) {
+                                for (String player : deadPlayers) {
+                                    if (player.equals(nickname)) {
                                         deadPlayer = true;
+                                        break;
                                     }
                                 }
-                                boardPage_OptEndController.setPlayer1Panel(PlayerGodMap.get(nickname), nickname, playingPlayer, deadPlayer, PlayerWorkerMap.get(nickname));
+                                BoardController.setPlayer1Panel(PlayerGodMap.get(nickname), nickname, playingPlayer, deadPlayer, PlayerWorkerMap.get(nickname));
                             } else if(playerscount == 2) {
                                 boolean deadPlayer = false;
-                                for(int i=0; i < deadPlayers.size(); i++) {
-                                    if(deadPlayers.get(i).equals(nickname)) {
+                                for (String player : deadPlayers) {
+                                    if (player.equals(nickname)) {
                                         deadPlayer = true;
+                                        break;
                                     }
                                 }
-                                boardPage_OptEndController.setPlayer2Panel(PlayerGodMap.get(nickname), nickname, playingPlayer, deadPlayer, PlayerWorkerMap.get(nickname));
+                                BoardController.setPlayer2Panel(PlayerGodMap.get(nickname), nickname, playingPlayer, deadPlayer, PlayerWorkerMap.get(nickname));
                             } else if(playerscount == 3) {
                                 boolean deadPlayer = false;
-                                for(int i=0; i < deadPlayers.size(); i++) {
-                                    if(deadPlayers.get(i).equals(nickname)) {
+                                for (String player : deadPlayers) {
+                                    if (player.equals(nickname)) {
                                         deadPlayer = true;
+                                        break;
                                     }
                                 }
-                                boardPage_OptEndController.setPlayer3Panel(PlayerGodMap.get(nickname), nickname, playingPlayer, deadPlayer, PlayerWorkerMap.get(nickname));
+                                BoardController.setPlayer3Panel(PlayerGodMap.get(nickname), nickname, playingPlayer, deadPlayer, PlayerWorkerMap.get(nickname));
                             }
                         }
                         playerscount++;
@@ -1162,16 +539,13 @@ public class GUI extends Application implements ClientObserver {
                 }
 
                 if(players.size() == 2) {
-                    boardPage_OptEndController.setPanel3Visibility(false);
+                    BoardController.setPanel3Visibility(false);
                 }
             }
 
-            SantoriniStage.getScene().setRoot(OptEndPage);
+            SantoriniStage.getScene().setRoot(BoardPage);
             SantoriniStage.show();
 
-        } catch (IOException exception){
-            System.out.println(exception.toString());
-        }
     }
 
     public void showYouHaveWonPage(){
@@ -1226,7 +600,19 @@ public class GUI extends Application implements ClientObserver {
         }
     }
 
-
+    public void loadBoardPage(){
+        try {
+            if(this.currentPhase==null){
+                this.currentPhase = Phase.ChooseWorker;
+            }
+            FXMLLoader boardloader = new FXMLLoader(getClass().getResource("/views/BoardPage_UniqueBoard.fxml"));
+            this.BoardPage = (Parent) boardloader.load();
+            this.BoardController = boardloader.getController();
+            this.BoardController.setGui(this);
+        } catch (IOException exception){
+            System.out.println(exception.toString());
+        }
+    }
 
     /* ***************************************************************************************************************
      *                    Methods fired by the client's methods that trigger the change of the view                  *
@@ -1459,6 +845,8 @@ public class GUI extends Application implements ClientObserver {
                 }
             }
         }
+
+        this.playingPlayerNickname = this.client.getNickname();
         Platform.runLater(() -> showBoardPage_PlacingWorkers());
     }
 
@@ -1474,7 +862,9 @@ public class GUI extends Application implements ClientObserver {
     @Override
     public void OnChooseWorker(Node board) {
         this.nodeboard = board;
-        Platform.runLater(() -> showBoardPage_ChooseWorker());
+        this.playingPlayerNickname = this.client.getNickname();
+        this.currentPhase = Phase.ChooseWorker;
+        Platform.runLater(() -> showBoardPage_UniqueBoard());
     }
 
     /**
@@ -1509,7 +899,9 @@ public class GUI extends Application implements ClientObserver {
                 }
             }
         }
-        Platform.runLater(() -> showBoardPage_Move());
+        this.playingPlayerNickname = this.client.getNickname();
+        this.currentPhase = Phase.Move;
+        Platform.runLater(() -> showBoardPage_UniqueBoard());
     }
 
     /**
@@ -1544,8 +936,9 @@ public class GUI extends Application implements ClientObserver {
                 }
             }
         }
-
-        Platform.runLater(() -> showBoardPage_OptMove());
+        this.playingPlayerNickname = this.client.getNickname();
+        this.currentPhase = Phase.OptMove;
+        Platform.runLater(() -> showBoardPage_UniqueBoard());
     }
 
     /**
@@ -1580,7 +973,9 @@ public class GUI extends Application implements ClientObserver {
                 }
             }
         }
-        Platform.runLater(() -> showBoardPage_Build());
+        this.playingPlayerNickname = this.client.getNickname();
+        this.currentPhase = Phase.Build;
+        Platform.runLater(() -> showBoardPage_UniqueBoard());
     }
 
     /**
@@ -1615,7 +1010,9 @@ public class GUI extends Application implements ClientObserver {
                 }
             }
         }
-        Platform.runLater(() -> showBoardPage_OptBuild());
+        this.playingPlayerNickname = this.client.getNickname();
+        this.currentPhase = Phase.OptBuild;
+        Platform.runLater(() -> showBoardPage_UniqueBoard());
     }
 
     /**
@@ -1650,8 +1047,9 @@ public class GUI extends Application implements ClientObserver {
                 }
             }
         }
-
-        Platform.runLater(() -> showBoardPage_OptEnd());
+        this.playingPlayerNickname = this.client.getNickname();
+        this.currentPhase = Phase.OptEnd;
+        Platform.runLater(() -> showBoardPage_UniqueBoard());
     }
 
     /**
@@ -1705,7 +1103,8 @@ public class GUI extends Application implements ClientObserver {
                 this.playingPlayerNickname = node.getAttributes().getNamedItem("nickname").getTextContent();
             }
         }
-        Platform.runLater(() -> showBoardPage_Update());
+        this.currentPhase = Phase.Update;
+        Platform.runLater(() -> showBoardPage_UniqueBoard());
     }
 
 
@@ -1918,7 +1317,9 @@ public class GUI extends Application implements ClientObserver {
         Platform.runLater(() -> showRegisteredPage());
     }
 
-
+    public Phase getCurrentPhase(){
+        return this.currentPhase;
+    }
 }
 
 

@@ -24,58 +24,18 @@ public class ChooseYourGodCase2Controller {
     private GUI gui;
 
     public Client client = null;
-    private List<String> gods = null;
-    private List<String> players = null;
-    private Node nodeboard; //it's overwritten every time a new board needs to be printed
-    private List<Integer> indexcandidatecells = new ArrayList<Integer>(); //used for move and build and is overwritten every time
-    private Map<String, String> NicknameGodMap = new HashMap<String, String>();
-    private String[] chosen_cmd;
-    private String godSelected;
     private List<String> godsToSave = new ArrayList<>();
     private int godselected=0;
 
     /* ***************************************** GUI RENDERING RELATED VARIABLES ****************************************** */
     @FXML
     public ImageView GodLeft;
-    @FXML
     public ImageView GodRight;
-    @FXML
     public ImageView GodDescription;
-    @FXML
     public ImageView ConfirmButton;
 
-    Image ConfirmButtonReleased = new Image("images/Buttons/btn_Confirm.png");
-    Image ConfirmButtonPressed = new Image("images/Buttons/btn_Confirm_pressed.png");
-    Image ApolloDescription = new Image("images/Gods/ApolloDescription.png");
-    Image AresDescription = new Image("images/Gods/AresDescription.png");
-    Image ArtemisDescription = new Image("images/Gods/ArtemisDescription.png");
-    Image AthenaDescription = new Image("images/Gods/AthenaDescription.png");
-    Image AtlasDescription = new Image("images/Gods/AtlasDescription.png");
-    Image DemeterDescription = new Image("images/Gods/DemeterDescription.png");
-    Image HephaestusDescription = new Image("images/Gods/HephaestusDescription.png");
-    Image HestiaDescription = new Image("images/Gods/HestiaDescription.png");
-    Image MedusaDescription = new Image("images/Gods/MedusaDescription.png");
-    Image MinotaurDescription = new Image("images/Gods/MinotaurDescription.png");
-    Image PanDescription = new Image("images/Gods/PanDescription.png");
-    Image PoseidonDescription = new Image("images/Gods/PoseidonDescription.png");
-    Image PrometheusDescription = new Image("images/Gods/PrometheusDescription.png");
-    Image ZeusDescription = new Image("images/Gods/ZeusDescription.png");
     Image GodLeftDescription;
     Image GodRightDescription;
-    Image ApolloDisplayed = new Image("images/Gods/Apollo_big.png");
-    Image AresDisplayed = new Image("images/Gods/Ares_big.png");
-    Image ArtemisDisplayed = new Image("images/Gods/Artemis_big.png");
-    Image AthenaDisplayed = new Image("images/Gods/Athena_big.png");
-    Image AtlasDisplayed = new Image("images/Gods/Atlas_big.png");
-    Image DemeterDisplayed = new Image("images/Gods/Demeter_big.png");
-    Image HephaestusDisplayed = new Image("images/Gods/Hephaestus_big.png");
-    Image HestiaDisplayed = new Image("images/Gods/Hestia_big.png");
-    Image MedusaDisplayed = new Image("images/Gods/Medusa_big.png");
-    Image MinotaurDisplayed = new Image("images/Gods/Minotaur_big.png");
-    Image PanDisplayed = new Image("images/Gods/Pan_big.png");
-    Image PoseidonDisplayed = new Image("images/Gods/Poseidon_big.png");
-    Image PrometheusDisplayed = new Image("images/Gods/Prometheus_full.png");
-    Image ZeusDisplayed = new Image("images/Gods/Zeus_big.png");
     /* ****************************************************************************************************************** */
 
     /**
@@ -107,7 +67,7 @@ public class ChooseYourGodCase2Controller {
     /* ******************************* GUI CONTROLLER METHODS THAT TRIGGER GUI RENDERING AND CONNECTION WITH SERVER  ****************************** */
 
     public void confirmButtonPressed() {
-        ConfirmButton.setImage(ConfirmButtonPressed);
+        ConfirmButton.setImage(new Image("images/Buttons/btn_Confirm_pressed.png"));
         if (godselected == 0) {
             gui.doSendSelectedGod(godsToSave.get(0));
         } else if(godselected == 1) {
@@ -116,126 +76,16 @@ public class ChooseYourGodCase2Controller {
     }
 
     public void confirmButtonReleased() {
-        ConfirmButton.setImage(ConfirmButtonReleased);
+        ConfirmButton.setImage(new Image("images/Buttons/btn_Confirm.png"));
     }
 
     public void setImagesOfGods(List<String> chosenGods) {
-        switch (chosenGods.get(0)) {
-            case "Apollo":
-                GodLeft.setImage(ApolloDisplayed);
-                GodLeftDescription = ApolloDescription;
-                break;
-            case "Artemis":
-                GodLeft.setImage(ArtemisDisplayed);
-                GodLeftDescription = ArtemisDescription;
-                break;
-            case "Ares":
-                GodLeft.setImage(AresDisplayed);
-                GodLeftDescription = AresDescription;
-                break;
-            case "Athena":
-                GodLeft.setImage(AthenaDisplayed);
-                GodLeftDescription = AthenaDescription;
-                break;
-            case "Atlas":
-                GodLeft.setImage(AtlasDisplayed);
-                GodLeftDescription = AtlasDescription;
-                break;
-            case "Demeter":
-                GodLeft.setImage(DemeterDisplayed);
-                GodLeftDescription = DemeterDescription;
-                break;
-            case "Hephaestus":
-                GodLeft.setImage(HephaestusDisplayed);
-                GodLeftDescription = HephaestusDescription;
-                break;
-            case "Hestia":
-                GodLeft.setImage(HestiaDisplayed);
-                GodLeftDescription =HestiaDescription;
-                break;
-            case "Medusa":
-                GodLeft.setImage(MedusaDisplayed);
-                GodLeftDescription = MedusaDescription;
-                break;
-            case "Minotaur":
-                GodLeft.setImage(MinotaurDisplayed);
-                GodLeftDescription = MinotaurDescription;
-                break;
-            case "Pan":
-                GodLeft.setImage(PanDisplayed);
-                GodLeftDescription = PanDescription;
-                break;
-            case "Poseidon":
-                GodLeft.setImage(PoseidonDisplayed);
-                GodLeftDescription = PoseidonDescription;
-                break;
-            case "Prometheus":
-                GodLeft.setImage(PrometheusDisplayed);
-                GodLeftDescription = PrometheusDescription;
-                break;
-            case "Zeus":
-                GodLeft.setImage(ZeusDisplayed);
-                GodLeftDescription = ZeusDescription;
-                break;
-        }
-        switch (chosenGods.get(1)) {
-            case "Apollo":
-                GodRight.setImage(ApolloDisplayed);
-                GodRightDescription = ApolloDescription;
-                break;
-            case "Artemis":
-                GodRight.setImage(ArtemisDisplayed);
-                GodRightDescription = ArtemisDescription;
-                break;
-            case "Ares":
-                GodRight.setImage(AresDisplayed);
-                GodRightDescription = AresDescription;
-                break;
-            case "Athena":
-                GodRight.setImage(AthenaDisplayed);
-                GodRightDescription = AthenaDescription;
-                break;
-            case "Atlas":
-                GodRight.setImage(AtlasDisplayed);
-                GodRightDescription = AtlasDescription;
-                break;
-            case "Demeter":
-                GodRight.setImage(DemeterDisplayed);
-                GodRightDescription = DemeterDescription;
-                break;
-            case "Hephaestus":
-                GodRight.setImage(HephaestusDisplayed);
-                GodRightDescription = HephaestusDescription;
-                break;
-            case "Hestia":
-                GodRight.setImage(HestiaDisplayed);
-                GodRightDescription = HestiaDescription;
-                break;
-            case "Medusa":
-                GodRight.setImage(MedusaDisplayed);
-                GodRightDescription = MedusaDescription;
-                break;
-            case "Minotaur":
-                GodRight.setImage(MinotaurDisplayed);
-                GodRightDescription = MinotaurDescription;
-                break;
-            case "Pan":
-                GodRight.setImage(PanDisplayed);
-                GodRightDescription = PanDescription;
-                break;
-            case "Poseidon":
-                GodRight.setImage(PoseidonDisplayed);
-                GodRightDescription = PoseidonDescription;
-                break;
-            case "Prometheus":
-                GodRight.setImage(PrometheusDisplayed);
-                GodRightDescription = PrometheusDescription;
-                break;
-            case "Zeus":
-                GodRight.setImage(ZeusDisplayed);
-                GodRightDescription = ZeusDescription;
-                break;
-        }
+        String god1 = chosenGods.get(0);
+        GodLeft.setImage(new Image("images/Gods/"+god1+"_big.png"));
+        GodLeftDescription = new Image("images/Gods/"+god1+"Description.png");
+        String god2 = chosenGods.get(1);
+        GodRight.setImage(new Image("images/Gods/"+god2+"_big.png"));
+        GodRightDescription = new Image("images/Gods/"+god2+"Description.png");
     }
 
     public void selectGodLeft(){

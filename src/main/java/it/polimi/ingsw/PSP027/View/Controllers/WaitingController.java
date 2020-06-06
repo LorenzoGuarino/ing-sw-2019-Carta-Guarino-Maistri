@@ -23,27 +23,14 @@ public class WaitingController {
     private GUI gui;
 
     public Client client = null;
-    private int requiredgods = 0;
-    private List<String> gods = null;
-    private List<String> players = null;
-    private Node nodeboard; //it's overwritten every time a new board needs to be printed
-    private List<Integer> indexcandidatecells = new ArrayList<Integer>(); //used for move and build and is overwritten every time
-    private Map<String, String> NicknameGodMap = new HashMap<String, String>();
-    private String[] chosen_cmd;
 
 
     /* ***************************************** GUI RENDERING RELATED VARIABLES ****************************************** */
 
     @FXML
     public Label WaitingMessage;
-    @FXML
     public Pane WaitingPane;
-
-    @FXML
     public ImageView ExitGameButton;
-    Image exitButtonHovered = new Image("images/Buttons/btn_exitGame_hovered.png");
-    Image exitButtonReleased = new Image("images/Buttons/btn_exitGame.png");
-
 
     /* ****************************************************************************************************************** */
 
@@ -73,7 +60,7 @@ public class WaitingController {
     }
 
     public void exitButtonHovered() {
-        ExitGameButton.setImage(exitButtonHovered);
+        ExitGameButton.setImage(new Image("images/Buttons/btn_exitGame_hovered.png"));
     }
 
     public void exitButtonPressed() {
@@ -87,11 +74,11 @@ public class WaitingController {
         alert.initOwner(gui.getSantoriniStage());
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == YES)
-            gui.doPlayAgain();
+            gui.doDeregister();
     }
 
     public void exitButtonReleased() {
-        ExitGameButton.setImage(exitButtonReleased);
+        ExitGameButton.setImage(new Image("images/Buttons/btn_exitGame.png"));
     }
 
 }

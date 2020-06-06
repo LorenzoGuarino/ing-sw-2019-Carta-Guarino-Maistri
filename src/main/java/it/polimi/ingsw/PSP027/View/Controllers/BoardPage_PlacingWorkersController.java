@@ -17,8 +17,6 @@ import java.util.Optional;
 
 public class BoardPage_PlacingWorkersController {
     private GUI gui;
-    private ArrayList<ImageView> cellLevelList = new ArrayList<>();
-    private ArrayList<ImageView> cellDomeList = new ArrayList<>();
     private ArrayList<ImageView> cellWorkerList = new ArrayList<>();
     private ArrayList<ImageView> cellCandidateList = new ArrayList<>();
     private final List<String> cellsToSend = new ArrayList<>();
@@ -26,63 +24,6 @@ public class BoardPage_PlacingWorkersController {
 
     @FXML
     public ImageView ConfirmButton;
-    Image ConfirmButtonReleased = new Image("images/Buttons/btn_Confirm.png");
-    Image ConfirmButtonPressed = new Image("images/Buttons/btn_Confirm_pressed.png");
-
-    @FXML
-    //cellLevelImageViews
-    public ImageView A1L;
-    public ImageView A2L;
-    public ImageView A3L;
-    public ImageView A4L;
-    public ImageView A5L;
-    public ImageView B1L;
-    public ImageView B2L;
-    public ImageView B3L;
-    public ImageView B4L;
-    public ImageView B5L;
-    public ImageView C1L;
-    public ImageView C2L;
-    public ImageView C3L;
-    public ImageView C4L;
-    public ImageView C5L;
-    public ImageView D1L;
-    public ImageView D2L;
-    public ImageView D3L;
-    public ImageView D4L;
-    public ImageView D5L;
-    public ImageView E1L;
-    public ImageView E2L;
-    public ImageView E3L;
-    public ImageView E4L;
-    public ImageView E5L;
-
-    //cellDomeImageViews
-    public ImageView A1D;
-    public ImageView A2D;
-    public ImageView A3D;
-    public ImageView A4D;
-    public ImageView A5D;
-    public ImageView B1D;
-    public ImageView B2D;
-    public ImageView B3D;
-    public ImageView B4D;
-    public ImageView B5D;
-    public ImageView C1D;
-    public ImageView C2D;
-    public ImageView C3D;
-    public ImageView C4D;
-    public ImageView C5D;
-    public ImageView D1D;
-    public ImageView D2D;
-    public ImageView D3D;
-    public ImageView D4D;
-    public ImageView D5D;
-    public ImageView E1D;
-    public ImageView E2D;
-    public ImageView E3D;
-    public ImageView E4D;
-    public ImageView E5D;
 
     //cellWorkerImageViews
     public ImageView A1W;
@@ -138,11 +79,6 @@ public class BoardPage_PlacingWorkersController {
     public ImageView E4C;
     public ImageView E5C;
 
-
-    public Image level1Image = new Image("images/Board/Level1_Board.png");
-    public Image level2Image = new Image("images/Board/Level2_Board.png");
-    public Image level3Image = new Image("images/Board/Level3_Board.png");
-    public Image domeImage = new Image("images/Board/Dome_Board.png");
     public Image candidate = new Image("/images/Board/CandidateCell_board.png");
 
     public Label nicknamePlayer1;
@@ -152,9 +88,6 @@ public class BoardPage_PlacingWorkersController {
     public ImageView Player1Panel;
     public ImageView Player2Panel;
     public ImageView Player3Panel;
-
-    Image PlayingPlayerPanel = new Image("images/Board/PlayingPlayerPanel.png");
-    Image NormalPlayerPanel = new Image("images/Board/PlayerBoardPanel.png");
 
     public ImageView Player1God;
     public ImageView Player2God;
@@ -167,29 +100,9 @@ public class BoardPage_PlacingWorkersController {
     public ImageView Player1Icon;
     public ImageView Player2Icon;
     public ImageView Player3Icon;
-
-    Image Apollo = new Image("images/Gods/Apollo_icon.png");
-    Image Ares = new Image("images/Gods/Ares_icon.png");
-    Image Artemis = new Image("images/Gods/Artemis_icon.png");
-    Image Athena = new Image("images/Gods/Athena_icon.png");
-    Image Atlas = new Image("images/Gods/Atlas_icon.png");
-    Image Demeter = new Image("images/Gods/Demeter_icon.png");
-    Image Hephaestus = new Image("images/Gods/Hephaestus_icon.png");
-    Image Hestia = new Image("images/Gods/Hestia_icon.png");
-    Image Medusa = new Image("images/Gods/Medusa_icon.png");
-    Image Minotaur = new Image("images/Gods/Minotaur_icon.png");
-    Image Pan = new Image("images/Gods/Pan_icon.png");
-    Image Poseidon = new Image("images/Gods/Poseidon_icon.png");
-    Image Prometheus = new Image("images/Gods/Prometheus_icon.png");
-    Image Zeus = new Image("images/Gods/Zeus_icon.png");
-
-    @FXML
     public ImageView ExitGameButton;
-    Image exitButtonHovered = new Image("images/Buttons/btn_exitGame_hovered.png");
-    Image exitButtonReleased = new Image("images/Buttons/btn_exitGame.png");
-
     /**
-     * Constructor
+     * Constructor, called before the initialize method
      */
     public BoardPage_PlacingWorkersController(){
     }
@@ -215,71 +128,7 @@ public class BoardPage_PlacingWorkersController {
 
 
     /**
-     * This method creates a dependency between the level of the cell index = the list index
-     * and the corresponding ImageView in the gridPane displaying the board
-     */
-    public void initCellLevelList() {
-        cellLevelList.add(this.A1L);
-        cellLevelList.add(this.A2L);
-        cellLevelList.add(this.A3L);
-        cellLevelList.add(this.A4L);
-        cellLevelList.add(this.A5L);
-        cellLevelList.add(this.B1L);
-        cellLevelList.add(this.B2L);
-        cellLevelList.add(this.B3L);
-        cellLevelList.add(this.B4L);
-        cellLevelList.add(this.B5L);
-        cellLevelList.add(this.C1L);
-        cellLevelList.add(this.C2L);
-        cellLevelList.add(this.C3L);
-        cellLevelList.add(this.C4L);
-        cellLevelList.add(this.C5L);
-        cellLevelList.add(this.D1L);
-        cellLevelList.add(this.D2L);
-        cellLevelList.add(this.D3L);
-        cellLevelList.add(this.D4L);
-        cellLevelList.add(this.D5L);
-        cellLevelList.add(this.E1L);
-        cellLevelList.add(this.E2L);
-        cellLevelList.add(this.E3L);
-        cellLevelList.add(this.E4L);
-        cellLevelList.add(this.E5L);
-    }
-    /**
-     * This method creates a dependency between the dome of the cell index = the list index
-     * and the corresponding ImageView in the gridPane displaying the board
-     */
-    public void initCellDomeList() {
-        cellDomeList.add(this.A1D);
-        cellDomeList.add(this.A2D);
-        cellDomeList.add(this.A3D);
-        cellDomeList.add(this.A4D);
-        cellDomeList.add(this.A5D);
-        cellDomeList.add(this.B1D);
-        cellDomeList.add(this.B2D);
-        cellDomeList.add(this.B3D);
-        cellDomeList.add(this.B4D);
-        cellDomeList.add(this.B5D);
-        cellDomeList.add(this.C1D);
-        cellDomeList.add(this.C2D);
-        cellDomeList.add(this.C3D);
-        cellDomeList.add(this.C4D);
-        cellDomeList.add(this.C5D);
-        cellDomeList.add(this.D1D);
-        cellDomeList.add(this.D2D);
-        cellDomeList.add(this.D3D);
-        cellDomeList.add(this.D4D);
-        cellDomeList.add(this.D5D);
-        cellDomeList.add(this.E1D);
-        cellDomeList.add(this.E2D);
-        cellDomeList.add(this.E3D);
-        cellDomeList.add(this.E4D);
-        cellDomeList.add(this.E5D);
-    }
-
-    /**
-     * This method creates a dependency between the dome of the cell index = the list index
-     * and the corresponding ImageView in the gridPane displaying the board
+     * This method creates a List of Image to display the worker position
      */
     public void initCellWorkerList() {
         cellWorkerList.add(this.A1W);
@@ -310,8 +159,7 @@ public class BoardPage_PlacingWorkersController {
     }
 
     /**
-     * This method creates a dependency between the dome of the cell index = the list index
-     * and the corresponding ImageView in the gridPane displaying the board
+     * This method creates a List of Image to display the Cell that can be clicked
      */
     public void initCellCandidateList() {
         cellCandidateList.add(this.A1C);
@@ -341,49 +189,27 @@ public class BoardPage_PlacingWorkersController {
         cellCandidateList.add(this.E5C);
     }
 
-
+    /**
+     * Method that update the image of the button pressed and call the method that sends the position,
+     * chosen for the workers by the player that is playing to the GUI
+     */
     public void confirmButtonPressed() {
-        ConfirmButton.setImage(ConfirmButtonPressed);
+        ConfirmButton.setImage(new Image("images/Buttons/btn_Confirm_pressed.png"));
         gui.doSendSelectedCellsForWorkers(cellsToSend);
     }
 
+    /**
+     * Method that update the image of the button pressed
+     */
     public void confirmButtonReleased() {
-        ConfirmButton.setImage(ConfirmButtonReleased);
+        ConfirmButton.setImage(new Image("images/Buttons/btn_Confirm.png"));
     }
 
     /**
-     * Given a cell index and a level ,this method sets the corresponding level height on the corresponding gridPane cell
-     * @param index the index of the cell to set the level of
-     * @param level the level displayed on the given cell after the method call
+     * Method that set an image to display the worker already on the board
+     * @param index cell occupied by the worker
+     * @param url Id that distinguishes each workers by his color (different by each player)
      */
-    public void setLevel(int index, int level){
-        System.out.println("SETLEVEL CALLED ON" +index);
-        if(this.cellLevelList.size()==0){
-            initCellLevelList();
-        }
-        switch(level){
-            case 1: {
-                this.cellLevelList.get(index).setImage(this.level1Image);
-                break;
-            }
-            case 2: {
-                this.cellLevelList.get(index).setImage(this.level2Image);
-                break;
-            }
-            case 3: {
-                this.cellLevelList.get(index).setImage(this.level3Image);
-                break;
-            }
-        }
-    }
-
-    public void setDome(int index){
-        if(this.cellDomeList.size()==0){
-            initCellDomeList();
-        }
-        this.cellDomeList.get(index).setImage(this.domeImage);
-    }
-
     public void setWorker(int index, String url){
         if(this.cellWorkerList.size()==0){
             initCellWorkerList();
@@ -392,6 +218,10 @@ public class BoardPage_PlacingWorkersController {
         this.cellWorkerList.get(index).setImage(worker);
     }
 
+    /**
+     * Method that set an image to display the Candidate Cell selectable
+     * @param index cell highlighted by the Candidate ring
+     */
     public void setCandidate(int index){
         if(this.cellCandidateList.size()==0) {
             initCellCandidateList();
@@ -399,59 +229,22 @@ public class BoardPage_PlacingWorkersController {
         this.cellCandidateList.get(index).setImage(this.candidate);
     }
 
+    /**
+     * Method that set the Player 1 Pane with every detail about it
+     * @param god god card owned by the player 1
+     * @param nickname nickname of the player 1
+     * @param playingPlayer indicate if the player 1 is the one that is playing the turn
+     * @param deadPlayer indicate if the player 1 is dead or is not playing anymore
+     * @param url_icon Id that distinguishes each workers by his color (different by each player)
+     */
     public void setPlayer1Panel(String god, String nickname, boolean playingPlayer, boolean deadPlayer, String url_icon) {
         if(playingPlayer) {
-            Player1Panel.setImage(PlayingPlayerPanel);
+            Player1Panel.setImage(new Image("images/Board/PlayingPlayerPanel.png"));
         }
         else {
-            Player1Panel.setImage(NormalPlayerPanel);
+            Player1Panel.setImage(new Image("images/Board/PlayerBoardPanel.png"));
         }
-
-        switch (god) {
-            case "Apollo":
-                Player1God.setImage(Apollo);
-                break;
-            case "Artemis":
-                Player1God.setImage(Artemis);
-                break;
-            case "Ares":
-                Player1God.setImage(Ares);
-                break;
-            case "Athena":
-                Player1God.setImage(Athena);
-                break;
-            case "Atlas":
-                Player1God.setImage(Atlas);
-                break;
-            case "Demeter":
-                Player1God.setImage(Demeter);
-                break;
-            case "Hephaestus":
-                Player1God.setImage(Hephaestus);
-                break;
-            case "Hestia":
-                Player1God.setImage(Hestia);
-                break;
-            case "Medusa":
-                Player1God.setImage(Medusa);
-                break;
-            case "Minotaur":
-                Player1God.setImage(Minotaur);
-                break;
-            case "Pan":
-                Player1God.setImage(Pan);
-                break;
-            case "Poseidon":
-                Player1God.setImage(Poseidon);
-                break;
-            case "Prometheus":
-                Player1God.setImage(Prometheus);
-                break;
-            case "Zeus":
-                Player1God.setImage(Zeus);
-                break;
-        }
-
+        Player1God.setImage(new Image("images/Gods/"+god+"_icon.png"));
         nicknamePlayer1.setText(nickname.toUpperCase());
 
         Image worker_icon = new Image(url_icon);
@@ -461,60 +254,22 @@ public class BoardPage_PlacingWorkersController {
             Player1Dead.setVisible(true);
         }
     }
-
+    /**
+     * Method that set the Player 2 Pane with every detail about it
+     * @param god god card owned by the player 2
+     * @param nickname nickname of the player 2
+     * @param playingPlayer indicate if the player 2 is the one that is playing the turn
+     * @param deadPlayer indicate if the player 2 is dead or is not playing anymore
+     * @param url_icon Id that distinguishes each workers by his color (different by each player)
+     */
     public void setPlayer2Panel(String god, String nickname, boolean playingPlayer, boolean deadPlayer, String url_icon) {
         if(playingPlayer) {
-            Player2Panel.setImage(PlayingPlayerPanel);
+            Player2Panel.setImage(new Image("images/Board/PlayingPlayerPanel.png"));
         }
         else {
-            Player2Panel.setImage(NormalPlayerPanel);
+            Player2Panel.setImage(new Image("images/Board/PlayerBoardPanel.png"));
         }
-
-        switch (god) {
-            case "Apollo":
-                Player2God.setImage(Apollo);
-            break;
-            case "Artemis":
-                Player2God.setImage(Artemis);
-            break;
-            case "Ares":
-                Player2God.setImage(Ares);
-            break;
-            case "Athena":
-                Player2God.setImage(Athena);
-            break;
-            case "Atlas":
-                Player2God.setImage(Atlas);
-            break;
-            case "Demeter":
-                Player2God.setImage(Demeter);
-            break;
-            case "Hephaestus":
-                Player2God.setImage(Hephaestus);
-            break;
-            case "Hestia":
-                Player2God.setImage(Hestia);
-            break;
-            case "Medusa":
-                Player2God.setImage(Medusa);
-            break;
-            case "Minotaur":
-                Player2God.setImage(Minotaur);
-            break;
-            case "Pan":
-                Player2God.setImage(Pan);
-            break;
-            case "Poseidon":
-                Player2God.setImage(Poseidon);
-            break;
-            case "Prometheus":
-                Player2God.setImage(Prometheus);
-            break;
-            case "Zeus":
-                Player2God.setImage(Zeus);
-            break;
-        }
-
+        Player2God.setImage(new Image("images/Gods/"+god+"_icon.png"));
         nicknamePlayer2.setText(nickname.toUpperCase());
 
         Image worker_icon = new Image(url_icon);
@@ -524,60 +279,22 @@ public class BoardPage_PlacingWorkersController {
             Player2Dead.setVisible(true);
         }
     }
-
+    /**
+     * Method that set the Player 3 Pane with every detail about it
+     * @param god god card owned by the player 3
+     * @param nickname nickname of the player 3
+     * @param playingPlayer indicate if the player 3 is the one that is playing the turn
+     * @param deadPlayer indicate if the player 3 is dead or is not playing anymore
+     * @param url_icon Id that distinguishes each workers by his color (different by each player)
+     */
     public void setPlayer3Panel(String god, String nickname, boolean playingPlayer, boolean deadPlayer, String url_icon) {
         if(playingPlayer) {
-            Player3Panel.setImage(PlayingPlayerPanel);
+            Player3Panel.setImage(new Image("images/Board/PlayingPlayerPanel.png"));
         }
         else {
-            Player3Panel.setImage(NormalPlayerPanel);
+            Player3Panel.setImage(new Image("images/Board/PlayerBoardPanel.png"));
         }
-
-        switch (god) {
-            case "Apollo":
-                Player3God.setImage(Apollo);
-                break;
-            case "Artemis":
-                Player3God.setImage(Artemis);
-                break;
-            case "Ares":
-                Player3God.setImage(Ares);
-                break;
-            case "Athena":
-                Player3God.setImage(Athena);
-                break;
-            case "Atlas":
-                Player3God.setImage(Atlas);
-                break;
-            case "Demeter":
-                Player3God.setImage(Demeter);
-                break;
-            case "Hephaestus":
-                Player3God.setImage(Hephaestus);
-                break;
-            case "Hestia":
-                Player3God.setImage(Hestia);
-                break;
-            case "Medusa":
-                Player3God.setImage(Medusa);
-                break;
-            case "Minotaur":
-                Player3God.setImage(Minotaur);
-                break;
-            case "Pan":
-                Player3God.setImage(Pan);
-                break;
-            case "Poseidon":
-                Player3God.setImage(Poseidon);
-                break;
-            case "Prometheus":
-                Player3God.setImage(Prometheus);
-                break;
-            case "Zeus":
-                Player3God.setImage(Zeus);
-                break;
-        }
-
+        Player3God.setImage(new Image("images/Gods/"+god+"_icon.png"));
         nicknamePlayer3.setText(nickname.toUpperCase());
 
         Image worker_icon = new Image(url_icon);
@@ -588,17 +305,21 @@ public class BoardPage_PlacingWorkersController {
         }
     }
 
+    /**
+     * Method that set invisible the Player 3 Panel if this is a 2 PLayer match
+     * @param visibility identify if the match is 2 or 3 Players
+     */
     public void setPanel3Visibility(boolean visibility) {
+        Player3Icon.setVisible(visibility);
         Player3Panel.setVisible(visibility);
         nicknamePlayer3.setVisible(visibility);
         Player3God.setVisible(visibility);
     }
 
-
-    public void reset() {
-        //maybe?????
-    }
-
+    /**
+     * Method that save the cell clicked
+     * @param e Mouse Event that triggers the Method
+     */
     public void clickedOnCell(MouseEvent e){
         ImageView selectedCell = (ImageView) e.getTarget();
         System.out.println(selectedCell.getId());
@@ -754,8 +475,9 @@ public class BoardPage_PlacingWorkersController {
 
     }
 
-
-
+    /**
+     * Method that check if the already selected cells are more than 2 and then removes the first clicked to save the last one clicked
+     */
     public void setCellsToList(){
         boolean bAlreadySelected;
         boolean bAlreadyTaken;
@@ -857,7 +579,7 @@ public class BoardPage_PlacingWorkersController {
             if(cellsToSend.size() == 2){
                 ConfirmButton.setVisible(true);
             }
-        }else if(cellsToSend.size()==2){
+        } else if(cellsToSend.size()==2){
             bAlreadySelected = false;
             for(int i=0; i<cellsToSend.size(); i++){
                 if(cellSelected.equals(cellsToSend.get(i))){
@@ -865,7 +587,12 @@ public class BoardPage_PlacingWorkersController {
                     break;
                 }
             }
-            if(!bAlreadySelected){
+            bAlreadyTaken = false;
+            int chosencellindex = (cellSelected.charAt(0) - 'A') * 5 + (cellSelected.charAt(1) - '1');
+            if(!gui.getNicknameOfCellNode(gui.getCellNodeGivenTheID(chosencellindex)).isEmpty()) {
+                bAlreadyTaken = true;
+            }
+            if(!bAlreadySelected && !bAlreadyTaken){
                 switch(cellSelected){
                     case "A1":
                         A1C.setImage(candidate);
@@ -1025,19 +752,19 @@ public class BoardPage_PlacingWorkersController {
                 cellsToSend.remove(0);
                 cellsToSend.add(cellSelected);
             }
-            System.out.println(cellsToSend.get(0));
-            if (cellsToSend.size() == 2) {
-                System.out.println(cellsToSend.get(1));
-            }
-
         }
-
     }
 
+    /**
+     * Method that update the image of the button when the mouse is on the button
+     */
     public void exitButtonHovered() {
-        ExitGameButton.setImage(exitButtonHovered);
+        ExitGameButton.setImage(new Image("images/Buttons/btn_exitGame_hovered.png"));
     }
 
+    /**
+     * Method that update the button image and than proceed to deregister the player that want to exit from the game
+     */
     public void exitButtonPressed() {
 
         ButtonType YES = new ButtonType("yes", ButtonBar.ButtonData.OK_DONE);
@@ -1052,7 +779,10 @@ public class BoardPage_PlacingWorkersController {
             gui.doDeregister();
     }
 
+    /**
+     * Method that update the image of the button pressed
+     */
     public void exitButtonReleased() {
-        ExitGameButton.setImage(exitButtonReleased);
+        ExitGameButton.setImage(new Image("images/Buttons/btn_exitGame.png"));
     }
 }

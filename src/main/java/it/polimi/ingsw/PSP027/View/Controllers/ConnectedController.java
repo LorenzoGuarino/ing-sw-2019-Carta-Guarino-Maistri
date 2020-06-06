@@ -20,32 +20,15 @@ public class ConnectedController {
     private GUI gui;
 
     public Client client = null;
-    private int requiredgods = 0;
-    private List<String> gods = null;
-    private List<String> players = null;
-    private Node nodeboard; //it's overwritten every time a new board needs to be printed
-    private List<Integer> indexcandidatecells = new ArrayList<Integer>(); //used for move and build and is overwritten every time
-    private Map<String, String> NicknameGodMap = new HashMap<String, String>();
-    private String[] chosen_cmd;
 
 
     /* ***************************************** GUI RENDERING RELATED VARIABLES ****************************************** */
 
     @FXML
     public ImageView RegisterButton;
-    @FXML
     public ImageView ExitButton;
-    @FXML
     public ImageView DisconnectButton;
-    Image RegisterButtonPressed = new Image("images/Buttons/btn_Register_pressed.png");
-    Image ExitButtonPressed = new Image("images/Buttons/btn_Exit_pressed.png");
-    Image DisconnectButtonPressed = new Image("images/Buttons/btn_goBack_pressed.png");
-    Image ExitButtonReleased = new Image("images/Buttons/btn_Exit.png");
-    Image RegisterButtonReleased = new Image("images/Buttons/btn_Register.png");
-    Image DisconnectButtonReleased = new Image("images/Buttons/btn_goBack.png");
-    @FXML
     public TextField nickname;
-    @FXML
     public Pane connectedPane;
 
     /* ****************************************************************************************************************** */
@@ -78,31 +61,31 @@ public class ConnectedController {
     /* ******************************* GUI CONTROLLER METHODS THAT TRIGGER GUI RENDERING AND CONNECTION WITH SERVER  ****************************** */
 
     public void registerButtonPressed() {
-        RegisterButton.setImage(RegisterButtonPressed);
+        RegisterButton.setImage(new Image("images/Buttons/btn_Register_pressed.png"));
         if(nickname.getText() != null && !nickname.getText().isEmpty()) {
             gui.doRegister(nickname.getText());
         }
     }
 
     public void registerButtonReleased() {
-        RegisterButton.setImage(RegisterButtonReleased);
+        RegisterButton.setImage(new Image("images/Buttons/btn_Register.png"));
     }
 
-    public void exitButtonPressed() throws Exception {
-        ExitButton.setImage(ExitButtonPressed);
+    public void exitButtonPressed() {
+        ExitButton.setImage(new Image("images/Buttons/btn_Exit_pressed.png"));
         gui.doExit();
     }
 
     public void exitButtonReleased() {
-        ExitButton.setImage(ExitButtonReleased);
+        ExitButton.setImage(new Image("images/Buttons/btn_Exit.png"));
     }
 
     public void disconnectButtonPressed() {
-        DisconnectButton.setImage(DisconnectButtonPressed);
+        DisconnectButton.setImage(new Image("images/Buttons/btn_goBack_pressed.png"));
         gui.doDisconnect();
     }
     public void disconnectButtonReleased() {
-        DisconnectButton.setImage(DisconnectButtonReleased);
+        DisconnectButton.setImage(new Image("images/Buttons/btn_goBack.png"));
     }
 
 }
