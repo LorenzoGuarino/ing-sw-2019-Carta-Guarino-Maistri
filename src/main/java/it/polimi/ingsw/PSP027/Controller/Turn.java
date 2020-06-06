@@ -11,7 +11,7 @@ import java.util.List;
 
 /**
  * @author danielecarta
- *
+ * @author Elisa Maistri
  */
 
 public class Turn {
@@ -24,10 +24,11 @@ public class Turn {
     /**
      * Constructor: it is called by santorini match when the setup of the game is done and the turn of the first player can start.
      * It is given the player who is going to play the turn and the santorini match that called it.
-     * With the constructor begins question-answer cmmunication with the client that one by one triggers the instantiation of each phase with the data
+     * With the constructor begins question-answer communication with the client that one by one triggers the instantiation of each phase with the data
      * received form the client
      *
      * @param playingPlayer player that plays this turn created by the match
+     * @param santoriniMatch match which the turn belongs to
      */
 
     public Turn(Player playingPlayer, SantoriniMatch santoriniMatch) {
@@ -41,7 +42,7 @@ public class Turn {
     }
 
     /**
-     * Method that prepares the command to send to the client when asking it to choose the worker to play the turn with and actually sends the command
+     * Method that prepares the command to send to the client when asking to choose the worker to play the turn with and actually sends the command
      */
 
     public void ChooseWorker()
@@ -84,9 +85,10 @@ public class Turn {
         CreateMovePhase(true);
     }
 
-
     /**
      * Method that updates the board with the new position of the worker
+     * It checks if the movement caused the player to win and if so ends the turn
+     * It creates the next phase (optional move or build depending on what the player's god allows)
      * @param chosenCellIndex cell where the worker is moving onto
      */
     public void MoveWorker(int chosenCellIndex) {
@@ -116,7 +118,7 @@ public class Turn {
     }
 
     /**
-     * Method that creates the next Build Phase
+     * Method that skips the Move phase and therefore creates the next phase (Build)
      */
     public void passMove() {
         CreateBuildPhase(true);
@@ -124,6 +126,7 @@ public class Turn {
 
     /**
      * Method that updates the board with the new build done
+     * It creates the next phase (optional build or end depending on what the player's god allows)
      * @param chosenCellIndex cell where the worker is building
      */
     public void doBuild(int chosenCellIndex) {
@@ -150,8 +153,10 @@ public class Turn {
     }
 
     /**
-     * Method that updates the board with the new build done
+     * Method that updates the board with the new build done by Atlas
+     * It creates the next phase (end)
      * @param chosenCellIndex cell where the worker is building
+     * @param build_BordD string whose value indicates if the player wants to build a block (B) or a dome (D)
      */
     public void doBuildForAtlas(int chosenCellIndex, String build_BordD) {
 
@@ -174,7 +179,7 @@ public class Turn {
     }
 
     /**
-     * Method that create the next End phase
+     * Method that skips the Build and creates the next phase (End or Move depending on what the god allows)
      */
     public void passBuild() {
         if (getPlayingPlayer().getPlayerGod().AllowExtraBuildBeforeMove()) {
@@ -185,7 +190,14 @@ public class Turn {
         }
     }
 
-
+    /**
+     * Method that updates the board with the end action done
+     * It ends the turn
+     * It creates another end phase if the god power allows it
+     * It clears the player's opponent gods, so that they will not influence again the next turn unless
+     * they reset themselves as this player's opponent gods
+     * @param chosenCellIndex cell where the worker is performing the end action
+     */
     public void endAction(int chosenCellIndex) {
 
         Cell cell = santoriniMatch.getGameBoard().getCell(chosenCellIndex);
@@ -208,6 +220,11 @@ public class Turn {
         santoriniMatch.sendUpdatedBoard(santoriniMatch.getPlayers().get(0).getNickname());
     }
 
+    /**
+     * Method that skips the end phase.
+     * It ends the turn and clears the opponent gods, so that they will not influence again the next turn unless
+     * they reset themselves as this player's opponent gods
+     */
     public void passEnd() {
         //removing opponentGodsCards
         getPlayingPlayer().removeOpponentGodCards();
@@ -281,6 +298,7 @@ public class Turn {
 
     /**
      * Method that sets the state of the turn to completed if true, or not completed if false
+     * @param completed boolean to set for stating whether the turn is completed or not
      */
 
     public void setCompleted(Boolean completed) {
@@ -289,7 +307,6 @@ public class Turn {
 
     /**
      * Method that checks if the player playing this turn has won
-     *
      * @return true if it has won, otherwise false
      */
 
@@ -308,12 +325,11 @@ public class Turn {
         return playingPlayer.HasLost();
     }
 
-
     /**
      * Method that creates a move phase, applying the right decorator to it (also the opponent ones, applied to the already decorated
      * phase by the player's own god)
      * @param bMandatory this tells the phase if it's a mandatory phase or an optional one, deciding therefore whether the player
-     *                   loses the game when not able not perform the phase
+     *                   loses the game when not able to perform the phase
      */
 
     public void CreateMovePhase(boolean bMandatory)
@@ -355,7 +371,7 @@ public class Turn {
      * Method that creates a build phase, applying the right decorator to it (also the opponent ones, applied to the already decorated
      * phase by the player's own god)
      * @param bMandatory this tells the phase if it's a mandatory phase or an optional one, deciding therefore whether the player
-     *                   loses the game when not able not perform the phase
+     *                   loses the game when not able to perform the phase
      */
 
     public void CreateBuildPhase(boolean bMandatory)
@@ -394,12 +410,12 @@ public class Turn {
      * Method that creates an end phase, applying the right decorator to it (also the opponent ones, applied to the already decorated
      * phase by the player's own god)
      * @param bMandatory this tells the phase if it's a mandatory phase or an optional one, deciding therefore whether the player
-     *                   loses the game when not able not perform the phase
+     *                   loses the game when not able to perform the phase
      */
 
     public void CreateEndPhase(boolean bMandatory)
     {
-        //create build phase and apply decorator to it.
+        //create end phase and apply decorator to it.
         // the decorated resulting phase is the one that is stored on the phase list
         EndPhase phase = new EndPhase();
         phase.Init(this.chosenWorker, this.santoriniMatch.getGameBoard(), bMandatory);

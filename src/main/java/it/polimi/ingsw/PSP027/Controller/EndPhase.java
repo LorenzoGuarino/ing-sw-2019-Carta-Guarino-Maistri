@@ -2,9 +2,13 @@ package it.polimi.ingsw.PSP027.Controller;
 
 import it.polimi.ingsw.PSP027.Model.Game.Cell;
 
+/**
+ * @author Elisa Maistri
+ */
+
 public class EndPhase extends Phase {
     /**
-     * Constructor: when creating the move phase it sets the phase's type as phase type "End"
+     * Constructor: when creating the end phase it sets the phase's type as phase type "End"
      */
 
     public EndPhase() {
@@ -12,7 +16,8 @@ public class EndPhase extends Phase {
     }
 
     /**
-     * That's not a standard phase, so it does not evaluate cells
+     * An end phase does nothing when not decorated by a god power, so it does not evaluate candidate cells when standard
+     * (empty function to be overridden when god power influences the end phase)
      */
 
     @Override
@@ -20,7 +25,8 @@ public class EndPhase extends Phase {
     }
 
     /**
-     * That's not a standard phase, so it does not perform a standard action on cell
+     * An end phase does nothing when not decorated by a god power, so it does not perform any action on cells when standard
+     * (empty function to be overridden when god power influences the end phase)
      */
 
     @Override

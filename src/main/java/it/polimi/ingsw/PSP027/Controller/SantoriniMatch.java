@@ -4,7 +4,6 @@ import it.polimi.ingsw.PSP027.Model.Game.Board;
 import it.polimi.ingsw.PSP027.Model.Game.GodCard;
 import it.polimi.ingsw.PSP027.Model.Game.Player;
 import it.polimi.ingsw.PSP027.Model.Game.Worker;
-import it.polimi.ingsw.PSP027.Model.Gods.GodPowerDecorator;
 import it.polimi.ingsw.PSP027.Network.ProtocolTypes;
 import it.polimi.ingsw.PSP027.Network.Server.Lobby;
 
@@ -17,16 +16,14 @@ import java.util.concurrent.TimeUnit;
  * @author Elisa Maistri
  * @author Lorenzo Guarino
  * @author danielecarta
- * */
+ *
+ * This class manages the game's match. It has the board of the game, the list of players,
+ * the turns played in order to save them, the list of the gods and a godsInUse list used by the first
+ * player to choose the gods they will play with (from godsList) and from which each player will choose
+ * their own god card.
+ */
 
 public class SantoriniMatch implements Runnable{
-
-    /**
-     * This class manages the game's match. It has the board of the game, the list of players,
-     * the turns played in order to save them, the list of the gods and a godsInUse list used by the first
-     * player to choose the gods they will play with (from godsList) and from which each player will choose
-     * their own god card.
-     */
 
     private Board gameBoard;
     private int requiredPlayers;
@@ -44,11 +41,12 @@ public class SantoriniMatch implements Runnable{
         CreateTurn,
         WaitForTurnTerminated
     }
+
     private TurnState turnState; //enum variable that will change the state of the santorini match
 
 
     /**
-     * Constructor: this creates a new match, creating a list for the players that will the be filled as the players are added,
+     * Constructor: it creates a new match, creating a list for the players that will be filled as the players are added,
      * the same for the list of turns, the gods that will be used in the match and the list of all gods, generates the random unique
      * id of the match, creates a board and sets the variable that tells if the match has started to false
      */
@@ -88,8 +86,9 @@ public class SantoriniMatch implements Runnable{
     }
 
     /**
-     * SantoriniMatch Thread. It has three states:
-     * WaitForBeingReadyToPlayTurns is the default method when santorini match
+     * SantoriniMatch Thread. It controls the various states that the turn passes in its life cycle.
+     * This thread creates a turn and until it is completed it checks for winning and losing instances of the playing players.
+     * When a turn is completed the cycle restarts for the next player and so on. It continues to do so until the end of the match.
      */
 
     @Override
@@ -185,7 +184,7 @@ public class SantoriniMatch implements Runnable{
 
     /**
      * Method that creates a new turn for the first player in the list
-     * @return
+     * @return the turn created
      */
 
     public Turn newTurn(){
@@ -277,7 +276,7 @@ public class SantoriniMatch implements Runnable{
     }
 
     /**
-     * Method to get the list of players in the match
+     * Method to gets the list of players in the match
      * @return the list of players
      */
 
@@ -304,6 +303,18 @@ public class SantoriniMatch implements Runnable{
     public void SetRequiredNumberOfPlayers(int playersCount) {
         if(!matchStarted)
             requiredPlayers = playersCount;
+    }
+
+    /**
+     * Method that checks if a player is left alone in the match due to the others losing or leaving and therefore
+     * triggers the ending of the match.
+     * @param playersInGame current players in the game to check if there's only one left.
+     */
+
+    public void checkLoseCondition(List<Player> playersInGame){
+        if(playersInGame.size() == 1){
+            endGame(playersInGame.get(0));
+        }
     }
 
 
@@ -343,8 +354,10 @@ public class SantoriniMatch implements Runnable{
     }
 
     /**
-     * Method that removes the playerToRemove and all his attributes from the game
-     * @param playerToRemove
+     * Method that removes the player received and all his attributes from the game.
+     * If the match had already started it processes the removing of the player considering that it will loose the game and therefore notifying the other players of this.
+     * If the match had not started yet, it proceeds to notify the players that they have to wait again for another player to join before starting the match.
+     * @param playerToRemove player to be removed
      */
     public synchronized void removePlayer(Player playerToRemove) {
 
@@ -415,8 +428,8 @@ public class SantoriniMatch implements Runnable{
 
     /**
      * Method that does the setup of the game. It notifies the players that they have entered the match and
-     * the communication with the client regardin the playing of the match actually starts with the server that asks
-     * to the first player that enetred the match to choose #numberofplayers gods among the possible god cards
+     * the communication with the client regarding the playing of the match actually starts with the server that asks
+     * the first player that entered the match to choose #numberofplayers gods among the possible god cards
      */
 
     public void startGame(){
@@ -437,8 +450,6 @@ public class SantoriniMatch implements Runnable{
             players.get(i).SendCommand(cmd);
         }
 
-        saveGame();
-
         // perform starting game stuffs here: choose gods card at first
 
         cmd = "<cmd><id>" + ProtocolTypes.protocolCommand.srv_ChooseGods.toString()  + "</id><data><requiredgods>" + Integer.toString(requiredPlayers) + "</requiredgods><gods>";
@@ -455,6 +466,7 @@ public class SantoriniMatch implements Runnable{
 
     /**
      * Method that ends the game if the win conditions are verified
+     * @param playerWinner player that has won the game
      * @TODO tell lobby to handle the ending of the match
      */
 
@@ -473,7 +485,7 @@ public class SantoriniMatch implements Runnable{
     }
 
     /**
-     * Method that sets the god cards in use with the god cards chosen by the user (2 or 3 cards depending of the required number of players of the match
+     * Method that sets the god cards in use with the god cards chosen by the user (2 or 3 cards depending of the required number of players of the match)
      * @param chosengods list of the names of the gods chosen by the user
      */
 
@@ -488,8 +500,6 @@ public class SantoriniMatch implements Runnable{
         }
 
         rotatePlayers();
-
-        saveGame();
 
         String cmd = "<cmd><id>" + ProtocolTypes.protocolCommand.srv_ChooseGod.toString()  + "</id><data><gods>";
         for(int i = 0; i < godCardsInUse.size(); i++){
@@ -520,8 +530,6 @@ public class SantoriniMatch implements Runnable{
 
         rotatePlayers();
 
-        saveGame();
-
         if(players.get(0).getPlayerGod() == null) {
             String cmd = "<cmd><id>" + ProtocolTypes.protocolCommand.srv_ChooseGod.toString()  + "</id><data><gods>";
             for(int i = 0; i < godCardsInUse.size(); i++){
@@ -534,7 +542,7 @@ public class SantoriniMatch implements Runnable{
         }
         else {
             // all players have a god card. START HERE TO ASK TO CHOOSE FOR THE FIRST PLAYER
-            // NOTE: sice we should send the command to the master player, that was the last one
+            // NOTE: since we should send the command to the master player, that was the last one
             // choosing god card, actually this user is the last in the list of players
             // due to former rotatePlayers(). so we need to rotate list to put him in front
             rotatePlayers();
@@ -571,8 +579,6 @@ public class SantoriniMatch implements Runnable{
             }
         }
 
-        saveGame();
-
         // The first player who is going to place the workers (and then start the game) is set as the first player in the list of players.
         // Start here the process of asking to place the workers
 
@@ -588,6 +594,7 @@ public class SantoriniMatch implements Runnable{
     /**
      * Method that sets the chosen starting positions of a player and updates the board
      * @param chosenpositions positions chosen where to place the workers
+     * @param player player who is placing its workers
      */
 
     public void setWorkersStartPosition(Player player, List<String> chosenpositions) {
@@ -602,8 +609,6 @@ public class SantoriniMatch implements Runnable{
         }
 
         rotatePlayers();
-
-        saveGame();
 
         if(players.get(0).getPlayerWorkers().get(0).getWorkerPosition() == null) {
 
@@ -631,7 +636,6 @@ public class SantoriniMatch implements Runnable{
      * the turn with the method setChosenWorker.
      * @param worker int representing the id of the cell containing the worker chosen by the user
      */
-
     public void setChosenWorker(String worker) {
         int chosencellindex;
 
@@ -658,7 +662,7 @@ public class SantoriniMatch implements Runnable{
     }
 
     /**
-     * Method that receives the chosen cell from the client and passes it to the turn that will set the new position for the worker with the method MoveWorker
+     * Method that receives the chosen cell from the client and passes it to the turn that will set the new position for the worker with the method MoveWorker()
      * @param chosenCell int representing the id of the chosen cell
      */
     public void MoveWorker(String chosenCell){
@@ -669,7 +673,7 @@ public class SantoriniMatch implements Runnable{
     }
 
     /**
-     * Method that receives the chosen cell from the client and passes it to the turn that will set the new position for the worker with the method MoveWorker
+     * Method called by the client that lets the player skip the Move phase calling the turn's method passMove()
      */
     public void passMove(){
 
@@ -677,7 +681,8 @@ public class SantoriniMatch implements Runnable{
     }
 
     /**
-     * Method that receives the chosen cell from the client and passes it to the turn that will set the new position for the worker with the method MoveWorker
+     * Method that receives the chosen cell from the client and passes it to the turn that will perform
+     * the build on the chosen cell with the method doBuild()
      * @param chosenCell int representing the id of the chosen cell
      */
     public void Build(String chosenCell){
@@ -688,8 +693,10 @@ public class SantoriniMatch implements Runnable{
     }
 
     /**
-     * Method that receives the chosen cell from the client and passes it to the turn that will set the new position for the worker with the method MoveWorker
+     * Method that receives the chosen cell from the client of the player who has Atlas as god card and passes it
+     * to the turn that will build a block or a dome with the method doBuildForAtlas()
      * @param chosenCell int representing the id of the chosen cell
+     * @param build_BorD string that states whether the player wants to build a block or a dome
      */
     public void BuildForAtlas(String chosenCell, String build_BorD){
         int chosenCellIndex;
@@ -699,12 +706,18 @@ public class SantoriniMatch implements Runnable{
     }
 
     /**
-     * Method that receives the chosen cell from the client and passes it to the turn that will set the new position for the worker with the method MoveWorker
+     * Method called by the client that lets the player skip the Build phase calling the turn's method passBuild()
      */
     public void passBuild(){
 
         turn.passBuild();
     }
+
+    /**
+     * Method that receives the chosen cell from the client and passes it to the turn that will perform the designated specific
+     * end action allowed by the player's god card with the method endAction()
+     * @param chosenCell int representing the id of the chosen cell
+     */
     public void endAction(String chosenCell) {
         int chosenCellIndex;
         chosenCellIndex = Integer.parseInt(chosenCell);
@@ -712,6 +725,9 @@ public class SantoriniMatch implements Runnable{
         turn.endAction(chosenCellIndex);
     }
 
+    /**
+     * Method called by the client that lets the player skip the End phase calling the turn's method passEnd()
+     */
     public void passEnd() {
         turn.passEnd();
     }
@@ -722,7 +738,6 @@ public class SantoriniMatch implements Runnable{
 
     /**
      * Method that builds the string in xml format that represents the board with the players
-     * (used to print their god and their color on the board's legend
      * @return the string to attach in the data node of the command string to send to the client
      */
 
@@ -742,10 +757,9 @@ public class SantoriniMatch implements Runnable{
     }
 
     /**
-     * Method that sends the updated board to each player that is not currently playing its turn, in order to give
-     * each thepossibility to watch the progression of the game also when they'r not playing their turn
-     * @param nicknamePlayingPlayer player who is playing its turn, the one who will not be sent the board as it will
-     *                              already be able to see it while playing
+     * Method that sends the updated board to each player, useful for those who are not currently playing their turn as it
+     * gives them the possibility to watch the progression of the game in between their turn.
+     * @param nicknamePlayingPlayer player who is playing its turn, used by the View to display who is currently playing the turn visible by everyone.
      */
 
     public void sendUpdatedBoard(String nicknamePlayingPlayer) {
@@ -760,76 +774,5 @@ public class SantoriniMatch implements Runnable{
         }
 
     }
-
-
-
-
-    /* *************************************************************************************************************************** */
-    // METHODS TO CHECK AND FIX!
-
-    /**
-     * Method that saves the last turn in playedTurns
-     * @param
-     * @param
-     */
-
-    public void saveGame() {
-
-        // save an xml file with all data members of SantoriniMatch.
-        // the file name will be the UUID of the match
-        //
-        // godCardsList does not have to be saved since it is a fixed structure
-        // matchStarted is always true if game has been saved
-        //
-        // <SantoriniMatch matchID requiredPlayers>
-        // <board><cell .../>...<cell ... /></board>
-        // <players><player>....</player>...<player>....</player></players>
-        // <godCardsInUse><godcard></godcard>...<godcard></godcard></godCardsInUse>
-        // <turns><turn>...</turn>....<turn>...</turn></turns>
-        // </SantoriniMatch>
-
-    }
-
-    /**
-     * Method that resumes the game by restarting at last turn saved
-     * @param
-     * @param
-     */
-
-    public void resumeGame() {
-        // read saved game, using UUID to get the file
-        // process xml data to recreate SantoriniMatch structure.
-        // then processing the data recreated, we can resume game at the time it was left. for example:
-        // if playedTurns is not empty, the last Turn in the list was the last one played (so last player playing is known)
-        // if godCardsInUse is empty, we know we should start asking to choose cards
-        // if godCardsInUse is not empty, checking players godcard chosen or workers position we can determine if all players had
-        // selected the god card and/or positioned workers ....
-
-
-    }
-/*
-    /**
-     * Method that checks is the Win condition are verified, in this case end the game
-     * @param currentTurn the last ConcreteTurn, currently playing
-     * @param lastMovePhase the last MovePhase, currently playing
-
-
-    public void checkWinCondition(Turn currentTurn, MovePhase lastMovePhase){
-        if(lastMovePhase.getStartChosenWorkerLvl() == 2 && currentTurn.getChosenWorker().getWorkerPosition().getLevel() == 3){
-            endGame(currentTurn.getPlayingPlayer());
-        }
-    }*/
-
-    /**
-     *
-     * @param playersInGame
-     */
-
-    public void checkLoseCondition(List<Player> playersInGame){
-        if(playersInGame.size() == 1){
-            endGame(playersInGame.get(0));
-        }
-    }
-
 
 }

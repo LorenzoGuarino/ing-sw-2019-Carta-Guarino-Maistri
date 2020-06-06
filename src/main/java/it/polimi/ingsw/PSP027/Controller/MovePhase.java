@@ -19,7 +19,7 @@ public class MovePhase extends Phase {
     }
 
     /**
-     * Standard candidate cells list for any movePhase of any player and worker
+     * Method that evaluates the candidate cells for a standard movePhase of any player and worker, collecting them in a list
      */
 
     @Override
@@ -27,11 +27,11 @@ public class MovePhase extends Phase {
         Cell startingCell = this.getWorker().getWorkerPosition();
 
         for(Cell candidateCell : this.getGameBoard().getNeighbouringCells(startingCell)){   //for each candidate cell in neighbouringCells if
-            if(     (candidateCell.getLevel() <= startingCell.getLevel() + 1) &&                //the lv i want to get to is higher less than one
-                    (!candidateCell.isOccupiedByWorker()) &&                                    //it is not occupied by a worker
-                    (!candidateCell.checkDome())) {                                             //it is not occupied by a dome
+            if(     (candidateCell.getLevel() <= startingCell.getLevel() + 1) &&   //the lv i want to get to is higher less than one
+                    (!candidateCell.isOccupiedByWorker()) &&  //it is not occupied by a worker
+                    (!candidateCell.checkDome())) {  //it is not occupied by a dome
                 System.out.println("MOVE: evalCandidateCells inserting cell " + candidateCell.getCellIndex());
-                this.getCandidateCells().add(candidateCell);                                    //then add the cell to candidateCells
+                this.getCandidateCells().add(candidateCell);  //then add the cell to candidateCells
                 }
             else
             {
@@ -42,7 +42,7 @@ public class MovePhase extends Phase {
     }
 
     /**
-     * Standard update for a standard movePhase action
+     * Method that updates the board for a standard movePhase, performing the action of moving a worker on the board
      * @param chosenCell the cell the worker is going to step onto
      */
 

@@ -32,7 +32,7 @@ public class Phase {
 
 
     /**
-     * Constructor
+     * Empty constructor
      */
 
     public Phase(){
@@ -41,7 +41,7 @@ public class Phase {
 
     /**
      * Method that sets the phase's type as the one it is given. Call this method in order to change the
-     * type of the phase from Undefined (set when the phase is created) to Build or Move
+     * type of the phase from Undefined (set when the phase is created) to Build/Move/End
      * @param phaseType phase type to set as this phase type
      */
 
@@ -55,8 +55,10 @@ public class Phase {
      * Method to call when creating a phase. It creates an empty list of candidate cells that will then be filled at the right moment,
      * it sets the phase type as undefined for the time being, until it will be changed to the right type, it sets the chosen worker
      * and the game board that will be used for the phase
-     * @param chosenWorker worker chosen to play the turn (so the phase) with
+     * @param chosenWorker worker chosen to play the turn (therefore the phase) with
      * @param gameBoard the currently updated board on which the player has to play the phase
+     * @param bMandatory boolean that indicates if this phase is a mandatory one (Build, Move) or an optional one (OptBuild, OptMove, OptEnd).
+     *                   This parameter will tell if the player looses (mandatory = true) or not (mandatory = false) when not being able to perform the action of the phase
      */
 
     public void Init(Worker chosenWorker, Board gameBoard, boolean bMandatory)
@@ -68,7 +70,7 @@ public class Phase {
     }
 
     /**
-     * Method to call when creating a phase, defined in the god power decorator as when the decorated phase will call the start phase
+     * Method to call when creating a phase, defined in the god power decorator so when the decorated phase will call the start phase
      * the action will be executed by the decorator who extends the phase and therefore will override this method
      */
 
@@ -139,7 +141,7 @@ public class Phase {
 
     /**
      * Method to get the player who is playing the phase
-     * @return the chosenworker's if it's not null, otherwise null
+     * @return the chosenworker's, otherwise null
      */
 
     public Player getPlayingPlayer() {
@@ -148,7 +150,7 @@ public class Phase {
     }
 
     /**
-     * Mehtod to get the chosen worker tha player is playing the phase with
+     * Method to get the chosen worker the player is playing the phase with
      * @return the chosenworker
      */
 
@@ -158,21 +160,22 @@ public class Phase {
     }
 
     /**
-     * Changes the candidate cells list of each phase according to its type
+     * Changes the candidate cells list of each phase according to its type.
+     * Empty method, defined instead in each phase type.
      */
 
     public void evalCandidateCells() {}
 
     /**
-     * Updates the the board of each phase according to its type and the action performed on the given cell
+     * Updates the board of each phase according to its type and the action performed on the given cell.
+     * Empty method, defined instead in each phase type.
      * @param chosenCell chosen cell on which to perform the action
      */
 
     public void performActionOnCell(Cell chosenCell) {}
 
-
     /**
-     * Method that checks if a player has won, if so it sets the boolean stating so in the player info, and then return true, otherwise false
+     * Method that checks if a player has won, if yes it sets the boolean stating so in the player info, and then return true, otherwise false
      * @return true if the player has won, otherwise false
      */
 
@@ -194,7 +197,7 @@ public class Phase {
     /* ********************************************* PHASE UTILITY METHODS ****************************************** */
 
     /**
-     * Method used to send the board with teh candidate cells to the client by the phase
+     * Method used to send the board with the candidate cells to the client by the phase
      * @param command protocol command to send with the board and the candidate cells
      */
 

@@ -15,6 +15,11 @@ public class Server
     public final static int SOCKET_PORT = 2705;
     public static Lobby lobby = new Lobby();
 
+    /**
+     * Main method of the server, it opens the socket for the clients who want to connect and handles the dropping of their connection in the thread launched
+     * @param args if args[0] is stated, it contains the port on which to open the socket, otherwise the default port will be used (2705)
+     */
+
     public static void main(String[] args)
     {
         ServerSocket socket;
