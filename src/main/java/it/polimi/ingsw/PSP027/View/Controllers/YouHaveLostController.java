@@ -56,8 +56,15 @@ public class YouHaveLostController {
      * Method that tells the player that he has lost the game
      * @param winner nickname of the player that has won
      */
-    public void setBetterLuckNextTime(String winner) {
+    public void setBetterLuckNextTimeWithWinner(String winner) {
         BetterLuckNextTime.setText(winner + " has won the game, better luck next time!");
+    }
+
+    /**
+     * Method that tells the player that he has lost the game
+     */
+    public void setBetterLuckNextTimeWithoutWinner() {
+        BetterLuckNextTime.setText("Better luck next time!");
     }
 
     /**
