@@ -1430,8 +1430,8 @@ public class CLI implements Runnable, ClientObserver {
     }
 
     /**
-     * Method of the ClientObserver interface that is fired by the client when choosing the cell to move the worker onto
-     * @param nodes cells where is possible to move the worker in xml format that needs to be processed by the CLI
+     * Method of the ClientObserver interface that is fired by the client when choosing the cell to build onto
+     * @param nodes cells where is possible to build on in xml format that needs to be processed by the CLI
      */
     @Override
     public void OnCandidateCellsForBuild(NodeList nodes) {
@@ -1466,8 +1466,8 @@ public class CLI implements Runnable, ClientObserver {
     }
 
     /**
-     * Method of the ClientObserver interface that is fired by the client when choosing the cell to move the worker onto
-     * @param nodes cells where is possible to move the worker in xml format that needs to be processed by the CLI
+     * Method of the ClientObserver interface that is fired by the client when choosing the cell to build onto
+     * @param nodes cells where is possible to build on in xml format that needs to be processed by the CLI
      */
     @Override
     public void OnCandidateCellsForOptBuild(NodeList nodes) {
@@ -1502,8 +1502,8 @@ public class CLI implements Runnable, ClientObserver {
     }
 
     /**
-     * Method of the ClientObserver interface that is fired by the client when choosing the cell to move the worker onto
-     * @param nodes cells where is possible to move the worker in xml format that needs to be processed by the CLI
+     * Method of the ClientObserver interface that is fired by the client when choosing the cell to do the endphase
+     * @param nodes cells where is possible to do the endphase on in xml format that needs to be processed by the CLI
      */
     @Override
     public void OnCandidateCellsForOptEnd(NodeList nodes) {
@@ -1783,6 +1783,9 @@ public class CLI implements Runnable, ClientObserver {
         }
     }
 
+    /**
+     * Method that prints the Board
+     */
     public void printBoard() {
 
         //The BOARD is going to be printed like this

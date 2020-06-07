@@ -75,6 +75,10 @@ public class ChooseGodsController {
         this.gui = Gui;
     }
 
+    /**
+     * Method that set the correct title on the Pane
+     * @param requiredGods number of gods chosen that is equals to the number of players
+     */
     public void setChooseGodsTitle(int requiredGods) {
         numberOfPlayers = requiredGods;
         switch (numberOfPlayers) {
@@ -90,19 +94,22 @@ public class ChooseGodsController {
     }
 
     /* ******************************* GUI CONTROLLER METHODS THAT TRIGGER GUI RENDERING AND CONNECTION WITH SERVER  ****************************** */
-
+    /**
+     * Method that update the button image and than proceed to send the next command to GUI
+     */
     public void confirmButtonPressed() {
         ConfirmButton.setImage(new Image("images/Buttons/btn_Confirm_pressed.png"));
         gui.doSendGods(godsToSend);
     }
-
+    /**
+     * Method that update the image of the button pressed
+     */
     public void confirmButtonReleased() {
         ConfirmButton.setImage(new Image("images/Buttons/btn_Confirm.png"));
     }
 
     /**
      * Method that updates the description of the god selected in real time
-     *
      * @param e click of the mouse on the selected god
      */
     public void displayGodDescription(MouseEvent e) {
@@ -117,7 +124,7 @@ public class ChooseGodsController {
     }
 
     /**
-     * Method that put the selected gods in a List
+     * Method that put the selected gods in a List, that will be send to the GUI
      */
     public void setGodToList() {
         boolean bAlreadySelected;
@@ -278,14 +285,6 @@ public class ChooseGodsController {
                 }
                 godsToSend.remove(0);
                 godsToSend.add(godSelected);
-            }
-
-            System.out.println(godsToSend.get(0));
-            if (godsToSend.size() == 2) {
-                System.out.println(godsToSend.get(1));
-            } else if (godsToSend.size() == 3) {
-                System.out.println(godsToSend.get(1));
-                System.out.println(godsToSend.get(2));
             }
         }
     }

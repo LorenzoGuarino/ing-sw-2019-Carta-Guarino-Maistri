@@ -64,7 +64,10 @@ public class EnteringMatchController {
     public void setGui (GUI Gui) {
         this.gui = Gui;
     }
-
+    /**
+     * Method that set the NickName of the Players
+     * @param players players that are playing the game
+     */
     public void setNickname (List<String> players) {
         player1.setText(players.get(0));
         player1Icon.setVisible(true);
@@ -81,11 +84,15 @@ public class EnteringMatchController {
     }
 
     /* ******************************* GUI CONTROLLER METHODS THAT TRIGGER GUI RENDERING AND CONNECTION WITH SERVER  ****************************** */
-
+    /**
+     * Method that update the image of the button when the mouse is on the button
+     */
     public void exitButtonHovered() {
         ExitGameButton.setImage(new Image("images/Buttons/btn_exitGame_hovered.png"));
     }
-
+    /**
+     * Method that update the button image and than proceed to deregister the player that want to exit from the game
+     */
     public void exitButtonPressed() {
 
         ButtonType YES = new ButtonType("yes", ButtonBar.ButtonData.OK_DONE);
@@ -99,7 +106,9 @@ public class EnteringMatchController {
         if (result.get() == YES)
             gui.doDeregister();
     }
-
+    /**
+     * Method that update the image of the button pressed
+     */
     public void exitButtonReleased() {
         ExitGameButton.setImage(new Image("images/Buttons/btn_exitGame.png"));
     }

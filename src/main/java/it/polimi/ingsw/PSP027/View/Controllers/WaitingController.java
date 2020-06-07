@@ -55,14 +55,22 @@ public class WaitingController {
         this.gui = Gui;
     }
 
+    /**
+     * Method that set the text of the waiting message
+     * @param waitingMessage text to set in the WaitingMessage
+     */
     public void setWaitingMessage (String waitingMessage) {
         WaitingMessage.setText(waitingMessage);
     }
-
+    /**
+     * Method that update the image of the button when the mouse is on the button
+     */
     public void exitButtonHovered() {
         ExitGameButton.setImage(new Image("images/Buttons/btn_exitGame_hovered.png"));
     }
-
+    /**
+     * Method that update the button image and than proceed to deregister the player that want to exit from the game
+     */
     public void exitButtonPressed() {
 
         ButtonType YES = new ButtonType("yes", ButtonBar.ButtonData.OK_DONE);
@@ -76,7 +84,9 @@ public class WaitingController {
         if (result.get() == YES)
             gui.doDeregister();
     }
-
+    /**
+     * Method that update the image of the button pressed
+     */
     public void exitButtonReleased() {
         ExitGameButton.setImage(new Image("images/Buttons/btn_exitGame.png"));
     }

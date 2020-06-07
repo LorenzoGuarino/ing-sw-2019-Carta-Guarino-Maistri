@@ -235,7 +235,7 @@ public class BoardPage_PlacingWorkersController {
      * @param nickname nickname of the player 1
      * @param playingPlayer indicate if the player 1 is the one that is playing the turn
      * @param deadPlayer indicate if the player 1 is dead or is not playing anymore
-     * @param url_icon Id that distinguishes each workers by his color (different by each player)
+     * @param url_icon Id that distinguishes each workers by his color (different for each player)
      */
     public void setPlayer1Panel(String god, String nickname, boolean playingPlayer, boolean deadPlayer, String url_icon) {
         if(playingPlayer) {
@@ -260,7 +260,7 @@ public class BoardPage_PlacingWorkersController {
      * @param nickname nickname of the player 2
      * @param playingPlayer indicate if the player 2 is the one that is playing the turn
      * @param deadPlayer indicate if the player 2 is dead or is not playing anymore
-     * @param url_icon Id that distinguishes each workers by his color (different by each player)
+     * @param url_icon Id that distinguishes each workers by his color (different for each player)
      */
     public void setPlayer2Panel(String god, String nickname, boolean playingPlayer, boolean deadPlayer, String url_icon) {
         if(playingPlayer) {
@@ -285,7 +285,7 @@ public class BoardPage_PlacingWorkersController {
      * @param nickname nickname of the player 3
      * @param playingPlayer indicate if the player 3 is the one that is playing the turn
      * @param deadPlayer indicate if the player 3 is dead or is not playing anymore
-     * @param url_icon Id that distinguishes each workers by his color (different by each player)
+     * @param url_icon Id that distinguishes each workers by his color (different for each player)
      */
     public void setPlayer3Panel(String god, String nickname, boolean playingPlayer, boolean deadPlayer, String url_icon) {
         if(playingPlayer) {

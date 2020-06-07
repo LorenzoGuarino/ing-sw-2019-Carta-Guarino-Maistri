@@ -52,20 +52,32 @@ public class YouHaveLostController {
         this.gui = Gui;
     }
 
+    /**
+     * Method that tells the player that he has lost the game
+     * @param winner nickname of the player that has won
+     */
     public void setBetterLuckNextTime(String winner) {
         BetterLuckNextTime.setText(winner + " has won the game, better luck next time!");
     }
 
+    /**
+     * Method that set the god Loser on the screen
+     * @param godLoser god of the player that has lost
+     */
     public void setLoserPodium(String godLoser) {
         LoserGod.setImage(new Image("images/Gods/"+godLoser+"_icon.png"));
     }
 
     /* ******************************* GUI CONTROLLER METHODS THAT TRIGGER GUI RENDERING AND CONNECTION WITH SERVER  ****************************** */
-
+    /**
+     * Method that update the image of the button when the mouse is on the button
+     */
     public void exitButtonHovered() {
         ExitGameButton.setImage(new Image("images/Buttons/btn_exitGame_hovered.png"));
     }
-
+    /**
+     * Method that update the button image and than proceed to deregister the player that want to exit from the game
+     */
     public void exitButtonPressed() {
 
         ButtonType YES = new ButtonType("yes", ButtonBar.ButtonData.OK_DONE);
@@ -79,15 +91,21 @@ public class YouHaveLostController {
         if (result.get() == YES)
             gui.doExit();
     }
-
+    /**
+     * Method that update the image of the button pressed
+     */
     public void exitButtonReleased() {
         ExitGameButton.setImage(new Image("images/Buttons/btn_exitGame.png"));
     }
-
+    /**
+     * Method that update the image of the button pressed
+     */
     public void playButtonPressed() {
         PlayButton.setImage(new Image("images/Buttons/button-play-down.png"));
     }
-
+    /**
+     * Method that update the image of the button pressed and send the command to start a new game
+     */
     public void playButtonReleased() {
         PlayButton.setImage(new Image("images/Buttons/button-play-normal.png"));
         gui.doPlayAgain();

@@ -59,31 +59,46 @@ public class ConnectedController {
     }
 
     /* ******************************* GUI CONTROLLER METHODS THAT TRIGGER GUI RENDERING AND CONNECTION WITH SERVER  ****************************** */
-
+    /**
+     * Method called when the Register Button is pressed,
+     * it send the Register Command
+     */
     public void registerButtonPressed() {
         RegisterButton.setImage(new Image("images/Buttons/btn_Register_pressed.png"));
         if(nickname.getText() != null && !nickname.getText().isEmpty()) {
             gui.doRegister(nickname.getText());
         }
     }
-
+    /**
+     * Method that update the image of the button pressed
+     */
     public void registerButtonReleased() {
         RegisterButton.setImage(new Image("images/Buttons/btn_Register.png"));
     }
-
+    /**
+     * Method that update the image of the button pressed and call the Exit method in GUI
+     */
     public void exitButtonPressed() {
         ExitButton.setImage(new Image("images/Buttons/btn_Exit_pressed.png"));
         gui.doExit();
     }
-
+    /**
+     * Method that update the image of the button pressed
+     */
     public void exitButtonReleased() {
         ExitButton.setImage(new Image("images/Buttons/btn_Exit.png"));
     }
-
+    /**
+     * Method called when the Disconnect Button is pressed,
+     * it send the Disconnect Command
+     */
     public void disconnectButtonPressed() {
         DisconnectButton.setImage(new Image("images/Buttons/btn_goBack_pressed.png"));
         gui.doDisconnect();
     }
+    /**
+     * Method that update the image of the button pressed
+     */
     public void disconnectButtonReleased() {
         DisconnectButton.setImage(new Image("images/Buttons/btn_goBack.png"));
     }

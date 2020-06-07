@@ -50,21 +50,31 @@ public class YouHaveWonController {
     public void setGui(GUI Gui) {
         this.gui = Gui;
     }
-
+    /**
+     * Method that set the god Winner on the screen
+     * @param godWinner god of the player that has won
+     */
     public void setWinnerPodium(String godWinner) {
         WinnerGod.setImage(new Image("images/Gods/"+godWinner+"_icon.png"));
     }
-
+    /**
+     * Method that tells the player that he has won the game
+     * @param winner nickname of the player that has won
+     */
     public void setWinnerCongrats(String winner) {
         Congrats.setText("Congratulations, " + winner + "!");
     }
 
     /* ******************************* GUI CONTROLLER METHODS THAT TRIGGER GUI RENDERING AND CONNECTION WITH SERVER  ****************************** */
-
+    /**
+     * Method that update the image of the button when the mouse is on the button
+     */
     public void exitButtonHovered() {
         ExitGameButton.setImage(new Image("images/Buttons/btn_exitGame_hovered.png"));
     }
-
+    /**
+     * Method that update the button image and than proceed to deregister the player that want to exit from the game
+     */
     public void exitButtonPressed() {
 
         ButtonType YES = new ButtonType("yes", ButtonBar.ButtonData.OK_DONE);
@@ -78,15 +88,21 @@ public class YouHaveWonController {
         if (result.get() == YES)
             gui.doExit();
     }
-
+    /**
+     * Method that update the image of the button pressed
+     */
     public void exitButtonReleased() {
         ExitGameButton.setImage(new Image("images/Buttons/btn_exitGame.png"));
     }
-
+    /**
+     * Method that update the image of the button pressed
+     */
     public void playButtonPressed() {
         PlayButton.setImage(new Image("images/Buttons/button-play-down.png"));
     }
-
+    /**
+     * Method that update the image of the button pressed and send the command to start a new game
+     */
     public void playButtonReleased() {
         PlayButton.setImage(new Image("images/Buttons/button-play-normal.png"));
         gui.doPlayAgain();

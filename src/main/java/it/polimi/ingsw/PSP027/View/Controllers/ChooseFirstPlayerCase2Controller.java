@@ -56,11 +56,19 @@ public class ChooseFirstPlayerCase2Controller {
         this.gui = Gui;
     }
 
+    /**
+     * Method that set the NickName of the Players
+     * @param players players that are playing the game
+     */
     public void setNickname (List<String> players) {
         player1.setText(players.get(0));
         player2.setText(players.get(1));
     }
 
+    /**
+     * Method that set the Image of the first player god
+     * @param firstPlayersGod god of the first player
+     */
     public void setGod (String firstPlayersGod) {
         god.setImage(new Image("images/Gods/"+firstPlayersGod+"_icon.png"));
     }
@@ -68,17 +76,27 @@ public class ChooseFirstPlayerCase2Controller {
 
     /* ******************************* GUI CONTROLLER METHODS THAT TRIGGER GUI RENDERING AND CONNECTION WITH SERVER  ****************************** */
 
+    /**
+     * Method that send the first player to the GUI
+     */
     public void clickedOnFirstPlayer(){
         gui.doSendFirstPlayer(player1.getText());
     }
+    /**
+     * Method that send the first player to the GUI
+     */
     public void clickedOnSecondPlayer(){
         gui.doSendFirstPlayer(player2.getText());
     }
-
+    /**
+     * Method that update the image of the button when the mouse is on the button
+     */
     public void exitButtonHovered() {
         ExitGameButton.setImage(new Image("images/Buttons/btn_exitGame_hovered.png"));
     }
-
+    /**
+     * Method that update the button image and than proceed to deregister the player that want to exit from the game
+     */
     public void exitButtonPressed() {
 
         ButtonType YES = new ButtonType("yes", ButtonBar.ButtonData.OK_DONE);
@@ -92,7 +110,9 @@ public class ChooseFirstPlayerCase2Controller {
         if (result.get() == YES)
             gui.doDeregister();
     }
-
+    /**
+     * Method that update the image of the button pressed
+     */
     public void exitButtonReleased() {
         ExitGameButton.setImage(new Image("images/Buttons/btn_exitGame.png"));
     }

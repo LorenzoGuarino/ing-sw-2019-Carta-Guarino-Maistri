@@ -59,13 +59,18 @@ public class ChooseYourGodCase3Controller {
     public void setGui(GUI Gui) {
         this.gui = Gui;
     }
-
+    /**
+     * Method that saves the chosen gods
+     * @param chosenGods god chosen by the first player
+     */
     public void setChooseGodTitle(List<String> chosenGods) {
         godsToSave = chosenGods;
         setImagesOfGods(chosenGods);
     }
     /* ******************************* GUI CONTROLLER METHODS THAT TRIGGER GUI RENDERING AND CONNECTION WITH SERVER  ****************************** */
-
+    /**
+     * Method that update the button image and than proceed to send the next command to GUI
+     */
     public void confirmButtonPressed() {
         ConfirmButton.setImage(new Image("images/Buttons/btn_Confirm_pressed.png"));
         if (godselected == 0) {
@@ -76,11 +81,16 @@ public class ChooseYourGodCase3Controller {
             gui.doSendSelectedGod(godsToSave.get(2));
         }
     }
-
+    /**
+     * Method that update the image of the button pressed
+     */
     public void confirmButtonReleased() {
         ConfirmButton.setImage(new Image("images/Buttons/btn_Confirm.png"));
     }
-
+    /**
+     * Method that display the god selected and his description, so the player can choose between the 2 gods
+     * @param chosenGods the 3 gods chosen by the first player
+     */
     public void setImagesOfGods(List<String> chosenGods){
         String god1 = chosenGods.get(0);
         GodLeft.setImage(new Image("images/Gods/"+god1+"_big.png"));
@@ -92,17 +102,25 @@ public class ChooseYourGodCase3Controller {
         GodCenter.setImage(new Image("images/Gods/"+god3+"_big.png"));
         GodCenterDescription = new Image("images/Gods/"+god3+"Description.png");
     }
-
+    /**
+     * Method that set the description of the god selected and set the button to visible
+     */
     public void selectGodLeft(){
         ConfirmButton.setVisible(true);
         godselected = 0;
         GodDescription.setImage(GodLeftDescription);
     }
+    /**
+     * Method that set the description of the god selected and set the button to visible
+     */
     public void selectGodCenter(){
         ConfirmButton.setVisible(true);
         godselected = 1;
         GodDescription.setImage(GodCenterDescription);
     }
+    /**
+     * Method that set the description of the god selected and set the button to visible
+     */
     public void selectGodRight(){
         ConfirmButton.setVisible(true);
         godselected = 2;

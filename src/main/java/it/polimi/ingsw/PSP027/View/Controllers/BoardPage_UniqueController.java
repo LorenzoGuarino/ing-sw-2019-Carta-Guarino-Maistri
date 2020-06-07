@@ -57,7 +57,7 @@ public class BoardPage_UniqueController {
     @FXML
     public ImageView ExitGameButton;
     /**
-     * Constructor
+     * Constructor, called before the initialize method
      */
     public BoardPage_UniqueController(){
     }
@@ -80,6 +80,10 @@ public class BoardPage_UniqueController {
         this.gui = gui;
     }
 
+    /**
+     * Method that update the image of the button pressed, and call the next GUI command
+     * based on the phase of the turn played
+     */
     public void skipButtonPressed() {
         SkipButton.setImage(new Image("images/Buttons/btn_Skip_pressed.png"));
         switch(this.gui.getCurrentPhase()){
@@ -95,6 +99,9 @@ public class BoardPage_UniqueController {
         }
     }
 
+    /**
+     * Method that update the image of the button pressed
+     */
     public void skipButtonReleased() {
         SkipButton.setImage(new Image("images/Buttons/btn_Skip.png"));
     }
@@ -132,6 +139,10 @@ public class BoardPage_UniqueController {
         }
     }
 
+    /**
+     * Method that set the dome on the cell index given
+     * @param index cell where the dome needs to be add
+     */
     public void setDome(int index){
         int column = index%5;
         int row = abs(index/5-4);
@@ -141,7 +152,11 @@ public class BoardPage_UniqueController {
         dome.setFitWidth(100);
         BoardGrid.add(dome, column, row);
     }
-
+    /**
+     * Method that set the worker on the cell index given
+     * @param index cell where the worker needs to be add
+     * @param url indicate the color of the worker (different color for each player)
+     */
     public void setWorker(int index, String url){
         int column = index%5;
         int row = abs(index/5-4);
@@ -152,6 +167,10 @@ public class BoardPage_UniqueController {
         BoardGrid.add(worker, column, row);
     }
 
+    /**
+     * Method that set the given cell index in a candidate cell highlighted
+     * @param index cell where the candidate ring needs to be add
+     */
     public void setCandidate(int index){
         int column = index%5;
         int row = abs(index/5-4);
@@ -163,6 +182,14 @@ public class BoardPage_UniqueController {
         indexcandidatecells.add(index);
     }
 
+    /**
+     * Method that set the Player 1 Pane with every detail about it
+     * @param god god card owned by the player 1
+     * @param nickname nickname of the player 1
+     * @param playingPlayer indicate if the player 1 is the one that is playing the turn
+     * @param deadPlayer indicate if the player 1 is dead or is not playing anymore
+     * @param url_icon Id that distinguishes each workers by his color (different for each player)
+     */
     public void setPlayer1Panel(String god, String nickname, boolean playingPlayer, boolean deadPlayer, String url_icon) {
         if(playingPlayer) {
             Player1Panel.setImage(new Image("images/Board/PlayingPlayerPanel.png"));
@@ -201,7 +228,14 @@ public class BoardPage_UniqueController {
             Player1Dead.setVisible(true);
         }
     }
-
+    /**
+     * Method that set the Player 2 Pane with every detail about it
+     * @param god god card owned by the player 2
+     * @param nickname nickname of the player 2
+     * @param playingPlayer indicate if the player 2 is the one that is playing the turn
+     * @param deadPlayer indicate if the player 2 is dead or is not playing anymore
+     * @param url_icon Id that distinguishes each workers by his color (different for each player)
+     */
     public void setPlayer2Panel(String god, String nickname, boolean playingPlayer, boolean deadPlayer, String url_icon) {
         if(playingPlayer) {
             Player2Panel.setImage(new Image("images/Board/PlayingPlayerPanel.png"));
@@ -239,7 +273,14 @@ public class BoardPage_UniqueController {
             Player2Dead.setVisible(true);
         }
     }
-
+    /**
+     * Method that set the Player 3 Pane with every detail about it
+     * @param god god card owned by the player 3
+     * @param nickname nickname of the player 3
+     * @param playingPlayer indicate if the player 3 is the one that is playing the turn
+     * @param deadPlayer indicate if the player 3 is dead or is not playing anymore
+     * @param url_icon Id that distinguishes each workers by his color (different for each player)
+     */
     public void setPlayer3Panel(String god, String nickname, boolean playingPlayer, boolean deadPlayer, String url_icon) {
         if(playingPlayer) {
             Player3Panel.setImage(new Image("images/Board/PlayingPlayerPanel.png"));
@@ -277,7 +318,10 @@ public class BoardPage_UniqueController {
             Player3Dead.setVisible(true);
         }
     }
-
+    /**
+     * Method that set invisible the Player 3 Panel if this is a 2 PLayer match
+     * @param visibility identify if the match is 2 or 3 Players
+     */
     public void setPanel3Visibility(boolean visibility) {
         Player3Icon.setVisible(visibility);
         Player3Panel.setVisible(visibility);
@@ -285,6 +329,9 @@ public class BoardPage_UniqueController {
         Player3God.setVisible(visibility);
     }
 
+    /**
+     * Method that clear the Board (GridPane) and reset the Player Panel every turn
+     */
     public void resetBoardGrid() {
         if(BoardGrid.getChildren().size()!=0){
             BoardGrid.getChildren().clear();
@@ -301,6 +348,10 @@ public class BoardPage_UniqueController {
         Player3Icon.setImage(null);
     }
 
+    /**
+     * Method that allows you to launch the next command, based on the phase of the turn played
+     * @param e Mouse Event that triggers the Method
+     */
     public void clickedOnGrid(MouseEvent e){
         Node source = e.getPickResult().getIntersectedNode();
         Integer gridColumn = GridPane.getColumnIndex(source);
@@ -357,7 +408,10 @@ public class BoardPage_UniqueController {
         }
     }
 
-
+    /**
+     * Method that check if the current player has Atlas as god, so we can display the correct Pane
+     * @param cellSelected cell selected by the player for the phase
+     */
     public void sendCellSelected(String cellSelected) {
         if(!gui.getGodGivenTheNickname(gui.client.getNickname()).equals("Atlas")) {
             gui.doSendCandidateBuild(cellSelected);
@@ -368,28 +422,43 @@ public class BoardPage_UniqueController {
         }
     }
 
+    /**
+     * Method used only if the current player has Atlas as god, change the image of the button
+     */
     public void LevelChosen() {
         LevelButton.setImage(new Image("images/Buttons/btn_Level_pressed.png"));
     }
-
+    /**
+     * Method used only if the current player has Atlas as god, change the image of the button
+     */
     public void DomeChosen() {
         DomeButton.setImage(new Image("images/Buttons/btn_Dome_pressed.png"));
     }
-
+    /**
+     * Method used only if the current player has Atlas as god, change the image of the button
+     * and send the next command
+     */
     public void LevelReleased() {
         LevelButton.setImage(new Image("images/Buttons/btn_Level.png"));
         gui.doSendCandidateBuildForAtlas(cellSelected, "B");
     }
-
+    /**
+     * Method used only if the current player has Atlas as god, change the image of the button
+     * and send the next command
+     */
     public void DomeReleased() {
         DomeButton.setImage(new Image("images/Buttons/btn_Dome_pressed.png"));
         gui.doSendCandidateBuildForAtlas(cellSelected, "D");
     }
-
+    /**
+     * Method that update the image of the button when the mouse is on the button
+     */
     public void exitButtonHovered() {
         ExitGameButton.setImage(new Image("images/Buttons/btn_exitGame_hovered.png"));
     }
-
+    /**
+     * Method that update the button image and than proceed to deregister the player that want to exit from the game
+     */
     public void exitButtonPressed() {
 
         ButtonType YES = new ButtonType("yes", ButtonBar.ButtonData.OK_DONE);
@@ -403,11 +472,17 @@ public class BoardPage_UniqueController {
         if (result.get() == YES)
             gui.doDeregister();
     }
-
+    /**
+     * Method that update the image of the button pressed
+     */
     public void exitButtonReleased() {
         ExitGameButton.setImage(new Image("images/Buttons/btn_exitGame.png"));
     }
 
+    /**
+     * Method that update the image of the PhaseName, so the player has clear which phase
+     * is currently playing
+     */
     public void setPhaseName(){
         switch (this.gui.getCurrentPhase()){
             case ChooseWorker:
