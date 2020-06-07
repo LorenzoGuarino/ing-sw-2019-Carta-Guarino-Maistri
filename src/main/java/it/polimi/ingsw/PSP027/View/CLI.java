@@ -3,7 +3,6 @@ package it.polimi.ingsw.PSP027.View;
 import it.polimi.ingsw.PSP027.Model.Game.GodCard;
 import it.polimi.ingsw.PSP027.Network.Client.Client;
 import it.polimi.ingsw.PSP027.Network.Client.ClientObserver;
-import it.polimi.ingsw.PSP027.Network.Client.ServerObserver;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -12,6 +11,8 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * @author Elisa Maistri
+ * @author Lorenzo Guarino
+ * @author danielecarta
  */
 
 public class CLI implements Runnable, ClientObserver {
