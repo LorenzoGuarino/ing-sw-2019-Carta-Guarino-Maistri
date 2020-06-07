@@ -9,15 +9,20 @@ import it.polimi.ingsw.PSP027.Controller.Phase;
 
 public class DemeterDecorator extends GodPowerDecorator {
 
-    private boolean powerUsed = false;
-
+    /**
+     * Constructor : sets the phase the decorator is decorating and a boolean that if it is set as true tells
+     * that the decorator acts when it is played by an opponent of the god card's owner
+     * @param decoratedPhase phase the decorator is going to decorate
+     * @param bActAsOpponentGod true if the god card will act only when it is being played as an opponent god card, otherwise it is false
+     */
     public DemeterDecorator(Phase decoratedPhase, boolean bActAsOpponentGod) {
 
         super(decoratedPhase, bActAsOpponentGod);
     }
 
     /**
-     * If the power hasn't yet been used, it gives a standard candidate cells list to build on
+     * Method used to get a new set of candidate cells list for the build phase after the first build is performed,
+     * removing the previous cell on which the worker has built on
      */
 
     @Override
@@ -30,7 +35,7 @@ public class DemeterDecorator extends GodPowerDecorator {
             // Demeter overrides only (second) build phase
             if(this.getWorker().getBuildCounter() == 1) {
 
-                // Demeter excludes the cell it builf before
+                // Demeter excludes the cell it built before
 
                 Cell startingCell = this.getWorker().getWorkerPosition();
 
@@ -47,10 +52,8 @@ public class DemeterDecorator extends GodPowerDecorator {
     }
 
     /**
-     * If the power hasn't been used yet, it updates the board with a standard building on a chosenCell,and then removes
-     * the candidate cell from the candidate cells list, in order to let the player update the board again, but not onto
-     * the same cell
-     * @param chosenCell the Cell the worker wants to build onto
+     * This method performs the action described by the god's power on the cell chosen by the player
+     * @param chosenCell the Cell on which the worker wants to build onto
      */
     @Override
     public void performActionOnCell(Cell chosenCell) {

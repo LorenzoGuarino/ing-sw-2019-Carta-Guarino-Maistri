@@ -10,11 +10,21 @@ import it.polimi.ingsw.PSP027.Model.Game.Worker;
 
 public class MedusaDecorator extends GodPowerDecorator {
 
+    /**
+     * Constructor : sets the phase the decorator is decorating and a boolean that if it is set as true tells
+     * that the decorator acts when it is played by an opponent of the god card's owner
+     * @param decoratedPhase phase the decorator is going to decorate
+     * @param bActAsOpponentGod true if the god card will act only when it is being played as an opponent god card, otherwise it is false
+     */
     public MedusaDecorator(Phase decoratedPhase, boolean bActAsOpponentGod) {
 
         super(decoratedPhase, bActAsOpponentGod);
     }
 
+    /**
+     * Method called by a decorated turn's EndPhase, it adds cells to a list of candidate cells according to this god's power
+     * it checks if the power can be applied, checking if medusa's workers have opponent's workers as neighbours and occupying lower levels.
+     */
     @Override
     public void evalCandidateCells() {
 
@@ -61,6 +71,10 @@ public class MedusaDecorator extends GodPowerDecorator {
         }
     }
 
+    /**
+     * This method is automatically called, if medusa's power can be applied and so if a list of candidate cells was evaluated, it automatically
+     * removes the workers occupying those candidate cells and replaces them with blocks.
+     */
     @Override
     public boolean startPhase() {
         if(!IsAnEndPhase()) {

@@ -12,16 +12,21 @@ import it.polimi.ingsw.PSP027.Controller.MovePhase;
 
 public class MinotaurDecorator extends GodPowerDecorator {
 
+    /**
+     * Constructor : sets the phase the decorator is decorating and a boolean that if it is set as true tells
+     * that the decorator acts when it is played by an opponent of the god card's owner
+     * @param decoratedPhase phase the decorator is going to decorate
+     * @param bActAsOpponentGod true if the god card will act only when it is being played as an opponent god card, otherwise it is false
+     */
     public MinotaurDecorator(Phase decoratedPhase, boolean bActAsOpponentGod) {
 
         super(decoratedPhase, bActAsOpponentGod);
     }
 
     /**
-     * Method called by a decorated turn's movePhase, it makes it possible to move in an enemy occupied cell
-     * if the next space is not occupied
+     * Method called by a decorated turn's movePhase, adding to the list of candidate cells the standard ones and those occupied by
+     * opponent's workers if is possible to move them in the movement's direction
      */
-
     @Override
     public void evalCandidateCells() {
 
@@ -60,10 +65,9 @@ public class MinotaurDecorator extends GodPowerDecorator {
     }
 
     /**
-     * This method is called in a movePhase in order to update the board according to the decorator,in case it modifies the board itself
-     * @param chosenCell the cell it is stepping onto
+     * This method performs the action described by the god's power on the cell chosen by the player
+     * @param chosenCell the Cell on which the worker wants to move onto
      */
-
     @Override
     public void performActionOnCell(Cell chosenCell) {
         // Minotaur can move in an opponent's space forcing it to move

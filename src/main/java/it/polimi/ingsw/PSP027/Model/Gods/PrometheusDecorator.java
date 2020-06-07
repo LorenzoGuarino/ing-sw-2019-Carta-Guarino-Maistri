@@ -13,19 +13,21 @@ import java.util.List;
 
 public class PrometheusDecorator extends GodPowerDecorator {
 
-    public boolean powerUsed = false;
-
+    /**
+     * Constructor : sets the phase the decorator is decorating and a boolean that if it is set as true tells
+     * that the decorator acts when it is played by an opponent of the god card's owner
+     * @param decoratedPhase phase the decorator is going to decorate
+     * @param bActAsOpponentGod true if the god card will act only when it is being played as an opponent god card, otherwise it is false
+     */
     public PrometheusDecorator(Phase decoratedPhase, boolean bActAsOpponentGod) {
 
         super(decoratedPhase, bActAsOpponentGod);
     }
 
     /**
-     * first call changes the candidate cells list like the actual phase is a buildPhase, giving a list of candidate cells
-     * which i can build onto
-     * second call changes the candidate cells list in a standard movePhase candidate moves list
+     * Method used to get a standard set of candidate cells list for the move phase removing the ones that make
+     * the player move up if the worker had already built a cell before moving
      */
-
     @Override
     public void evalCandidateCells() {
 
@@ -46,23 +48,13 @@ public class PrometheusDecorator extends GodPowerDecorator {
                     this.getCandidateCells().remove(i);
                 }
             }
-
-//            for (Cell candidateCell : this.getCandidateCells()) {
-//
-//                if (candidateCell.getLevel() != startingCell.getLevel()) {
-//                    System.out.println("PROMETHEUS: evalCandidateCells discarding cell " + candidateCell.getCellIndex());
-//                    this.getCandidateCells().remove(candidateCell);
-//                }
-//            }
         }
     }
 
     /**
-     * first call performs a build action
-     * second call performs a move action
-     * @param chosenCell the cell im performing the action
+     * This method performs the action described by the god's power on the cell chosen by the player
+     * @param chosenCell the Cell on which the worker wants to perform the action
      */
-
     @Override
     public void performActionOnCell(Cell chosenCell) {
         super.performActionOnCell(chosenCell);

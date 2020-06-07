@@ -31,6 +31,11 @@ public class Cell {
 
     public int getCellIndex() { return index; }
 
+    /**
+     * Method that tells if this cell is a perimeter cell
+     * @return true if it is a perimeter cell, otherwise false
+     */
+
     public boolean isAPerimeterCell()
     {
         int Ri = index/5;
@@ -49,7 +54,8 @@ public class Cell {
     }
 
     /**
-     * Method used the cell is occupied by an opponent player's worker. It checks if this cell's worker has a different owner
+     * Method used to tell if the cell is occupied by an opponent player's worker.
+     * It checks if this cell's worker has a different owner
      * from the one given to the function which would be the opponent Player.
      * @param opponentPlayer the player that needs to be compared to this cell's owner
      * @return true if the player occupying this cell is different from the player given to the function
@@ -69,13 +75,20 @@ public class Cell {
 
     public Worker getOccupyingWorker() { return workerOccupying; }
 
+    /**
+     * Method to call to tell if a level on this cell can be removed
+     * @return true if a level can be removed (unoccupied cell and a level (not dome) is present),
+     * false otherwise (occupied cell / no level on the cell / occupied by a dome)
+     */
+
     public boolean canALevelBeRemoved()
     {
         return ((level > 0) && !isOccupiedByWorker() && !dome);
     }
 
     /**
-     * Method that checks if a level can be added on this cell
+     * Method that checks if a level can be added on this cell. When it is called it calls canALevelBeAdded(false),
+     * which will do the check in the standard way
      * @return true if it is possible to build a block, otherwise false
      */
 
@@ -84,13 +97,23 @@ public class Cell {
         return canALevelBeAdded(false);
     }
 
-    public boolean canALevelBeAdded(boolean bIgnoreWorker)
-    {
+    /**
+     * Method that checks if a level can be added on this cell.
+     * @param bIgnoreWorker boolean that tells the method to make the check ignoring the worker who might occupy the cell or not
+     *                      (the standard check returns false if the cell is occupied by a worker. Ignoring the worker would make the check return true)
+     * @return true if it is possible to build a block, otherwise false
+     */
+
+    public boolean canALevelBeAdded(boolean bIgnoreWorker) {
         return ((level < 3) && (!isOccupiedByWorker() || bIgnoreWorker) && !dome);
     }
 
-    public boolean removeLevel()
-    {
+    /**
+     * Method that removes a level on this cell if possible
+     * @return true if the level was removed, otherwise false
+     */
+
+    public boolean removeLevel() {
         if (canALevelBeRemoved())
         {
             level--;
@@ -103,7 +126,8 @@ public class Cell {
     }
 
     /**
-     * Method that adds a block to the cell if possible
+     * Method that adds a block to the cell if possible. When it is called it calls addLevel(false),
+     * which will add a level in the standard way (only if the cell isn't occupied by a worker or has a dome)
      * @return a boolean that if it is true declares that the level could be added and was in fact added, otherwise it was not possible to add it
      */
 
@@ -111,6 +135,13 @@ public class Cell {
     {
         return addLevel(false);
     }
+
+    /**
+     * Method that checks if a level can be added on this cell.
+     * @param bIgnoreWorker boolean that tells the method to make the check ignoring the worker who might occupy the cell or not
+     *                      (the standard check returns false if the cell is occupied by a worker. Ignoring the worker would make the check return true)
+     * @return true if it is possible to build a block, otherwise false
+     */
 
     public boolean addLevel(boolean bIgnoreWorker)
     {

@@ -2,7 +2,6 @@ package it.polimi.ingsw.PSP027.Model.Gods;
 
 import it.polimi.ingsw.PSP027.Controller.Phase;
 import it.polimi.ingsw.PSP027.Model.Game.Cell;
-import it.polimi.ingsw.PSP027.Model.Game.Worker;
 
 /**
  * @author danielecarta
@@ -13,7 +12,7 @@ public class ApolloDecorator extends GodPowerDecorator {
     /**
      * Constructor : sets the phase the decorator is decorating and a boolean that if it is set as true tells
      * that the decorator acts when it is played by an opponent of the god card's owner
-     * @param decoratedPhase pahse the decorator is going to decorate
+     * @param decoratedPhase phase the decorator is going to decorate
      * @param bActAsOpponentGod true if the god card will act only when it is being played as an opponent god card, otherwise it is false
      */
     public ApolloDecorator(Phase decoratedPhase, boolean bActAsOpponentGod) {
@@ -21,8 +20,8 @@ public class ApolloDecorator extends GodPowerDecorator {
     }
 
     /**
-     * Method called by a decorated turn's movePhase, it makes it possible to move in an enemy occupied cell swapping places with that enemy worker
-     * @return a list of cells which you can move onto
+     * Method called by a decorated turn's movePhase, it adds cells to a list of candidate cells according to this god's power
+     * It adds the standard candidate cells and also the neighbouring cells occupied by opponent's workers
      */
 
     @Override
@@ -59,8 +58,8 @@ public class ApolloDecorator extends GodPowerDecorator {
     }
 
     /**
-     * This method is called in a decorated movePhase in order to update the board according to the decorator
-     * @param chosenCell the cell it is stepping onto
+     * This method performs the action described by the god's power on the cell chosen by the player
+     * @param chosenCell the Cell the worker wants to move to
      */
 
     @Override

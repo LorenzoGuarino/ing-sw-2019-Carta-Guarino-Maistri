@@ -8,9 +8,6 @@ public class Worker {
 
     private int index;
     private Cell oldPosition;
-
-
-
     private Cell oldBuiltCell;
     private Cell currentPosition;
     private Player owner;
@@ -36,10 +33,18 @@ public class Worker {
         buildDomeOnNextBuild = false;
     }
 
+    /**
+     * Method that removes the worker from its owner workers
+     */
+
     public void removeWorker() {
         this.getWorkerOwner().getPlayerWorkers().remove(this);
         this.changePosition(null);
     }
+
+    /**
+     * Method that resets the worker's utility variables used during the turn life cycle
+     */
 
     public void ResetWorkerTurnVars()
     {
@@ -49,38 +54,78 @@ public class Worker {
         buildcount = 0;
     }
 
+    /**
+     * Method that sets the variable that indicates if the worker has to build a block or a dome
+     * @param buildDomeOnNextBuild true if the worker has to build a dome, false if it has to build a block
+     *                             (note: if this is false and the build is triggered on a cell already occupied by a level 3 block,
+     *                             it still will be added a dome to the cell)
+     */
+
     public void setBuildDomeOnNextBuild(boolean buildDomeOnNextBuild) {
         this.buildDomeOnNextBuild = buildDomeOnNextBuild;
     }
+
+    /**
+     * Method to call before building, it indicates if the worker has to build a block or a dome
+     * @return buildDomeOnNextBuild value
+     */
 
     public boolean HasToBuildADomeOnNextBuildPhase()
     {
         return buildDomeOnNextBuild;
     }
 
+    /**
+     * Method that tells which was the last built cell by the worker
+     * @return the last built cell
+     */
+
     public Cell getLastBuiltCell()
     {
         return oldBuiltCell;
     }
 
+    /**
+     * Method that sets the last built cell
+     * @param oldBuiltCell cell to set as the last built by the worker
+     */
+
     public void setOldBuiltCell(Cell oldBuiltCell) {
         this.oldBuiltCell = oldBuiltCell;
     }
+
+    /**
+     * Method that increments the counter that count the moves done in a single turn
+     */
 
     public void IncrementMoveCounter()
     {
         movecount++;
     }
 
+    /**
+     * Method that increments the counter that count the builds done in a single turn
+     */
+
     public void IncrementBuildCounter()
     {
         buildcount++;
     }
 
+    /**
+     * Method to call to know how many moves the worker has done in the turn life cycle
+     * @return the moves count
+     */
+
     public int getMoveCounter()
     {
         return movecount;
     }
+
+    /**
+     * Method to call to know how many builds the worker has done in the turn life cycle
+     * @return the builds count
+     */
 
     public int getBuildCounter()
     {
@@ -90,7 +135,7 @@ public class Worker {
     /**
      * Method used to get the previous position of the worker on the board, before the last call to changePosition
      *
-     * @return the cell that the worker is occupying
+     * @return the cell that the worker was occupying
      */
 
     public Cell getWorkerPrevPosition() {
@@ -128,8 +173,8 @@ public class Worker {
     }
 
     /**
-     * The setter of position tells to the old position it is no longer occupied by this worker, and the new one that it now is
-     * @param position
+     * This method sets the current position as the previous one in order to keep track of it, and then changes the worker's position
+     * @param position new position to set for the worker
      */
     public void changePosition(Cell position) {
 

@@ -1,7 +1,6 @@
 package it.polimi.ingsw.PSP027.Model.Game;
 
 import it.polimi.ingsw.PSP027.Network.Server.Gamer;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,7 +36,7 @@ public class Player {
     }
 
     /**
-     * Method that return if the player hasWon
+     * Method that returns true if the player has won
      * @return hasWon value
      */
     public boolean HasWon() {
@@ -45,24 +44,24 @@ public class Player {
     }
 
     /**
-     * Method that return if the player hasWon
-     * @return hasWon value
+     * Method that returns true if the player has lost
+     * @return hasLost value
      */
     public boolean HasLost() {
         return hasLost;
     }
 
     /**
-     * Method that set HasWon
-     * @param hasWon to set
+     * Method that sets HasWon
+     * @param hasWon value to set
      */
     public void setHasWon(boolean hasWon) {
         this.hasWon = hasWon;
     }
 
     /**
-     * Method that set HasLost
-     * @param hasLost to set
+     * Method that sets HasLost
+     * @param hasLost value to set
      */
     public void setHasLost(boolean hasLost) {
         this.hasLost = hasLost;
@@ -106,12 +105,12 @@ public class Player {
 
     /**
      * Method that clears the list of the opponent's gods.
-     * It is going to be launched when this player's turn is over in order to have next turn not
-     * influenced by its opponent's gods unless they need to (in that case their god will be read to the list with setOpponentGod()
+     * It is going to be called when this player's turn is over in order to have next turn not
+     * influenced by its opponent's gods unless they need to (in that case the owner of the god card
+     * will be the one to re-add its godcard as an opponent for the other players
      */
 
     public void removeOpponentGodCards() { opponentsGodCards.clear(); }
-
 
     /**
      * Method that returns the list of opponent's gods that will influence this player's next turn
@@ -129,7 +128,7 @@ public class Player {
     public void setPlayerGodCard(GodCard playerGodCard) { this.playerGodCard = playerGodCard; }
 
     /**
-     * Method used by Santorini Match and Turn to send the command that it generates to its players
+     * Method used by Santorini Match and Turn to send the command that they generates to its players
      * @param cmd command to send
      */
 

@@ -9,6 +9,12 @@ import it.polimi.ingsw.PSP027.Controller.Phase;
 
 public class AtlasDecorator extends GodPowerDecorator {
 
+    /**
+     * Constructor : sets the phase the decorator is decorating and a boolean that if it is set as true tells
+     * that the decorator acts when it is played by an opponent of the god card's owner
+     * @param decoratedPhase phase the decorator is going to decorate
+     * @param bActAsOpponentGod true if the god card will act only when it is being played as an opponent god card, otherwise it is false
+     */
     public AtlasDecorator(Phase decoratedPhase, boolean bActAsOpponentGod) {
 
         super(decoratedPhase, bActAsOpponentGod);
@@ -28,9 +34,10 @@ public class AtlasDecorator extends GodPowerDecorator {
     }
 
     /**
-     * Method used by Atlas to add a dome regardless of the level preexisting on the cell if the player checked yes to
-     * using its God Card.
-     * @param chosenCell cell chosen by the player on which it wants to build the dome
+     * This method performs the action described by the god's power on the cell chosen by the player
+     * Atlas builds a dome if the HasToBuildADomeOnNextBuildPhase is true, otherwise builds in the standard way
+     * (level/block depending on the level already present on the cell)
+     * @param chosenCell the Cell the worker wants to build on
      */
 
     @Override

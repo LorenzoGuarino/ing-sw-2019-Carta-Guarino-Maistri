@@ -30,7 +30,7 @@ public abstract class GodPowerDecorator extends Phase {
     }
 
     /**
-     * MEthod to get the decorated phase
+     * Method to get the decorated phase
      * @return the decorated phase
      */
 
@@ -70,7 +70,6 @@ public abstract class GodPowerDecorator extends Phase {
 
     @Override
     public void Init(Worker chosenWorker, Board gameBoard, boolean bMandatory) {
-
         // this should do nothing to not alter base phase
     }
 
@@ -230,8 +229,9 @@ public abstract class GodPowerDecorator extends Phase {
     }
 
     /**
-     * Method that perform the action the decorated phase has to make
-     * (if the phase if a move it will be to move the chosenworker, if it is a build it will be to build a level/dome)
+     * Method that performs the action the decorated phase has to make
+     * (if the phase if a move it will be to move the chosenworker, if it is a build it will be to build a level/dome,
+     * if it is an end it will perform a particular action that can be also a move or a build depending on the god power)
      * @param chosenCell chosen cell on which to perform the action
      */
 

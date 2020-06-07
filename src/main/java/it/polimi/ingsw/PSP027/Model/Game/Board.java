@@ -31,7 +31,7 @@ public class Board {
     }
 
     /**
-     * Method used to to get the Board
+     * Method used to get the Board
      * @return the board as a list of cells
      */
 
@@ -41,8 +41,8 @@ public class Board {
     }
 
     /**
-     * Method that return the cell of the board of a given index
-     * @param index of the cell that need to be returned
+     * Method that returns the cell of the board of a given index
+     * @param index of the cell that needs to be returned
      * @return the cell, or null if the index doesn't exists
      */
 
@@ -56,7 +56,7 @@ public class Board {
     }
 
     /**
-     * Method that, given two neighbouring cells calculates the next cell along the path made by the first two
+     * Method that, given two neighbouring cells, calculates the next cell along the path made by the first two
      * @param firstPathCell the first cell from which the path is calculated
      * @param secondPathCell the second cell defining the path
      * @return the cell along the path, otherwise null if the cells given to the method were not neighbours
@@ -116,6 +116,7 @@ public class Board {
 
     /**
      * Method that finds the neighbouring cells of a cell
+     * @param cell cell of which the method has to calculate the neighbours
      * @return a list containing the indexes of the neighbouring cells of the given cell
      */
 
@@ -186,6 +187,11 @@ public class Board {
 
         return NeighbouringCells;
     }
+
+    /**
+     * Method that converts the board to a string in XML format
+     * @return the board in XML string format
+     */
 
     public String boardToXMLString() {
 

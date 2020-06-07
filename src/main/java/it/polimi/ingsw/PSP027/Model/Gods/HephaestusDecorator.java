@@ -5,15 +5,20 @@ import it.polimi.ingsw.PSP027.Controller.Phase;
 
 public class HephaestusDecorator extends GodPowerDecorator {
 
+    /**
+     * Constructor : sets the phase the decorator is decorating and a boolean that if it is set as true tells
+     * that the decorator acts when it is played by an opponent of the god card's owner
+     * @param decoratedPhase phase the decorator is going to decorate
+     * @param bActAsOpponentGod true if the god card will act only when it is being played as an opponent god card, otherwise it is false
+     */
     public HephaestusDecorator(Phase decoratedPhase, boolean bActAsOpponentGod) {
 
         super(decoratedPhase, bActAsOpponentGod);
     }
 
     /**
-     * Method used by Hephaestus to set the candidate cells on which its player can build on.
-     * It's the standard method of checking if the neighbouring cell is not occupied by another worker
-     * and has not already a dome
+     * Method used to get a new set of candidate cells list for the build phase after the first build is performed,
+     * it contains only the cell on which the worker has just built
      */
     @Override
     public void evalCandidateCells() {
@@ -34,10 +39,8 @@ public class HephaestusDecorator extends GodPowerDecorator {
     }
 
     /**
-     * If the power hasn't been used yet, it updates the board with a standard building on a chosenCell,and then removes
-     * the candidate cell from the candidate cells list, in order to let the player update the board again, but not onto
-     * the same cell
-     * @param chosenCell the Cell the worker wants to build onto
+     * This method performs the action described by the god's power on the cell chosen by the player
+     * @param chosenCell the Cell on which the worker wants to build onto
      */
     @Override
     public void performActionOnCell(Cell chosenCell) {

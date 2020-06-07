@@ -8,13 +8,20 @@ import it.polimi.ingsw.PSP027.Controller.Phase;
  */
 public class ArtemisDecorator extends GodPowerDecorator {
 
+    /**
+     * Constructor : sets the phase the decorator is decorating and a boolean that if it is set as true tells
+     * that the decorator acts when it is played by an opponent of the god card's owner
+     * @param decoratedPhase phase the decorator is going to decorate
+     * @param bActAsOpponentGod true if the god card will act only when it is being played as an opponent god card, otherwise it is false
+     */
     public ArtemisDecorator(Phase decoratedPhase, boolean bActAsOpponentGod) {
 
         super(decoratedPhase, bActAsOpponentGod);
     }
 
     /**
-     * used to get a new candidate cells list after the first move is performed
+     * Method used to get a new set of candidate cells list for the move phase after the first move is performed,
+     * removing the cell from which it started the turn
      */
 
     @Override
@@ -46,8 +53,8 @@ public class ArtemisDecorator extends GodPowerDecorator {
     }
 
     /**
-     * Perform the move
-     * @param chosenCell the cell to move to
+     * This method performs the move in a standard way
+     * @param chosenCell the Cell the worker wants to move to
      */
 
     @Override

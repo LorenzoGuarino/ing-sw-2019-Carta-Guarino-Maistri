@@ -4,11 +4,21 @@ import it.polimi.ingsw.PSP027.Model.Game.Cell;
 
 public class HestiaDecorator extends GodPowerDecorator {
 
+    /**
+     * Constructor : sets the phase the decorator is decorating and a boolean that if it is set as true tells
+     * that the decorator acts when it is played by an opponent of the god card's owner
+     * @param decoratedPhase phase the decorator is going to decorate
+     * @param bActAsOpponentGod true if the god card will act only when it is being played as an opponent god card, otherwise it is false
+     */
     public HestiaDecorator(Phase decoratedPhase, boolean bActAsOpponentGod) {
 
         super(decoratedPhase, bActAsOpponentGod);
     }
 
+    /**
+     * Method used to get a new set of candidate cells list for the build phase after the first build is performed,
+     * it removes the perimeter cells
+     */
     public void evalCandidateCells() {
 
         // call nested phase evalCandidateCells
@@ -34,10 +44,8 @@ public class HestiaDecorator extends GodPowerDecorator {
     }
 
     /**
-     * If the power hasn't been used yet, it updates the board with a standard building on a chosenCell,and then removes
-     * the candidate cell from the candidate cells list, in order to let the player update the board again, but not onto
-     * the same cell
-     * @param chosenCell the Cell the worker wants to build onto
+     * This method performs the action described by the god's power on the cell chosen by the player
+     * @param chosenCell the Cell on which the worker wants to build onto
      */
     @Override
     public void performActionOnCell(Cell chosenCell) {

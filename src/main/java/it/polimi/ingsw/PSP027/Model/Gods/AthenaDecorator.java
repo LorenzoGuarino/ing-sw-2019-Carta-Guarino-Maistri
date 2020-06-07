@@ -11,13 +11,20 @@ import it.polimi.ingsw.PSP027.Model.Game.Player;
 
 public class AthenaDecorator extends GodPowerDecorator {
 
+    /**
+     * Constructor : sets the phase the decorator is decorating and a boolean that if it is set as true tells
+     * that the decorator acts when it is played by an opponent of the god card's owner
+     * @param decoratedPhase phase the decorator is going to decorate
+     * @param bActAsOpponentGod true if the god card will act only when it is being played as an opponent god card, otherwise it is false
+     */
     public AthenaDecorator(Phase decoratedPhase, boolean bActAsOpponentGod) {
 
         super(decoratedPhase, bActAsOpponentGod);
     }
 
     /**
-     * Method that evaluates the candidates cells for Athena to move onto
+     * Method called by a decorated turn's MovePhase, it sets a list of candidate cells that for Athena are standard when acting for its owner
+     * and when acting for the opponents are a list of standard candidate cells for a move, without the ones that would result in the worker moving up one level
      */
 
     @Override
@@ -67,6 +74,7 @@ public class AthenaDecorator extends GodPowerDecorator {
     /**
      * Method to call after athena's move is performed if she has moved up and can then apply her power on the opponent players
      */
+
     public void applyPowerOnOtherPlayers() {
 
         Player oppPlayer1 = null, oppPlayer2 = null;

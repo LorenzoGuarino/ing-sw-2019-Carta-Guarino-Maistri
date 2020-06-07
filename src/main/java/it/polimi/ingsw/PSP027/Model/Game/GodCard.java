@@ -17,8 +17,7 @@ public class GodCard {
         Minotaur,
         Pan,
         Prometheus,
-
-        // choose 5 among the next gods
+        // Advanced Gods
         Zeus,
         Ares,
         Hestia,
@@ -77,6 +76,8 @@ public class GodCard {
     /**
      * Constructor: create a god with its name, description and id
      * @param godType name of the god of the card
+     * @param toWhomIsApplied indicates whether the god card's power influences the owner's turn, or the opponent's turn
+     * @param whereToApply indicates which phase of the turn the power will influence
      */
 
     public GodCard(GodsType godType, WhereToApply whereToApply, ToWhomIsApplied toWhomIsApplied) {
@@ -87,7 +88,7 @@ public class GodCard {
 
     /**
      * Method to get the GodType of the god card
-     * @return the god type form an enum
+     * @return the god type from an enum
      */
 
     public GodsType getGodType() {
@@ -189,7 +190,7 @@ public class GodCard {
 
     /**
      * Method to query when the god card must be applied
-     * @return where it must be applied or asked form an enum
+     * @return where it must be applied from an enum
      */
 
     public WhereToApply getWhereToApply() {
