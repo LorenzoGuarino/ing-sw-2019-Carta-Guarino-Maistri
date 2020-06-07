@@ -17,16 +17,18 @@ public class Lobby{
     private ReentrantLock GamersLock = new ReentrantLock();
     private ReentrantLock MatchesLock = new ReentrantLock();
 
-    /**
+    /*
      * List of the matches created by the Lobby. A new one is created when a gamer is added to
      * the lobbyGamers and all the previously matches instantiated have already reached the maximum
      * number of players (3) or have already started with just 2 players.
      */
+
     private ArrayList<SantoriniMatch> Matches;
 
-    /**
+    /*
      * List of the gamers that are currently in the lobby, wither waiting for a game to play or already playing a match
      */
+
     private ArrayList<Gamer> lobbyGamers;
 
     /**
@@ -41,6 +43,9 @@ public class Lobby{
 
     /**
      * Method that creates a Match with its separate thread and adds it to the list of matches of the lobby
+     * @param playersCount number of players that the match that is being created will require in order to be played
+     *                     (it is chosen by the player who triggers this creation when there are no available matches with
+     *                     the desired number of players, therefore creating one with the chosen parameter)
      * @return the match created
      */
 
@@ -77,7 +82,7 @@ public class Lobby{
     }
 
     /**
-     * Method that removes a Match from the list of matches of the lobby
+     * Method that removes a match from the list of matches of the lobby
      * @param santoriniMatch match to remove
      */
 
@@ -107,7 +112,7 @@ public class Lobby{
     /**
      * Method that checks if a gamer with the same nickname has already entered the lobby
      * @param client identifying the gamer
-     * @return 0 if not present, -1 if there is another gamer using the give nickname
+     * @return 0 if not present, -1 if there is another gamer using the given nickname
      */
 
     public int checkIfAGamerIsAlreadyRegistered (ClientHandler client) {
@@ -191,7 +196,9 @@ public class Lobby{
     }
 
     /**
-     * Method that deregister a player removing it from the gamers and from its match's players
+     * Method that deregisters a player, removing it from the gamers and from its match's players
+     * If the match hadn't started yet, the lobby creates a new match for the remaining players
+     * (as their match cannot start anymore, lacking a player) with their previous match's required number of players
      * @param client identifying the gamer to deregister
      */
 
@@ -224,7 +231,6 @@ public class Lobby{
 
                                     if(!match.isStarted()) {
                                         SantoriniMatch newMatch = createMatch(match.GetRequiredNumberOfPlayers());
-                                        newMatch.getMatchId();
 
                                         for(Player player : match.getPlayers()) {
                                             Player newMatchPlayer = new Player();
@@ -343,7 +349,7 @@ public class Lobby{
     }
 
     /**
-     * Method that gets the chosen gods by the client (chosen by the first gamer that enetred the match) and asks the match to save them
+     * Method that gets the chosen gods by the client (chosen by the first gamer that entered the match) and asks the match to save them
      * @param client identifying the gamer that chose the gods
      * @param chosengods list of the names of the gods that are going to be used in the match
      */
@@ -442,9 +448,9 @@ public class Lobby{
     }
 
     /**
-     * Method that gets the chosen player by the first gamer that enetered the match among the players in the match itself
-     * and sets it as the first player of the list of players
-     * @param client identifying the gamer that chose the god
+     * Method that gets the chosen player by the first gamer that entered the match among the players in the match itself
+     * and sets it as the first player of the list of players. This will be the first one to place its workers and to play a turn.
+     * @param client identifying the gamer that chose the player
      * @param chosenplayer nickname of the player that will be the first to place its workers and then start the game
      */
 
@@ -489,12 +495,12 @@ public class Lobby{
     }
 
     /**
-     * Method that gets the chosen workers' starting positions by the player and places them on the board, updating it.
+     * Method that gets the workers' starting positions chosen by the player and places them on the board, updating it.
      * @param client identifying the gamer that chose the positions
      * @param chosenpositions chosen positions where to place the player's 2 workers on the board before starting the game
      */
 
-    public void SetChosenWorkersFirstPosition(ClientHandler client, List<String> chosenpositions) {
+    public void SetWorkersFirstPosition(ClientHandler client, List<String> chosenpositions) {
 
         try {
             while (true) {
@@ -542,7 +548,7 @@ public class Lobby{
     }
 
     /**
-     * Method that gets the chosen worker's cell id and propagates it to the match of the player that has made the choice
+     * Method that gets the chosen worker's cell id and sets it to the match of the player that has made the choice
      * @param client identifying the player that chose the worker
      * @param chosenWorker id of the chosen worker's cell
      */
@@ -595,9 +601,10 @@ public class Lobby{
 
 
     /**
-     * Method that gets the chosen cell id and propagates it to the match of the player that has made the choice
+     * Method that gets the chosen cell id where the worker has to be moved and sends it to the match of the
+     * player that has made the choice
      * @param client identifying the player that chose the cell
-     * @param chosenCell id of the chosen cell
+     * @param chosenCell id of the chosen cell where to move the worker
      */
     public void MoveWorkerOnGivenCell(ClientHandler client, String chosenCell) {
         try {
@@ -646,8 +653,8 @@ public class Lobby{
     }
 
     /**
-     * Method that gets the chosen cell id and propagates it to the match of the player that has made the choice
-     * @param client identifying the player that chose the cell
+     * Method that skips the move for the player that has made the choice
+     * @param client identifying the player that wants to skip the move
      */
     public void passMove(ClientHandler client) {
         try {
@@ -696,7 +703,8 @@ public class Lobby{
     }
 
     /**
-     * Method that gets the chosen cell id and propagates it to the match of the player that has made the choice
+     * Method that gets the chosen cell id on which to perform the build and sends it to the match
+     * of the player that has made the choice
      * @param client identifying the player that chose the cell
      * @param chosenCell id of the chosen cell
      */
@@ -747,9 +755,11 @@ public class Lobby{
     }
 
     /**
-     * Method that gets the chosen cell id and propagates it to the match of the player that has made the choice
+     * Method that gets the chosen cell id on which to perform the build and sends it to the match
+     * of the player that has made the choice
      * @param client identifying the player that chose the cell
      * @param chosenCell id of the chosen cell
+     * @param build_BorD string stating if on the cell the player wants to build a block (B) or a dome (D)
      */
     public void BuildOnGivenCellForAtlas(ClientHandler client, String chosenCell, String build_BorD) {
         try {
@@ -798,8 +808,8 @@ public class Lobby{
     }
 
     /**
-     * Method that gets the chosen cell id and propagates it to the match of the player that has made the choice
-     * @param client identifying the player that chose the cell
+     * Method that skips the build for the player that has made the choice
+     * @param client identifying the player that wants to skip the build
      */
     public void passBuild(ClientHandler client) {
         try {
@@ -847,6 +857,12 @@ public class Lobby{
         }
     }
 
+    /**
+     * Method that gets the chosen cell id on which to perform the end and sends it to the match
+     * of the player that has made the choice
+     * @param client identifying the player that chose the cell
+     * @param chosenCell id of the chosen cell
+     */
     public void doEndActionOnGivenCell(ClientHandler client, String chosenCell) {
         try {
             while (true) {
@@ -894,8 +910,8 @@ public class Lobby{
     }
 
     /**
-     * Method that gets the chosen cell id and propagates it to the match of the player that has made the choice
-     * @param client identifying the player that chose the cell
+     * Method that skips the end for the player that has made the choice
+     * @param client identifying the player that wants to skip the end
      */
     public void passEnd(ClientHandler client) {
         try {

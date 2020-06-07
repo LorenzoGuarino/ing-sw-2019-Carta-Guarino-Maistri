@@ -18,6 +18,7 @@ import it.polimi.ingsw.PSP027.Network.ProtocolTypes;
 
 /**
  * @author Elisa Maistri
+ * @author Lorenzo Guarino
  */
 
 public class ClientHandler implements Runnable
@@ -40,16 +41,27 @@ public class ClientHandler implements Runnable
         private ArrayList<Node> commandsList = new ArrayList<Node>();
         private ReentrantLock CommandsLock = new ReentrantLock();
 
+        /**
+         * Constructor: it stores this class' owner (the client handler class)
+         * @param owner client handler who owns this class
+         */
         ClientCommandsHandler(ClientHandler owner)
         {
             this.owner = owner;
         }
 
+        /**
+         * Method that stops the Client Handler thread
+         */
         public void Stop()
         {
             bRun = false;
         }
 
+        /**
+         * Method that enqueue the commands that the Client Handler is receiving from the client
+         * @param command command to process
+         */
         public void EnqueueCommand(Node command)
         {
             try {
@@ -73,6 +85,10 @@ public class ClientHandler implements Runnable
             }
         }
 
+        /**
+         * Method that dequeue the commands enqueued before
+         * @return the command dequeued that is going to be processed
+         */
         public Node DequeueCommand()
         {
             Node command = null;
@@ -100,6 +116,9 @@ public class ClientHandler implements Runnable
             return command;
         }
 
+        /**
+         * Method that processes the command received from the client and triggers action for the server accordingly
+         */
         @Override
         public void run() {
 
@@ -341,7 +360,7 @@ public class ClientHandler implements Runnable
     }
 
     /**
-     * Method used by the server to send commands to its clients, the command is sent is the stream output is not null
+     * Method used by the server to send commands to its clients, the command is sent in the stream output if not null
      * @param cmd command that the server wants to send to the client
      */
 
@@ -353,6 +372,7 @@ public class ClientHandler implements Runnable
             }
         }
         catch (IOException e) {
+            System.out.println(e.toString());
         }
     }
 
@@ -362,8 +382,7 @@ public class ClientHandler implements Runnable
      * **********************************************************************************************************************/
 
     /**
-     * Method that prepares the command that will then be processed in xml format in the client
-     * @return the command in string format
+     * Method that prepares the command "Hello" that will then be processed in xml format in the client
      */
 
     private void onHello(){
@@ -379,7 +398,7 @@ public class ClientHandler implements Runnable
      * responds that the nickname's missing
      * It builds the command response (xml in string format) depending on the succession or failure fo the user's registering (if the
      * nickname is already used by another gamer)
-     * @return the command in string format
+     * @param data node containing the data of the command received by the client (nickname to register in this case)
      */
 
     private void onRegister(Node data){
@@ -428,7 +447,7 @@ public class ClientHandler implements Runnable
     /**
      * Method that prepares the command that will then be processed in xml format in the client
      * It is used to deregister a gamer triggering a method of the lobby that does the action
-     * @return the command in string format
+     * @param data node containing the data of the command received by the client
      */
 
     private void onDeregister(Node data){
@@ -534,9 +553,9 @@ public class ClientHandler implements Runnable
     }
 
     /**
-     * Method that processes the chosen god written in the command in xml format received from the client
-     * It triggers a method of the lobby that saves this chosen god as the player's god card
-     * @param data xml containing the chosen god by the client
+     * Method that processes the chosen first player written in the command in xml format received from the client
+     * It triggers a method of the lobby that saves the first player and starts its turn
+     * @param data xml containing the chosen first player
      */
 
     private void onChosenFirstPlayer(Node data) {
@@ -590,7 +609,7 @@ public class ClientHandler implements Runnable
                 }
             }
 
-            lobby.SetChosenWorkersFirstPosition(this, chosenpositions);
+            lobby.SetWorkersFirstPosition(this, chosenpositions);
         }
     }
 
@@ -623,7 +642,7 @@ public class ClientHandler implements Runnable
     }
 
     /**
-     * Method that process the candidate cell written in the command in xml format received from the client.
+     * Method that process the candidate cell on which to move the worker written in the command in xml format received from the client.
      * It triggers a method in the lobby that sets the chosen cell in the turn that is being played in the correspondent match
      * @param data xml of the chosen cell received from the client
      */
@@ -648,8 +667,7 @@ public class ClientHandler implements Runnable
     }
 
     /**
-     * Method that process the candidate cell written in the command in xml format received from the client.
-     * It triggers a method in the lobby that sets the chosen cell in the turn that is being played in the correspondent match
+     * Method that skips the move
      */
     private void onMovePassed() {
 
@@ -660,7 +678,7 @@ public class ClientHandler implements Runnable
         lobby.passMove(this);
     }
     /**
-     * Method that process the candidate cell written in the command in xml format received from the client.
+     * Method that process the candidate cell on which to build written in the command in xml format received from the client.
      * It triggers a method in the lobby that sets the chosen cell in the turn that is being played in the correspondent match
      * @param data xml of the chosen cell received from the client
      */
@@ -685,8 +703,10 @@ public class ClientHandler implements Runnable
     }
 
     /**
-     * Method that process the candidate cell written in the command in xml format received from the client.
-     * It triggers a method in the lobby that sets the chosen cell in the turn that is being played in the correspondent match
+     * Method that process the candidate cell on which to build a level or a dome depending what the player whose god is Atlas chose,
+     * written in the command in xml format received from the client.
+     * It triggers a method in the lobby that sets the chosen cell in the turn that is being played in the correspondent match and
+     * tells it what to build (block if B or dome if D)
      * @param data xml of the chosen cell received from the client
      */
     private void onBuildForAtlas(Node data) {
@@ -714,8 +734,7 @@ public class ClientHandler implements Runnable
     }
 
     /**
-     * Method that process the candidate cell written in the command in xml format received from the client.
-     * It triggers a method in the lobby that sets the chosen cell in the turn that is being played in the correspondent match
+     * Method that skips the build
      */
     private void onBuildPassed() {
 
@@ -726,6 +745,11 @@ public class ClientHandler implements Runnable
         lobby.passBuild(this);
     }
 
+    /**
+     * Method that process the candidate cell on which to perform the end action written in the command in xml format received from the client.
+     * It triggers a method in the lobby that sets the chosen cell in the turn that is being played in the correspondent match
+     * @param data xml of the chosen cell received from the client
+     */
     private void onEndAction(Node data) {
 
         System.out.println("Received onEnd from " + nickname);
@@ -746,6 +770,9 @@ public class ClientHandler implements Runnable
         }
     }
 
+    /**
+     * Method that skips the end
+     */
     private void onEndPassed() {
         System.out.println("Received onEndPassed from " + nickname);
         lobby.passEnd(this);

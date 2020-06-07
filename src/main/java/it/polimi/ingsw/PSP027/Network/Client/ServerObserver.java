@@ -36,6 +36,4 @@ public interface ServerObserver
     void onCandidateCellsForOptBuild(NodeList nodes);
     void onCandidateCellsForOptEnd(NodeList nodes);
     void onPrintUpdatedBoard(NodeList nodes);
-    void onMoveWorker();
-    void onBuild();
 }

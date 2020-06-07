@@ -13,6 +13,8 @@ import java.util.List;
 
 /**
  * @author Elisa Maistri
+ * @author Lorenzo Guarino
+ * @author danielecarta
  */
 
 public class Client implements Runnable, ServerObserver
@@ -52,7 +54,13 @@ public class Client implements Runnable, ServerObserver
     private RegistrationStatus regStatus = RegistrationStatus.Unregistered;
     private ConnectionStatus connStatus = ConnectionStatus.Disconnected;
 
+    /**
+     * Method to get this client's nickname
+     * @return the client's nickname
+     */
+
     public String getNickname() { return nickname; }
+
     /**
      * Method that adds an observer to the list of observers
      * @param observer observer to add
@@ -80,7 +88,7 @@ public class Client implements Runnable, ServerObserver
     /**
      * Method used to trigger the connection to the server if it receives an ip address valid (from CLI or GUI) and if the
      * user is in the "wait for connection status"
-     * @param ipaddress ip address to use fo connection typed by the user in the format ipaddress:port
+     * @param ipaddress ip address to use for connection typed by the user in the format ipaddress:port
      * @return true if command has been executed otherwise false
      */
 
@@ -109,7 +117,7 @@ public class Client implements Runnable, ServerObserver
 
             if(bWrongAddress)
             {
-                // should either notify UI that we are defaulting to 127.0.0.1:SOCKET_PORT and connect OR return false !
+                //@TODO should either notify UI that we are defaulting to 127.0.0.1:SOCKET_PORT and connect OR return false !
             }
 
             connStatus = ConnectionStatus.Connecting;
@@ -182,25 +190,6 @@ public class Client implements Runnable, ServerObserver
         return false;
     }
 
-    /*
-     * template function for any game command
-       public synchronized boolean GameCommandXXXX(String xxxxxx)
-        {
-            if(connStatus == ConnectionStatus.KeepConnected) {
-
-                if (regStatus == RegistrationStatus.Registered) {
-
-                    String strCmd = "<cmd><id>XXXXXX</id><data>WWWWWWWWW</data></cmd>";
-                    *
-                    serverHandler.SendCommand(strCmd);
-                    return true;
-                }
-            }
-
-            return false;
-        }
-    */
-
     /**
      * Method to trigger the search of the Match for a player. It sends a command to the server with the data required
      * @param nPlayer number of players that will play the match that is being searched
@@ -223,7 +212,7 @@ public class Client implements Runnable, ServerObserver
     }
 
     /**
-     * Method that sends a command to the server with the data required
+     * Method that sends a command with the gods chosen by the client to the server
      * @param godCardsList list of god names that the client has chosen
      * @return true if operation successful, false otherwise
      */
@@ -316,7 +305,7 @@ public class Client implements Runnable, ServerObserver
 
     /**
      * Method that sends a command to the server with the data required
-     * @param chosenWorker worker choose by the player that is playing the turn
+     * @param chosenWorker worker chosen by the player that is playing the turn
      * @return true if operation successful, false otherwise
      */
     public synchronized boolean ChosenWorker(String chosenWorker) {
@@ -331,25 +320,6 @@ public class Client implements Runnable, ServerObserver
             }
         }
 
-        return false;
-    }
-
-    /**
-     * Method that sends a command to the server with the data required
-     * @param answer contains Yes or No if the user wants to apply the god's power or not
-     * @return true if operation successful, false otherwise
-     */
-    public synchronized boolean ChosenAnswerForApplyingGod(String answer) {
-        if(connStatus == ConnectionStatus.KeepConnected) {
-
-            if (regStatus == RegistrationStatus.Registered) {
-
-                String cmd = "<cmd><id>" + ProtocolTypes.protocolCommand.clt_AnswerApplyOrNotGod.toString() + "</id><data><answer>" + answer + "</answer></data></cmd>";
-
-                serverHandler.SendCommand(cmd);
-                return true;
-            }
-        }
         return false;
     }
 
@@ -374,7 +344,7 @@ public class Client implements Runnable, ServerObserver
     }
 
     /**
-     * Method that sends a command to the server with the data required
+     * Method that sends a command to the server that skips the move
      * @return true if operation successful, false otherwise
      */
     public synchronized boolean passMove() {
@@ -414,6 +384,7 @@ public class Client implements Runnable, ServerObserver
     /**
      * Method that sends a command to the server with the data required
      * @param chosenCell Cell that is chosen to build on
+     * @param build_BorD string indicating if the client asks the server to build a block (B) or a dome (D)
      * @return true if operation successful, false otherwise
      */
     public synchronized boolean CandidateBuildForAtlas(String chosenCell, String build_BorD) {
@@ -432,7 +403,7 @@ public class Client implements Runnable, ServerObserver
     }
 
     /**
-     * Method that sends a command to the server with the data required
+     * Method that sends a command to the server that skips the build
      * @return true if operation successful, false otherwise
      */
     public synchronized boolean passBuild() {
@@ -450,6 +421,11 @@ public class Client implements Runnable, ServerObserver
         return false;
     }
 
+    /**
+     * Method that sends a command to the server with the data required
+     * @param chosenCell Cell that is chosen to perform the end action on
+     * @return true if operation successful, false otherwise
+     */
     public synchronized boolean CandidateEnd(String chosenCell) {
         if(connStatus == ConnectionStatus.KeepConnected) {
 
@@ -466,7 +442,7 @@ public class Client implements Runnable, ServerObserver
     }
 
     /**
-     * Method that sends a command to the server with the data required
+     * Method that sends a command to the server that skips the end
      * @return true if operation successful, false otherwise
      */
     public synchronized boolean passEnd() {
@@ -697,7 +673,7 @@ public class Client implements Runnable, ServerObserver
     }
 
     /**
-     * Method that fires the OnDeregistered() method of the observer (client instance)
+     * Method that fires the OnServerConnectionClosed() method of the observer (client instance)
      */
 
     private void FireOnServerConnectionClosed() {
@@ -713,7 +689,7 @@ public class Client implements Runnable, ServerObserver
     }
 
     /**
-     * Method that fires the OnDeregistered() method of the observer (client instance)
+     * Method that fires the OnServerHasDied() method of the observer (client instance)
      */
 
     private void FireOnServerHasDied() {
@@ -730,6 +706,7 @@ public class Client implements Runnable, ServerObserver
 
     /**
      * Method that fires the OnRegistrationError() method of the observer (client instance)
+     * @param error error occurred when registration attempt
      */
 
     private void FireOnRegistrationError(String error) {
@@ -762,6 +739,7 @@ public class Client implements Runnable, ServerObserver
 
     /**
      * Method that fires the OnEnteringMatch() method of the observer (client instance)
+     * @param players list of players of the entering match
      */
 
     private void FireOnEnteringMatch(List<String> players) {
@@ -778,6 +756,7 @@ public class Client implements Runnable, ServerObserver
 
     /**
      * Method that fires the OnEnteredMatch() method of the observer (client instance)
+     * @param players list of players of the entered match
      */
 
     private void FireOnEnteredMatch(List<String> players) {
@@ -794,6 +773,7 @@ public class Client implements Runnable, ServerObserver
 
     /**
      * Method that fires the OnLeftMatch() method of the observer (client instance)
+     * @param nickname nickname of the client that has left the match
      */
 
     private void FireOnLeftMatch(String nickname) {
@@ -810,6 +790,8 @@ public class Client implements Runnable, ServerObserver
 
     /**
      * Method that fires the OnChooseGods() method of the observer (client instance)
+     * @param gods list of the gods among which the client has to choose 2 or 3 gods from
+     * @param requiredgods number of gods the client has to choose
      */
 
     private void FireOnChooseGods(int requiredgods, List<String> gods) {
@@ -826,6 +808,7 @@ public class Client implements Runnable, ServerObserver
 
     /**
      * Method that fires the OnChooseGod() method of the observer (client instance)
+     * @param chosengods gods among which the client has to choose its god
      */
 
     private void FireOnChooseGod(List<String> chosengods) {
@@ -842,6 +825,7 @@ public class Client implements Runnable, ServerObserver
 
     /**
      * Method that fires the OnChooseFirstPlayer() method of the observer (client instance)
+     * @param players list of players among which the client has to choose who will play first
      */
 
     private void FireOnChooseFirstPlayer(List<String> players) {
@@ -858,6 +842,7 @@ public class Client implements Runnable, ServerObserver
 
     /**
      * Method that fires the OnChooseWorkerStartPosition() method of the observer (client instance)
+     * @param nodes board
      */
 
     private void FireOnChooseWorkerStartPosition(NodeList nodes) {
@@ -905,7 +890,7 @@ public class Client implements Runnable, ServerObserver
     }
 
     /**
-     * Method that fires the OnCandidateCellsForMove() method of the observer (client instance)
+     * Method that fires the OnCandidateCellsForOptMove() method of the observer (client instance)
      * @param nodes cells where the worker selected can move onto
      */
     private void FireOnCandidateCellsForOptMove(NodeList nodes) {
@@ -921,8 +906,8 @@ public class Client implements Runnable, ServerObserver
     }
 
     /**
-     * Method that fires the OnCandidateCellsForMove() method of the observer (client instance)
-     * @param nodes cells where the worker selected can move onto
+     * Method that fires the OnCandidateCellsForBuild() method of the observer (client instance)
+     * @param nodes cells where the worker selected can build onto
      */
     private void FireOnCandidateCellsForBuild(NodeList nodes) {
         List<ClientObserver> observersCpy;
@@ -937,8 +922,8 @@ public class Client implements Runnable, ServerObserver
     }
 
     /**
-     * Method that fires the OnCandidateCellsForMove() method of the observer (client instance)
-     * @param nodes cells where the worker selected can move onto
+     * Method that fires the OnCandidateCellsForOptBuild() method of the observer (client instance)
+     * @param nodes cells where the worker selected can build onto
      */
     private void FireOnCandidateCellsForOptBuild(NodeList nodes) {
         List<ClientObserver> observersCpy;
@@ -953,8 +938,8 @@ public class Client implements Runnable, ServerObserver
     }
 
     /**
-     * Method that fires the OnCandidateCellsForMove() method of the observer (client instance)
-     * @param nodes cells where the worker selected can move onto
+     * Method that fires the OnCandidateCellsForOptEnd() method of the observer (client instance)
+     * @param nodes cells where the worker selected can perform the end action onto
      */
     private void FireOnCandidateCellsForOptEnd(NodeList nodes) {
         List<ClientObserver> observersCpy;
@@ -970,6 +955,7 @@ public class Client implements Runnable, ServerObserver
 
     /**
      * Method that fires the OnWinner() method of the observer (client instance)
+     * @param nickname nickname of the winner
      */
 
     private void FireOnWinner(String nickname) {
@@ -1002,6 +988,7 @@ public class Client implements Runnable, ServerObserver
 
     /**
      * Method that fires the OnPrintUpdatedBoard() method of the observer (client instance)
+     * @param nodes board updated
      */
 
     private void FireOnPrintUpdatedBoard(NodeList nodes) {
@@ -1026,7 +1013,7 @@ public class Client implements Runnable, ServerObserver
      *******************************************************************************************************************/
 
     /**
-     *
+     * Method that acts as ping to check connection drop
      */
 
     @Override
@@ -1252,8 +1239,8 @@ public class Client implements Runnable, ServerObserver
     }
 
     /**
-     * Method that fires the OnCandidateCellsForMove method of the observer (client instance)
-     * @param nodes xml not yet processed containing the board and the candidate cells for the move
+     * Method that fires the OnCandidateCellsForOptMove method of the observer (client instance)
+     * @param nodes xml not yet processed containing the board and the candidate cells for the optional move
      */
 
     @Override
@@ -1264,8 +1251,8 @@ public class Client implements Runnable, ServerObserver
     }
 
     /**
-     * Method that fires the OnCandidateCellsForMove method of the observer (client instance)
-     * @param nodes xml not yet processed containing the board and the candidate cells for the move
+     * Method that fires the OnCandidateCellsForBuild method of the observer (client instance)
+     * @param nodes xml not yet processed containing the board and the candidate cells for the build
      */
 
     @Override
@@ -1276,8 +1263,8 @@ public class Client implements Runnable, ServerObserver
     }
 
     /**
-     * Method that fires the OnCandidateCellsForMove method of the observer (client instance)
-     * @param nodes xml not yet processed containing the board and the candidate cells for the move
+     * Method that fires the OnCandidateCellsForOptBuild method of the observer (client instance)
+     * @param nodes xml not yet processed containing the board and the candidate cells for the optional build
      */
 
     @Override
@@ -1288,8 +1275,8 @@ public class Client implements Runnable, ServerObserver
     }
 
     /**
-     * Method that fires the OnCandidateCellsForMove method of the observer (client instance)
-     * @param nodes xml not yet processed containing the board and the candidate cells for the move
+     * Method that fires the OnCandidateCellsForOptEnd method of the observer (client instance)
+     * @param nodes xml not yet processed containing the board and the candidate cells for the optional end
      */
 
     @Override
@@ -1298,7 +1285,6 @@ public class Client implements Runnable, ServerObserver
         FireOnCandidateCellsForOptEnd(nodes);
         notifyAll();
     }
-
 
     /**
      * Method that fires the OnWinner method of the observer (client instance)
@@ -1325,6 +1311,7 @@ public class Client implements Runnable, ServerObserver
 
     /**
      * Method that calls the method that fires the OnPrintUpdatedBoard method of the observer (client instance)
+     * @param nodes board updated to show the user
      */
 
     @Override
@@ -1333,20 +1320,4 @@ public class Client implements Runnable, ServerObserver
         FireOnPrintUpdatedBoard(nodes);
         notifyAll();
     }
-
-
-
-    /* ***************************************************************************************************************** */
-    // METHODS TO CHECK AND FIX AND MIGHT BE DELETED/MODIFIED
-
-    @Override
-    public synchronized void onMoveWorker() {
-        lastHelloTime = new Date();
-    }
-
-    @Override
-    public synchronized void onBuild() {
-        lastHelloTime = new Date();
-    }
-
 }

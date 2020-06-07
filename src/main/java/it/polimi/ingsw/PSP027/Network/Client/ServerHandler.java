@@ -66,7 +66,7 @@ public class ServerHandler implements Runnable
 
 
     /**
-     * Method used by the others to actually send a command to server
+     * Method used to send a command to the server
      * @param cmd command to send
      */
 
@@ -76,6 +76,7 @@ public class ServerHandler implements Runnable
                 output.writeObject(cmd);
         }
         catch (IOException e) {
+            System.out.println(e.toString());
         }
     }
 
@@ -122,7 +123,9 @@ public class ServerHandler implements Runnable
         bRun = false;
         try {
             server.close();
-        } catch (IOException e) { }
+        } catch (IOException e) {
+            System.out.println(e.toString());
+        }
     }
 
     /**
@@ -160,11 +163,15 @@ public class ServerHandler implements Runnable
 
         try {
             server.close();
-        } catch (IOException  e) { }
+        } catch (IOException  e) {
+            System.out.println(e.toString());
+        }
 
         try {
             FireOnDisconnected();
-        } catch (IOException | ClassNotFoundException e) { }
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println(e.toString());
+        }
 
     }
 
@@ -555,9 +562,8 @@ public class ServerHandler implements Runnable
     }
 
     /**
-     * Method that processes the xml command in order to get its data and fired the OnLeftMatch method in the client.
-     * In this case it gets the nickname of the player that has left the match, in order to trigger a method of
-     * @param data
+     * Method that processes the xml command in order to get its data and fires the OnLeftMatch method in the client
+     * @param data xml to process
      * @throws IOException
      * @throws ClassNotFoundException
      */
@@ -896,8 +902,8 @@ public class ServerHandler implements Runnable
     }
 
     /**
-     * Method that fires the OnCandidateCellsForMove method in the client, processing the command received from the server
-     * @param data xml to process and then pass on to onCandidateCellsForMove
+     * Method that fires the OnCandidateCellsForOptMove method in the client, processing the command received from the server
+     * @param data xml to process and then pass on to onCandidateCellsForOptMove
      */
     private void FireOnCandidateCellsForOptMove(Node data){
         /* data value (example)
@@ -929,8 +935,8 @@ public class ServerHandler implements Runnable
     }
 
     /**
-     * Method that fires the OnCandidateCellsForMove method in the client, processing the command received from the server
-     * @param data xml to process and then pass on to onCandidateCellsForMove
+     * Method that fires the OnCandidateCellsForBuild method in the client, processing the command received from the server
+     * @param data xml to process and then pass on to onCandidateCellsForBuild
      */
     private void FireOnCandidateCellsForBuild(Node data){
         /* data value (example)
@@ -962,8 +968,8 @@ public class ServerHandler implements Runnable
     }
 
     /**
-     * Method that fires the OnCandidateCellsForMove method in the client, processing the command received from the server
-     * @param data xml to process and then pass on to onCandidateCellsForMove
+     * Method that fires the OnCandidateCellsForOptBuild method in the client, processing the command received from the server
+     * @param data xml to process and then pass on to onCandidateCellsForOptBuild
      */
     private void FireOnCandidateCellsForOptBuild(Node data){
         /* data value (example)
@@ -996,8 +1002,8 @@ public class ServerHandler implements Runnable
 
 
     /**
-     * Method that fires the OnCandidateCellsForMove method in the client, processing the command received from the server
-     * @param data xml to process and then pass on to onCandidateCellsForMove
+     * Method that fires the OnCandidateCellsForOptEnd method in the client, processing the command received from the server
+     * @param data xml to process and then pass on to onCandidateCellsForOptEnd
      */
     private void FireOnCandidateCellsForOptEnd(Node data){
         /* data value (example)
@@ -1057,7 +1063,7 @@ public class ServerHandler implements Runnable
      */
 
     private synchronized void FireOnWinner(Node data) throws IOException, ClassNotFoundException {
-        /** data value
+        /* data value
          * <data><<player>winnernick</player></data>
          */
 
