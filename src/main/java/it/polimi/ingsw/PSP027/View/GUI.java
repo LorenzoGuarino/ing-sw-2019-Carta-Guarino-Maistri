@@ -121,6 +121,9 @@ public class GUI extends Application implements ClientObserver {
         return SantoriniStage;
     }
 
+    /**
+     * Method that load the Connect fxml page and set the new Scene in SantoriniStage
+     */
     public void showConnectedPage() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/ConnectedPage.fxml"));
@@ -154,7 +157,9 @@ public class GUI extends Application implements ClientObserver {
         alert.initOwner(SantoriniStage);
         Optional<ButtonType> result = alert.showAndWait();
     }
-
+    /**
+     * Method that load the EntryPage fxml page and set the new Scene in SantoriniStage
+     */
     public void showEntryPage() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/EntryPage.fxml"));
@@ -170,7 +175,9 @@ public class GUI extends Application implements ClientObserver {
             System.out.println(exception.toString());
         }
     }
-
+    /**
+     * Method that load the Register fxml page, sets the nickname of the player and sets the new Scene in SantoriniStage
+     */
     public void showRegisteredPage() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/RegisteredPage.fxml"));
@@ -210,7 +217,9 @@ public class GUI extends Application implements ClientObserver {
             }
         }
     }
-
+    /**
+     * Method that load the EnteringMatch fxml page, sets the nickname of the players and set the new Scene in SantoriniStage
+     */
     public void showEnteringMatchPage() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/EnteringMatchPage.fxml"));
@@ -227,7 +236,9 @@ public class GUI extends Application implements ClientObserver {
             System.out.println(exception.toString());
         }
     }
-
+    /**
+     * Method that load the ChooseGods fxml page and set the new Scene in SantoriniStage
+     */
     public void showChooseGodsPage() {
         try {
             System.out.println("showChooseGodsPage IN");
@@ -248,7 +259,10 @@ public class GUI extends Application implements ClientObserver {
             System.out.println(exception.toString());
         }
     }
-
+    /**
+     * Method that load the ChooseYourGodCase3  fxml page (the 3 indicate the number of players), sets the correct gods in the scene
+     * and sets the new Scene in SantoriniStage
+     */
     public void showChooseYourGodPageCase3() {
         try {
             System.out.println("showChooseYourGodPageCase3 IN");
@@ -269,7 +283,10 @@ public class GUI extends Application implements ClientObserver {
             System.out.println(exception.toString());
         }
     }
-
+    /**
+     * Method that load the ChooseYourGodCase2  fxml page (the 2 indicate the number of players), sets the correct gods in the scene
+     * and sets the new Scene in SantoriniStage
+     */
     public void showChooseYourGodPageCase2(){
         try {
             System.out.println("showChooseYourGodPageCase2 IN");
@@ -290,7 +307,10 @@ public class GUI extends Application implements ClientObserver {
             System.out.println(exception.toString());
         }
     }
-
+    /**
+     * Method that load the Waiting fxml page, sets the waiting message in the scene
+     * and sets the new Scene in SantoriniStage
+     */
     public void showWaitingPage(String waitingMessage){
         try {
             System.out.println("showWaitingPage IN");
@@ -311,7 +331,10 @@ public class GUI extends Application implements ClientObserver {
             System.out.println(exception.toString());
         }
     }
-
+    /**
+     * Method that load the ChooseFirstPlayerCase2 fxml page (the 2 indicate the number of players), sets the nicknames and god of
+     *  the player in the scene, and sets the new Scene in SantoriniStage
+     */
     public void showChooseFirstPlayerPageCase2() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/ChooseFirstPlayerCase2.fxml"));
@@ -329,7 +352,10 @@ public class GUI extends Application implements ClientObserver {
             System.out.println(exception.toString());
         }
     }
-
+    /**
+     * Method that load the ChooseFirstPlayerCase3 fxml page (the 3 indicate the number of players), sets the nicknames and god of
+     *  the player in the scene, and sets the new Scene in SantoriniStage
+     */
     public void showChooseFirstPlayerPageCase3() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/ChooseFirstPlayerCase3.fxml"));
@@ -347,7 +373,10 @@ public class GUI extends Application implements ClientObserver {
             System.out.println(exception.toString());
         }
     }
-
+    /**
+     * Method that load the PlacingWorkers fxml page, ask to the player where to place his workers before starting the game,
+     * this method is used only for placing worker phase (one for each player every game)
+     */
     public void showBoardPage_PlacingWorkers(){
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/BoardPage_PlacingWorkers.fxml"));
@@ -446,6 +475,10 @@ public class GUI extends Application implements ClientObserver {
         }
     }
 
+    /**
+     * Method that load the UniqueBoard fxml page only the first time that is called, then it will no longer create new controllers
+     * or load new pages. Every action made in every phase of the turn call this method for updating the scene in SantoriniStage.
+     */
     public void showBoardPage_UniqueBoard(){
             if(BoardPage==null){
                 loadBoardPage();
@@ -547,7 +580,10 @@ public class GUI extends Application implements ClientObserver {
             SantoriniStage.show();
 
     }
-
+    /**
+     * Method that load the YouHaveWon fxml page, sets the nickname of the winner
+     * and sets the new Scene in SantoriniStage
+     */
     public void showYouHaveWonPage(){
         try {
             System.out.println("showYouHaveWonPage IN");
@@ -570,7 +606,10 @@ public class GUI extends Application implements ClientObserver {
             System.out.println(exception.toString());
         }
     }
-
+    /**
+     * Method that load the YouHaveLost fxml page, sets the nickname of the loser
+     * and sets the new Scene in SantoriniStage
+     */
     public void showYouHaveLostPage(String winner){
         try {
             System.out.println("showYouHaveLostPage IN");
@@ -602,6 +641,10 @@ public class GUI extends Application implements ClientObserver {
         }
     }
 
+    /**
+     * Method that is called by showUniqueBoardPage to load the UniqueBoard fxml page for the first time,
+     * then it will be saved and reused by all next calls of the method
+     */
     public void loadBoardPage(){
         try {
             if(this.currentPhase==null){
@@ -944,9 +987,9 @@ public class GUI extends Application implements ClientObserver {
     }
 
     /**
-     * Method of the ClientObserver interface that is fired by the client when choosing the cell to move the worker onto
+     * Method of the ClientObserver interface that is fired by the client when choosing the cell to do the build on
      *
-     * @param nodes cells where is possible to move the worker in xml format that needs to be processed by the GUI
+     * @param nodes cells where is possible to build on in xml format that needs to be processed by the GUI
      */
     @Override
     public void OnCandidateCellsForBuild(NodeList nodes) {
@@ -981,9 +1024,9 @@ public class GUI extends Application implements ClientObserver {
     }
 
     /**
-     * Method of the ClientObserver interface that is fired by the client when choosing the cell to move the worker onto
+     * Method of the ClientObserver interface that is fired by the client when choosing the cell to do the build on
      *
-     * @param nodes cells where is possible to move the worker in xml format that needs to be processed by the GUI
+     * @param nodes cells where is possible to build on in xml format that needs to be processed by the GUI
      */
     @Override
     public void OnCandidateCellsForOptBuild(NodeList nodes) {
@@ -1018,9 +1061,9 @@ public class GUI extends Application implements ClientObserver {
     }
 
     /**
-     * Method of the ClientObserver interface that is fired by the client when choosing the cell to move the worker onto
+     * Method of the ClientObserver interface that is fired by the client when choosing the cell to do the end Phase
      *
-     * @param nodes cells where is possible to move the worker in xml format that needs to be processed by the GUI
+     * @param nodes cells where is possible to do the end Phase on in xml format that needs to be processed by the GUI
      */
     @Override
     public void OnCandidateCellsForOptEnd(NodeList nodes) {
@@ -1199,24 +1242,37 @@ public class GUI extends Application implements ClientObserver {
      *                                METHODS CALLED BY THE GUI CONTROLLER THAT TRIGGER ACTIONS                            *
      * ******************************************************************************************************************* */
 
+    /**
+     * Method called by GUI Controller to Connect
+     * @param serverip ip of the server
+     */
     public void doConnect(String serverip) {
         client.Connect(serverip);
     }
 
+    /**
+     * Method called by GUI Controller to Exit from the game
+     */
     public void doExit() {
         client.Disconnect();
         Platform.exit();
         System.exit(0);
     }
-
+    /**
+     * Method called by GUI Controller to Disconnect the player
+     */
     public void doDisconnect() {
         client.Disconnect();
     }
-
+    /**
+     * Method called by GUI Controller to Register the player
+     */
     public void doRegister(String nickname) {
         client.Register(nickname);
     }
-
+    /**
+     * Method called by GUI Controller to Deregister the player
+     */
     public void doDeregister() {
         if(gods != null) {
             gods.clear();
@@ -1232,26 +1288,45 @@ public class GUI extends Application implements ClientObserver {
         playingPlayerNickname = "";
         client.Deregister();
     }
-
+    /**
+     * Method called by GUI Controller to search a match
+     * @param numberOfPlayers number of players that are playing the match
+     */
     public void doSearchMatch(int numberOfPlayers) {
         client.SearchMatch(numberOfPlayers);
     }
 
+    /**
+     * Method called by GUI Controller to send the chosen gods
+     * @param GodsChosen the gods chosen by first player
+     */
     public void doSendGods(List<String> GodsChosen){
         client.ChosenGods(GodsChosen);
         Platform.runLater(() -> showWaitingPage("Wait while the other players choose their gods"));
     }
 
+    /**
+     * Method called by GUI Controller to send the god chosen by the player to play with
+     * @param GodSelected god selected by the player
+     */
     public void doSendSelectedGod(String GodSelected){
         client.ChosenGod(GodSelected);
         Platform.runLater(() -> showWaitingPage("Wait for your turn to begin"));
     }
 
+    /**
+     * Method called by GUI Controller to send the first Player
+     * @param FirstPlayer player that will start first the match
+     */
     public void doSendFirstPlayer(String FirstPlayer){
         client.ChosenFirstPlayer(FirstPlayer);
         Platform.runLater(() -> showWaitingPage("Wait for your turn to begin"));
     }
 
+    /**
+     * Method called by GUI Controller to send the cell selected to place the workers
+     * @param CellsSelected cells where to place the workers
+     */
     public void doSendSelectedCellsForWorkers(List<String> CellsSelected){
         String[] chosenPosition = new String[2];
         String firstPosition = CellsSelected.get(0);
@@ -1264,45 +1339,78 @@ public class GUI extends Application implements ClientObserver {
         Platform.runLater(() -> showWaitingPage("Wait for your turn to begin"));
     }
 
+    /**
+     * Method called by GUI Controller to send the worker chosen by the player to play the turn
+     * @param chosenWorker worker that will move and build
+     */
     public void doSendSelectedWorker(String chosenWorker){
         client.ChosenWorker(chosenWorker);
     }
 
+    /**
+     * Method called by GUI Controller to send the candidate cell for the move Phase
+     * @param candidateCell cell selected by the player to move the worker on
+     */
     public void doSendCandidateMove(String candidateCell){
         this.restoreCandidateCells();
         client.CandidateMove(candidateCell);
     }
 
+    /**
+     * Method called by GUI Controller to skip the extra move phase (only Artemis has an extra move phase)
+     */
     public void doSkipOptMove(){
         this.restoreCandidateCells();
         client.passMove();
     }
 
+    /**
+     * Method called by GUI Controller to skip the extra build phase generated by the power of some gods
+     */
     public void doSkipOptBuild(){
         this.restoreCandidateCells();
         client.passBuild();
     }
 
+    /**
+     * Method called by GUI Controller to send the candidate cell for the build Phase
+     * @param candidateCell cell selected by the player to build on
+     */
     public void doSendCandidateBuild(String candidateCell){
         this.restoreCandidateCells();
         client.CandidateBuild(candidateCell);
     }
 
+    /**
+     * Method called by GUI Controller to send the candidate cell for the end Phase
+     * @param candidateCell cell selected by the player to do the end phase on
+     */
     public void doSendCandidateEnd(String candidateCell){
         this.restoreCandidateCells();
         client.CandidateEnd(candidateCell);
     }
 
+    /**
+     * Method called by GUI Controller to skip the end phase generated by the power of some gods
+     */
     public void doSkipOptEnd(){
         this.restoreCandidateCells();
         client.passEnd();
     }
 
+    /**
+     * Method called by GUI Controller to send the candidate cell for the build Phase (Atlas only)
+     * @param candidateCell cell selected by the player to build on
+     * @param LevelOrDome indicate if the player wants to build a dome or a standard level
+     */
     public void doSendCandidateBuildForAtlas(String candidateCell, String LevelOrDome) {
         this.restoreCandidateCells();
         client.CandidateBuildForAtlas(candidateCell, LevelOrDome);
     }
 
+    /**
+     * Method called by GUI Controller to start a new match, skipping the registration process
+     */
     public void doPlayAgain() {
         if(gods != null) {
             gods.clear();
@@ -1319,6 +1427,10 @@ public class GUI extends Application implements ClientObserver {
         Platform.runLater(() -> showRegisteredPage());
     }
 
+    /**
+     * Method called by GUI Controller to get the current Phase of the turn
+     * @return the current phase of the turn
+     */
     public Phase getCurrentPhase(){
         return this.currentPhase;
     }
