@@ -3,8 +3,11 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
-
 import java.io.StringReader;
+
+/**
+ * @author Elisa Maistri
+ */
 
 public class Utils {
 

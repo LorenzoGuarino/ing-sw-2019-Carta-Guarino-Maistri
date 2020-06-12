@@ -3,16 +3,16 @@ package it.polimi.ingsw.PSP027.View.Controllers;
 
 import it.polimi.ingsw.PSP027.Network.Client.Client;
 import it.polimi.ingsw.PSP027.View.GUI;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
-import org.w3c.dom.Node;
-
 import java.util.*;
+
+/**
+ * @author Elisa Maistri
+ */
 
 public class YouHaveLostController {
 

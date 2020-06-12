@@ -1,6 +1,5 @@
 package it.polimi.ingsw.PSP027.View.Controllers;
 
-import it.polimi.ingsw.PSP027.Model.Game.Player;
 import it.polimi.ingsw.PSP027.Network.Client.Client;
 import it.polimi.ingsw.PSP027.View.GUI;
 import javafx.fxml.FXML;
@@ -9,10 +8,10 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.text.Font;
-import org.w3c.dom.Node;
 
-import java.util.*;
+/**
+ * @author Elisa Maistri
+ */
 
 public class RegisteredController {
 

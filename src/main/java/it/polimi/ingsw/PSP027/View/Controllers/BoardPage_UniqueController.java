@@ -18,10 +18,20 @@ import java.util.Optional;
 import javafx.scene.Node;
 import static java.lang.Math.abs;
 
+/**
+ * @author Elisa Maistri
+ * @author danielecarta
+ * @author Lorenzo Guarino
+ */
+
 public class BoardPage_UniqueController {
     private GUI gui;
     private List<Integer> indexcandidatecells = new ArrayList<Integer>();
     private String cellSelected;
+    private final List<String> cellsToSend = new ArrayList<>();
+
+    @FXML
+    public ImageView ConfirmButton;
 
     @FXML
     public ImageView DescriptionOptional;
@@ -71,6 +81,7 @@ public class BoardPage_UniqueController {
         Player1Dead.setVisible(false);
         Player2Dead.setVisible(false);
         Player3Dead.setVisible(false);
+        ConfirmButton.setVisible(false);
     }
 
     /**
@@ -81,7 +92,7 @@ public class BoardPage_UniqueController {
     }
 
     /**
-     * Method that update the image of the button pressed, and call the next GUI command
+     * Method that updates the image of the button pressed, and call the next GUI command
      * based on the phase of the turn played
      */
     public void skipButtonPressed() {
@@ -100,7 +111,7 @@ public class BoardPage_UniqueController {
     }
 
     /**
-     * Method that update the image of the button pressed
+     * Method that updates the image of the button pressed
      */
     public void skipButtonReleased() {
         SkipButton.setImage(new Image("images/Buttons/btn_Skip.png"));
@@ -140,7 +151,7 @@ public class BoardPage_UniqueController {
     }
 
     /**
-     * Method that set the dome on the cell index given
+     * Method that sets the dome on the cell index given
      * @param index cell where the dome needs to be add
      */
     public void setDome(int index){
@@ -153,7 +164,7 @@ public class BoardPage_UniqueController {
         BoardGrid.add(dome, column, row);
     }
     /**
-     * Method that set the worker on the cell index given
+     * Method that sets the worker on the cell index given
      * @param index cell where the worker needs to be add
      * @param url indicate the color of the worker (different color for each player)
      */
@@ -168,7 +179,7 @@ public class BoardPage_UniqueController {
     }
 
     /**
-     * Method that set the given cell index in a candidate cell highlighted
+     * Method that sets the given cell index in a candidate cell highlighted
      * @param index cell where the candidate ring needs to be add
      */
     public void setCandidate(int index){
@@ -180,6 +191,21 @@ public class BoardPage_UniqueController {
         candidate.setFitWidth(100);
         BoardGrid.add(candidate, column, row);
         indexcandidatecells.add(index);
+    }
+
+    /**
+     *
+     */
+    public void setPlacingWorkersBoard() {
+        for(int i=0; i<25; i++) {
+            int column = i%5;
+            int row = abs(i/5-4);
+            ImageView invisiblecandidate = new ImageView("images/Board/InvisibleCell.png");
+            invisiblecandidate.setPickOnBounds(true);
+            invisiblecandidate.setFitHeight(100);
+            invisiblecandidate.setFitWidth(100);
+            BoardGrid.add(invisiblecandidate, column, row);
+        }
     }
 
     /**
@@ -319,7 +345,7 @@ public class BoardPage_UniqueController {
         }
     }
     /**
-     * Method that set invisible the Player 3 Panel if this is a 2 PLayer match
+     * Method that sets invisible the Player 3 Panel if this is a 2 PLayer match
      * @param visibility identify if the match is 2 or 3 Players
      */
     public void setPanel3Visibility(boolean visibility) {
@@ -330,7 +356,7 @@ public class BoardPage_UniqueController {
     }
 
     /**
-     * Method that clear the Board (GridPane) and reset the Player Panel every turn
+     * Method that clears the Board (GridPane) and reset the Player Panel every turn
      */
     public void resetBoardGrid() {
         if(BoardGrid.getChildren().size()!=0){
@@ -346,6 +372,7 @@ public class BoardPage_UniqueController {
         Player2Icon.setImage(null);
         Player3Dead.setVisible(false);
         Player3Icon.setImage(null);
+        ConfirmButton.setVisible(false);
     }
 
     /**
@@ -354,11 +381,123 @@ public class BoardPage_UniqueController {
      */
     public void clickedOnGrid(MouseEvent e){
         Node source = e.getPickResult().getIntersectedNode();
+        ImageView selectedCell = (ImageView) e.getTarget();
         Integer gridColumn = GridPane.getColumnIndex(source);
         Integer gridRow = GridPane.getRowIndex(source);
         if(gridRow != null && gridColumn != null) {
-            int chosenCellIndex = abs(gridRow - 4) * 5 + gridColumn;
+
+            int chosenCellIndex = (4 - gridRow) * 5 + gridColumn;
+
             switch (this.gui.getCurrentPhase()) {
+
+                case PlaceWorkers:
+
+                    cellSelected = Integer.toString(chosenCellIndex);
+                    boolean bAlreadySelected;
+                    boolean bAlreadyTaken;
+
+                    if(cellsToSend.size() <2) {
+                        bAlreadySelected = false;
+                        for(int i=0; i<cellsToSend.size(); i++){
+                            if(cellSelected.equals(cellsToSend.get(i))){
+                                bAlreadySelected = true;
+                                break;
+                            }
+                        }
+
+                        bAlreadyTaken = false;
+                        if (!gui.getNicknameOfCellNode(gui.getCellNodeGivenTheID(chosenCellIndex)).isEmpty()) {
+                            bAlreadyTaken = true;
+                        }
+
+                        if (!bAlreadySelected && !bAlreadyTaken) {
+                            selectedCell.setImage(new Image("images/Board/CandidateCell_Board.png"));
+                            cellsToSend.add(cellSelected);
+                        }
+
+                        /*if (!bAlreadySelected && !bAlreadyTaken) {
+                            for(Node child : BoardGrid.getChildren()) {
+                                Integer r = GridPane.getRowIndex(child);
+                                Integer c = GridPane.getColumnIndex(child);
+                                int row = r == null ? 0 : r;
+                                int column = c == null ? 0 : c;
+                                if (row == gridRow && column == gridColumn) {
+                                    //ImageView selectedCell = (ImageView) child;
+                                    //selectedCell.setVisible(true);
+                                    selectedCell.setImage(new Image("images/Board/CandidateCell_Board.png"));
+                                    cellsToSend.add(cellSelected);
+                                    break;
+                                }
+                            }
+                        }*/
+
+                        if (cellsToSend.size() == 2) {
+                            ConfirmButton.setVisible(true);
+                        }
+
+                    } else if(cellsToSend.size() == 2) {
+                        bAlreadySelected = false;
+                        for(int i=0; i<cellsToSend.size(); i++){
+                            if(cellSelected.equals(cellsToSend.get(i))){
+                                bAlreadySelected = true;
+                                break;
+                            }
+                        }
+
+                        bAlreadyTaken = false;
+                        if (!gui.getNicknameOfCellNode(gui.getCellNodeGivenTheID(chosenCellIndex)).isEmpty()) {
+                            bAlreadyTaken = true;
+                        }
+
+                        if (!bAlreadySelected && !bAlreadyTaken) {
+                            int cellToRemoveIndex = Integer.parseInt(cellsToSend.get(0));
+                            int cellToRemoveRow = 4 - (cellToRemoveIndex / 5);
+                            int cellToRemoveColumn = cellToRemoveIndex % 5;
+
+                            boolean candidateSet = false;
+                            boolean candidateDeleted = false;
+
+                            for(Node child : BoardGrid.getChildren()) {
+                                Integer r = GridPane.getRowIndex(child);
+                                Integer c = GridPane.getColumnIndex(child);
+                                int row = r == null ? 0 : r;
+                                int column = c == null ? 0 : c;
+                                if(row == cellToRemoveRow && column == cellToRemoveColumn) {
+
+                                    System.out.println("Removing cell " + row + " " + column);
+                                    ImageView selectedCellToRemove = (ImageView) child;
+                                    cellsToSend.remove(0);
+                                    selectedCellToRemove.setImage(new Image("images/Board/InvisibleCell.png"));
+                                    selectedCell.setImage(new Image("images/Board/CandidateCell_Board.png"));
+                                    cellsToSend.add(cellSelected);
+                                    break;
+                                }
+                            }
+
+                            /*for(Node child : BoardGrid.getChildren()) {
+                                Integer r = GridPane.getRowIndex(child);
+                                Integer c = GridPane.getColumnIndex(child);
+                                int row = r == null ? 0 : r;
+                                int column = c == null ? 0 : c;
+                                if (row == gridRow && column == gridColumn) {
+                                    //ImageView selectedCell = (ImageView) child;
+                                    //selectedCell.setVisible(true);
+                                    selectedCell.setImage(new Image("images/Board/CandidateCell_Board.png"));
+                                    cellsToSend.add(cellSelected);
+                                    candidateSet = true;
+                                } else if(row == cellToRemoveRow && column == cellToRemoveColumn) {
+                                    ImageView selectedCellToRemove = (ImageView) child;
+                                    cellsToSend.remove(0);
+                                    selectedCellToRemove.setImage(new Image("images/Board/InvisibleCell.png"));
+                                    candidateDeleted = true;
+                                }
+
+                                if(candidateDeleted && candidateSet)
+                                    break;
+                            }*/
+                        }
+                    }
+                    break;
                 case ChooseWorker:
                     if (this.gui.getNicknameOfCellNode(this.gui.getCellNodeGivenTheID(chosenCellIndex)).equals(this.gui.client.getNickname())) {
                         cellSelected = Integer.toString(chosenCellIndex);
@@ -409,7 +548,7 @@ public class BoardPage_UniqueController {
     }
 
     /**
-     * Method that check if the current player has Atlas as god, so we can display the correct Pane
+     * Method that checks if the current player has Atlas as god, so we can display the correct Pane
      * @param cellSelected cell selected by the player for the phase
      */
     public void sendCellSelected(String cellSelected) {
@@ -450,14 +589,32 @@ public class BoardPage_UniqueController {
         DomeButton.setImage(new Image("images/Buttons/btn_Dome_pressed.png"));
         gui.doSendCandidateBuildForAtlas(cellSelected, "D");
     }
+
     /**
-     * Method that update the image of the button when the mouse is on the button
+     * Method that updates the image of the button pressed and call the method that sends the position,
+     * chosen for the workers by the player that is playing to the GUI
+     */
+    public void confirmButtonPressed() {
+        ConfirmButton.setImage(new Image("images/Buttons/btn_Confirm_pressed.png"));
+        gui.doSendSelectedCellsForWorkers(cellsToSend);
+    }
+
+    /**
+     * Method that updates the image of the button pressed
+     */
+    public void confirmButtonReleased() {
+        ConfirmButton.setImage(new Image("images/Buttons/btn_Confirm.png"));
+    }
+
+    /**
+     * Method that updates the image of the button when the mouse is on the button
      */
     public void exitButtonHovered() {
         ExitGameButton.setImage(new Image("images/Buttons/btn_exitGame_hovered.png"));
     }
+
     /**
-     * Method that update the button image and than proceed to deregister the player that want to exit from the game
+     * Method that updates the button image and than proceed to deregister the player that want to exit from the game
      */
     public void exitButtonPressed() {
 
@@ -473,18 +630,21 @@ public class BoardPage_UniqueController {
             gui.doDeregister();
     }
     /**
-     * Method that update the image of the button pressed
+     * Method that updates the image of the button pressed
      */
     public void exitButtonReleased() {
         ExitGameButton.setImage(new Image("images/Buttons/btn_exitGame.png"));
     }
 
     /**
-     * Method that update the image of the PhaseName, so the player has clear which phase
+     * Method that updates the image of the PhaseName, so the player has clear which phase
      * is currently playing
      */
     public void setPhaseName(){
         switch (this.gui.getCurrentPhase()){
+            case PlaceWorkers:
+                PhaseName.setImage(new Image("images/Board/PlaceWorkers.png"));
+                break;
             case ChooseWorker:
                 PhaseName.setImage(new Image("images/Board/ChooseWorker.png"));
                 break;

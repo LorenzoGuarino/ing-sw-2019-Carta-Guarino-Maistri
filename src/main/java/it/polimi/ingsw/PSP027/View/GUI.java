@@ -38,6 +38,7 @@ public class GUI extends Application implements ClientObserver {
     private Parent BoardPage=null;
     public enum Phase {
         Build,
+        PlaceWorkers,
         ChooseWorker,
         Move,
         OptBuild,
@@ -373,107 +374,6 @@ public class GUI extends Application implements ClientObserver {
             System.out.println(exception.toString());
         }
     }
-    /**
-     * Method that load the PlacingWorkers fxml page, ask to the player where to place his workers before starting the game,
-     * this method is used only for placing worker phase (one for each player every game)
-     */
-    public void showBoardPage_PlacingWorkers(){
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/BoardPage_PlacingWorkers.fxml"));
-            Parent PlacingWorkersPage = (Parent) loader.load();
-
-            BoardPage_PlacingWorkersController boardPage_PlacingWorkersController = loader.getController();
-            boardPage_PlacingWorkersController.setGui(this);
-
-            Node cell;
-
-            if (nodeboard.hasChildNodes()) {
-                NodeList cells = nodeboard.getChildNodes();
-
-                for (int i = 0; i < cells.getLength(); i++) {
-                    cell = cells.item(i);
-
-                    if (cell.getNodeName().equals("cell")) {
-                        int id = getIdOfCellNode(cell);
-                        int level = getLevelOfCellNode(cell);
-                        boolean dome = getDomeOfCellNode(cell);
-
-                        String nickname = getNicknameOfCellNode(cell);
-                        if (!nickname.isEmpty()) {
-                            boardPage_PlacingWorkersController.setWorker(id, PlayerWorkerMap.get(nickname));
-                        }
-
-                        if (!indexcandidatecells.isEmpty()) {
-                            for (Integer indexcandidatecell : indexcandidatecells) {
-                                if (indexcandidatecell == id) {
-                                    boardPage_PlacingWorkersController.setCandidate(id);
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                }
-
-                if (PlayerGodMap.size() > 0) {
-                    Set<String> nicknames = PlayerGodMap.keySet();
-                    String nickname;
-                    Iterator<String> itr = nicknames.iterator();
-                    int playerscount = 1;
-                    boolean playingPlayer = false;
-
-                    while (itr.hasNext()) {
-                        nickname = itr.next();
-                        if (PlayerWorkerMap.containsKey(nickname) && PlayerGodMap.containsKey(nickname)) {
-                            if(nickname.equals(playingPlayerNickname)) {
-                                playingPlayer = true;
-                            }
-
-                            if(playerscount == 1) {
-                                boolean deadPlayer = false;
-                                for (String player : deadPlayers) {
-                                    if (player.equals(nickname)) {
-                                        deadPlayer = true;
-                                        break;
-                                    }
-                                }
-                                boardPage_PlacingWorkersController.setPlayer1Panel(PlayerGodMap.get(nickname), nickname, playingPlayer, deadPlayer, PlayerWorkerMap.get(nickname));
-                            } else if(playerscount == 2) {
-                                boolean deadPlayer = false;
-                                for (String player : deadPlayers) {
-                                    if (player.equals(nickname)) {
-                                        deadPlayer = true;
-                                        break;
-                                    }
-                                }
-                                boardPage_PlacingWorkersController.setPlayer2Panel(PlayerGodMap.get(nickname), nickname, playingPlayer, deadPlayer, PlayerWorkerMap.get(nickname));
-                            } else if(playerscount == 3) {
-                                boolean deadPlayer = false;
-                                for (String player : deadPlayers) {
-                                    if (player.equals(nickname)) {
-                                        deadPlayer = true;
-                                        break;
-                                    }
-                                }
-                                boardPage_PlacingWorkersController.setPlayer3Panel(PlayerGodMap.get(nickname), nickname, playingPlayer, deadPlayer, PlayerWorkerMap.get(nickname));
-                            }
-                        }
-                        playerscount++;
-                        playingPlayer = false;
-                    }
-                }
-
-                if(players.size() == 2) {
-                    boardPage_PlacingWorkersController.setPanel3Visibility(false);
-                }
-            }
-
-            SantoriniStage.getScene().setRoot(PlacingWorkersPage);
-            SantoriniStage.show();
-
-        } catch (IOException exception){
-            System.out.println(exception.toString());
-        }
-    }
 
     /**
      * Method that load the UniqueBoard fxml page only the first time that is called, then it will no longer create new controllers
@@ -487,6 +387,7 @@ public class GUI extends Application implements ClientObserver {
             BoardController.resetBoardGrid();
             Node cell;
             BoardController.setPhaseName();
+
             if (nodeboard.hasChildNodes()) {
                 NodeList cells = nodeboard.getChildNodes();
 
@@ -521,6 +422,10 @@ public class GUI extends Application implements ClientObserver {
                             }
                         }
                     }
+                }
+
+                if(this.currentPhase == Phase.PlaceWorkers) {
+                    BoardController.setPlacingWorkersBoard();
                 }
 
                 if (PlayerGodMap.size() > 0) {
@@ -648,7 +553,7 @@ public class GUI extends Application implements ClientObserver {
     public void loadBoardPage(){
         try {
             if(this.currentPhase==null){
-                this.currentPhase = Phase.ChooseWorker;
+                this.currentPhase = Phase.PlaceWorkers;
             }
             FXMLLoader boardloader = new FXMLLoader(getClass().getResource("/views/BoardPage_UniqueBoard.fxml"));
             this.BoardPage = (Parent) boardloader.load();
@@ -891,8 +796,9 @@ public class GUI extends Application implements ClientObserver {
             }
         }
 
+        this.currentPhase = Phase.PlaceWorkers;
         this.playingPlayerNickname = this.client.getNickname();
-        Platform.runLater(() -> showBoardPage_PlacingWorkers());
+        Platform.runLater(() -> showBoardPage_UniqueBoard());
     }
 
 
@@ -1331,10 +1237,14 @@ public class GUI extends Application implements ClientObserver {
         String[] chosenPosition = new String[2];
         String firstPosition = CellsSelected.get(0);
         String secondPosition = CellsSelected.get(1);
-        int indexFirstPosition = (firstPosition.charAt(0) - 'A') * 5 + (firstPosition.charAt(1) - '1');
-        int indexSecondPosition = (secondPosition.charAt(0) - 'A') * 5 + (secondPosition.charAt(1) - '1');
-        chosenPosition[0] = Integer.toString(indexFirstPosition);
-        chosenPosition[1] = Integer.toString(indexSecondPosition);
+        //int indexFirstPosition = (firstPosition.charAt(0) - 'A') * 5 + (firstPosition.charAt(1) - '1');
+        //int indexSecondPosition = (secondPosition.charAt(0) - 'A') * 5 + (secondPosition.charAt(1) - '1');
+        //chosenPosition[0] = Integer.toString(indexFirstPosition);
+        //chosenPosition[1] = Integer.toString(indexSecondPosition);
+
+        chosenPosition[0] = CellsSelected.get(0);
+        chosenPosition[1] = CellsSelected.get(1);
+
         client.ChosenWorkersFirstPositions(chosenPosition[0], chosenPosition[1]);
         Platform.runLater(() -> showWaitingPage("Wait for your turn to begin"));
     }

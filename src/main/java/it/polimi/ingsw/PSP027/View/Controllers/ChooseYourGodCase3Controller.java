@@ -3,20 +3,14 @@ package it.polimi.ingsw.PSP027.View.Controllers;
 import it.polimi.ingsw.PSP027.Network.Client.Client;
 import it.polimi.ingsw.PSP027.View.GUI;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonBar;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
-import javafx.stage.Modality;
-import javafx.scene.Node;
-
 import java.util.*;
+
+/**
+ * @author Lorenzo Guarino
+ */
+
 public class ChooseYourGodCase3Controller {
 
     // Reference to the main gui application
