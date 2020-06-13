@@ -416,22 +416,6 @@ public class BoardPage_UniqueController {
                             cellsToSend.add(cellSelected);
                         }
 
-                        /*if (!bAlreadySelected && !bAlreadyTaken) {
-                            for(Node child : BoardGrid.getChildren()) {
-                                Integer r = GridPane.getRowIndex(child);
-                                Integer c = GridPane.getColumnIndex(child);
-                                int row = r == null ? 0 : r;
-                                int column = c == null ? 0 : c;
-                                if (row == gridRow && column == gridColumn) {
-                                    //ImageView selectedCell = (ImageView) child;
-                                    //selectedCell.setVisible(true);
-                                    selectedCell.setImage(new Image("images/Board/CandidateCell_Board.png"));
-                                    cellsToSend.add(cellSelected);
-                                    break;
-                                }
-                            }
-                        }*/
-
                         if (cellsToSend.size() == 2) {
                             ConfirmButton.setVisible(true);
                         }
@@ -455,9 +439,6 @@ public class BoardPage_UniqueController {
                             int cellToRemoveRow = 4 - (cellToRemoveIndex / 5);
                             int cellToRemoveColumn = cellToRemoveIndex % 5;
 
-                            boolean candidateSet = false;
-                            boolean candidateDeleted = false;
-
                             for(Node child : BoardGrid.getChildren()) {
                                 Integer r = GridPane.getRowIndex(child);
                                 Integer c = GridPane.getColumnIndex(child);
@@ -474,28 +455,6 @@ public class BoardPage_UniqueController {
                                     break;
                                 }
                             }
-
-                            /*for(Node child : BoardGrid.getChildren()) {
-                                Integer r = GridPane.getRowIndex(child);
-                                Integer c = GridPane.getColumnIndex(child);
-                                int row = r == null ? 0 : r;
-                                int column = c == null ? 0 : c;
-                                if (row == gridRow && column == gridColumn) {
-                                    //ImageView selectedCell = (ImageView) child;
-                                    //selectedCell.setVisible(true);
-                                    selectedCell.setImage(new Image("images/Board/CandidateCell_Board.png"));
-                                    cellsToSend.add(cellSelected);
-                                    candidateSet = true;
-                                } else if(row == cellToRemoveRow && column == cellToRemoveColumn) {
-                                    ImageView selectedCellToRemove = (ImageView) child;
-                                    cellsToSend.remove(0);
-                                    selectedCellToRemove.setImage(new Image("images/Board/InvisibleCell.png"));
-                                    candidateDeleted = true;
-                                }
-
-                                if(candidateDeleted && candidateSet)
-                                    break;
-                            }*/
                         }
                     }
                     break;
