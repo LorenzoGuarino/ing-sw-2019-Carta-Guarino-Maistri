@@ -49,6 +49,7 @@ public class SantoriniMatch implements Runnable{
      * Constructor: it creates a new match, creating a list for the players that will be filled as the players are added,
      * the same for the list of turns, the gods that will be used in the match and the list of all gods, generates the random unique
      * id of the match, creates a board and sets the variable that tells if the match has started to false
+     * @param lobby the lobby in which the game is contained
      */
 
     public SantoriniMatch(Lobby lobby) {
@@ -467,7 +468,6 @@ public class SantoriniMatch implements Runnable{
     /**
      * Method that ends the game if the win conditions are verified
      * @param playerWinner player that has won the game
-     * @TODO tell lobby to handle the ending of the match
      */
 
     public void endGame(Player playerWinner) {

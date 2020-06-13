@@ -311,6 +311,7 @@ public class GUI extends Application implements ClientObserver {
     /**
      * Method that load the Waiting fxml page, sets the waiting message in the scene
      * and sets the new Scene in SantoriniStage
+     * @param waitingMessage message
      */
     public void showWaitingPage(String waitingMessage){
         try {
@@ -514,6 +515,7 @@ public class GUI extends Application implements ClientObserver {
     /**
      * Method that load the YouHaveLost fxml page, sets the nickname of the loser
      * and sets the new Scene in SantoriniStage
+     * @param winner winner's username
      */
     public void showYouHaveLostPage(String winner){
         try {
@@ -1172,6 +1174,7 @@ public class GUI extends Application implements ClientObserver {
     }
     /**
      * Method called by GUI Controller to Register the player
+     * @param nickname user's nickname
      */
     public void doRegister(String nickname) {
         client.Register(nickname);

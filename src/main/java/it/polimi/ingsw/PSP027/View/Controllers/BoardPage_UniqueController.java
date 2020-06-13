@@ -86,6 +86,7 @@ public class BoardPage_UniqueController {
 
     /**
      * Method called by the main GUI in order to give the gui controller a reference of itself
+     * @param gui the Gui controlled by this controller
      */
     public void setGui(GUI gui) {
         this.gui = gui;

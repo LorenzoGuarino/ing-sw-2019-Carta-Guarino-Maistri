@@ -48,6 +48,7 @@ public class ChooseYourGodCase3Controller {
 
     /**
      * Method called by the main GUI in order to give the gui controller a reference of itself
+     * @param Gui the Gui controlled by this controller
      */
 
     public void setGui(GUI Gui) {

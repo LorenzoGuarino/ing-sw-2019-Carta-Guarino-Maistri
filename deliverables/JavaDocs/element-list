@@ -1,0 +1,10 @@
+module:it.polimi.ingsw.PSP027
+it.polimi.ingsw.PSP027.Controller
+it.polimi.ingsw.PSP027.Model.Game
+it.polimi.ingsw.PSP027.Model.Gods
+it.polimi.ingsw.PSP027.Network
+it.polimi.ingsw.PSP027.Network.Client
+it.polimi.ingsw.PSP027.Network.Server
+it.polimi.ingsw.PSP027.Utils
+it.polimi.ingsw.PSP027.View
+it.polimi.ingsw.PSP027.View.Controllers

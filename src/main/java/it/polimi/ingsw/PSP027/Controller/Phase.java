@@ -72,6 +72,7 @@ public class Phase {
     /**
      * Method to call when creating a phase, defined in the god power decorator so when the decorated phase will call the start phase
      * the action will be executed by the decorator who extends the phase and therefore will override this method
+     * @return always true
      */
 
     public boolean startPhase() {
