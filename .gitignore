@@ -1,2 +1,4 @@
 *.idea
+*.css
+*.img
 /target/**
