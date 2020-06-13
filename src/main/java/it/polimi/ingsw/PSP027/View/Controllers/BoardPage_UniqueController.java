@@ -185,7 +185,7 @@ public class BoardPage_UniqueController {
     public void setCandidate(int index){
         int column = index%5;
         int row = abs(index/5-4);
-        ImageView candidate = new ImageView("images/Board/CandidateCell_board.png");
+        ImageView candidate = new ImageView("images/Board/CandidateCell_Board.png");
         candidate.setPickOnBounds(true);
         candidate.setFitHeight(100);
         candidate.setFitWidth(100);
