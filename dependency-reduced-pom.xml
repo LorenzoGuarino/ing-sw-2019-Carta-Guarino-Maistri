@@ -37,6 +37,7 @@
         <version>3.2.4</version>
         <executions>
           <execution>
+            <id>server</id>
             <phase>package</phase>
             <goals>
               <goal>shade</goal>
@@ -45,6 +46,20 @@
               <transformers>
                 <transformer>
                   <mainClass>it.polimi.ingsw.PSP027.Network.Server.Server</mainClass>
+                </transformer>
+              </transformers>
+            </configuration>
+          </execution>
+          <execution>
+            <id>cli</id>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <transformers>
+                <transformer>
+                  <mainClass>it.polimi.ingsw.PSP027.View.CLI</mainClass>
                 </transformer>
               </transformers>
             </configuration>

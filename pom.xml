@@ -33,7 +33,6 @@
           <groupId>org.openjfx</groupId>
           <artifactId>javafx-graphics</artifactId>
           <version>11.0.2</version>
-          <classifier>mac</classifier>
       </dependency>
   </dependencies>
 
@@ -73,14 +72,46 @@
             <version>3.2.4</version>
             <executions>
                 <execution>
+                    <id>server</id>
                     <phase>package</phase>
                     <goals>
                         <goal>shade</goal>
                     </goals>
                     <configuration>
+                        <outputFile>target/${project.artifactId}-server.jar</outputFile>
                         <transformers>
                             <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                                 <mainClass>it.polimi.ingsw.PSP027.Network.Server.Server</mainClass>
+                            </transformer>
+                        </transformers>
+                    </configuration>
+                </execution>
+                <execution>
+                    <id>cli</id>
+                    <phase>package</phase>
+                    <goals>
+                        <goal>shade</goal>
+                    </goals>
+                    <configuration>
+                        <outputFile>target/${project.artifactId}-cli.jar</outputFile>
+                        <transformers>
+                            <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                <mainClass>it.polimi.ingsw.PSP027.View.CLI</mainClass>
+                            </transformer>
+                        </transformers>
+                    </configuration>
+                </execution>
+                <execution>
+                    <id>gui</id>
+                    <phase>package</phase>
+                    <goals>
+                        <goal>shade</goal>
+                    </goals>
+                    <configuration>
+                        <outputFile>target/${project.artifactId}-gui.jar</outputFile>
+                        <transformers>
+                            <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                <mainClass>it.polimi.ingsw.PSP027.View.GUILauncher</mainClass>
                             </transformer>
                         </transformers>
                     </configuration>
