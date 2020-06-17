@@ -2,7 +2,7 @@
 
 
 # Software Engineering Project 2020 - Carta, Guarino, Maistri
-## Gruppo: PSP027
+## Group: PSP027
 
 ### Group Members:
 * ### 10573704 Carta Daniele ([@icsdaniel](https://github.com/icsdaniel)) - danieleantonio.carta@mail.polimi.it
@@ -29,6 +29,11 @@
 -->
 
 ### Multiple Games:
+We implemented a server that supports multiple matches happening at the same time.
+When a player registers himself on the server, he's asked whether he wants to play a match for 2 or 3 people.<br>
+Depending on the player's choice the server will search for an available match of that type that is waiting for other players to join before starting the actual match.<br>
+If there are no waiting matches of the wanted type or each match has already started the server will then create another one of the type and the player will then be waiting for 1 or 2 other players to join depending on his choice.
+
 
 ### Advanced Gods:
 We added 5 additional gods within the game:<br>
@@ -43,6 +48,8 @@ We added 5 additional gods within the game:<br>
 From the directory [deliverables/JARS](./deliverables/JARS), you can run the application server with the command-line command
 
     java -jar santorini-server.jar [socket-port-number]
+
+If port number is not specified a default socket port number will be used (2705)
 
 ### How to run CLI:
 From the directory [deliverables/JARS](./deliverables/JARS), you can run the application CLI with the command-line command
