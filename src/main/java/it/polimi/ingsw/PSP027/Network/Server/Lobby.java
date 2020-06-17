@@ -300,7 +300,7 @@ public class Lobby{
                         ) {
 
                             for (SantoriniMatch match : Matches) {
-                                if ((match.GetRequiredNumberOfPlayers() == playersCount) && !match.isStarted()) {
+                                if ((match.GetRequiredNumberOfPlayers() == playersCount) && !match.isStarted() && !match.isFull()) {
 
                                     gamerInLobby.matchAssociated = match.getMatchId();
 

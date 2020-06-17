@@ -239,6 +239,12 @@ public class SantoriniMatch implements Runnable{
     public boolean isStarted() { return matchStarted; }
 
     /**
+     * Method that checks if the match has reached the required number of players that was set upon creation
+     * @return true if it's full, otherwise false
+     */
+
+    public boolean isFull() { return (players.size() >= requiredPlayers); }
+    /**
      * Method to get the first player of the list of players
      * @return the first player
      */
