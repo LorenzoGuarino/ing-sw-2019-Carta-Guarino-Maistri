@@ -991,7 +991,6 @@ public class CLI implements Runnable, ClientObserver {
                             if (cmdlineParts.length == 2) {
                                 gamestate = CLIGameState.cli_Registering;
                                 client.Register(cmdlineParts[1]);
-                                //@TODO don't let users register with already taken nicknames
                             } else
                                 OnInvalidCommandSyntax(REGISTER_COMMAND);
                         } else if (cmdlineParts[0].equals(DEREGISTER_COMMAND)) {

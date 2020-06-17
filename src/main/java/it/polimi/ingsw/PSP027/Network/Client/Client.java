@@ -115,11 +115,6 @@ public class Client implements Runnable, ServerObserver
             else
                 port = Server.SOCKET_PORT;
 
-            if(bWrongAddress)
-            {
-                //@TODO should either notify UI that we are defaulting to 127.0.0.1:SOCKET_PORT and connect OR return false !
-            }
-
             connStatus = ConnectionStatus.Connecting;
             return true;
         }
