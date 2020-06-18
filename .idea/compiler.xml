@@ -6,12 +6,8 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="santorini" />
         <module name="ing-sw-2019-Carta-Guarino-Maistri" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="ing-sw-2019-Carta-Guarino-Maistri" target="9" />
-    </bytecodeTargetLevel>
   </component>
 </project>
