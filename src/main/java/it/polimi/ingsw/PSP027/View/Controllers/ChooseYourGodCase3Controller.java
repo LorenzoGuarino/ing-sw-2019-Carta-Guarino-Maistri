@@ -93,7 +93,7 @@ public class ChooseYourGodCase3Controller {
         String god2 = chosenGods.get(1);
         GodRight.setImage(new Image("images/Gods/"+god2+"_big.png"));
         GodRightDescription = new Image("images/Gods/"+god2+"Description.png");
-        String god3 = chosenGods.get(3);
+        String god3 = chosenGods.get(2);
         GodCenter.setImage(new Image("images/Gods/"+god3+"_big.png"));
         GodCenterDescription = new Image("images/Gods/"+god3+"Description.png");
     }
