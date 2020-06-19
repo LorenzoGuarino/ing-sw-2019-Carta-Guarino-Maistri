@@ -382,6 +382,9 @@ public class BoardPage_UniqueController {
      */
     public void clickedOnGrid(MouseEvent e){
         Node source = e.getPickResult().getIntersectedNode();
+        if(source.getClass().equals(BoardGrid.getClass())){
+            return;
+        }
         ImageView selectedCell = (ImageView) e.getTarget();
         Integer gridColumn = GridPane.getColumnIndex(source);
         Integer gridRow = GridPane.getRowIndex(source);
