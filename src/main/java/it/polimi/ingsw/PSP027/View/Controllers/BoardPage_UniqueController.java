@@ -445,8 +445,6 @@ public class BoardPage_UniqueController {
                                 int row = r == null ? 0 : r;
                                 int column = c == null ? 0 : c;
                                 if(row == cellToRemoveRow && column == cellToRemoveColumn) {
-
-                                    System.out.println("Removing cell " + row + " " + column);
                                     ImageView selectedCellToRemove = (ImageView) child;
                                     cellsToSend.remove(0);
                                     selectedCellToRemove.setImage(new Image("images/Board/InvisibleCell.png"));
@@ -557,6 +555,7 @@ public class BoardPage_UniqueController {
     public void confirmButtonPressed() {
         ConfirmButton.setImage(new Image("images/Buttons/btn_Confirm_pressed.png"));
         gui.doSendSelectedCellsForWorkers(cellsToSend);
+        cellsToSend.clear();
     }
 
     /**
@@ -624,5 +623,6 @@ public class BoardPage_UniqueController {
                 break;
         }
     }
+
 
 }
