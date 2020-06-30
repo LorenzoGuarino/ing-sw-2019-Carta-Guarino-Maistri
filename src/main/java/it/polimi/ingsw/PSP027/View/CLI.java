@@ -345,7 +345,11 @@ public class CLI implements Runnable, ClientObserver {
                         case cli_ChoosingMatch: {
                             System.out.println(CHOOSE_MATCH_TYPE_LABEL);
                             WaitForUserInput();
-                            int players = Integer.parseInt(cmdLine);
+                            int players =0;
+                            try {
+                                players = Integer.parseInt(cmdLine);
+                            } catch(NumberFormatException e) { }
+
                             if ((players >= 1) && (players <= 2)) {
                                 // add local player to count as server search need to count all players...
                                 players++;
@@ -1230,6 +1234,9 @@ public class CLI implements Runnable, ClientObserver {
     public void OnEnteredMatch(List<String> players) {
         System.out.println("\n\nEntered match. Current players (with the assigned color that will be used to distinguish the workers' owner on the board):");
 
+        NicknameHighlightMap.clear();
+        NicknameColorMap.clear();
+        NicknameGodMap.clear();
         boolean bMessage = false;
         for (int i = 0; i < players.size(); i++) {
             if (i == 0) {

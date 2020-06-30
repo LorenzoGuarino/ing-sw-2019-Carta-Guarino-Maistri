@@ -480,6 +480,9 @@ public class GUI extends Application implements ClientObserver {
                 if(players.size() == 2) {
                     BoardController.setPanel3Visibility(false);
                 }
+                else {
+                    BoardController.setPanel3Visibility(true);
+                }
             }
 
             SantoriniStage.getScene().setRoot(BoardPage);
@@ -672,10 +675,10 @@ public class GUI extends Application implements ClientObserver {
 
     @Override
     public void OnEnteringMatch(List<String> players) {
-        System.out.println("OnEnteringMatch IN");
+        System.out.println("OnEnteringMatch IN " + ((this.players != null) ? this.players.size() : 0));
         this.players = players;
         Platform.runLater(() -> showEnteringMatchPage());
-        System.out.println("OnEnteringMatch OUT");
+        System.out.println("OnEnteringMatch OUT " + this.players.size());
     }
 
     /**
@@ -684,8 +687,10 @@ public class GUI extends Application implements ClientObserver {
 
     @Override
     public void OnEnteredMatch(List<String> players) {
-        System.out.println("OnWaiting IN");
+        System.out.println("OnEnteredMatch IN " + ((this.players != null) ? this.players.size() : 0));
         this.players = players;
+        PlayerGodMap.clear();
+        PlayerWorkerMap.clear();
         for (int i = 0; i < players.size(); i++) {
             if (i == 0) {
                 PlayerWorkerMap.put(players.get(i), "images/Board/redWorker_Board.png");
@@ -697,7 +702,7 @@ public class GUI extends Application implements ClientObserver {
 
         }
         Platform.runLater(() -> showWaitingPage("Wait while the first player chooses the gods you will play with"));
-        System.out.println("OnWaiting OUT");
+        System.out.println("OnEnteredMatch OUT " + this.players.size());
     }
 
     /**
