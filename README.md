@@ -56,6 +56,8 @@ From the directory [deliverables/JARS](./deliverables/JARS), you can run the app
 
     java -jar santorini-cli.jar
 
+Note: CLI can be viewed correctly only on consoles that support ANSI escape codes.
+
 ### How to run GUI:
 From the directory [deliverables/JARS](./deliverables/JARS), you can run the application GUI with the command-line command
 
