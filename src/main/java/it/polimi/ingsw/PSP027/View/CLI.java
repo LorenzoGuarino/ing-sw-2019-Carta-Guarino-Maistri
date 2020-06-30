@@ -663,12 +663,13 @@ public class CLI implements Runnable, ClientObserver {
 
                         case cli_ChoosingWorker:  {
 
+                            System.out.println("\n\n");
+                            System.out.println(LINE);
+
                             clearScreen();
 
                             setCellsToPrint();
 
-                            System.out.println("\n\n");
-                            System.out.println(LINE);
                             printBoard();
                             System.out.println("\nPlease select the cell occupied by the worker you want to play with.\n" + DEFAULT_ITALIC + DEFAULT_BOLD +
                                     "Remember:" + RESET + DEFAULT_ITALIC + " You can only select workers of your own property, marked by your " + NicknameColorMap.get(client.getNickname()) + "color" +
